@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "831817132527",
+    "project_id": "odyssey-f8a9d",
+    "storage_bucket": "odyssey-f8a9d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:831817132527:android:bd10b670b70eb05b54ae1a",
+        "android_client_info": {
+          "package_name": "com.odysseyadventure.gp1_7_2022"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "831817132527-fj4ie8afurrngjcoqmhhldjiopuhvv45.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASbYmmQxCfRDe5Js_ifH-F4wLlD5S0DYc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "831817132527-fj4ie8afurrngjcoqmhhldjiopuhvv45.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

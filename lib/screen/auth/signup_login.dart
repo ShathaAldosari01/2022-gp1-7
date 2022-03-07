@@ -1,0 +1,123 @@
+import 'package:flutter/material.dart';
+/*pages */
+import 'package:gp1_7_2022/screen/auth/signup.dart';
+import 'package:gp1_7_2022/screen/auth/login.dart';
+/*colors */
+import 'package:gp1_7_2022/config/palette.dart';
+
+class Signup_Login extends StatefulWidget {
+  const Signup_Login({Key? key}) : super(key: key);
+
+  @override
+  _Signup_LoginState createState() => _Signup_LoginState();
+}
+
+class _Signup_LoginState extends State<Signup_Login> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Palette.backgroundColor,
+      body:Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          /*add space in front */
+          SizedBox(
+            height: 70,
+          ),
+          /*logo*/
+          Container(
+            // color: Colors.amber,
+            child: Center(
+              child: Image.asset('assets/logoWithName.png'),
+            ),
+          ),
+          /*شعار*/
+          Container(
+            margin: EdgeInsets.fromLTRB(0,0,0,20),
+            child: Center(
+              child:Text(
+                "A journey full of adventures",
+                style: TextStyle(
+                  fontWeight: FontWeight.w900,
+                  fontSize: 25,
+                  color: Palette.link,
+                  fontFamily: 'Handlee',
+                  letterSpacing: 2,
+                ),
+              ),
+            ),
+          ),
+          /*شعارend */
+
+          /*sign up button*/
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
+            alignment: Alignment.center,
+            width: double.infinity,
+            height: 50.0,
+            /*button colors*/
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+              gradient: LinearGradient(
+                  colors: [
+                    Palette.buttonColor,
+                    Palette.nameColor,
+                  ]
+              ),
+            ),
+            /*button*/
+            child: ButtonTheme(
+              height: 50.0,
+              minWidth: 350,
+              child: FlatButton(onPressed: (){
+                /*go to sign up page*/
+                Navigator.pushNamed(context, '/signup');
+              },
+                child: Text('Create new account',
+                  style: TextStyle(
+                    color: Palette.backgroundColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          /*end of sign up button */
+
+          /*log in button*/
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
+            alignment: Alignment.center,
+            width: double.infinity,
+            height: 50.0,
+            /*button*/
+            child: ButtonTheme(
+              height: 50.0,
+              child: FlatButton(onPressed: (){
+                /*go to sign up page*/
+                Navigator.pushNamed(context, '/login');
+              },
+                child: Text('Log in',
+                  style: TextStyle(
+                    color: Palette.buttonColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          /*end of sign up button */
+
+
+        ],
+      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: (){},
+      //   child: Text("Click me!"),
+      // ),
+    );
+  }
+}
+
