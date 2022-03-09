@@ -29,7 +29,7 @@ class Signup extends StatelessWidget {
             /*first column*/
             Expanded(
               child: Container(
-                margin:  EdgeInsets.symmetric(horizontal: 50),
+                margin:  EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -77,15 +77,40 @@ class Signup extends StatelessWidget {
                                 child: TextFormField(
                                   //design
                                   decoration: InputDecoration(
+
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    filled: true,
+
+                                    /*hint*/
                                     border: OutlineInputBorder(),
                                     hintText: "Email address",
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Palette.grey
+                                    ),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
+                                    ),
                                   ),
+
                                   //function
                                   onChanged: (val){
 
                                   },
                                 ),
                               ),
+                              /*end of email*/
 
 
                               /*next button*/
@@ -110,7 +135,7 @@ class Signup extends StatelessWidget {
                                   minWidth: 350,
                                   child: FlatButton(onPressed: (){
                                     /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/signup');
+                                    Navigator.pushNamed(context, '/Profile_Page');
                                   },
                                     child: Text('Next',
                                       style: TextStyle(
@@ -159,7 +184,7 @@ class Signup extends StatelessWidget {
                             // color: Colors.red,
                             padding: EdgeInsets.fromLTRB(0, 0,30, 0),
                             onPressed: (){
-                              Navigator.pushNamed(context, '/signup');
+                              Navigator.pushNamed(context, '/login');
                             },
                             child: Text(
                               "Log in ",
