@@ -49,57 +49,89 @@ class _LoginState extends State<Login> {
 
                 ),
 
-              Container(
-            // margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-        //   // padding: EdgeInsets.all(25),
-        //   child: ButtonTheme(
-        //     height: 50.0,
-        //     child: RaisedButton(onPressed: (){
-        //       Navigator.of(context).pushNamed('/Profile_Page');
-        //     },
-        //
-        //       // child: Text('profile page',
-        //       //   style: TextStyle(
-        //       //     color: Palette.backgroundColor,
-        //       //     fontWeight: FontWeight.bold,
-        //       //     fontSize: 18,
-        //       //   ),
-        //       // ),
-        //       color: Palette.buttonColor,
-        //     ),
-        //   ),
-         margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                /*email*/
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                  child: TextFormField(
+                    //design
+                    decoration: InputDecoration(
 
-               child: TextFormField(
+                      /*background color*/
+                      fillColor: Palette.lightgrey,
+                      filled: true,
 
-              //design
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Email address",
-              ),
+                      /*hint*/
+                      border: OutlineInputBorder(),
+                      hintText: "Email address",
+                      hintStyle: TextStyle(
+                          fontSize: 18.0,
+                          color: Palette.grey
+                      ),
 
-              //function
-              onChanged: (val){
+                      /*Border*/
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Palette.midgrey,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Palette.midgrey,
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
 
-              },
-            ),
-         ),
-                Container (
-            margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
-                child: TextFormField(
-              //design
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: "Password",
-              ),
-                 obscureText: true,
-              //function
-              onChanged: (val){
+                    //function
+                    onChanged: (val){
 
-              },
-            ),
-        ),
-    ],
+                    },
+                  ),
+                ),
+                /*end of email*/
+
+                /*Password*/
+                Container(
+                    margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                  child: TextFormField(
+                    //design
+                    decoration: InputDecoration(
+
+                      /*background color*/
+                      fillColor: Palette.lightgrey,
+                      filled: true,
+
+                      /*hint*/
+                      border: OutlineInputBorder(),
+                      hintText: "Password",
+                      hintStyle: TextStyle(
+                          fontSize: 18.0,
+                          color: Palette.grey
+                      ),
+
+                      /*Border*/
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Palette.midgrey,
+                        ),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: Palette.midgrey,
+                          width: 2.0,
+                        ),
+                      ),
+                    ),
+                    obscureText: true,
+                    //function
+                    onChanged: (val){
+
+                    },
+                  ),
+                ),
+                /*end of email*/
+
+              ],
     ),
           ),
           Expanded(
