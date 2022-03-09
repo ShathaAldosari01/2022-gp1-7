@@ -15,8 +15,11 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      backgroundColor: Palette.backgroundColor,
       appBar: AppBar(
-        title: Text("login"),
+        backgroundColor: Palette.backgroundColor,
+        foregroundColor: Palette.textColor,
+        elevation: 0,//no shadow
       ),
       //fix overlode error
       resizeToAvoidBottomInset: false,
