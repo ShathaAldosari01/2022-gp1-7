@@ -19,7 +19,8 @@ class Signup extends StatelessWidget {
         foregroundColor: Palette.textColor,
         elevation: 0,//no shadow
       ),
-
+      //fix overlode error
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
           

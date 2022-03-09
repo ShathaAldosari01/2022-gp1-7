@@ -18,32 +18,191 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         title: Text("login"),
       ),
+      //fix overlode error
+      resizeToAvoidBottomInset: false,
       body:Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
+        children:[
+          Expanded(
+            flex:7,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment:MainAxisAlignment.end ,
 
-      Container(
-        margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
-        // padding: EdgeInsets.all(25),
-        child: ButtonTheme(
-          height: 50.0,
-          child: RaisedButton(onPressed: (){
-            Navigator.of(context).pushNamed('/Profile_Page');
-          },
+              children: [
+                Container(
+                  margin: EdgeInsets.only(top: 50),
+                  child: Center(
+                    child:Text(
+                      "Odyssey",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w900,
+                        fontSize: 50,
+                        color: Palette.link,
+                        fontFamily: 'Handlee',
+                        letterSpacing: 2,
+                      ),
+                    ),
+                  ),
 
-            child: Text('profile page',
-              style: TextStyle(
-                color: Palette.backgroundColor,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+                ),
+
+              Container(
+            // margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+        //   // padding: EdgeInsets.all(25),
+        //   child: ButtonTheme(
+        //     height: 50.0,
+        //     child: RaisedButton(onPressed: (){
+        //       Navigator.of(context).pushNamed('/Profile_Page');
+        //     },
+        //
+        //       // child: Text('profile page',
+        //       //   style: TextStyle(
+        //       //     color: Palette.backgroundColor,
+        //       //     fontWeight: FontWeight.bold,
+        //       //     fontSize: 18,
+        //       //   ),
+        //       // ),
+        //       color: Palette.buttonColor,
+        //     ),
+        //   ),
+         margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+
+               child: TextFormField(
+
+              //design
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Email address",
               ),
+
+              //function
+              onChanged: (val){
+
+              },
             ),
-            color: Palette.buttonColor,
-          ),
+         ),
+                Container (
+            margin: EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                child: TextFormField(
+              //design
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: "Password",
+              ),
+                 obscureText: true,
+              //function
+              onChanged: (val){
+
+              },
+            ),
         ),
-      ),
-    ]
+    ],
     ),
+          ),
+          Expanded(
+            flex: 7,
+
+              child:Column(
+
+                children: [
+
+                  Align(
+                    alignment: Alignment.topRight,
+                    child:
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      child: Text('Forgot password?',
+                  style: TextStyle(
+                      fontSize: 17,
+                    color: Palette.link,
+                      fontWeight: FontWeight.bold,
+                  ),
+                  ),
+                    ),
+    ),
+
+                /*log in button*/
+                  Container(
+                    margin: EdgeInsets.symmetric( horizontal:50, vertical: 10),
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    height: 50.0,
+                    /*button colors*/
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                      gradient: LinearGradient(
+                          colors: [
+                            Palette.buttonColor,
+                            Palette.nameColor,
+                          ]
+                      ),
+                    ),
+                    /*button*/
+                    child: ButtonTheme(
+                      height: 50.0,
+                      minWidth: 350,
+                      child: FlatButton(onPressed: (){
+                        /*go to Profile_Page page*/
+                        Navigator.of(context).pushNamed('/Profile_Page');
+                      },
+                        child: Text('Log in',
+                          style: TextStyle(
+                            color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  /*end of log in button */
+             ],
+              ),
+          ),
+        Expanded(
+          flex: 2,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Divider(
+                  height: 5,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:[
+
+                        Text(
+                          "Don't have an account?",
+                          style: TextStyle(
+                            color: Palette.grey,
+                          ),
+                        ),
+
+                        FlatButton(
+                          // color: Colors.red,
+                          padding: EdgeInsets.fromLTRB(0, 0,30, 0),
+                          onPressed: (){
+                            Navigator.pushNamed(context, '/signup');
+                          },
+                          child: Text(
+                            "  Sign up. ",
+                            style: TextStyle(
+                              color: Palette.link,
+                            ),
+                          ),
+                        ),
+
+                      ]
+                  ),
+                )
+              ],
+
+            )
+        )
+      ],
+      ),
     );
   }
 }
