@@ -1,4 +1,5 @@
 import 'package:flutter/painting.dart';
+import 'package:flutter/material.dart';
 /*color theam*/
 class Palette{
   static const Color backgroundColor = Color(0xFFffffff);//0xFF1c1c1c
