@@ -1,14 +1,19 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+/*extra */
+import 'package:flutter/services.dart';
+import 'package:flutter/gestures.dart';
+
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
-import 'package:gp1_7_2022/screen/auth/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 
-class Signup extends StatelessWidget {
-  // This widget is the root of your application.
+class signupPassword extends StatelessWidget {
+  const signupPassword({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,14 +23,15 @@ class Signup extends StatelessWidget {
         backgroundColor: Palette.backgroundColor,
         foregroundColor: Palette.textColor,
         elevation: 0,//no shadow
+        automaticallyImplyLeading: false,//no arrow
       ),
-      //fix overlode error
+      //fix overloade error
       resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
-          
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            
+
             /*first column*/
             Expanded(
               child: Container(
@@ -36,11 +42,12 @@ class Signup extends StatelessWidget {
 
                     /*Enter your email*/
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       // color: Colors.red,
                       child:Center(
                         child: Text(
-                          "Enter Your Email",
+                          "Create a password",
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 30,
                             color: Palette.textColor,
@@ -49,29 +56,29 @@ class Signup extends StatelessWidget {
                       ),
                     ),
 
-                    /*enter your email so that you */
                     Container(
-                      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                      // color: Colors.blue,
-                      child:Center(
-                        child: Text(
-                          "Enter your email to register in Odyssey.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
+                      padding: EdgeInsets.symmetric( vertical: 10),
+                      child: Center(
+                        child:  Text(
+                          'You need to enter your password twice, to mack sure you enter it right.',
+                          style: new TextStyle(
                             fontSize: 18,
                             color: Palette.grey,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ),
 
+
+
                     /*form*/
                     Form(
-                        child: Column(
+                      child: Column(
                           children:[ Column(
                             children: [
 
-                              /*email*/
+                              /*passwrd*/
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: TextFormField(
@@ -84,7 +91,7 @@ class Signup extends StatelessWidget {
 
                                     /*hint*/
                                     border: OutlineInputBorder(),
-                                    hintText: "Email address",
+                                    hintText: "Password",
                                     hintStyle: TextStyle(
                                         fontSize: 18.0,
                                         color: Palette.grey
@@ -104,13 +111,56 @@ class Signup extends StatelessWidget {
                                     ),
                                   ),
 
+                                  obscureText: true,
                                   //function
                                   onChanged: (val){
 
                                   },
                                 ),
                               ),
-                              /*end of email*/
+                              /*end of password*/
+
+                              /*passwrd*/
+                              Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: TextFormField(
+                                  //design
+                                  decoration: InputDecoration(
+
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    filled: true,
+
+                                    /*hint*/
+                                    border: OutlineInputBorder(),
+                                    hintText: "Confirm password",
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Palette.grey
+                                    ),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
+                                    ),
+                                  ),
+
+                                  obscureText: true,
+                                  //function
+                                  onChanged: (val){
+
+                                  },
+                                ),
+                              ),
+                              /*end of password*/
 
 
                               /*next button*/
@@ -135,7 +185,7 @@ class Signup extends StatelessWidget {
                                   minWidth: 350,
                                   child: FlatButton(onPressed: (){
                                     /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/Profile_Page');
+                                    Navigator.pushNamed(context, '/signupBirthday');
                                   },
                                     child: Text('Next',
                                       style: TextStyle(
@@ -151,58 +201,58 @@ class Signup extends StatelessWidget {
 
                             ],
                           ),]
-                        ),
+                      ),
                     ),
-                    /*/form*/
+                    /*end form*/
                   ],
                 ),
               ),
             ),
-            
-            
-              /*log out?*/
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Divider(
-                      height: 5,
-                    ),
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:[
 
-                          Text(
-                            "Already have an account?",
+            /*log out?*/
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Divider(
+                  height: 5,
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children:[
+                        //Already have an account?
+                        Text(
+                          "Already have an account? ",
+                          style: TextStyle(
+                            color: Palette.grey,
+                          ),
+                        ),
+                        //Log in
+                        InkWell(
+                          child: new Text(
+                            'Log In.',
                             style: TextStyle(
-                              color: Palette.grey,
+                              color: Palette.link,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
+                          onTap: () => Navigator.pushNamed(context, '/login'),
+                        ),
 
-                          FlatButton(
-                            // color: Colors.red,
-                            padding: EdgeInsets.fromLTRB(0, 0,30, 0),
-                            onPressed: (){
-                              Navigator.pushNamed(context, '/login');
-                            },
-                            child: Text(
-                              "Log in ",
-                              style: TextStyle(
-                                color: Palette.link,
-                              ),
-                            ),
-                          ),
 
-                        ]
-                      ),
-                    )
-                  ],
+                      ]
+                  ),
                 )
+              ],
+            )
+            //ean of login?
+
           ],
         ),
       ),
     );
-
   }
 }
+
+

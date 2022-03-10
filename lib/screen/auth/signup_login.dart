@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 /*pages */
-import 'package:gp1_7_2022/screen/auth/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 import 'package:gp1_7_2022/screen/auth/login.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
