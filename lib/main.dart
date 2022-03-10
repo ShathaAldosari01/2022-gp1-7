@@ -7,6 +7,7 @@ import 'package:gp1_7_2022/screen/auth/login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupConfirmationCode.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupBirthday.dart';
+import 'package:gp1_7_2022/screen/auth/signup/signupUsername.dart';
 
 
 void main() {
@@ -21,6 +22,7 @@ void main() {
             '/confirmationCode':(context) => ConfirmationCode(),
             '/signupPassword':(context) => signupPassword(),
             '/signupBirthday':(context) => SignupBirthday(),
+            '/signupUsername':(context) => SignupUsername(),
 
 
 

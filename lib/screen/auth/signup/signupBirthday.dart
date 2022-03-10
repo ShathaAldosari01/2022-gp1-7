@@ -207,7 +207,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     minWidth: 350,
                     child: FlatButton(onPressed: (){
                       /*go to sign up page*/
-                      Navigator.pushNamed(context, '/Profile_Page');
+                      Navigator.pushNamed(context, '/signupUsername');
                     },
                       child: Text('Next',
                         style: TextStyle(
