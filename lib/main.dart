@@ -22,8 +22,8 @@ void main() async{
             "/signup": (context)=> Signup(),
             '/login':(context)=>Login(),
             '/Profile_Page':(context) => Profile_page(),
-            '/confirmationCode':(context) => ConfirmationCode(),
-            '/signupPassword':(context) => signupPassword(),
+            // '/confirmationCode':(context) => ConfirmationCode(),
+            // '/signupPassword':(context) => signupPassword(),
             '/signupBirthday':(context) => SignupBirthday(),
             '/signupUsername':(context) => SignupUsername(),
 

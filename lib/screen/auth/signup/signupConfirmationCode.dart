@@ -1,19 +1,25 @@
-import 'dart:io';
-import 'package:flutter/cupertino.dart';
+// import 'dart:io';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 /*extra */
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 
 /*pages */
-import 'package:gp1_7_2022/screen/auth/signup_login.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
+// import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 
-class ConfirmationCode extends StatelessWidget {
-  const ConfirmationCode({Key? key}) : super(key: key);
+class ConfirmationCode extends StatefulWidget {
+  final String email;
+  const ConfirmationCode({Key? key,  required this.email}) : super(key: key);
 
+  @override
+  State<ConfirmationCode> createState() => _ConfirmationCodeState();
+}
+
+class _ConfirmationCodeState extends State<ConfirmationCode> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,193 +33,195 @@ class ConfirmationCode extends StatelessWidget {
       ),
       //fix overloade error
       resizeToAvoidBottomInset: false,
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
 
-            /*first column*/
-            Expanded(
-              child: Container(
-                margin:  EdgeInsets.symmetric(horizontal: 40),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+          /*first column*/
+          Expanded(
+            child: Container(
+              margin:  const EdgeInsets.symmetric(horizontal: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
 
-                    /*Enter your email*/
-                    Container(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      // color: Colors.red,
-                      child:Center(
-                        child: Text(
-                          "Enter confirmation code",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 30,
-                            color: Palette.textColor,
-                          ),
+                  /*Enter your email*/
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    // color: Colors.red,
+                    child:const Center(
+                      child: Text(
+                        "Enter confirmation code",//${widget.email}
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 30,
+                          color: Palette.textColor,
                         ),
                       ),
                     ),
+                  ),
 
-                    Container(
-                      padding: EdgeInsets.symmetric( vertical: 10),
-                      child: Center(
-                        child: new RichText(
-                          textAlign: TextAlign.center,
-                          text: new TextSpan(
-                            children: [
-                              new TextSpan(
-                                text: 'Enter the confirmation code we send to you. ',
-                                style: new TextStyle(
-                                  fontSize: 18,
-                                  color: Palette.grey,
-                                ),
+                  Container(
+                    padding: const EdgeInsets.symmetric( vertical: 10),
+                    child: Center(
+                      child:  RichText(
+                        textAlign: TextAlign.center,
+                        text:  TextSpan(
+                          children: [
+                             const TextSpan(
+                              text: 'Enter the confirmation code we send to you. ',
+                              style:  TextStyle(
+                                fontSize: 18,
+                                color: Palette.grey,
                               ),
-                              new TextSpan(
-                                text: 'Resend confirmation code.',
-                                style: new TextStyle(
-                                  color: Palette.link,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                            ),
+                             TextSpan(
+                              text: 'Resend confirmation code.',
+                              style:  const TextStyle(
+                                color: Palette.link,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                              recognizer:  TapGestureRecognizer()..onTap = () {
+                                Navigator.pushNamed(context, '/login');
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+
+
+
+                  /*form*/
+                  Form(
+                    child: Column(
+                        children:[ Column(
+                          children: [
+
+                            /*email*/
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              child: TextFormField(
+                                //design
+                                decoration: const InputDecoration(
+
+                                  /*background color*/
+                                  fillColor: Palette.lightgrey,
+                                  filled: true,
+
+                                  /*hint*/
+                                  border: OutlineInputBorder(),
+                                  hintText: "Confirmation code",
+                                  hintStyle: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Palette.grey
+                                  ),
+
+                                  /*Border*/
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                      width: 2.0,
+                                    ),
+                                  ),
                                 ),
-                                recognizer: new TapGestureRecognizer()..onTap = () {
-                                  Navigator.pushNamed(context, '/login');
+
+                                //function
+                                onChanged: (val){
+
                                 },
                               ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+                            ),
+                            /*end of email*/
 
 
-
-                    /*form*/
-                    Form(
-                      child: Column(
-                          children:[ Column(
-                            children: [
-
-                              /*email*/
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                child: TextFormField(
-                                  //design
-                                  decoration: InputDecoration(
-
-                                    /*background color*/
-                                    fillColor: Palette.lightgrey,
-                                    filled: true,
-
-                                    /*hint*/
-                                    border: OutlineInputBorder(),
-                                    hintText: "Confirmation code",
-                                    hintStyle: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Palette.grey
-                                    ),
-
-                                    /*Border*/
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Palette.midgrey,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Palette.midgrey,
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                  ),
-
-                                  //function
-                                  onChanged: (val){
-
-                                  },
+                            /*next button*/
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 10),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: 50.0,
+                              /*button colors*/
+                              decoration: const BoxDecoration(
+                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                gradient: LinearGradient(
+                                    colors: [
+                                      Palette.buttonColor,
+                                      Palette.nameColor,
+                                    ]
                                 ),
                               ),
-                              /*end of email*/
-
-
-                              /*next button*/
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                alignment: Alignment.center,
-                                width: double.infinity,
+                              /*button*/
+                              child: ButtonTheme(
                                 height: 50.0,
-                                /*button colors*/
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Palette.buttonColor,
-                                        Palette.nameColor,
-                                      ]
-                                  ),
-                                ),
-                                /*button*/
-                                child: ButtonTheme(
-                                  height: 50.0,
-                                  minWidth: 350,
-                                  child: FlatButton(onPressed: (){
-                                    /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/signupPassword');
-                                  },
-                                    child: Text('Next',
-                                      style: TextStyle(
-                                        color: Palette.backgroundColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
+                                minWidth: 350,
+                                child: FlatButton(onPressed: (){
+                                  /*go to sign up page*/
+                                  var route =  MaterialPageRoute(
+                                      builder: (BuildContext context)=>
+                                          signupPassword(email: widget.email)
+                                  );
+                                  Navigator.of(context).push(route);
+                                },
+                                  child: const Text('Next',
+                                    style: TextStyle(
+                                      color: Palette.backgroundColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ),
                               ),
-                              /*end of next button */
+                            ),
+                            /*end of next button */
 
-                            ],
-                          ),]
-                      ),
+                          ],
+                        ),]
                     ),
-                    /*end form*/
-                  ],
-                ),
+                  ),
+                  /*end form*/
+                ],
               ),
             ),
+          ),
 
-            /*log out?*/
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Divider(
-                  height: 5,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:[
-                        //Log in
-                        InkWell(
-                          child: new Text(
-                            'Back',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Palette.link,
-                            ),
+          /*log out?*/
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              const Divider(
+                height: 5,
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children:[
+                      //Log in
+                      InkWell(
+                        child:  const Text(
+                          'Back',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Palette.link,
                           ),
-                          onTap: () => Navigator.pushNamed(context, '/signup'),
                         ),
-                      ]
-                  ),
-                )
-              ],
-            )
-            //end of back
-          ],
-        ),
+                        onTap: () => Navigator.pushNamed(context, '/signup'),
+                      ),
+                    ]
+                ),
+              )
+            ],
+          )
+          //end of back
+        ],
       ),
     );
   }

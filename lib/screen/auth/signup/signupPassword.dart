@@ -11,9 +11,15 @@ import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 
-class signupPassword extends StatelessWidget {
-  const signupPassword({Key? key}) : super(key: key);
+class signupPassword extends StatefulWidget {
+  final String email;
+  const signupPassword({Key? key,  required this.email}) : super(key: key);
 
+  @override
+  State<signupPassword> createState() => _signupPasswordState();
+}
+
+class _signupPasswordState extends State<signupPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
