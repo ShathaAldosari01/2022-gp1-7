@@ -205,6 +205,8 @@ class _SignupState extends State<Signup> {
                                                 setState(() {
                                                   isButtonActive= false;
                                                 });
+                                                /*clear the text*/
+                                                // controller.clear();
                                                 /*go to sign up page*/
                                                 Navigator.pushNamed(context, '/confirmationCode');
                                               }
