@@ -17,6 +17,8 @@ class _Signup_LoginState extends State<Signup_Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.backgroundColor,
+      //fix overlode error
+      resizeToAvoidBottomInset: false,
       body:Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

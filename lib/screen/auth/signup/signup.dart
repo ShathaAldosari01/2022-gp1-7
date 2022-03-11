@@ -130,8 +130,13 @@ class _SignupState extends State<Signup> {
                                   },
                                   /*value*/
                                   validator: (val){
-                                      return val=="" ? 'Enter an Email': null;
-                                    },
+                                    if(val!.isEmpty){
+                                      return "Please enter a valid email.";
+                                    }if(val.length>254){
+                                      return "Enter an email address under 254 characters.";
+                                    }
+                                    return null;
+                                  },
                                   /*controller for button enble*/
                                   controller: controller,
 
@@ -181,17 +186,17 @@ class _SignupState extends State<Signup> {
                                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                                   gradient:isButtonActive
                                       ?LinearGradient(
-                                          colors: [
-                                            Palette.buttonColor,
-                                            Palette.nameColor,
-                                          ]
-                                        )
+                                      colors: [
+                                        Palette.buttonColor,
+                                        Palette.nameColor,
+                                      ]
+                                  )
                                       :LinearGradient(
-                                          colors: [
-                                            Palette.buttonDisableColor,
-                                            Palette.nameDisablColor,
-                                          ]
-                                      ),
+                                      colors: [
+                                        Palette.buttonDisableColor,
+                                        Palette.nameDisablColor,
+                                      ]
+                                  ),
                                 ),
                                 /*button*/
                                 child: ButtonTheme(
@@ -200,18 +205,18 @@ class _SignupState extends State<Signup> {
                                   child: FlatButton(
                                     onPressed:isButtonActive
                                         ?() async {
-                                              if(_formKey.currentState!.validate()){
-                                                /*deactivate the button*/
-                                                setState(() {
-                                                  isButtonActive= false;
-                                                });
-                                                /*clear the text*/
-                                                // controller.clear();
-                                                /*go to sign up page*/
-                                                Navigator.pushNamed(context, '/confirmationCode');
-                                              }
-                                            }
-                                         :null,
+                                      if(_formKey.currentState!.validate()){
+                                        /*deactivate the button*/
+                                        setState(() {
+                                          isButtonActive= false;
+                                        });
+                                        /*clear the text*/
+                                        controller.clear();
+                                        /*go to sign up page*/
+                                        Navigator.pushNamed(context, '/confirmationCode');
+                                      }
+                                    }
+                                        :null,
                                     child: Text('Next',
                                       style: TextStyle(
                                         color: Palette.backgroundColor,
