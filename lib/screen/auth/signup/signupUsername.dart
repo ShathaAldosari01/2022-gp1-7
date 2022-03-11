@@ -19,13 +19,6 @@ class SignupUsername extends StatelessWidget {
         backgroundColor: Palette.backgroundColor,
         elevation: 0,//no shadow
         automaticallyImplyLeading: false,//no arrow
-        /*back arowe */
-        leading: IconButton(
-          icon: Icon(
-              Icons.arrow_back, color: Palette.textColor
-          ),
-          onPressed: () => Navigator.pushNamed(context, '/'),
-        ),
       ),
       //fix overlode error
       resizeToAvoidBottomInset: false,

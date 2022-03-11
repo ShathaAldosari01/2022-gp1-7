@@ -15,12 +15,37 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
 
+  //for service
   final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
   // text field state
-  String email = "",
-         password= "";
+  String email = "";
 
+  //for button disavle
+  bool isButtonActive = false;
+  late TextEditingController controller;
+
+  @override
+  void initState(){
+    super.initState();
+
+    controller = TextEditingController();
+    controller.addListener(() {
+      final isButtonActive = controller.text.isNotEmpty;
+
+      setState(() {
+        this.isButtonActive = isButtonActive;
+      });
+    });
+  }
+
+  @override
+  void dispose(){
+    controller.dispose();
+
+    super.dispose();
+  }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -87,6 +112,7 @@ class _SignupState extends State<Signup> {
 
                     /*form*/
                     Form(
+                      key: _formKey,
                       child: Column(
                           children:[ Column(
                             children: [
@@ -95,7 +121,21 @@ class _SignupState extends State<Signup> {
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: TextFormField(
-                                  //design
+                                  //function
+                                  onChanged: (val){
+                                    /*change the val of email*/
+                                    setState(() {
+                                      email = val;
+                                    });
+                                  },
+                                  /*value*/
+                                  validator: (val){
+                                      return val=="" ? 'Enter an Email': null;
+                                    },
+                                  /*controller for button enble*/
+                                  controller: controller,
+
+                                  //design//
                                   decoration: InputDecoration(
 
                                     /*background color*/
@@ -124,13 +164,7 @@ class _SignupState extends State<Signup> {
                                     ),
                                   ),
 
-                                  //function
-                                  onChanged: (val){
-                                    //change the val of email
-                                    setState(() {
-                                      email = val;
-                                    });
-                                  },
+
                                 ),
                               ),
                               /*end of email*/
@@ -145,23 +179,37 @@ class _SignupState extends State<Signup> {
                                 /*button colors*/
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Palette.buttonColor,
-                                        Palette.nameColor,
-                                      ]
-                                  ),
+                                  gradient:isButtonActive
+                                      ?LinearGradient(
+                                          colors: [
+                                            Palette.buttonColor,
+                                            Palette.nameColor,
+                                          ]
+                                        )
+                                      :LinearGradient(
+                                          colors: [
+                                            Palette.buttonDisableColor,
+                                            Palette.nameDisablColor,
+                                          ]
+                                      ),
                                 ),
                                 /*button*/
                                 child: ButtonTheme(
                                   height: 50.0,
                                   minWidth: 350,
                                   child: FlatButton(
-                                    onPressed:() async {
-                                      print(email);
-                                    /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/confirmationCode');
-                                  },
+                                    onPressed:isButtonActive
+                                        ?() async {
+                                              if(_formKey.currentState!.validate()){
+                                                /*deactivate the button*/
+                                                setState(() {
+                                                  isButtonActive= false;
+                                                });
+                                                /*go to sign up page*/
+                                                Navigator.pushNamed(context, '/confirmationCode');
+                                              }
+                                            }
+                                         :null,
                                     child: Text('Next',
                                       style: TextStyle(
                                         color: Palette.backgroundColor,

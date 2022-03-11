@@ -20,6 +20,13 @@ class _LoginState extends State<Login> {
         backgroundColor: Palette.backgroundColor,
         foregroundColor: Palette.textColor,
         elevation: 0,//no shadow
+        /*back arowe */
+        leading: IconButton(
+          icon: Icon(
+              Icons.arrow_back, color: Palette.textColor
+          ),
+          onPressed: () => Navigator.pushNamed(context, '/'),
+        ),
       ),
       //fix overlode error
       resizeToAvoidBottomInset: false,
