@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-/*extra */
-
+/*services */
+import 'package:gp1_7_2022/screen/services/auth.dart';
 /*pages */
-
+import 'package:gp1_7_2022/screen/auth/signup/signupConfirmationCode.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 
@@ -15,6 +15,53 @@ class signupPassword extends StatefulWidget {
 }
 
 class _signupPasswordState extends State<signupPassword> {
+  //for service
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
+
+  // text field state
+  String password = "",
+         repassword="";
+
+  //for button disavle
+  bool isPassEmpty= true,
+      isReEmpty = true;
+  bool isButtonActive = false;
+  late TextEditingController _passwordController, _rePasswordController;
+
+  @override
+  void initState(){
+    super.initState();
+
+    _passwordController = TextEditingController();
+    _rePasswordController = TextEditingController();
+
+    _passwordController.addListener(() {
+      final isPassNotEmpty = _passwordController.text.length>=8 ;
+
+      setState(() {
+        isPassEmpty = !isPassNotEmpty;
+        isButtonActive = (!isPassEmpty && !isReEmpty);
+      });
+    });
+
+    _rePasswordController.addListener(() {
+      final isReNotEmpty = _rePasswordController.text.length>=8 ;
+
+      setState(() {
+        isReEmpty = !isReNotEmpty;
+        isButtonActive = (!isPassEmpty && !isReEmpty);
+      });
+    });
+  }
+
+  @override
+  void dispose(){
+    _passwordController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,6 +121,7 @@ class _signupPasswordState extends State<signupPassword> {
 
                   /*form*/
                   Form(
+                    key: _formKey,
                     child: Column(
                         children:[ Column(
                           children: [
@@ -82,6 +130,63 @@ class _signupPasswordState extends State<signupPassword> {
                             Container(
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               child: TextFormField(
+
+                                //function
+                                onChanged: (val){
+                                  /*change the val of pass*/
+                                  setState(() {
+                                    password = val;
+                                  });
+                                },
+                                /*value*/
+                                validator: (val){
+                                  if(val!.isEmpty){
+                                    return "Password should not be empty";
+                                  }if(val.length>255){
+                                    return "Create a shorter password under 255 characters.";
+                                  }if(val.length<8){
+                                    return "Password should contain at least 8 characters.";
+                                  }if(!val.contains(RegExp(r'[A-Z]'), 0)){
+                                    return "Password should contain upper case.";
+                                  }if(!val.contains(RegExp(r'[a-z]'), 0)){
+                                    return "Password should contain lower case.";
+                                  }if(!val.contains(RegExp(r'[0-9]'), 0)){
+                                    return "Password should contain number.";
+                                  }if(!(
+                                      val.contains('&')||
+                                          val.contains("#")||
+                                          val.contains("*")||
+                                          val.contains("!")||
+                                          val.contains("%")||
+                                          val.contains("~")||
+                                          val.contains("`")||
+                                          val.contains("@")||
+                                          val.contains("^")||
+                                          val.contains("(")||
+                                          val.contains(")")||
+                                          val.contains("_")||
+                                          val.contains("-")||
+                                          val.contains("+")||
+                                          val.contains("=")||
+                                          val.contains("{")||
+                                          val.contains("[")||
+                                          val.contains("}")||
+                                          val.contains("]")||
+                                          val.contains("|")||
+                                          val.contains(":")||
+                                          val.contains(";")||
+                                          val.contains("<")||
+                                          val.contains(">")||
+                                          val.contains(",")||
+                                          val.contains(".")||
+                                          val.contains("?")
+                                  )){
+                                    return "Password should contain special characters.";
+                                  }
+                                  return null;
+                                },
+                                /*controller for button enble*/
+                                controller: _passwordController,
                                 //design
                                 decoration: const InputDecoration(
 
@@ -112,10 +217,6 @@ class _signupPasswordState extends State<signupPassword> {
                                 ),
 
                                 obscureText: true,
-                                //function
-                                onChanged: (val){
-
-                                },
                               ),
                             ),
                             /*end of password*/
@@ -124,6 +225,71 @@ class _signupPasswordState extends State<signupPassword> {
                             Container(
                               margin: const EdgeInsets.symmetric(vertical: 10),
                               child: TextFormField(
+                                //function
+                                onChanged: (val){
+                                  /*change the val of pass*/
+                                  setState(() {
+                                    repassword = val;
+                                  });
+                                },
+                                /*value*/
+                                validator: (val){
+                                  if(val!=password){
+                                    return "password mismatch";
+                                  }else {
+                                    if (val!.isEmpty) {
+                                      return "Password should not be empty";
+                                    }
+                                    if (val.length > 255) {
+                                      return "Create a shorter password under 255 characters.";
+                                    }
+                                    if (val.length < 8) {
+                                      return "Password should contain at least 8 characters.";
+                                    }
+                                    if (!val.contains(RegExp(r'[A-Z]'), 0)) {
+                                      return "Password should contain upper case.";
+                                    }
+                                    if (!val.contains(RegExp(r'[a-z]'), 0)) {
+                                      return "Password should contain lower case.";
+                                    }
+                                    if (!val.contains(RegExp(r'[0-9]'), 0)) {
+                                      return "Password should contain number.";
+                                    }if(!(
+                                        val.contains('&')||
+                                            val.contains("#")||
+                                            val.contains("*")||
+                                            val.contains("!")||
+                                            val.contains("%")||
+                                            val.contains("~")||
+                                            val.contains("`")||
+                                            val.contains("@")||
+                                            val.contains("^")||
+                                            val.contains("(")||
+                                            val.contains(")")||
+                                            val.contains("_")||
+                                            val.contains("-")||
+                                            val.contains("+")||
+                                            val.contains("=")||
+                                            val.contains("{")||
+                                            val.contains("[")||
+                                            val.contains("}")||
+                                            val.contains("]")||
+                                            val.contains("|")||
+                                            val.contains(":")||
+                                            val.contains(";")||
+                                            val.contains("<")||
+                                            val.contains(">")||
+                                            val.contains(",")||
+                                            val.contains(".")||
+                                            val.contains("?")
+                                    )){
+                                      return "Password should contain special characters.";
+                                    }
+                                  }
+                                  return null;
+                                },
+                                /*controller for button enble*/
+                                controller: _rePasswordController,
                                 //design
                                 decoration: const InputDecoration(
 
@@ -154,10 +320,6 @@ class _signupPasswordState extends State<signupPassword> {
                                 ),
 
                                 obscureText: true,
-                                //function
-                                onChanged: (val){
-
-                                },
                               ),
                             ),
                             /*end of password*/
@@ -170,23 +332,43 @@ class _signupPasswordState extends State<signupPassword> {
                               width: double.infinity,
                               height: 50.0,
                               /*button colors*/
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Palette.buttonColor,
-                                      Palette.nameColor,
-                                    ]
-                                ),
+                              decoration:  BoxDecoration(
+                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                gradient: isButtonActive
+                                    ?const LinearGradient(
+                                          colors: [
+                                            Palette.buttonColor,
+                                            Palette.nameColor,
+                                          ]
+                                      )
+                                    :const LinearGradient(
+                                        colors: [
+                                          Palette.buttonDisableColor,
+                                          Palette.nameDisablColor,
+                                        ]
+                                      ),
                               ),
                               /*button*/
                               child: ButtonTheme(
                                 height: 50.0,
                                 minWidth: 350,
-                                child: FlatButton(onPressed: (){
-                                  /*go to sign up page*/
-                                  Navigator.pushNamed(context, '/signupBirthday');
-                                },
+                                child: FlatButton(
+                                  onPressed:isButtonActive
+                                      ?() async {
+                                    if(_formKey.currentState!.validate()){
+                                      /*deactivate the button*/
+                                      setState(() {
+                                        isButtonActive= false;
+                                      });
+                                      /*go to sign up page*/
+                                      var route =  MaterialPageRoute(
+                                          builder: (BuildContext context)=>
+                                              ConfirmationCode(email: widget.email)
+                                      );
+                                      Navigator.of(context).push(route);
+                                    }
+                                  }
+                                      :null,
                                   child: const Text('Next',
                                     style: TextStyle(
                                       color: Palette.backgroundColor,

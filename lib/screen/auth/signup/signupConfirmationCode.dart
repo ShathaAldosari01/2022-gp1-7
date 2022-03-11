@@ -163,12 +163,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                                 height: 50.0,
                                 minWidth: 350,
                                 child: FlatButton(onPressed: (){
-                                  /*go to sign up page*/
-                                  var route =  MaterialPageRoute(
-                                      builder: (BuildContext context)=>
-                                          signupPassword(email: widget.email)
-                                  );
-                                  Navigator.of(context).push(route);
+                                  Navigator.pushNamed(context, '/signupBirthday');
                                 },
                                   child: const Text('Next',
                                     style: TextStyle(

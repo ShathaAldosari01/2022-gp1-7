@@ -3,9 +3,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 /*pages */
-import 'package:gp1_7_2022/screen/auth/signup/signupConfirmationCode.dart';
-// import 'package:gp1_7_2022/screen/auth/signup_login.dart';
-// import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/screen/services/auth.dart';
@@ -218,7 +216,7 @@ class _SignupState extends State<Signup> {
                                       /*go to sign up page*/
                                       var route =  MaterialPageRoute(
                                           builder: (BuildContext context)=>
-                                               ConfirmationCode(email: _emailController.text)
+                                              signupPassword(email: _emailController.text)
                                       );
                                       Navigator.of(context).push(route);
                                       // Navigator.pushNamed(context, '/confirmationCode');
