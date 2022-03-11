@@ -17,8 +17,8 @@ class SignupUsername extends StatelessWidget {
 
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
-        foregroundColor: Palette.textColor,
         elevation: 0,//no shadow
+        automaticallyImplyLeading: false,//no arrow
         /*back arowe */
         leading: IconButton(
           icon: Icon(

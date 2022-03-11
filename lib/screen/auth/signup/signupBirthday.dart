@@ -226,6 +226,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                   height: 180,
                   child: CupertinoDatePicker(
                     initialDateTime: now,
+                    backgroundColor: Palette.backgroundColor,
                     mode: CupertinoDatePickerMode.date,
                     onDateTimeChanged: (n)=>
                         setState(() {

@@ -6,8 +6,21 @@ import 'package:gp1_7_2022/screen/auth/signup_login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:gp1_7_2022/screen/services/auth.dart';
 
-class Signup extends StatelessWidget {
+class Signup extends StatefulWidget {
+  @override
+  State<Signup> createState() => _SignupState();
+}
+
+class _SignupState extends State<Signup> {
+
+  final AuthService _auth = AuthService();
+
+  // text field state
+  String email = "",
+         password= "";
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -113,7 +126,10 @@ class Signup extends StatelessWidget {
 
                                   //function
                                   onChanged: (val){
-
+                                    //change the val of email
+                                    setState(() {
+                                      email = val;
+                                    });
                                   },
                                 ),
                               ),
@@ -140,7 +156,9 @@ class Signup extends StatelessWidget {
                                 child: ButtonTheme(
                                   height: 50.0,
                                   minWidth: 350,
-                                  child: FlatButton(onPressed: (){
+                                  child: FlatButton(
+                                    onPressed:() async {
+                                      print(email);
                                     /*go to sign up page*/
                                     Navigator.pushNamed(context, '/confirmationCode');
                                   },
