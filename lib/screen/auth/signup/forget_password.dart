@@ -217,19 +217,17 @@ final auth = FirebaseAuth.instance ;
                       height: 50.0,
                       minWidth: 350,
                       child: FlatButton(
-                        onPressed: (){
+                        onPressed:  isButtonActive ? (){
+
                          auth.sendPasswordResetEmail(email: email);
                          Navigator.of(context).pop();
 
-
-
-
-
-
-                        },
+                        }
+                        :null,
                            child: Text (
-                                  'send email'
+                                  'send email',
 
+                            style: TextStyle(color: Palette.backgroundColor,) ,
                            ),
                         ),
                       ),
