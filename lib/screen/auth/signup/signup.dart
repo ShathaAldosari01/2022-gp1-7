@@ -2,6 +2,7 @@
 //import 'package:flutter/cupertino.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:email_validator/email_validator.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
 /*colors */
@@ -133,8 +134,10 @@ class _SignupState extends State<Signup> {
                                 validator: (val){
                                   if(val!.isEmpty){
                                     return "Please enter a valid email.";
-                                  }if(val.length>254){
+                                  }else if(val.length>254){
                                     return "Enter an email address under 254 characters.";
+                                  }else if(!EmailValidator.validate(email)){
+                                    return "Please enter a valid email.";
                                   }
                                   return null;
                                 },

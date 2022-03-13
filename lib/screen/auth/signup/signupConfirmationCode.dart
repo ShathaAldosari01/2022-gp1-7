@@ -1,15 +1,17 @@
 // import 'dart:io';
 // import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 /*extra */
 // import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
 
 /*pages */
-import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
+import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
 // import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ConfirmationCode extends StatefulWidget {
   final String email;
@@ -20,9 +22,60 @@ class ConfirmationCode extends StatefulWidget {
 }
 
 class _ConfirmationCodeState extends State<ConfirmationCode> {
+  //val?
+  bool isEmailVerified = false;
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
+  void initStste(){
+    super.initState();
+
+    //user need to be created before
+    isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+
+    if(!isEmailVerified){
+      sendVerificationEmail();
+    }
+  }
+
+  Future sendVerificationEmail() async{
+    try {
+      final user = FirebaseAuth.instance.currentUser!;
+      await user.sendEmailVerification();
+    }catch(e){
+      //error msg
+      Alert(
+          context: context,
+          title: "Something went wrong!" ,
+          desc: e.toString(),
+          buttons: [
+            DialogButton(
+                child: Text(
+                  "Camcel",
+                  style: TextStyle(
+                      color: Palette.backgroundColor
+                  ),
+                ),
+                onPressed: (){
+                  /*go to sign up page*/
+                  Navigator.pushNamed(context, '/signup');
+                },
+                gradient:const LinearGradient(
+                    colors: [
+                      Palette.buttonColor,
+                      Palette.nameColor,
+                    ]
+                )
+            ),
+          ]
+      ).show();
+      print(e);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) => isEmailVerified
+  ?const Profile_page()
+     :Scaffold(
       backgroundColor: Palette.backgroundColor,
 
       appBar: AppBar(
@@ -219,7 +272,6 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
         ],
       ),
     );
-  }
 }
 
 
