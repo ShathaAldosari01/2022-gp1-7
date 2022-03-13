@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gp1_7_2022/screen/Profile_Page.dart';
+import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';

@@ -38,6 +38,9 @@ dependencies:
   cloud_firestore: ^3.1.5
   intl: ^0.17.0
 
+  #focused popup menu
+  focused_menu: ^1.0.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

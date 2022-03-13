@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gp1_7_2022/screen/Profile_Page.dart';
+import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 class FollowButton extends StatelessWidget {
   final Function()? function;
@@ -11,37 +11,26 @@ class FollowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-    padding: const EdgeInsets.only(top: 2),
-      child: TextButton(
-        onPressed: function ,
-        child:
-        Container(
-         decoration: BoxDecoration(
-           color: backgroundColor,
-           border: Border.all(color: borderColor,),
-           borderRadius: BorderRadius.circular(5),
-
-         ),
-       alignment: Alignment.center,
-          child: Text(text,
-            style: TextStyle(
-         color: textColor,
-          fontWeight: FontWeight.bold,
-            ),
-
-          ),
-        width: 250,
-        height:27,
-
+    return TextButton(
+      onPressed: function ,
+      child:
+      Container(
+        padding: const EdgeInsets.all(9),
+        //style
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border.all(color: borderColor,),
+          borderRadius: BorderRadius.circular(5),
         ),
-
-
+        alignment: Alignment.center,
+        child: Text(text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
       ),
-
-
-
-
     );
   }
 }
