@@ -10,7 +10,7 @@ import 'package:gp1_7_2022/screen/auth/signup/signupConfirmationCode.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupUsername.dart';
-
+import 'package:gp1_7_2022/screen/auth/signup/forget_password.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +27,7 @@ void main() async{
             // '/signupPassword':(context) => signupPassword(),
             '/signupBirthday':(context) => SignupBirthday(),
             '/signupUsername':(context) => SignupUsername(),
-
+           '/forget_password':(context) => forget_password(),
           }
       )
   );

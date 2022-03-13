@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 /*services */
 import 'package:gp1_7_2022/screen/services/auth.dart';
-
+import 'package:gp1_7_2022/screen/auth/signup/forget_password.dart';
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -275,20 +275,32 @@ class _LoginState extends State<Login> {
 
                 children: [
 
-                  Align(
+                 Align (
                     alignment: Alignment.topRight,
                     child:
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      child: const Text('Forgot password?',
+                      child: TextButton( onPressed: (){
+                        Navigator.pushNamed(context, '/forget_password');
+                      }, child: Text('forget password?',
                         style: TextStyle(
-                          fontSize: 17,
-                          color: Palette.link,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        fontSize: 17,
+                        color: Palette.link,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      ),
+                      ),
+
                       ),
                     ),
-                  ),
+
+
+
+
+
+
+
+
 
                   /*log in button*/
                   Container(
@@ -407,5 +419,9 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+
   }
+
+
+
 }
