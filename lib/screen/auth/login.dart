@@ -277,18 +277,22 @@ class _LoginState extends State<Login> {
 
                 children: [
 
-                  Align(
+                  Align (
                     alignment: Alignment.topRight,
                     child:
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
-                      child: const Text('Forgot password?',
+                      child: TextButton( onPressed: (){
+                        Navigator.pushNamed(context, '/forget_password');
+                      }, child: Text('forget password?',
                         style: TextStyle(
                           fontSize: 17,
                           color: Palette.link,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      ),
+
                     ),
                   ),
 
