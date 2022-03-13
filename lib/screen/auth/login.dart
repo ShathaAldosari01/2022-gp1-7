@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 /*services */
 import 'package:gp1_7_2022/screen/services/auth.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+
 
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
@@ -334,16 +336,58 @@ class _LoginState extends State<Login> {
                                   email: email,
                                   password: password
                               );
+                              /*go to Profile_Page page*/
+                              Navigator.of(context).popUntil((route) => route.isFirst);
+
                             }on FirebaseAuthException catch(e){
+                              Alert(
+                                  context: context,
+                                  title: "Something went wrong!" ,
+                                  desc: e.message.toString(),
+                                  buttons: [
+                                    DialogButton(
+                                        child: Text(
+                                          "Sign up",
+                                          style: TextStyle(
+                                              color: Palette.backgroundColor
+                                          ),),
+                                        onPressed: (){
+                                          /*go to sign up page*/
+                                          Navigator.pushNamed(context, '/signup');
+                                        },
+                                        gradient:const LinearGradient(
+                                            colors: [
+                                              Palette.buttonColor,
+                                              Palette.nameColor,
+                                            ]
+                                        )
+                                    ),
+                                    DialogButton(
+                                        child: const Text(
+                                          "Log in",
+                                          style: TextStyle(
+                                              color: Palette.backgroundColor
+                                          ),),
+                                        onPressed: (){
+                                          /*go to sign up page*/
+                                          Navigator.pushNamed(context, '/login');
+                                        },
+                                        gradient:const LinearGradient(
+                                            colors: [
+                                              Palette.buttonColor,
+                                              Palette.nameColor,
+                                            ]
+                                        )
+                                    )
+                                  ]
+                              ).show();
                               print(e);
                             }
                             /*deactivate the button*/
                             setState(() {
                               isButtonActive= false;
                             });
-                            /*go to Profile_Page page*/
-                            Navigator.of(context).popUntil((route) => route.isFirst);
-                            // Navigator.of(context).pushNamed('/Profile_Page');
+
                           }
                         }
                             :null,
