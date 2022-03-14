@@ -122,7 +122,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                         text:  TextSpan(
                           children: [
                              const TextSpan(
-                              text: 'Enter the confirmation code we send to you. ',
+                              text: 'Enter the confirmation code we sent to you. ',
                               style:  TextStyle(
                                 fontSize: 18,
                                 color: Palette.grey,

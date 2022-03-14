@@ -101,21 +101,47 @@ final auth = FirebaseAuth.instance ;
 
                 children: [
                   Container(
-                    margin: const EdgeInsets.all(14),
+                    margin: const EdgeInsets.all(20),
                     child: const Center(
                       child:Text(
-                        "Odyssey",
+                        "Reset password",
                         style: TextStyle(
                           fontWeight: FontWeight.w900,
-                          fontSize: 50,
-                          color: Palette.link,
+                          fontSize: 30,
+                          color: Palette.textColor,
                           fontFamily: 'Handlee',
                           letterSpacing: 2,
                         ),
+
+
+
                       ),
                     ),
 
                   ),
+
+
+
+                  /*enter email and we'll send an email */
+                  Container(
+                   margin:  const EdgeInsets.symmetric(horizontal: 40),
+                    padding: const EdgeInsets.symmetric( vertical: 50),
+
+                    child:const Center(
+                      child: Text(
+                        "Enter your email and we'll send an email with instructions to reset your password.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Palette.grey,
+                        ),
+                      ),
+                    ),
+                  ),
+
+
+
+
                   Form(
                       key: _formKey,
                       child: Column(
@@ -225,7 +251,7 @@ final auth = FirebaseAuth.instance ;
                         }
                         :null,
                            child: Text (
-                                  'send email',
+                                  'Send Email',
 
                             style: TextStyle(color: Palette.backgroundColor,) ,
                            ),

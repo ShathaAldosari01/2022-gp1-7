@@ -284,7 +284,7 @@ class _LoginState extends State<Login> {
                       margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
                       child: TextButton( onPressed: (){
                         Navigator.pushNamed(context, '/forget_password');
-                      }, child: Text('forget password?',
+                      }, child: Text('Forgot password?',
                         style: TextStyle(
                           fontSize: 17,
                           color: Palette.link,

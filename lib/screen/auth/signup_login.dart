@@ -75,7 +75,7 @@ class _Signup_LoginState extends State<Signup_Login> {
                 /*go to sign up page*/
                 Navigator.pushNamed(context, '/signup');
               },
-                child: Text('Create new account',
+                child: Text('Create a new account',
                   style: TextStyle(
                     color: Palette.backgroundColor,
                     fontWeight: FontWeight.bold,
