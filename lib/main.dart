@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gp1_7_2022/screen/auth/signup/name.dart';
 import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
 /*pages */
@@ -28,6 +29,7 @@ void main() async{
             '/signupBirthday':(context) => SignupBirthday(),
             '/signupUsername':(context) => SignupUsername(),
            '/forget_password':(context) => forget_password(),
+            '/name':(context) => name(),
           }
       )
   );

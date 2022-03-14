@@ -7,8 +7,8 @@ import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 
-class SignupUsername extends StatelessWidget {
-  const SignupUsername({Key? key}) : super(key: key);
+class name extends StatelessWidget {
+  const name({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class SignupUsername extends StatelessWidget {
         elevation: 0,//no shadow
         automaticallyImplyLeading: false,//no arrow
       ),
-      //fix overload error
+      //fix overlode error
       resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
@@ -35,13 +35,13 @@ class SignupUsername extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
-                    /*Enter your email*/
+                    /*enter your name*/
                     Container(
                       padding: EdgeInsets.symmetric( vertical: 10),
                       // color: Colors.red,
                       child:Center(
                         child: Text(
-                          "Create Username",
+                          "Enter Your Name",
                           style: TextStyle(
                             fontSize: 30,
                             color: Palette.textColor,
@@ -50,13 +50,13 @@ class SignupUsername extends StatelessWidget {
                       ),
                     ),
 
-                    /*enter your email so that you */
+                    /*add your name so friends can find you */
                     Container(
                       padding: EdgeInsets.symmetric( vertical: 10),
                       // color: Colors.blue,
                       child:Center(
                         child: Text(
-                          "Pick a username for your new account.",
+                          "Add your name so friends can find you.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18,
@@ -72,7 +72,7 @@ class SignupUsername extends StatelessWidget {
                           children:[ Column(
                             children: [
 
-                              /*email*/
+
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: TextFormField(
@@ -85,7 +85,7 @@ class SignupUsername extends StatelessWidget {
 
                                     /*hint*/
                                     border: OutlineInputBorder(),
-                                    hintText: "Username",
+                                    hintText: "Name",
                                     hintStyle: TextStyle(
                                         fontSize: 18.0,
                                         color: Palette.grey
@@ -111,7 +111,7 @@ class SignupUsername extends StatelessWidget {
                                   },
                                 ),
                               ),
-                              /*end of email*/
+
 
 
                               /*next button*/
@@ -136,7 +136,7 @@ class SignupUsername extends StatelessWidget {
                                   minWidth: 350,
                                   child: FlatButton(onPressed: (){
                                     /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/name');
+                                    Navigator.pushNamed(context, '/Profile_Page');
                                   },
                                     child: Text('Next',
                                       style: TextStyle(
