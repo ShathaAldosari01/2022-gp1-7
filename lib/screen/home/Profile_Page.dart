@@ -33,7 +33,7 @@ class _Profile_pageState extends State<Profile_page> {
         automaticallyImplyLeading: false,//no arrow
         //username
         title: const Padding(
-          padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
+          padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           child: Text(
             'Username',
             style: TextStyle(
@@ -70,8 +70,8 @@ class _Profile_pageState extends State<Profile_page> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Image.asset(
                 "assets/menu-icon.png",
-                height: 30,
-                width: 30,
+                height: 25,
+                width: 25,
               ),
             ),
 
@@ -89,17 +89,26 @@ class _Profile_pageState extends State<Profile_page> {
                   children: [
                     //user photo
                     const Padding(
-                      padding: EdgeInsets.fromLTRB(10, 1, 0, 0),
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
                       child: CircleAvatar(
-                        backgroundColor: Colors.grey ,
-                        backgroundImage: NetworkImage('https://images.unsplash.com/photo-1635098996118-1ae0b325024e?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80') ,
-                        radius: 40,
+                      backgroundColor: Colors.white ,
+
+                        child:  Icon(
+                       Icons.account_circle_sharp,
+                       color: Colors.grey,
+                       size: 80,
+
+
+                    ),
+
+                    //    backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png') ,
+                      //  radius: 40,
                       ),
                     ),
                     //end user photo
 
                     Expanded(
-                      flex: 1,
+                      flex: 7,
                       child: Column(
                         children: [
                           //post, followers and following
@@ -123,7 +132,7 @@ class _Profile_pageState extends State<Profile_page> {
                 //username
                 Container(
                   alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(10, 40, 0, 0),
                   child: const Text(
                     'name',
                     style: TextStyle(
@@ -189,7 +198,7 @@ Column buildStatColumn(int num, String label) {
       Text(
         num.toString(),
         style: const TextStyle(
-          fontSize: 22,
+          fontSize: 20,
           fontWeight: FontWeight.bold,
 
         ),
@@ -202,7 +211,7 @@ Column buildStatColumn(int num, String label) {
         child: Text(
           label,
           style: const TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w400,
             color: Colors.grey,
           ),

@@ -119,7 +119,7 @@ class _signupPasswordState extends State<signupPassword> {
                     padding: const EdgeInsets.symmetric( vertical: 10),
                     child: const Center(
                       child:  Text(
-                        'You need to enter your password twice, to mack sure you enter it right.',
+                        'You need to enter your password twice, to make sure you enter its right.',
                         style: TextStyle(
                           fontSize: 18,
                           color: Palette.grey,

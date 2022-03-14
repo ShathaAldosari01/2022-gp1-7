@@ -20,7 +20,7 @@ class name extends StatelessWidget {
         elevation: 0,//no shadow
         automaticallyImplyLeading: false,//no arrow
       ),
-      //fix overlode error
+      //fix overload error
       resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
