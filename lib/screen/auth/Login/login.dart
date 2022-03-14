@@ -101,11 +101,11 @@ class _LoginState extends State<Login> {
                       child:Text(
                         "Odyssey",
                         style: TextStyle(
-                          fontWeight: FontWeight.w900,
+                          fontWeight: FontWeight.w500,
                           fontSize: 50,
                           color: Palette.link,
-                          fontFamily: 'Handlee',
-                          letterSpacing: 2,
+                       //   fontFamily: 'Handlee',
+                         // letterSpacing: 2,
                         ),
                       ),
                     ),
@@ -228,7 +228,7 @@ class _LoginState extends State<Login> {
                                 }
                                 return null;
                               },
-                              /*controller for button enble*/
+                              /*controller for button enable*/
                               controller: _passwordController,
                               //design
                               decoration: const InputDecoration(
