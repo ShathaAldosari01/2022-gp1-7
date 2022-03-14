@@ -89,14 +89,14 @@ class _Profile_pageState extends State<Profile_page> {
                   children: [
                     //user photo
                     const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+                      padding: EdgeInsets.fromLTRB(0, 0, 40, 0),
                       child: CircleAvatar(
                       backgroundColor: Colors.white ,
 
                         child:  Icon(
                        Icons.account_circle_sharp,
                        color: Colors.grey,
-                       size: 80,
+                       size: 90,
 
 
                     ),
@@ -111,6 +111,7 @@ class _Profile_pageState extends State<Profile_page> {
                       flex: 7,
                       child: Column(
                         children: [
+                          SizedBox(height:25,),
                           //post, followers and following
                           Row(
                             mainAxisSize: MainAxisSize.max,
