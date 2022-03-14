@@ -111,7 +111,7 @@ class _Profile_pageState extends State<Profile_page> {
                       flex: 7,
                       child: Column(
                         children: [
-                          SizedBox(height:25,),
+                          SizedBox(height:40,),
                           //post, followers and following
                           Row(
                             mainAxisSize: MainAxisSize.max,

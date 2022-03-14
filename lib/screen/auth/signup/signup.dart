@@ -59,7 +59,7 @@ class _SignupState extends State<Signup> {
         backgroundColor: Palette.backgroundColor,
         foregroundColor: Palette.textColor,
         elevation: 0,//no shadow
-        /*back arowe */
+        /*back arrow */
         leading: IconButton(
           icon: const Icon(
               Icons.arrow_back, color: Palette.textColor
@@ -67,7 +67,7 @@ class _SignupState extends State<Signup> {
           onPressed: () => Navigator.pushNamed(context, '/'),
         ),
       ),
-      //fix overlode error
+      //fix overload error
       resizeToAvoidBottomInset: false,
       body: Column(
 
@@ -83,7 +83,7 @@ class _SignupState extends State<Signup> {
 
                   /*Enter your email*/
                   Container(
-                    padding: const EdgeInsets.symmetric( vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     // color: Colors.red,
                     child:const Center(
                       child: Text(
@@ -141,7 +141,7 @@ class _SignupState extends State<Signup> {
                                   }
                                   return null;
                                 },
-                                /*controller for button enble*/
+                                /*controller for button enable*/
                                 controller: _emailController,
 
                                 //design//
@@ -202,13 +202,14 @@ class _SignupState extends State<Signup> {
                                     ]
                                 ),
                               ),
+
+
                               /*button*/
                               child: ButtonTheme(
                                 height: 50.0,
                                 minWidth: 350,
                                 child: FlatButton(
-                                  onPressed:isButtonActive
-                                      ?() async {
+                                  onPressed:isButtonActive ?() async {
                                     if(_formKey.currentState!.validate()){
                                       /*deactivate the button*/
                                       setState(() {

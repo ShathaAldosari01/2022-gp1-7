@@ -94,24 +94,27 @@ final auth = FirebaseAuth.instance ;
         resizeToAvoidBottomInset: false,
         body:Column(
           children:[
+
+
             Expanded(
               flex:8,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment:MainAxisAlignment.end ,
+              //  mainAxisAlignment:MainAxisAlignment.end ,
 
                 children: [
                   Container(
                     margin: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: const Center(
                       child:Text(
-                        "Reset password",
+                        "Reset Password",
                         style: TextStyle(
-                          fontWeight: FontWeight.w900,
+                       //   fontWeight: FontWeight.w900,
                           fontSize: 30,
                           color: Palette.textColor,
-                          fontFamily: 'Handlee',
-                          letterSpacing: 2,
+                      //    fontFamily: 'Handlee',
+                        //  letterSpacing: 2,
                         ),
 
 
@@ -126,7 +129,7 @@ final auth = FirebaseAuth.instance ;
                   /*enter email and we'll send an email */
                   Container(
                    margin:  const EdgeInsets.symmetric(horizontal: 40),
-                    padding: const EdgeInsets.symmetric( vertical: 50),
+                  padding: const EdgeInsets.symmetric(vertical: 10),
 
                     child:const Center(
                       child: Text(
@@ -168,7 +171,7 @@ final auth = FirebaseAuth.instance ;
                                 }
                                 return null;
                               },
-                              /*controller for button enble*/
+                              /*controller for button enable*/
                               controller: _emailController,
                               //design
                               decoration: const InputDecoration(
@@ -209,14 +212,14 @@ final auth = FirebaseAuth.instance ;
               ),
             ),
             Expanded(
-              flex: 6,
+              flex: 13,
 
               child:Column(
 
                 children: [
 
 
-                  /*log in button*/
+                  /*send email button*/
                   Container(
                     margin: const EdgeInsets.symmetric( horizontal:50, vertical: 10),
                     alignment: Alignment.center,
@@ -239,6 +242,8 @@ final auth = FirebaseAuth.instance ;
                           ]
                       ),
                     ),
+
+
                     /*button*/
                     child: ButtonTheme(
                       height: 50.0,
@@ -299,10 +304,11 @@ final auth = FirebaseAuth.instance ;
 
                         }
                         :null,
-                           child: Text (
-                                  'Send Email',
-
-                            style: TextStyle(color: Palette.backgroundColor,) ,
+                           child: Text ('Send Email',
+                            style: TextStyle(
+                            color: Palette.backgroundColor,
+                            fontSize: 18,
+                            ),
                            ),
                         ),
                       ),
