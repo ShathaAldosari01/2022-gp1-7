@@ -6,12 +6,12 @@ import 'package:firebase_core/firebase_core.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
-import 'package:gp1_7_2022/screen/auth/login.dart';
+import 'package:gp1_7_2022/screen/auth/Login/login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupConfirmationCode.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/signupUsername.dart';
-import 'package:gp1_7_2022/screen/auth/signup/forget_password.dart';
+import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -48,9 +48,16 @@ class MainPage extends StatelessWidget {
           }else if(snapshot.hasError){
             return const Center(child: Text("Something went wrong!"));
           }else if(snapshot.hasData){
-            return const Profile_page();
+            if(FirebaseAuth.instance.currentUser!.emailVerified){
+              return const Profile_page();
+            }else{
+              String? x = FirebaseAuth.instance.currentUser!.email;
+              String y= x??" ";
+              return  ConfirmationCode(email: y);
+            }
           } else{
             return const Signup_Login();
+
           }
         },
       ),

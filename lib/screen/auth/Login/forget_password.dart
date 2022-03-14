@@ -7,8 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 /*services */
 import 'package:gp1_7_2022/screen/services/auth.dart';
-import 'package:gp1_7_2022/screen/auth/signup/forget_password.dart';
+import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class forget_password extends StatefulWidget {
   const forget_password({Key? key}) : super(key: key);
@@ -243,10 +244,58 @@ final auth = FirebaseAuth.instance ;
                       height: 50.0,
                       minWidth: 350,
                       child: FlatButton(
-                        onPressed:  isButtonActive ? (){
+                        onPressed:  isButtonActive ? ()  async {
 
-                         auth.sendPasswordResetEmail(email: email);
-                         Navigator.of(context).pop();
+                          try {
+                            await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+                            // Utils.showSnackBar("Password Reset Email Sent");
+                            Navigator.of(context).pop();
+                          }on FirebaseAuthException catch(e){
+                            Alert(
+                                context: context,
+                                title: "Something went wrong!" ,
+                                desc: e.message.toString(),
+                                buttons: [
+                                  DialogButton(
+                                      child: Text(
+                                        "Sign up",
+                                        style: TextStyle(
+                                            color: Palette.backgroundColor
+                                        ),),
+                                      onPressed: (){
+                                        /*go to sign up page*/
+                                        Navigator.pushNamed(context, '/signup');
+                                      },
+                                      gradient:const LinearGradient(
+                                          colors: [
+                                            Palette.buttonColor,
+                                            Palette.nameColor,
+                                          ]
+                                      )
+                                  ),
+                                  DialogButton(
+                                      child: const Text(
+                                        "Log in",
+                                        style: TextStyle(
+                                            color: Palette.backgroundColor
+                                        ),),
+                                      onPressed: (){
+                                        /*go to sign up page*/
+                                        Navigator.pushNamed(context, '/login');
+                                      },
+                                      gradient:const LinearGradient(
+                                          colors: [
+                                            Palette.buttonColor,
+                                            Palette.nameColor,
+                                          ]
+                                      )
+                                  )
+                                ]
+                            ).show();
+                            print(e);
+
+                          }
+
 
                         }
                         :null,

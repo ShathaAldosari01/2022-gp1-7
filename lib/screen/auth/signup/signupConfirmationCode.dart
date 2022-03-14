@@ -1,5 +1,7 @@
 // import 'dart:io';
 // import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 /*extra */
@@ -24,9 +26,11 @@ class ConfirmationCode extends StatefulWidget {
 class _ConfirmationCodeState extends State<ConfirmationCode> {
   //val?
   bool isEmailVerified = false;
+  bool canResendEmail = false;
+  Timer? timer;
 
   @override
-  void initStste(){
+  void initState(){
     super.initState();
 
     //user need to be created before
@@ -34,13 +38,58 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     if(!isEmailVerified){
       sendVerificationEmail();
+    }else{
+      Navigator.pushNamed(context, '/signupBirthday');
+    }
+
+    timer= Timer.periodic(
+      Duration(seconds:3),
+          (_) =>cheackEmailVerified(),
+    );
+  }
+
+  @override
+  void dispose(){
+    timer?.cancel();
+
+    super.dispose();
+  }
+
+  Future cheackEmailVerified() async{
+    await FirebaseAuth.instance.currentUser!.reload();
+
+    setState(() {
+      isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    });
+
+    if(isEmailVerified){
+      timer?.cancel();
+      Navigator.pushNamed(context, '/signupBirthday');
     }
   }
 
   Future sendVerificationEmail() async{
     try {
+      /*send verify email*/
       final user = FirebaseAuth.instance.currentUser!;
       await user.sendEmailVerification();
+
+      /*now he/she can not resend email again*/
+      setState(() {
+        canResendEmail = false;
+      });
+      /*after 5 sec they can */
+      await Future.delayed(
+          const Duration(
+              seconds: 5
+          )
+      );
+      /*resend okay*/
+      setState(() {
+        canResendEmail= true;
+      });
+
+
     }catch(e){
       //error msg
       Alert(
@@ -49,22 +98,29 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
           desc: e.toString(),
           buttons: [
             DialogButton(
-                child: Text(
-                  "Camcel",
-                  style: TextStyle(
-                      color: Palette.backgroundColor
-                  ),
+              child: const Text(
+                "Camcel",
+                style: TextStyle(
+                    color: Palette.backgroundColor
                 ),
-                onPressed: (){
-                  /*go to sign up page*/
-                  Navigator.pushNamed(context, '/signup');
-                },
-                gradient:const LinearGradient(
-                    colors: [
-                      Palette.buttonColor,
-                      Palette.nameColor,
-                    ]
-                )
+              ),
+              onPressed: (){
+                /*go to sign up page*/
+                Navigator.pushNamed(context, '/signup');
+              },
+              gradient:canResendEmail
+                  ?const LinearGradient(
+                  colors: [
+                    Palette.buttonColor,
+                    Palette.nameColor,
+                  ]
+              )
+                  :const LinearGradient(
+                  colors: [
+                    Palette.buttonDisableColor,
+                    Palette.nameDisablColor,
+                  ]
+              ),
             ),
           ]
       ).show();
@@ -74,204 +130,161 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-  ?const Profile_page()
-     :Scaffold(
+      ?const Profile_page()
+      :Scaffold(
+    backgroundColor: Palette.backgroundColor,
+
+    appBar: AppBar(
       backgroundColor: Palette.backgroundColor,
+      foregroundColor: Palette.textColor,
+      elevation: 0,//no shadow
+      automaticallyImplyLeading: false,//no arrow
+    ),
+    //fix overloade error
+    resizeToAvoidBottomInset: false,
+    body: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
 
-      appBar: AppBar(
-        backgroundColor: Palette.backgroundColor,
-        foregroundColor: Palette.textColor,
-        elevation: 0,//no shadow
-        automaticallyImplyLeading: false,//no arrow
-      ),
-      //fix overloade error
-      resizeToAvoidBottomInset: false,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
 
-          /*first column*/
-          Expanded(
-            child: Container(
-              margin:  const EdgeInsets.symmetric(horizontal: 40),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-
-                  /*Enter your email*/
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    // color: Colors.red,
-                    child:const Center(
-                      child: Text(
-                        "Enter confirmation code",//${widget.email}
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Palette.textColor,
-                        ),
+        /*first column*/
+        Expanded(
+          child: Container(
+            margin:  const EdgeInsets.symmetric(horizontal: 40),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                /*Enter your email*/
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 10),
+                  // color: Colors.red,
+                  child:const Center(
+                    child: Text(
+                      "Cheek your email",//${widget.email}
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Palette.textColor,
                       ),
                     ),
                   ),
+                ),
 
-                  Container(
-                    padding: const EdgeInsets.symmetric( vertical: 10),
-                    child: Center(
-                      child:  RichText(
-                        textAlign: TextAlign.center,
-                        text:  TextSpan(
-                          children: [
-                             const TextSpan(
-                              text: 'Enter the confirmation code we sent to you. ',
-                              style:  TextStyle(
-                                fontSize: 18,
-                                color: Palette.grey,
-                              ),
+                Container(
+                  padding: const EdgeInsets.symmetric( vertical: 10),
+                  child: Center(
+                    child:  RichText(
+                      textAlign: TextAlign.center,
+                      text:  const TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'To confirm your email address, tap the the link that we just send you.',
+                            style:  TextStyle(
+                              fontSize: 18,
+                              color: Palette.grey,
                             ),
-                             TextSpan(
-                              text: 'Resend confirmation code.',
-                              style:  const TextStyle(
-                                color: Palette.link,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
-                              ),
-                              recognizer:  TapGestureRecognizer()..onTap = () {
-                                Navigator.pushNamed(context, '/login');
-                              },
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
+                ),
 
 
 
-                  /*form*/
-                  Form(
-                    child: Column(
-                        children:[ Column(
-                          children: [
+                /*form*/
+                Form(
+                  child: Column(
+                      children:[ Column(
+                        children: [
 
-                            /*email*/
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: TextFormField(
-                                //design
-                                decoration: const InputDecoration(
-
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  filled: true,
-
-                                  /*hint*/
-                                  border: OutlineInputBorder(),
-                                  hintText: "Confirmation code",
-                                  hintStyle: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Palette.grey
-                                  ),
-
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                    ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                ),
-
-                                //function
-                                onChanged: (val){
-
-                                },
+                          /*next button*/
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 50.0,
+                            /*button colors*/
+                            decoration:  BoxDecoration(
+                              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                              gradient:canResendEmail
+                                  ?const LinearGradient(
+                                  colors: [
+                                    Palette.buttonColor,
+                                    Palette.nameColor,
+                                  ]
+                              )
+                                  :const LinearGradient(
+                                  colors: [
+                                    Palette.buttonDisableColor,
+                                    Palette.nameDisablColor,
+                                  ]
                               ),
                             ),
-                            /*end of email*/
-
-
-                            /*next button*/
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              alignment: Alignment.center,
-                              width: double.infinity,
+                            /*button*/
+                            child: ButtonTheme(
                               height: 50.0,
-                              /*button colors*/
-                              decoration: const BoxDecoration(
-                                borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                gradient: LinearGradient(
-                                    colors: [
-                                      Palette.buttonColor,
-                                      Palette.nameColor,
-                                    ]
-                                ),
-                              ),
-                              /*button*/
-                              child: ButtonTheme(
-                                height: 50.0,
-                                minWidth: 350,
-                                child: FlatButton(onPressed: (){
-                                  Navigator.pushNamed(context, '/signupBirthday');
-                                },
-                                  child: const Text('Next',
-                                    style: TextStyle(
-                                      color: Palette.backgroundColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
+                              minWidth: 350,
+                              child: FlatButton(
+                                onPressed:canResendEmail?
+                                    (){
+                                  sendVerificationEmail();
+                                }
+                                    :null,
+                                child: const Text('Resend Email',
+                                  style: TextStyle(
+                                    color: Palette.backgroundColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
                                   ),
                                 ),
                               ),
                             ),
-                            /*end of next button */
+                          ),
+                          /*end of next button */
 
-                          ],
-                        ),]
-                    ),
+                        ],
+                      ),]
                   ),
-                  /*end form*/
-                ],
-              ),
+                ),
+                /*end form*/
+              ],
             ),
           ),
+        ),
 
-          /*log out?*/
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              const Divider(
-                height: 5,
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children:[
-                      //Log in
-                      InkWell(
-                        child:  const Text(
-                          'Back',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Palette.link,
-                          ),
+        /*log out?*/
+        Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Divider(
+              height: 5,
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+              child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:[
+                    //Log in
+                    InkWell(
+                      child:  const Text(
+                        'Back',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Palette.link,
                         ),
-                        onTap: () => Navigator.pushNamed(context, '/signup'),
                       ),
-                    ]
-                ),
-              )
-            ],
-          )
-          //end of back
-        ],
-      ),
-    );
+                      onTap: () => Navigator.pushNamed(context, '/signup'),
+                    ),
+                  ]
+              ),
+            )
+          ],
+        )
+        //end of back
+      ],
+    ),
+  );
 }
 
 
