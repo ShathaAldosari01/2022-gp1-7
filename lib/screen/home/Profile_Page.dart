@@ -35,7 +35,7 @@ class _Profile_pageState extends State<Profile_page> {
         title: const Padding(
           padding: EdgeInsets.fromLTRB(10, 0, 0, 0),
           child: Text(
-            'UserName',
+            'Username',
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class _Profile_pageState extends State<Profile_page> {
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(10, 15, 0, 0),
                   child: const Text(
-                    'userName',
+                    'name',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
