@@ -136,7 +136,7 @@ class name extends StatelessWidget {
                                   minWidth: 350,
                                   child: FlatButton(onPressed: (){
                                     /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/questions');
+                                    Navigator.pushNamed(context, '/question1');
                                   },
                                     child: Text('Next',
                                       style: TextStyle(
