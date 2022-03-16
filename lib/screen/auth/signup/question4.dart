@@ -29,42 +29,6 @@ class _question4State extends State<question4> {
     body: Column(
 
         children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: const Center(
-            child:Text(
-              "Tell us about yourself!",
-              style: TextStyle(
-                fontSize: 30,
-                color: Palette.textColor,
-              ),
-            ),
-          ),
-
-        ),
-
-          Container(
-            margin:  const EdgeInsets.symmetric(horizontal: 40),
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child:const Center(
-              child: Text(
-                "Answer the following questions to personalize your experience in Odyssey.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Palette.grey,
-                ),
-              ),
-            ),
-          ),
-
-
-
-
-
-
-
-
           Container(
           //  margin:  const EdgeInsets.symmetric(horizontal: 10),
             padding: const EdgeInsets.symmetric(vertical: 40),
