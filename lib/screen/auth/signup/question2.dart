@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:gp1_7_2022/model/SignUpCheckboxes.dart';
 
 
 
@@ -12,9 +13,17 @@ class question2 extends StatefulWidget {
 
 class _question2State extends State<question2> {
 
-  final items2 = ['item 1', 'item 2', 'item 3', 'item 4', 'item 5'];
-  String? value;
+ // final items2 = ['item 1', 'item 2', 'item 3', 'item 4', 'item 5'];
+  //String? value;
 
+final checkboxes = [
+  SignUpCheckboxes(title: 'Option 1'),
+  SignUpCheckboxes(title: 'Option 2'),
+  SignUpCheckboxes(title: 'Option 3'),
+  SignUpCheckboxes(title: 'Option 4'),
+
+
+];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -29,41 +38,6 @@ class _question2State extends State<question2> {
     body: Column(
 
         children: [
-        Container(
-          padding: const EdgeInsets.symmetric(vertical: 10),
-          child: const Center(
-            child:Text(
-              "Tell us about yourself!",
-              style: TextStyle(
-                fontSize: 30,
-                color: Palette.textColor,
-              ),
-            ),
-          ),
-
-        ),
-
-          Container(
-            margin:  const EdgeInsets.symmetric(horizontal: 40),
-            padding: const EdgeInsets.symmetric(vertical: 5),
-            child:const Center(
-              child: Text(
-                "Answer the following questions to personalize your experience in Odyssey.",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Palette.grey,
-                ),
-              ),
-            ),
-          ),
-
-
-
-
-
-
-
 
           Container(
           //  margin:  const EdgeInsets.symmetric(horizontal: 10),
@@ -82,31 +56,9 @@ class _question2State extends State<question2> {
 
 
 
-      Container(
-
-        margin: EdgeInsets.all(20),
-       // width: 370,
-        padding: EdgeInsets.symmetric(horizontal:15, vertical:0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(7),
-          border: Border.all(color: Colors.grey, width: 1),
-        ),
-        child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-        value: value,
-        isExpanded: true,
-        iconSize: 36,
-        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-        items: items2.map(buildMenuItem).toList(),
-        onChanged: (value) => setState(() => this.value = value),
-      ),
-    ),
-    ),
 
 
-
-
-
+      ...checkboxes.map(buildSingleCheckbox).toList(),
 
 
 
@@ -158,16 +110,40 @@ class _question2State extends State<question2> {
 
 
 
+  Widget buildSingleCheckbox(SignUpCheckboxes checkboxes) => buildCheckbox(
+    checkboxes: checkboxes,
+  onClicked: (){
+    setState(() {
+      final newValue = !checkboxes.value;
+      checkboxes.value = newValue;
+    });
+  },
+);
 
 
 
-  DropdownMenuItem<String> buildMenuItem(String item) =>
-      DropdownMenuItem(value: item,
-      child: Text(
-        item,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+  Widget buildCheckbox({
+required SignUpCheckboxes checkboxes,
+required VoidCallback onClicked,
+
+
+}) => ListTile(
+    onTap: onClicked,
+     leading: Checkbox(
+    value: checkboxes.value,
+    onChanged: (value) => onClicked(),
+  ),
+    title: Text(
+      checkboxes.title,
+      style: TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold
       ),
-      );
+
+    )
+  );
+
+
 
   }
 
