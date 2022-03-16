@@ -22,6 +22,7 @@ import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  var uid =   FirebaseAuth.instance.currentUser!.uid;
   runApp(
       MaterialApp(
           initialRoute: "/",
@@ -29,7 +30,7 @@ void main() async{
             "/": (context) => MainPage(),
             "/signup": (context)=> Signup(),
             '/login':(context)=>Login(),
-            '/Profile_Page':(context) => Profile_page(),
+            '/Profile_Page':(context) => Profile_page(uid: uid,),
             // '/confirmationCode':(context) => ConfirmationCode(),
             // '/signupPassword':(context) => signupPassword(),
             '/signupBirthday':(context) => SignupBirthday(),
@@ -49,10 +50,14 @@ void main() async{
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
+
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: StreamBuilder<User?>(
+
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot){
           if(snapshot.connectionState==ConnectionState.waiting){
@@ -61,7 +66,8 @@ class MainPage extends StatelessWidget {
             return const Center(child: Text("Something went wrong!"));
           }else if(snapshot.hasData){
             if(FirebaseAuth.instance.currentUser!.emailVerified){
-              return const Profile_page();
+              var uid = FirebaseAuth.instance.currentUser!.uid;
+              return  Profile_page(uid: uid,);
             }else{
               String? x = FirebaseAuth.instance.currentUser!.email;
               String y= x??" ";

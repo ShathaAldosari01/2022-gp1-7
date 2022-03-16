@@ -90,31 +90,35 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     }catch(e){
       //error msg
-      Alert(
-          context: context,
-          title: "Something went wrong!" ,
-          desc: e.toString(),
-          buttons: [
-            DialogButton(
-              child: const Text(
-                "Sign up",
-                style: TextStyle(
-                    color: Palette.backgroundColor
-                ),
-              ),
-              onPressed: (){
-                /*go to sign up page*/
-                Navigator.pushNamed(context, '/signup');
-              },
-              gradient:const LinearGradient(
-                  colors: [
-                    Palette.buttonColor,
-                    Palette.nameColor,
-                  ]
-              )
-            ),
-          ]
-      ).show();
+      bool message =
+    e.toString().contains("We have blocked");
+ if (!message) {
+   Alert(
+       context: context,
+       title: "Something went wrong!",
+       desc: e.toString(),
+       buttons: [
+         DialogButton(
+             child: const Text(
+               "Sign up",
+               style: TextStyle(
+                   color: Palette.backgroundColor
+               ),
+             ),
+             onPressed: () {
+               /*go to sign up page*/
+               Navigator.pushNamed(context, '/signup');
+             },
+             gradient: const LinearGradient(
+                 colors: [
+                   Palette.buttonColor,
+                   Palette.nameColor,
+                 ]
+             )
+         ),
+       ]
+   ).show();
+ }
       print(e);
     }
   }

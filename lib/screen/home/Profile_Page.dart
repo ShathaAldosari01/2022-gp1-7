@@ -10,9 +10,11 @@ import 'package:focused_menu/modals.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/Widgets/follow_button.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Profile_page extends StatefulWidget {
-  const Profile_page({Key? key}) : super(key: key);
+  final String uid; 
+  const Profile_page({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<Profile_page> createState() => _Profile_pageState();
@@ -20,7 +22,34 @@ class Profile_page extends StatefulWidget {
 
 class _Profile_pageState extends State<Profile_page> {
   var padding= 0.8;
+  var userData = {};
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+  /* get data method */
+  getData() async { 
+  try{
+  
+    var  userSnap = await FirebaseFirestore.instance.collection('users').doc(widget.uid).get();
+    userData = userSnap.data()!;
+    setState(() {
 
+    });
+  }
+    catch(e){
+      Alert(
+          context: context,
+          title: "Something went wrong!",
+          desc: e.toString(),
+      ).show();
+    }
+    
+  }
+  
+  
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,10 +61,10 @@ class _Profile_pageState extends State<Profile_page> {
         backgroundColor: Palette.backgroundColor,
         automaticallyImplyLeading: false,//no arrow
         //username
-        title: const Padding(
+        title:  Padding(
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
           child: Text(
-            'Username',
+              userData['username'],
             style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
@@ -135,9 +164,9 @@ class _Profile_pageState extends State<Profile_page> {
                 //username
                 Container(
                   alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(10, 40, 0, 0),
-                  child: const Text(
-                    'name',
+                  padding:  EdgeInsets.fromLTRB(10, 40, 0, 0),
+                  child:  Text(
+                    userData['name'],
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
