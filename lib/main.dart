@@ -22,7 +22,6 @@ import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  var uid =   FirebaseAuth.instance.currentUser!.uid;
   runApp(
       MaterialApp(
           initialRoute: "/",
@@ -30,7 +29,7 @@ void main() async{
             "/": (context) => MainPage(),
             "/signup": (context)=> Signup(),
             '/login':(context)=>Login(),
-            '/Profile_Page':(context) => Profile_page(uid: uid,),
+            '/Profile_Page':(context) => Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
             // '/confirmationCode':(context) => ConfirmationCode(),
             // '/signupPassword':(context) => signupPassword(),
             '/signupBirthday':(context) => SignupBirthday(),
