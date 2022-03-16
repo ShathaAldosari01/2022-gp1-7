@@ -58,6 +58,8 @@ class _Profile_pageState extends State<Profile_page> {
                   title: const Text("Log out"),
                   trailingIcon: const Icon(Icons.logout),
                   onPressed: (){
+                    /*go to sign up page*/
+                    Navigator.pushNamed(context, '/');
                     return FirebaseAuth.instance.signOut();
                   }
               ),

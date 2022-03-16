@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';//for date
@@ -9,9 +11,10 @@ import 'package:flutter/gestures.dart';
 
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class SignupBirthday extends StatefulWidget {
   const SignupBirthday({Key? key}) : super(key: key);
@@ -21,12 +24,55 @@ class SignupBirthday extends StatefulWidget {
 }
 
 class _SignupBirthdayState extends State<SignupBirthday> {
-  DateTime now = DateTime.now();
+  //date
+  // DateTime now = DateTime.now();
+  DateTime birthday  = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   String _dataFormate = DateFormat.yMMMMd('en_US').format(DateTime.now());
+  //date contro
+  late TextEditingController _birthdayController;
+  //button
+  bool isButtonActive = false;
+  //form
+  final _formKey = GlobalKey<FormState>();
+  //database
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  @override
+  void initState(){
+    super.initState();
+
+    _birthdayController = TextEditingController();
+
+    _birthdayController.addListener(() {
+
+      DateTime timeNow = DateTime.now();
+      // DateTime oldest = new DateTime(timeNow.year+100, timeNow.month, timeNow.day);
+      // bool isNotoldest = birthday.isBefore(oldest);
+      DateTime younge = new DateTime(timeNow.year-12, timeNow.month, timeNow.day);
+      bool isfuture = birthday.isAfter(younge);
+
+      print(birthday);
+      print(younge);
+
+      setState(() {
+        isButtonActive = !isfuture;//&&isNotoldest ;
+      });
+    });
+
+  }
+
+  @override
+  void dispose(){
+    _birthdayController.dispose();
+
+    super.dispose();
+  }
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Palette.backgroundColor,
 
       appBar: AppBar(
@@ -81,7 +127,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     ),
                     /*end of the cake icon*/
 
-                    /*Enter your email*/
+                    /*Enter your barithday*/
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       // color: Colors.red,
@@ -115,6 +161,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
 
                     /*form*/
                     Form(
+                      key: _formKey,
                       child: Column(
                           children:[ Column(
                             children: [
@@ -125,6 +172,48 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                 child: TextFormField(
                                   //Clickable and not editable
                                   readOnly: true,
+
+
+                                  //function
+                                  onChanged: (val){
+                                    /*change the val of pass*/
+                                    setState(() {
+                                      _dataFormate = val;
+                                    });
+                                  },
+                                  /*value*/
+                                  validator: (val){
+                                    DateTime timeNow = DateTime.now();
+                                    DateTime oldest = new DateTime(timeNow.year+100, timeNow.month, timeNow.day);
+                                    bool isNotoldest = birthday.isBefore(oldest);
+                                    DateTime younge = new DateTime(timeNow.year-12, timeNow.month, timeNow.day);
+                                    bool isfuture = birthday.isAfter(younge);
+                                    if(val!.isEmpty){
+                                      setState(() {
+                                        isButtonActive=false;
+                                      });
+                                      return "You should enter your birthday to sign up.";
+                                    }
+                                    else if(isNotoldest){
+                                      setState(() {
+                                        isButtonActive=false;
+                                      });
+                                      return "date should not be empty";
+                                    }
+                                    else if(isfuture){
+                                      setState(() {
+                                        isButtonActive=false;
+                                      });
+                                      return "You should be at lest 12 years old to sign up.";
+                                    }
+                                    setState(() {
+                                      isButtonActive=true;
+                                    });
+                                    return null;
+                                  },
+                                  /*controller for button enble*/
+                                  controller: _birthdayController,
+
 
                                   //design
                                   decoration: InputDecoration(
@@ -155,10 +244,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                     ),
                                   ),
 
-                                  //function
-                                  onChanged: (val){
-
-                                  },
                                 ),
                               ),
                               /*end of date*/
@@ -194,21 +279,51 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                   /*button colors*/
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                    gradient: LinearGradient(
-                        colors: [
-                          Palette.buttonColor,
-                          Palette.nameColor,
-                        ]
-                    ),
+                    gradient:isButtonActive
+                        ?LinearGradient(
+                            colors: [
+                              Palette.buttonColor,
+                              Palette.nameColor,
+                            ]
+                        )
+                        :LinearGradient(
+                            colors: [
+                              Palette.buttonDisableColor,
+                              Palette.nameDisablColor,
+                            ]
+                        ),
                   ),
                   /*button*/
                   child: ButtonTheme(
                     height: 50.0,
                     minWidth: 350,
-                    child: FlatButton(onPressed: (){
-                      /*go to sign up page*/
-                      Navigator.pushNamed(context, '/signupUsername');
-                    },
+                    child: FlatButton(
+                      onPressed: isButtonActive
+                          ?() async{
+                              /*add to database*/
+                              try {
+
+                                var uid =   FirebaseAuth.instance.currentUser!.uid;
+                                print(uid);
+                                await _firestore.collection("users").doc(uid).update({
+                                  'birthday': birthday,
+                                });
+
+                                /*go to sign up page*/
+                                Navigator.pushNamed(context, '/signupBirthday');
+
+                              }catch(e){
+                                Alert(
+                                  context: context,
+                                  title: "Something went wrong!" ,
+                                  desc: e.toString(),
+
+                                ).show();
+                                print(e);
+                              }
+                            /*go to sign up page*/
+                            Navigator.pushNamed(context, '/signupUsername');
+                          }:null,
                       child: Text('Next',
                         style: TextStyle(
                           color: Palette.backgroundColor,
@@ -225,14 +340,29 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                 SizedBox(
                   height: 180,
                   child: CupertinoDatePicker(
-                    initialDateTime: now,
+                    initialDateTime: birthday,
                     backgroundColor: Palette.backgroundColor,
                     mode: CupertinoDatePickerMode.date,
-                    onDateTimeChanged: (n)=>
+                    onDateTimeChanged: (n){
+                      DateTime timeNow = DateTime.now();
+                      DateTime oldest = new DateTime(timeNow.year-100, timeNow.month, timeNow.day);
+                      bool isoldest = birthday.isBefore(oldest);
+                      DateTime younge = new DateTime(timeNow.year-12, timeNow.month, timeNow.day);
+                      bool isfuture = birthday.isAfter(younge);
+
+                      print(isoldest);
+                      print(isfuture);
+
+                      setState(() {
+                        isButtonActive = !isfuture&&!isoldest ;
+                      });
+
                         setState(() {
-                          now = n;
+                          birthday = n;
                           _dataFormate = DateFormat.yMMMMd('en_US').format(n);
-                        }),
+                        });
+
+                    },
                   ),
                 )
                 /*end date*/

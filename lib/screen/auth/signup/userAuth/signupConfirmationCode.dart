@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 /*extra */
 // import 'package:flutter/services.dart';
 import 'package:flutter/gestures.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
 
 /*pages */
 import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
@@ -38,8 +39,6 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     if(!isEmailVerified){
       sendVerificationEmail();
-    }else{
-      Navigator.pushNamed(context, '/signupBirthday');
     }
 
     timer= Timer.periodic(
@@ -64,7 +63,6 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     if(isEmailVerified){
       timer?.cancel();
-      Navigator.pushNamed(context, '/signupBirthday');
     }
   }
 
@@ -99,7 +97,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
           buttons: [
             DialogButton(
               child: const Text(
-                "Camcel",
+                "Sign up",
                 style: TextStyle(
                     color: Palette.backgroundColor
                 ),
@@ -108,19 +106,12 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                 /*go to sign up page*/
                 Navigator.pushNamed(context, '/signup');
               },
-              gradient:canResendEmail
-                  ?const LinearGradient(
+              gradient:const LinearGradient(
                   colors: [
                     Palette.buttonColor,
                     Palette.nameColor,
                   ]
               )
-                  :const LinearGradient(
-                  colors: [
-                    Palette.buttonDisableColor,
-                    Palette.nameDisablColor,
-                  ]
-              ),
             ),
           ]
       ).show();
@@ -130,7 +121,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
   @override
   Widget build(BuildContext context) => isEmailVerified
-      ?const Profile_page()
+      ?const name()
       :Scaffold(
     backgroundColor: Palette.backgroundColor,
 

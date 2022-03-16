@@ -3,12 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
-
-class name extends StatelessWidget {
-  const name({Key? key}) : super(key: key);
+class Photo extends StatelessWidget {
+  const Photo({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +34,13 @@ class name extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
-                    /*enter your name*/
+                    /*Enter your email*/
                     Container(
                       padding: EdgeInsets.symmetric( vertical: 10),
                       // color: Colors.red,
                       child:Center(
                         child: Text(
-                          "Enter Your Name",
+                          "Create Username",
                           style: TextStyle(
                             fontSize: 30,
                             color: Palette.textColor,
@@ -50,13 +49,13 @@ class name extends StatelessWidget {
                       ),
                     ),
 
-                    /*add your name so friends can find you */
+                    /*enter your email so that you */
                     Container(
                       padding: EdgeInsets.symmetric( vertical: 10),
                       // color: Colors.blue,
                       child:Center(
                         child: Text(
-                          "Add your name so friends can find you.",
+                          "Pick a username for your new account.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18,
@@ -72,7 +71,7 @@ class name extends StatelessWidget {
                           children:[ Column(
                             children: [
 
-
+                              /*email*/
                               Container(
                                 margin: EdgeInsets.symmetric(vertical: 10),
                                 child: TextFormField(
@@ -85,7 +84,7 @@ class name extends StatelessWidget {
 
                                     /*hint*/
                                     border: OutlineInputBorder(),
-                                    hintText: "Name",
+                                    hintText: "Username",
                                     hintStyle: TextStyle(
                                         fontSize: 18.0,
                                         color: Palette.grey
@@ -111,7 +110,7 @@ class name extends StatelessWidget {
                                   },
                                 ),
                               ),
-
+                              /*end of email*/
 
 
                               /*next button*/
@@ -136,7 +135,7 @@ class name extends StatelessWidget {
                                   minWidth: 350,
                                   child: FlatButton(onPressed: (){
                                     /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/questions');
+                                    Navigator.pushNamed(context, '/question1');
                                   },
                                     child: Text('Next',
                                       style: TextStyle(
@@ -205,4 +204,6 @@ class name extends StatelessWidget {
     );
   }
 }
+
+
 

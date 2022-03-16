@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 /*services */
 import 'package:gp1_7_2022/screen/services/auth.dart';
 /*pages */
-import 'package:gp1_7_2022/screen/auth/signup/signupConfirmationCode.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupConfirmationCode.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -20,6 +21,7 @@ class signupPassword extends StatefulWidget {
 class _signupPasswordState extends State<signupPassword> {
   //for service
   final AuthService _auth = AuthService();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
 
   // text field state
@@ -368,20 +370,20 @@ class _signupPasswordState extends State<signupPassword> {
                                   ?() async {
                                 if(_formKey.currentState!.validate()){
 
-                                  // //showDialog
-                                  // showDialog(
-                                  //   context: context,
-                                  //   barrierDismissible: false,
-                                  //   builder: (context)=> const Center(child: CircularProgressIndicator()),
-                                  // );
                                   /*add to database*/
                                   try {
 
-                                    await FirebaseAuth.instance
+                                    UserCredential cred = await FirebaseAuth.instance
                                         .createUserWithEmailAndPassword(
                                         email: widget.email,
                                         password: password
                                     );
+                                    print(cred.user!.uid);
+                                    await _firestore.collection("users").doc(cred.user!.uid).set({
+                                      'email': widget.email,
+                                      'uid': cred.user!.uid,
+                                    });
+
                                     /*go to Profile_Page page*/
                                     Navigator.of(context).popUntil((route) => route.isFirst);
                                     /*go to sign up page*/

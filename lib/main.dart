@@ -1,21 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gp1_7_2022/screen/auth/signup/name.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
 import 'package:gp1_7_2022/screen/auth/signup/question1.dart';
 import 'package:gp1_7_2022/screen/auth/signup/question2.dart';
 import 'package:gp1_7_2022/screen/auth/signup/question3.dart';
 import 'package:gp1_7_2022/screen/auth/signup/question4.dart';
 import 'package:gp1_7_2022/screen/auth/signup/question5.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo.dart';
 import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 import 'package:gp1_7_2022/screen/auth/Login/login.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signupConfirmationCode.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signupBirthday.dart';
-import 'package:gp1_7_2022/screen/auth/signup/signupUsername.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupConfirmationCode.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 
 void main() async{
@@ -40,6 +41,7 @@ void main() async{
             '/question3':(context) => question3(),
             '/question4':(context) => question4(),
             '/question5':(context) => question5(),
+            '/photo':(context) => Photo(),
           }
       )
   );

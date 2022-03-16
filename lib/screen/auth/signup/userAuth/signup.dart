@@ -4,7 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
 /*pages */
-import 'package:gp1_7_2022/screen/auth/signup/signupPassword.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/screen/services/auth.dart';
