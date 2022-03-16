@@ -186,18 +186,18 @@ class _nameState extends State<name> {
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
                                   gradient: isButtonActive?
-                                      LinearGradient(
-                                          colors: [
-                                            Palette.buttonColor,
-                                            Palette.nameColor,
-                                          ]
-                                      )
+                                  LinearGradient(
+                                      colors: [
+                                        Palette.buttonColor,
+                                        Palette.nameColor,
+                                      ]
+                                  )
                                       : LinearGradient(
-                                          colors: [
-                                            Palette.buttonDisableColor,
-                                            Palette.nameDisablColor,
-                                          ]
-                                        ),
+                                      colors: [
+                                        Palette.buttonDisableColor,
+                                        Palette.nameDisablColor,
+                                      ]
+                                  ),
                                 ),
                                 /*button*/
                                 child: ButtonTheme(
@@ -207,30 +207,30 @@ class _nameState extends State<name> {
                                     onPressed:isButtonActive
                                         ? () async {
 
-                                    /*add to database*/
-                                    try {
+                                      /*add to database*/
+                                      try {
 
-                                     var uid =   FirebaseAuth.instance.currentUser!.uid;
-                                      print(uid);
-                                      await _firestore.collection("users").doc(uid).update({
-                                        'name': name,
-                                      });
+                                        var uid =   FirebaseAuth.instance.currentUser!.uid;
+                                        print(uid);
+                                        await _firestore.collection("users").doc(uid).update({
+                                          'name': name,
+                                        });
 
-                                     /*go to sign up page*/
-                                     Navigator.pushNamed(context, '/signupBirthday');
+                                        /*go to sign up page*/
+                                        Navigator.pushNamed(context, '/signupBirthday');
 
-                                    }catch(e){
-                                      Alert(
+                                      }catch(e){
+                                        Alert(
                                           context: context,
                                           title: "Something went wrong!" ,
                                           desc: e.toString(),
 
-                                      ).show();
-                                      print(e);
-                                    }
+                                        ).show();
+                                        print(e);
+                                      }
 
 
-                                  }:null,
+                                    }:null,
                                     child: Text('Next',
                                       style: TextStyle(
                                         color: Palette.backgroundColor,
