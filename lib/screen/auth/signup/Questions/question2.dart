@@ -13,6 +13,7 @@ class question2 extends StatefulWidget {
 class _question2State extends State<question2> {
   static const quest2 = <String> ['Yes.', 'No.'];
   String selectedQuest2 = "";
+  bool isButtonActive = false;
 
 
   @override
@@ -50,7 +51,6 @@ class _question2State extends State<question2> {
         buildRadios(),
 
 
-
 /*next button*/
         Container(
           margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
@@ -60,10 +60,17 @@ class _question2State extends State<question2> {
           /*button colors*/
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            gradient: LinearGradient(
+            gradient: isButtonActive?
+            LinearGradient(
                 colors: [
                   Palette.buttonColor,
                   Palette.nameColor,
+                ]
+            )
+                : LinearGradient(
+                colors: [
+                  Palette.buttonDisableColor,
+                  Palette.nameDisablColor,
                 ]
             ),
           ),
@@ -73,10 +80,10 @@ class _question2State extends State<question2> {
           child: ButtonTheme(
             height: 50.0,
             minWidth: 350,
-            child: FlatButton(onPressed: (){
-              /*go to question 3 page*/
+            child: FlatButton(onPressed: isButtonActive? (){
+              /*go to question 2 page*/
               Navigator.pushNamed(context, '/question3');
-            },
+            } :null,
               child: Text('Next',
                 style: TextStyle(
                   color: Palette.backgroundColor,
@@ -106,7 +113,9 @@ class _question2State extends State<question2> {
                 fontSize: 20,
                 color: Palette.textColor),
           ),
-          onChanged: (value) =>  setState(() => this.selectedQuest2 = value!),
+          onChanged: (value) => setState(() { this.selectedQuest2 = value!;
+          isButtonActive = true;
+          }),
         );
       },
     ).toList(),
