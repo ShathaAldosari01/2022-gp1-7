@@ -17,9 +17,8 @@ class _question3State extends State<question3> {
     SignUpCheckboxes(title: 'Business.'),
     SignUpCheckboxes(title: 'Tourism.'),
     SignUpCheckboxes(title: 'Visiting family/friends.'),
-
-
   ];
+  bool isButtonActive = false;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -69,10 +68,17 @@ class _question3State extends State<question3> {
           /*button colors*/
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            gradient: LinearGradient(
+            gradient: isButtonActive?
+            LinearGradient(
                 colors: [
                   Palette.buttonColor,
                   Palette.nameColor,
+                ]
+            )
+                : LinearGradient(
+                colors: [
+                  Palette.buttonDisableColor,
+                  Palette.nameDisablColor,
                 ]
             ),
           ),
@@ -82,10 +88,10 @@ class _question3State extends State<question3> {
           child: ButtonTheme(
             height: 50.0,
             minWidth: 350,
-            child: FlatButton(onPressed: (){
+            child: FlatButton(onPressed: isButtonActive? (){
               /*go to question 4 page*/
               Navigator.pushNamed(context, '/question4');
-            },
+            } :null,
               child: Text('Next',
                 style: TextStyle(
                   color: Palette.backgroundColor,
@@ -97,9 +103,6 @@ class _question3State extends State<question3> {
           ),
         ),
         /*end of next button */
-
-
-
 
       ],
     ),
@@ -113,6 +116,8 @@ class _question3State extends State<question3> {
       setState(() {
         final newValue = !checkboxes.value;
         checkboxes.value = newValue;
+          isButtonActive = newValue;
+          print(checkboxes.value);
       });
     },
   );
@@ -122,8 +127,6 @@ class _question3State extends State<question3> {
   Widget buildCheckbox({
     required SignUpCheckboxes checkboxes,
     required VoidCallback onClicked,
-
-
   }) => ListTile(
       onTap: onClicked,
       leading: Checkbox(
