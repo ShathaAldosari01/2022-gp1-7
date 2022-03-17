@@ -11,9 +11,10 @@ import 'package:focused_menu/modals.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/Widgets/follow_button.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:gp1_7_2022/screen/settings.dart';
 
 class Profile_page extends StatefulWidget {
-  final String uid; 
+  final uid;
   const Profile_page({Key? key, required this.uid}) : super(key: key);
 
   @override
@@ -21,6 +22,7 @@ class Profile_page extends StatefulWidget {
 }
 
 class _Profile_pageState extends State<Profile_page> {
+  bool _isloaded = false;
   var padding= 0.8;
   var userData = {};
   @override
@@ -29,14 +31,16 @@ class _Profile_pageState extends State<Profile_page> {
     getData();
   }
   /* get data method */
-  getData() async { 
-  try{
-  
-    var  userSnap = await FirebaseFirestore.instance.collection('users').doc(widget.uid).get();
-    userData = userSnap.data()!;
-    setState(() {
-
-    });
+  getData() async {
+  try {
+    if (widget.uid != null) {
+      var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+          widget.uid).get();
+      userData = userSnap.data()!;
+      setState(() {
+        _isloaded = true;
+      });
+    }
   }
     catch(e){
       Alert(
@@ -45,14 +49,18 @@ class _Profile_pageState extends State<Profile_page> {
           desc: e.toString(),
       ).show();
     }
-    
+
   }
   
   
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return _isloaded == false ?
+    Center(
+      child: CircularProgressIndicator(), // Show indicator
+    )
+  : Scaffold(
       backgroundColor: Palette.backgroundColor,
 
       appBar: AppBar(
@@ -91,6 +99,15 @@ class _Profile_pageState extends State<Profile_page> {
                     Navigator.pushNamed(context, '/');
                     return FirebaseAuth.instance.signOut();
                   }
+              ),
+              FocusedMenuItem(
+                  title: const Text("Settings"),
+                  trailingIcon: const Icon(Icons.settings),
+                  onPressed: (){
+                    Navigator.of(context).popAndPushNamed('/settings');
+
+
+                  },
               ),
             ],
 
@@ -132,8 +149,7 @@ class _Profile_pageState extends State<Profile_page> {
 
                     ),
 
-                    //    backgroundImage: NetworkImage('https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png') ,
-                      //  radius: 40,
+
                       ),
                     ),
                     //end user photo

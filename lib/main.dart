@@ -18,7 +18,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
-
+import 'package:gp1_7_2022/screen/settings.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -42,6 +42,7 @@ void main() async{
             '/question4':(context) => question4(),
             '/question5':(context) => question5(),
             '/photo':(context) => Photo(),
+            '/settings':(context) => settings(),
           }
       )
   );
@@ -64,9 +65,9 @@ class MainPage extends StatelessWidget {
           }else if(snapshot.hasError){
             return const Center(child: Text("Something went wrong!"));
           }else if(snapshot.hasData){
-            if(FirebaseAuth.instance.currentUser!.emailVerified){
-              var uid = FirebaseAuth.instance.currentUser!.uid;
-              return  Profile_page(uid: uid,);
+            if(FirebaseAuth.instance.currentUser!.emailVerified && FirebaseAuth.instance.currentUser!.uid != null ){
+              String uid = FirebaseAuth.instance.currentUser!.uid;
+              return  Profile_page(uid: uid );
             }else{
               String? x = FirebaseAuth.instance.currentUser!.email;
               String y= x??" ";
