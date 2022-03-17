@@ -19,8 +19,8 @@ class _question4State extends State<question4> {
     SignUpCheckboxes(title: 'European countries.'),
     SignUpCheckboxes(title: 'American countries.'),
     SignUpCheckboxes(title: 'African countries.'),
-
   ];
+  bool isButtonActive = false;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -69,18 +69,24 @@ class _question4State extends State<question4> {
 
 /*next button*/
         Container(
-
-          margin: EdgeInsets.symmetric(vertical: 70),
+          margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
           alignment: Alignment.center,
           width: 350,
           height: 50.0,
           /*button colors*/
           decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(8.0)),
-            gradient: LinearGradient(
+            gradient: isButtonActive?
+            LinearGradient(
                 colors: [
                   Palette.buttonColor,
                   Palette.nameColor,
+                ]
+            )
+                : LinearGradient(
+                colors: [
+                  Palette.buttonDisableColor,
+                  Palette.nameDisablColor,
                 ]
             ),
           ),
@@ -90,10 +96,10 @@ class _question4State extends State<question4> {
           child: ButtonTheme(
             height: 50.0,
             minWidth: 350,
-            child: FlatButton(onPressed: (){
-              /*go to question 5 page*/
+            child: FlatButton(onPressed: isButtonActive? (){
+              /*go to question 2 page*/
               Navigator.pushNamed(context, '/question5');
-            },
+            } :null,
               child: Text('Next',
                 style: TextStyle(
                   color: Palette.backgroundColor,
@@ -106,23 +112,30 @@ class _question4State extends State<question4> {
         ),
         /*end of next button */
 
-
       ],
     ),
   );
 
 
 
-  Widget buildSingleCheckbox(SignUpCheckboxes checkboxes) => buildCheckbox(
-    checkboxes: checkboxes,
+  Widget buildSingleCheckbox(SignUpCheckboxes checkbox) => buildCheckbox(
+    checkboxes: checkbox,
     onClicked: (){
       setState(() {
-        final newValue = !checkboxes.value;
-        checkboxes.value = newValue;
+        final newValue = !checkbox.value;
+        checkbox.value = newValue;
+        bool isTrue = false;
+        checkboxes.forEach(
+                (checkbox){
+              if(checkbox.value){
+                isTrue = true;
+              }
+            }
+        );
+        isButtonActive = isTrue;
       });
     },
   );
-
 
 
   Widget buildCheckbox({

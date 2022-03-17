@@ -67,8 +67,7 @@ class _question3State extends State<question3> {
 
 /*next button*/
         Container(
-
-          margin: EdgeInsets.symmetric(vertical: 70),
+          margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
           alignment: Alignment.center,
           width: 350,
           height: 50.0,
@@ -96,7 +95,7 @@ class _question3State extends State<question3> {
             height: 50.0,
             minWidth: 350,
             child: FlatButton(onPressed: isButtonActive? (){
-              /*go to question 4 page*/
+              /*go to question 2 page*/
               Navigator.pushNamed(context, '/question4');
             } :null,
               child: Text('Next',
@@ -116,15 +115,21 @@ class _question3State extends State<question3> {
   );
 
 
-
-  Widget buildSingleCheckbox(SignUpCheckboxes checkboxes) => buildCheckbox(
-    checkboxes: checkboxes,
+  Widget buildSingleCheckbox(SignUpCheckboxes checkbox) => buildCheckbox(
+    checkboxes: checkbox,
     onClicked: (){
       setState(() {
-        final newValue = !checkboxes.value;
-        checkboxes.value = newValue;
-          isButtonActive = newValue;
-          print(checkboxes.value);
+        final newValue = !checkbox.value;
+        checkbox.value = newValue;
+        bool isTrue = false;
+        checkboxes.forEach(
+                (checkbox){
+              if(checkbox.value){
+                isTrue = true;
+              }
+            }
+        );
+        isButtonActive = isTrue;
       });
     },
   );
