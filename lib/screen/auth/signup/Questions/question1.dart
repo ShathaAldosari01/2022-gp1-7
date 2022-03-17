@@ -19,11 +19,18 @@ class _question1State extends State<question1> {
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: Palette.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Palette.backgroundColor,
-        elevation: 0,//no shadow
-        automaticallyImplyLeading: false,//no arrow
+    appBar: AppBar(
+      backgroundColor: Palette.backgroundColor,
+      foregroundColor: Palette.textColor,
+      elevation: 0,//no shadow
+      /*back arrow */
+      leading: IconButton(
+        icon: const Icon(
+            Icons.arrow_back, color: Palette.textColor
+        ),
+        onPressed: () => Navigator.pushNamed(context, '/signupUsername'),
       ),
+    ),
 
 
     body: ListView(
@@ -131,6 +138,8 @@ class _question1State extends State<question1> {
             ),
           ),
           /*end of next button */
+
+
   ],
     ),
   );

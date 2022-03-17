@@ -25,8 +25,15 @@ class _question3State extends State<question3> {
     backgroundColor: Palette.backgroundColor,
     appBar: AppBar(
       backgroundColor: Palette.backgroundColor,
+      foregroundColor: Palette.textColor,
       elevation: 0,//no shadow
-      automaticallyImplyLeading: false,//no arrow
+      /*back arrow */
+      leading: IconButton(
+        icon: const Icon(
+            Icons.arrow_back, color: Palette.textColor
+        ),
+        onPressed: () => Navigator.pushNamed(context, '/question2'),
+      ),
     ),
 
 

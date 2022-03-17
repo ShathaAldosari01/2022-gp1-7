@@ -28,8 +28,15 @@ class _question5State extends State<question5> {
     backgroundColor: Palette.backgroundColor,
     appBar: AppBar(
       backgroundColor: Palette.backgroundColor,
+      foregroundColor: Palette.textColor,
       elevation: 0,//no shadow
-      automaticallyImplyLeading: false,//no arrow
+      /*back arrow */
+      leading: IconButton(
+        icon: const Icon(
+            Icons.arrow_back, color: Palette.textColor
+        ),
+        onPressed: () => Navigator.pushNamed(context, '/question4'),
+      ),
     ),
 
 
@@ -88,7 +95,7 @@ class _question5State extends State<question5> {
               /*go to profile page page*/
               Navigator.pushNamed(context, '/Profile_Page');
             },
-              child: Text('Next',
+              child: Text('Sign Up',
                 style: TextStyle(
                   color: Palette.backgroundColor,
                   fontWeight: FontWeight.bold,
@@ -99,8 +106,6 @@ class _question5State extends State<question5> {
           ),
         ),
         /*end of next button */
-
-
 
 
       ],

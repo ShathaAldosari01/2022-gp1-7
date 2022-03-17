@@ -250,7 +250,7 @@ class _SignupState extends State<Signup> {
           ),
 
 
-          /*log out?*/
+          /*log in?*/
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [

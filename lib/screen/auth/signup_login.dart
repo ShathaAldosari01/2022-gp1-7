@@ -17,31 +17,33 @@ class _Signup_LoginState extends State<Signup_Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Palette.backgroundColor,
-      //fix overlode error
+      //fix overload error
       resizeToAvoidBottomInset: false,
       body:Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           /*add space in front */
           SizedBox(
-            height: 70,
+            height: 40,
           ),
           /*logo*/
           Container(
             // color: Colors.amber,
             child: Center(
-              child: Image.asset('assets/logoWithName.png'),
+              child: Image.asset('assets/logoWithName.png',
+              height: 200,
+                width: 300),
             ),
           ),
           /*شعار*/
           Container(
-            margin: EdgeInsets.fromLTRB(0,0,0,20),
+            margin: EdgeInsets.fromLTRB(0,10,0,50),
             child: Center(
               child:Text(
                 "A journey full of adventures",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
-                  fontSize: 25,
+                  fontSize: 20,
                   color: Palette.link,
                   fontFamily: 'Handlee',
                   letterSpacing: 2,
