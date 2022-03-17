@@ -170,7 +170,7 @@ class _SignupUsernameState extends State<SignupUsername> {
                                     }
                                     return null;
                                   },
-                                  /*controller for button enble*/
+                                  /*controller for button enable*/
                                   controller: _usernameController,
 
                                   //design

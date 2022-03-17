@@ -11,9 +11,8 @@ class question1 extends StatefulWidget {
 
 
 class _question1State extends State<question1> {
-
-  final items1 = ['item 1', 'item 2', 'item 3', 'item 4', 'item 5'];
-  String? value;
+    static const quest1 = <String> ['Yes.', 'No.'];
+    String selectedQuest1 = "";
 
 
   @override
@@ -26,14 +25,14 @@ class _question1State extends State<question1> {
       ),
 
 
-    body: Column(
-
+    body: ListView(
+      padding: EdgeInsets.symmetric(vertical: 16),
         children: [
         Container(
           padding: const EdgeInsets.symmetric(vertical: 10),
           child: const Center(
             child:Text(
-              "Tell us about yourself!",
+              "Tell Us About Yourself!",
               style: TextStyle(
                 fontSize: 30,
                 color: Palette.textColor,
@@ -44,11 +43,12 @@ class _question1State extends State<question1> {
         ),
 
           Container(
-            margin:  const EdgeInsets.symmetric(horizontal: 40),
+            margin:  const EdgeInsets.symmetric(horizontal: 20),
             padding: const EdgeInsets.symmetric(vertical: 5),
             child:const Center(
               child: Text(
-                "Answer the following questions to personalize your experience in Odyssey.",
+              //  "Answer the following to personalize your experience in Odyssey.",
+                "This information won't be listed in your profile.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
@@ -70,50 +70,25 @@ class _question1State extends State<question1> {
             padding: const EdgeInsets.symmetric(vertical: 40),
             child:const Center(
               child: Text(
-                "Question 1",
+                "Are you married?",
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 20,
                   color: Colors.black,
+                    fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
 
 
-
-      Container(
-
-        margin: EdgeInsets.all(20),
-       // width: 370,
-        padding: EdgeInsets.symmetric(horizontal:15, vertical:0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(7),
-          border: Border.all(color: Colors.grey, width: 1),
-        ),
-        child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-        value: value,
-        isExpanded: true,
-        iconSize: 36,
-        icon: Icon(Icons.arrow_drop_down, color: Colors.black),
-        items: items1.map(buildMenuItem).toList(),
-        onChanged: (value) => setState(() => this.value = value),
-      ),
-    ),
-    ),
-
-
-
-
-
+          buildRadios(),
 
 
 
 /*next button*/
           Container(
-
-            margin: EdgeInsets.symmetric(vertical: 70),
+            margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
             alignment: Alignment.center,
             width: 350,
             height: 50.0,
@@ -134,7 +109,7 @@ class _question1State extends State<question1> {
               height: 50.0,
               minWidth: 350,
               child: FlatButton(onPressed: (){
-                /*go to sign up page*/
+                /*go to question 2 page*/
                 Navigator.pushNamed(context, '/question2');
               },
                 child: Text('Next',
@@ -148,10 +123,6 @@ class _question1State extends State<question1> {
             ),
           ),
           /*end of next button */
-
-
-
-
   ],
     ),
   );
@@ -159,15 +130,22 @@ class _question1State extends State<question1> {
 
 
 
-
-
-  DropdownMenuItem<String> buildMenuItem(String item) =>
-      DropdownMenuItem(value: item,
-      child: Text(
-        item,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-      ),
+Widget buildRadios() => Column(
+  children: quest1.map(
+      (value){
+  return RadioListTile<String>(
+  value: value,
+  groupValue: selectedQuest1,
+  title: Text(value,
+   style: TextStyle(
+       fontSize: 20,
+       color: Palette.textColor),
+),
+  onChanged: (value) =>  setState(() => this.selectedQuest1 = value!),
+      );
+      },
+      ).toList(),
       );
 
-  }
+}
 

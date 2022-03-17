@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
-import 'package:gp1_7_2022/screen/auth/signup/question1.dart';
-import 'package:gp1_7_2022/screen/auth/signup/question2.dart';
-import 'package:gp1_7_2022/screen/auth/signup/question3.dart';
-import 'package:gp1_7_2022/screen/auth/signup/question4.dart';
-import 'package:gp1_7_2022/screen/auth/signup/question5.dart';
+import 'package:gp1_7_2022/screen/auth/signup/Questions/question1.dart';
+import 'package:gp1_7_2022/screen/auth/signup/Questions/question2.dart';
+import 'package:gp1_7_2022/screen/auth/signup/Questions/question3.dart';
+import 'package:gp1_7_2022/screen/auth/signup/Questions/question4.dart';
+import 'package:gp1_7_2022/screen/auth/signup/Questions/question5.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo.dart';
 import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
