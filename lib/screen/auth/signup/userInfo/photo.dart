@@ -33,6 +33,7 @@ class _PhotoState extends State<Photo> {
     });
 
     /*add to database*/
+
     try {
 
       var uid =   FirebaseAuth.instance.currentUser!.uid;
