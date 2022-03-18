@@ -104,7 +104,7 @@ class _Profile_pageState extends State<Profile_page> {
                   title: const Text("Settings"),
                   trailingIcon: const Icon(Icons.settings),
                   onPressed: (){
-                    Navigator.of(context).popAndPushNamed('/settings');
+                    Navigator.of(context).popAndPushNamed('/name');
 
 
                   },
@@ -135,26 +135,25 @@ class _Profile_pageState extends State<Profile_page> {
               children: [
                 Row(
                   children: [
-                    // CircleAvatar(
-                    //   backgroundColor: Palette.grey,
-                    //   backgroundImage: MemoryImage(userData['file'].cast<int>()!),
-                    // ),
+                    userData['photoPath']!="no"?
+                    CircleAvatar(
+                      backgroundColor: Palette.grey,
+                      backgroundImage:NetworkImage(userData['photoPath']),
+                        radius:44
+                    )
                     //user photo
-                    const Padding(
-                      padding: EdgeInsets.fromLTRB(0, 0, 40, 0),
-                      child: CircleAvatar(
-                      backgroundColor: Colors.white ,
-
-                        child:  Icon(
-                       Icons.account_circle_sharp,
-                       color: Colors.grey,
-                       size: 90,
+                    :CircleAvatar(
+                    backgroundColor: Colors.white ,
+                      radius: 44,
+                      child:  Icon(
+                     Icons.account_circle_sharp,
+                     color: Colors.grey,
+                     size: 90,
 
 
                     ),
 
 
-                      ),
                     ),
                     //end user photo
 
@@ -162,7 +161,6 @@ class _Profile_pageState extends State<Profile_page> {
                       flex: 7,
                       child: Column(
                         children: [
-                          SizedBox(height:40,),
                           //post, followers and following
                           Row(
                             mainAxisSize: MainAxisSize.max,

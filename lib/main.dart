@@ -6,7 +6,7 @@ import 'package:gp1_7_2022/screen/auth/signup/Questions/question2.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question3.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question4.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question5.dart';
-import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
 import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
 /*pages */
@@ -34,7 +34,7 @@ void main() async{
             // '/signupPassword':(context) => signupPassword(),
             '/signupBirthday':(context) => SignupBirthday(),
             '/signupUsername':(context) => SignupUsername(),
-           '/forget_password':(context) => forget_password(),
+            '/forget_password':(context) => forget_password(),
             '/name':(context) => name(),
             '/question1':(context) => question1(),
             '/question2':(context) => question2(),

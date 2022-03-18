@@ -2,10 +2,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
 
 // for picking up image from gallery
 pickImage(ImageSource source) async {
@@ -15,7 +19,7 @@ pickImage(ImageSource source) async {
     return await _file.readAsBytes();
   }
   print('No Image Selected');
-  return await getImageFileFromAssets('assets/img.png');
+  // return await getImageFileFromAssets('assets/img.png');
 }
 
 // for displaying snackbars
@@ -34,4 +38,12 @@ Future<File> getImageFileFromAssets(String path) async {
   await file.writeAsBytes(byteData.buffer.asUint8List(byteData.offsetInBytes, byteData.lengthInBytes));
 
   return file;
+}
+
+class StorageRepo {
+  FirebaseStorage customStorage = FirebaseStorage.instanceFor(
+      bucket: "gs://odyssey-f8a9d.appspot.com"
+  );
+
+
 }

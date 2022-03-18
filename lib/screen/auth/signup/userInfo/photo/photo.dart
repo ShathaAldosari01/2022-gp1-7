@@ -4,7 +4,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gp1_7_2022/screen/auth/signup/userInfo/utils.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/storageMethods.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/utils.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
@@ -25,6 +26,7 @@ class _PhotoState extends State<Photo> {
   //form
   final _formKey = GlobalKey<FormState>();
    Uint8List? _image;
+   String path = "no";
 
   void selectImage() async{
     Uint8List im= await pickImage(ImageSource.gallery);
@@ -35,15 +37,20 @@ class _PhotoState extends State<Photo> {
     /*add to database*/
 
     try {
+      /*go to sign up page*/
+      Navigator.pushNamed(context, '/question1');
 
       var uid =   FirebaseAuth.instance.currentUser!.uid;
       print(uid);
+
+      String p = await StorageMethods().uploadImageToStorage("profilePics", _image!, false);
+      setState(() {
+        path =p;
+      });
       await _firestore.collection("users").doc(uid).update({
-        'photo': _image,
+        'photoPath': p,
       });
 
-      /*go to sign up page*/
-      Navigator.pushNamed(context, '/question1');
 
     }catch(e){
       Alert(
@@ -124,10 +131,11 @@ class _PhotoState extends State<Photo> {
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 20),
                           child: Center(
-                            child:_image !=null?
+                            child:path !="no"?
                             CircleAvatar(
                               radius: 80,
-                              backgroundImage: MemoryImage(_image!),
+                              backgroundImage: NetworkImage(path),
+                              backgroundColor: Palette.lightgrey,
                             )
                                 : Icon(
                               Icons.account_circle_sharp,
@@ -243,6 +251,12 @@ class _PhotoState extends State<Photo> {
                               height: 50.0,
                               minWidth: 350,
                               child: FlatButton(onPressed: () async {
+                                var uid =   FirebaseAuth.instance.currentUser!.uid;
+                                print(uid);
+
+                                await _firestore.collection("users").doc(uid).update({
+                                  'photoPath': path,
+                                });
                                   /*go to sign up page*/
                                   Navigator.pushNamed(context, '/question1');
                               },
