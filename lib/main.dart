@@ -18,7 +18,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
-import 'package:gp1_7_2022/screen/settings.dart';
+import 'package:gp1_7_2022/screen/home/settings.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
