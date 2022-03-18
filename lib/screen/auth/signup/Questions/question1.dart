@@ -28,7 +28,7 @@ class _question1State extends State<question1> {
         icon: const Icon(
             Icons.arrow_back, color: Palette.textColor
         ),
-        onPressed: () => Navigator.pushNamed(context, '/signupUsername'),
+        onPressed: () => Navigator.pushNamed(context, '/photo'),
       ),
     ),
 

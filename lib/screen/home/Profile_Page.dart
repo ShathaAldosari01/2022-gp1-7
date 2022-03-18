@@ -135,6 +135,10 @@ class _Profile_pageState extends State<Profile_page> {
               children: [
                 Row(
                   children: [
+                    // CircleAvatar(
+                    //   backgroundColor: Palette.grey,
+                    //   backgroundImage: MemoryImage(userData['file'].cast<int>()!),
+                    // ),
                     //user photo
                     const Padding(
                       padding: EdgeInsets.fromLTRB(0, 0, 40, 0),

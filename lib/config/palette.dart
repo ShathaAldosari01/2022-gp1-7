@@ -9,6 +9,7 @@ class Palette{
   static const Color lightbuttonColor = Color(0xff8DE9ED);
   static const Color nameColor = Color(0xff527bdb);
   static const Color nameDisablColor = Color(0xffA6BAEA);
+  static const Color icongrey = Color(0xffdfdfdf);
   static const Color grey = Color(0xff9e9e9e);
   static const Color lightgrey = Color(0xfff9f9f9);
   static const Color midgrey = Color(0xffececec);

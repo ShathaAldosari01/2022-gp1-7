@@ -1,17 +1,68 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/utils.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
-class Photo extends StatelessWidget {
-  const Photo({Key? key}) : super(key: key);
+import 'package:image_picker/image_picker.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
+class Photo extends StatefulWidget {
+   Photo({Key? key}) : super(key: key);
 
+  @override
+  State<Photo> createState() => _PhotoState();
+}
+
+class _PhotoState extends State<Photo> {
+  //database
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //form
+  final _formKey = GlobalKey<FormState>();
+   Uint8List? _image;
+
+  void selectImage() async{
+    Uint8List im= await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = im;
+    });
+
+    /*add to database*/
+    try {
+
+      var uid =   FirebaseAuth.instance.currentUser!.uid;
+      print(uid);
+      await _firestore.collection("users").doc(uid).update({
+        'photo': _image,
+      });
+
+      /*go to sign up page*/
+      Navigator.pushNamed(context, '/question1');
+
+    }catch(e){
+      Alert(
+        context: context,
+        title: "Something went wrong!" ,
+        desc: e.toString(),
+
+      ).show();
+      print(e);
+    }
+
+
+
+  }
+
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Palette.backgroundColor,
 
       appBar: AppBar(
@@ -40,7 +91,7 @@ class Photo extends StatelessWidget {
                       // color: Colors.red,
                       child:Center(
                         child: Text(
-                          "Create Username",
+                          "Add profile photo",
                           style: TextStyle(
                             fontSize: 30,
                             color: Palette.textColor,
@@ -55,7 +106,7 @@ class Photo extends StatelessWidget {
                       // color: Colors.blue,
                       child:Center(
                         child: Text(
-                          "Pick a username for your new account.",
+                          "Add a profile photo so your friends know it's you.",
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 18,
@@ -65,95 +116,66 @@ class Photo extends StatelessWidget {
                       ),
                     ),
 
-                    /*form*/
-                    Form(
-                      child: Column(
-                          children:[ Column(
-                            children: [
-
-                              /*email*/
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                child: TextFormField(
-                                  //design
-                                  decoration: InputDecoration(
-
-                                    /*background color*/
-                                    fillColor: Palette.lightgrey,
-                                    filled: true,
-
-                                    /*hint*/
-                                    border: OutlineInputBorder(),
-                                    hintText: "Username",
-                                    hintStyle: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Palette.grey
-                                    ),
-
-                                    /*Border*/
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Palette.midgrey,
-                                      ),
-                                    ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Palette.midgrey,
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                  ),
-
-                                  //function
-                                  onChanged: (val){
-
-                                  },
-                                ),
-                              ),
-                              /*end of email*/
-
-
-                              /*next button*/
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                height: 50.0,
-                                /*button colors*/
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                  gradient: LinearGradient(
-                                      colors: [
-                                        Palette.buttonColor,
-                                        Palette.nameColor,
-                                      ]
+                    /*ceke icon */
+                    Stack(
+                      children: [
+                        /*icon*/
+                        Container(
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          child: Center(
+                            child:_image !=null?
+                            CircleAvatar(
+                              radius: 80,
+                              backgroundImage: MemoryImage(_image!),
+                            )
+                                : Icon(
+                              Icons.account_circle_sharp,
+                              size: 180,
+                              color: Palette.icongrey,
+                            ),
+                          ),
+                        ),
+                        /*end of the cake icon*/
+                        Positioned(
+                          bottom: 3,
+                          left: 180,
+                          child:
+                          /*add icon */
+                          Container(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SizedBox(width: double.infinity,),
+                                ShaderMask(
+                                  blendMode: BlendMode.srcATop,
+                                  shaderCallback: (bounds)=>
+                                      LinearGradient(
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomCenter,
+                                          colors: [
+                                            Palette.buttonColor,
+                                            Palette.nameColor,
+                                          ]
+                                      ).createShader(bounds),
+                                  child: Icon(
+                                    Icons.add_circle_outline,
+                                    size: 80,
                                   ),
                                 ),
-                                /*button*/
-                                child: ButtonTheme(
-                                  height: 50.0,
-                                  minWidth: 350,
-                                  child: FlatButton(onPressed: (){
-                                    /*go to sign up page*/
-                                    Navigator.pushNamed(context, '/question1');
-                                  },
-                                    child: Text('Next',
-                                      style: TextStyle(
-                                        color: Palette.backgroundColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
+                                SizedBox(
+                                  height: 20,
                                 ),
-                              ),
-                              /*end of next button */
-
-                            ],
-                          ),]
-                      ),
+                              ],
+                            ),
+                          ),
+                          /*end of the cake icon*/
+                        )
+                      ],
                     ),
-                    /*/form*/
+
+
+
                   ],
                 ),
               ),
@@ -164,37 +186,82 @@ class Photo extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Divider(
-                  height: 5,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:[
-                        //Already have an account?
-                        Text(
-                          "Already have an account? ",
-                          style: TextStyle(
-                            color: Palette.grey,
-                          ),
-                        ),
-                        //Log in
-                        InkWell(
-                          child: new Text(
-                            'Log In.',
-                            style: TextStyle(
-                              color: Palette.link,
-                              fontWeight: FontWeight.bold,
+                /*form*/
+                Form(
+                  key: _formKey,
+                  child: Column(
+                      children:[ Column(
+                        children: [
+
+                          /*next button*/
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 0, horizontal:40 ),
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 50.0,
+                            /*button colors*/
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                              gradient: LinearGradient(
+                                  colors: [
+                                    Palette.buttonColor,
+                                    Palette.nameColor,
+                                  ]
+                              ),
+                            ),
+                            /*button*/
+                            child: ButtonTheme(
+                              height: 50.0,
+                              minWidth: 350,
+                              child: FlatButton(
+                                 onPressed:
+                                /*select image */
+                                selectImage,
+
+                                child: Text('Add a photo',
+                                  style: TextStyle(
+                                    color: Palette.backgroundColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
                             ),
                           ),
-                          onTap: () => Navigator.pushNamed(context, '/login'),
-                        ),
+                          /*end of next button */
 
+                          /*next button*/
+                          Container(
+                            margin: EdgeInsets.fromLTRB(40, 4, 40, 20),
+                            alignment: Alignment.center,
+                            width: double.infinity,
+                            height: 50.0,
 
-                      ]
+                            /*button*/
+                            child: ButtonTheme(
+                              height: 50.0,
+                              minWidth: 350,
+                              child: FlatButton(onPressed: () async {
+                                  /*go to sign up page*/
+                                  Navigator.pushNamed(context, '/question1');
+                              },
+                                child: Text('Skip',
+                                  style: TextStyle(
+                                    color: Palette.buttonColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          /*end of next button */
+
+                        ],
+                      ),]
                   ),
-                )
+                ),
+                /*/form*/
               ],
             )
             //end of log in?

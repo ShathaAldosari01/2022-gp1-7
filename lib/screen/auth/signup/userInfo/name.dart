@@ -253,45 +253,6 @@ class _nameState extends State<name> {
               ),
             ),
 
-
-            /*log out?*/
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Divider(
-                  height: 5,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:[
-                        //Already have an account?
-                        Text(
-                          "Already have an account? ",
-                          style: TextStyle(
-                            color: Palette.grey,
-                          ),
-                        ),
-                        //Log in
-                        InkWell(
-                          child: new Text(
-                            'Log In.',
-                            style: TextStyle(
-                              color: Palette.link,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          onTap: () => Navigator.pushNamed(context, '/login'),
-                        ),
-
-
-                      ]
-                  ),
-                )
-              ],
-            )
-            //end of log in?
           ],
         ),
       ),

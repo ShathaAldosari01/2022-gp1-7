@@ -65,7 +65,13 @@ class _SignupUsernameState extends State<SignupUsername> {
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
         elevation: 0,//no shadow
-        automaticallyImplyLeading: false,//no arrow
+        /*back arrow */
+        leading: IconButton(
+          icon: const Icon(
+              Icons.arrow_back, color: Palette.textColor
+          ),
+          onPressed: () => Navigator.pushNamed(context, '/signupBirthday'),
+        ),
       ),
       //fix overload error
       resizeToAvoidBottomInset: false,
@@ -286,7 +292,6 @@ class _SignupUsernameState extends State<SignupUsername> {
                                 ),
                               ),
                               /*end of next button */
-
                             ],
                           ),]
                       ),
@@ -297,45 +302,6 @@ class _SignupUsernameState extends State<SignupUsername> {
               ),
             ),
 
-
-            /*log out?*/
-            Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Divider(
-                  height: 5,
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(vertical: 25, horizontal: 25),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children:[
-                        //Already have an account?
-                        Text(
-                          "Already have an account? ",
-                          style: TextStyle(
-                            color: Palette.grey,
-                          ),
-                        ),
-                        //Log in
-                        InkWell(
-                          child: new Text(
-                            'Log In.',
-                            style: TextStyle(
-                              color: Palette.link,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          onTap: () => Navigator.pushNamed(context, '/login'),
-                        ),
-
-
-                      ]
-                  ),
-                )
-              ],
-            )
-            //end of log in?
           ],
         ),
       ),

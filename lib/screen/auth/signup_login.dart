@@ -27,17 +27,20 @@ class _Signup_LoginState extends State<Signup_Login> {
             height: 40,
           ),
           /*logo*/
-          Container(
-            // color: Colors.amber,
-            child: Center(
-              child: Image.asset('assets/logoWithName.png',
-              height: 200,
-                width: 300),
+          Padding(
+            padding: const EdgeInsets.only(top: 40),
+            child: Container(
+              // color: Colors.amber,
+              child: Center(
+                child: Image.asset('assets/logoWithName.png',
+                height: 200,
+                  width: 300),
+              ),
             ),
           ),
           /*شعار*/
           Container(
-            margin: EdgeInsets.fromLTRB(0,10,0,50),
+            margin: EdgeInsets.fromLTRB(0,10,0,40),
             child: Center(
               child:Text(
                 "A journey full of adventures",
@@ -55,7 +58,7 @@ class _Signup_LoginState extends State<Signup_Login> {
 
           /*sign up button*/
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
+            margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
             alignment: Alignment.center,
             width: double.infinity,
             height: 50.0,
