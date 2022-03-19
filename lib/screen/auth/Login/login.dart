@@ -99,13 +99,13 @@ class _LoginState extends State<Login> {
                     margin: const EdgeInsets.all(14),
                     child: const Center(
                       child:Text(
-                        "Odyssey",
+                        "ODYSSY",
                         style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 50,
                           color: Palette.link,
-                       //   fontFamily: 'Handlee',
-                         // letterSpacing: 2,
+                         fontFamily: 'Anton',
+                         letterSpacing: 2,
                         ),
                       ),
                     ),
@@ -118,7 +118,7 @@ class _LoginState extends State<Login> {
 
                           /*email*/
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                             child: TextFormField(
                               //function
                               onChanged: (val){
@@ -172,7 +172,7 @@ class _LoginState extends State<Login> {
 
                           /*Password*/
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                             child: TextFormField(
                               //function
                               onChanged: (val){
@@ -281,7 +281,7 @@ class _LoginState extends State<Login> {
                     alignment: Alignment.topRight,
                     child:
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                       child: TextButton( onPressed: (){
                         Navigator.pushNamed(context, '/forget_password');
                       }, child: Text('Forgot password?',
@@ -298,7 +298,7 @@ class _LoginState extends State<Login> {
 
                   /*log in button*/
                   Container(
-                    margin: const EdgeInsets.symmetric( horizontal:50, vertical: 10),
+                    margin: const EdgeInsets.symmetric( horizontal:30, vertical: 10),
                     alignment: Alignment.center,
                     width: double.infinity,
                     height: 50.0,

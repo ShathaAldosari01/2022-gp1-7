@@ -113,6 +113,9 @@ flutter:
     - family: Handlee
       fonts:
         - asset: fonts/Handlee-Regular.ttf
+    - family: Anton
+      fonts:
+        - asset: fonts/Anton-Regular.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #

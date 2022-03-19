@@ -40,16 +40,16 @@ class _Signup_LoginState extends State<Signup_Login> {
           ),
           /*شعار*/
           Container(
-            margin: EdgeInsets.fromLTRB(0,10,0,40),
+            margin: EdgeInsets.fromLTRB(0,10,0,30),
             child: Center(
               child:Text(
                 "A journey full of adventures",
                 style: TextStyle(
-                  fontWeight: FontWeight.w900,
+                  fontWeight: FontWeight.w500,
                   fontSize: 20,
                   color: Palette.link,
-                  fontFamily: 'Handlee',
-                  letterSpacing: 2,
+                  // fontFamily: 'Anton',
+                  letterSpacing: 1,
                 ),
               ),
             ),

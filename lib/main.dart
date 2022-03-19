@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
@@ -19,6 +20,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/settings.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -43,14 +45,20 @@ void main() async{
             '/question5':(context) => question5(),
             '/photo':(context) => Photo(),
             '/settings':(context) => settings(),
+            '/Signup_Login':(context) => Signup_Login(),
           }
       )
   );
 }
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
 
+class _MainPageState extends State<MainPage> {
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   Widget build(BuildContext context) {
@@ -65,17 +73,20 @@ class MainPage extends StatelessWidget {
           }else if(snapshot.hasError){
             return const Center(child: Text("Something went wrong!"));
           }else if(snapshot.hasData){
-            if(FirebaseAuth.instance.currentUser!.emailVerified && FirebaseAuth.instance.currentUser!.uid != null ){
-              String uid = FirebaseAuth.instance.currentUser!.uid;
-              return  Profile_page(uid: uid );
-            }else{
-              String? x = FirebaseAuth.instance.currentUser!.email;
-              String y= x??" ";
-              return  ConfirmationCode(email: y);
+            var current = FirebaseAuth.instance.currentUser;
+            if(current!= null){
+              if(current.emailVerified && current.uid != null ){
+                return  Profile_page(uid: uid );
+              }else{
+                String? x = FirebaseAuth.instance.currentUser!.email;
+                String y= x??" ";
+                return  ConfirmationCode(email: y);
+              }
+            }else {
+              return Signup_Login();
             }
-          } else{
-            return const Signup_Login();
-
+          }else {
+            return Signup_Login();
           }
         },
       ),

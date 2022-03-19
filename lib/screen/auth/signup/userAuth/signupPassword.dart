@@ -382,6 +382,14 @@ class _signupPasswordState extends State<signupPassword> {
                                     await _firestore.collection("users").doc(cred.user!.uid).set({
                                       'email': widget.email,
                                       'uid': cred.user!.uid,
+                                      "username": '',
+                                      'birthday': '',
+                                      'name': '',
+                                      'bio': '',
+                                      'photoPath': 'no',
+                                      'questions': [],
+                                      'followers': [],
+                                      'following': [],
                                     });
 
                                     /*go to Profile_Page page*/

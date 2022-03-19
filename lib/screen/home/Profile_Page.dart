@@ -27,8 +27,8 @@ class _Profile_pageState extends State<Profile_page> {
   var userData = {};
   @override
   void initState() {
-    super.initState();
     getData();
+    super.initState();
   }
   /* get data method */
   getData() async {
@@ -36,10 +36,28 @@ class _Profile_pageState extends State<Profile_page> {
     if (widget.uid != null) {
       var userSnap = await FirebaseFirestore.instance.collection('users').doc(
           widget.uid).get();
-      userData = userSnap.data()!;
-      setState(() {
-        _isloaded = true;
-      });
+      if(userSnap.data()!=null) {
+        userData = userSnap.data()!;
+        print("in");
+        if (userData['name']
+            .toString()
+            .isEmpty) {
+          print("n0 name");
+          Navigator.of(context).popAndPushNamed('/name');
+        } else if (userData["birthday"]
+            .toString()
+            .isEmpty) {
+          Navigator.of(context).popAndPushNamed('/signupBirthday');
+        } else if (userData['username']
+            .toString()
+            .isEmpty) {
+          Navigator.of(context).popAndPushNamed('/signupUsername');
+        }
+        setState(() {
+          _isloaded = true;
+        });
+      }else
+        Navigator.of(context).popAndPushNamed('/Signup_Login');
     }
   }
     catch(e){
@@ -105,8 +123,6 @@ class _Profile_pageState extends State<Profile_page> {
                   trailingIcon: const Icon(Icons.settings),
                   onPressed: (){
                     Navigator.of(context).popAndPushNamed('/settings');
-
-
                   },
               ),
             ],
