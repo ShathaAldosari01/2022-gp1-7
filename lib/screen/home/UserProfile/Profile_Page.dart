@@ -38,6 +38,9 @@ class _Profile_pageState extends State<Profile_page> {
           widget.uid).get();
       if(userSnap.data()!=null) {
         userData = userSnap.data()!;
+        setState(() {
+          _isloaded = true;
+        });
         print("in");
         if (userData['name']
             .toString()
@@ -52,9 +55,7 @@ class _Profile_pageState extends State<Profile_page> {
             .isEmpty) {
           Navigator.of(context).popAndPushNamed('/signupUsername');
         }
-        setState(() {
-          _isloaded = true;
-        });
+
       }else
         Navigator.of(context).popAndPushNamed('/Signup_Login');
     }
