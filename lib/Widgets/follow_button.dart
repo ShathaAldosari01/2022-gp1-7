@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 class FollowButton extends StatelessWidget {
   final Function()? function;

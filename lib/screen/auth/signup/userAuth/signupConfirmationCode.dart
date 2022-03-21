@@ -10,7 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
 
 /*pages */
-import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
 // import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';

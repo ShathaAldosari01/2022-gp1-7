@@ -11,7 +11,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/Widgets/follow_button.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:gp1_7_2022/screen/home/settings.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
 
 class Profile_page extends StatefulWidget {
   final uid;
@@ -231,7 +231,9 @@ class _Profile_pageState extends State<Profile_page> {
                       backgroundColor: Palette.backgroundColor,
                       borderColor: Palette.grey,
                       textColor: Colors.black,
-                      function: () {},
+                      function: () {
+                        Navigator.of(context).popAndPushNamed('/editProfile');
+                      },
                     )
                   ],
                 ),

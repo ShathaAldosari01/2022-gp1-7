@@ -8,7 +8,7 @@ import 'package:gp1_7_2022/screen/auth/signup/Questions/question3.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question4.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question5.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
-import 'package:gp1_7_2022/screen/home/Profile_Page.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
@@ -19,7 +19,8 @@ import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
-import 'package:gp1_7_2022/screen/home/settings.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/editProfile.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,6 +47,7 @@ void main() async{
             '/photo':(context) => Photo(),
             '/settings':(context) => settings(),
             '/Signup_Login':(context) => Signup_Login(),
+            '/editProfile':(context) => EditProfile(),
           }
       )
   );
