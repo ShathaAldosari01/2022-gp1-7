@@ -47,7 +47,7 @@ void main() async{
             '/photo':(context) => Photo(),
             '/settings':(context) => settings(),
             '/Signup_Login':(context) => Signup_Login(),
-            '/editProfile':(context) => EditProfile(),
+            '/editProfile':(context) => EditProfile(uid: FirebaseAuth.instance.currentUser!.uid),
           }
       )
   );

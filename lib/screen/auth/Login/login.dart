@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 /*services */
@@ -96,7 +97,7 @@ class _LoginState extends State<Login> {
 
                 children: [
                   Container(
-                    margin: const EdgeInsets.all(14),
+                    // margin: const EdgeInsets.all(14),
                     child: const Center(
                       child:Text(
                         "ODYSSY",
@@ -274,6 +275,7 @@ class _LoginState extends State<Login> {
               flex: 6,
 
               child:Column(
+                mainAxisAlignment: MainAxisAlignment.start,
 
                 children: [
 
@@ -281,7 +283,7 @@ class _LoginState extends State<Login> {
                     alignment: Alignment.topRight,
                     child:
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                      margin: const EdgeInsets.symmetric(horizontal: 30),
                       child: TextButton( onPressed: (){
                         Navigator.pushNamed(context, '/forget_password');
                       }, child: Text('Forgot password?',
@@ -410,7 +412,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
