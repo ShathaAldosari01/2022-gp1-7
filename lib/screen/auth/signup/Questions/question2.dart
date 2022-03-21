@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 
@@ -14,6 +16,8 @@ class _question2State extends State<question2> {
   static const quest2 = <String> ['Yes.', 'No.'];
   String selectedQuest2 = "";
   bool isButtonActive = false;
+  //database
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
 
   @override
@@ -88,6 +92,11 @@ class _question2State extends State<question2> {
             height: 50.0,
             minWidth: 350,
             child: FlatButton(onPressed: isButtonActive? (){
+              if(this.selectedQuest2.toString().compareTo("No.")==0){
+                addAnswer("children", 0);
+              }else if(this.selectedQuest2.toString().compareTo("Yes.")==0){
+                addAnswer("children", 1);
+              }
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/question3');
             } :null,
@@ -131,6 +140,22 @@ class _question2State extends State<question2> {
       },
     ).toList(),
   );
+
+
+
+  Future<void> addAnswer(String question, int answer) async {
+    try{
+      var uid =   FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+      // List questions = (snap.data()! as dynamic)['questions'];
+      await _firestore.collection('users').doc(uid).update({
+        "questions."+question : answer
+      });
+
+    }catch(e){
+      print(e.toString());
+    }
+  }
 
 }
 

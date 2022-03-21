@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/model/SignUpCheckboxes.dart';
@@ -14,13 +16,15 @@ class question4 extends StatefulWidget {
 class _question4State extends State<question4> {
 
   final checkboxes = [
-    SignUpCheckboxes(title: 'Middle-eastern countries.'),
-    SignUpCheckboxes(title: 'Asian countries.'),
-    SignUpCheckboxes(title: 'European countries.'),
-    SignUpCheckboxes(title: 'American countries.'),
-    SignUpCheckboxes(title: 'African countries.'),
+    SignUpCheckboxes(title: 'Middle-eastern countries.', name: "Middle eastern"),
+    SignUpCheckboxes(title: 'Asian countries.', name: "Asian"),
+    SignUpCheckboxes(title: 'European countries.', name: "European"),
+    SignUpCheckboxes(title: 'American countries.', name: "American"),
+    SignUpCheckboxes(title: 'African countries.', name: "African"),
   ];
   bool isButtonActive = false;
+  //database
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -97,6 +101,15 @@ class _question4State extends State<question4> {
             height: 50.0,
             minWidth: 350,
             child: FlatButton(onPressed: isButtonActive? (){
+              checkboxes.forEach(
+                      (checkbox) async {
+                    if(checkbox.value){
+                      await addAnswer("countries",checkbox.name, 1);
+                    }else{
+                      await addAnswer("countries",checkbox.name, 0);
+                    }
+                  }
+              );
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/question5');
             } :null,
@@ -158,7 +171,18 @@ class _question4State extends State<question4> {
       )
   );
 
+  Future<void> addAnswer(String question,String q,  int answer) async {
+    try{
+      var uid =   FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+      await _firestore.collection('users').doc(uid).update({
+        "questions."+question+"."+q : answer
+      });
 
+    }catch(e){
+      print(e.toString());
+    }
+  }
 
 }
 

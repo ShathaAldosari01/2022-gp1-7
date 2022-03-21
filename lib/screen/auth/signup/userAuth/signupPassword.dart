@@ -28,7 +28,7 @@ class _signupPasswordState extends State<signupPassword> {
   String password = "",
          repassword="";
 
-  //for button disavle
+  //for button disable
   bool isPassEmpty= true,
       isReEmpty = true;
   bool isButtonActive = false;
@@ -387,7 +387,29 @@ class _signupPasswordState extends State<signupPassword> {
                                       'name': '',
                                       'bio': '',
                                       'photoPath': 'no',
-                                      'questions': [],
+                                      'questions': {
+                                        'married' : 0,
+                                        'children' : 0,
+                                        'purpose' : {
+                                          "Business" : 0,
+                                          "Tourism" : 0,
+                                          "Visiting family and friends" : 0,
+                                        },
+                                        'countries' : {
+                                          "Middle eastern" : 0,
+                                          "Asian" : 0,
+                                          "European" : 0,
+                                          "American" : 0,
+                                          "African" : 0,
+                                        },
+                                        'places' : {
+                                          "Restaurants and cafes" : 0,
+                                          "Museums" : 0,
+                                          "Shopping malls" : 0,
+                                          "Parks" : 0,
+                                          "Sports attractions" : 0,
+                                        },
+                                      },
                                       'followers': [],
                                       'following': [],
                                     });

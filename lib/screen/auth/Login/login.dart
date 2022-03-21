@@ -136,7 +136,7 @@ class _LoginState extends State<Login> {
                                 }
                                 return null;
                               },
-                              /*controller for button enble*/
+                              /*controller for button enable*/
                               controller: _emailController,
                               //design
                               decoration: const InputDecoration(

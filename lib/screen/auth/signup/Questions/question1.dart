@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 
@@ -14,7 +16,8 @@ class _question1State extends State<question1> {
     static const quest1 = <String> ['Yes.', 'No.'];
     String selectedQuest1 = "";
     bool isButtonActive = false;
-
+    //database
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -124,6 +127,11 @@ class _question1State extends State<question1> {
               height: 50.0,
               minWidth: 350,
               child: FlatButton(onPressed: isButtonActive? (){
+                if(this.selectedQuest1.toString().compareTo("No.")==0){
+                  addAnswer("married", 0);
+                }else if(this.selectedQuest1.toString().compareTo("Yes.")==0){
+                  addAnswer("married", 1);
+                }
                 /*go to question 2 page*/
                 Navigator.pushNamed(context, '/question2');
               } :null,
@@ -150,21 +158,42 @@ class _question1State extends State<question1> {
 Widget buildRadios() => Column(
   children: quest1.map(
       (value){
-  return RadioListTile<String>(
-  value: value,
-  groupValue: selectedQuest1,
-  title: Text(value,
-   style: TextStyle(
-       fontSize: 20,
-       color: Palette.textColor),
-),
-  onChanged: (value) => setState(() { this.selectedQuest1 = value!;
-  isButtonActive = true;
-      }),
-      );
+        return RadioListTile<String>(
+          value: value,
+          groupValue: selectedQuest1,
+          title: Text(value,
+            style: TextStyle(
+                fontSize: 20,
+                color: Palette.textColor
+            ),
+          ),
+          onChanged: (value) =>
+              setState(() {
+                this.selectedQuest1 = value!;
+                isButtonActive = true;
+              })
+          ,
+        );
       },
-      ).toList(),
-      );
+  ).toList(),
+);
+
+
+
+
+    Future<void> addAnswer(String question, int answer) async {
+      try{
+        var uid =   FirebaseAuth.instance.currentUser!.uid;
+        DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+        // List questions = (snap.data()! as dynamic)['questions'];
+        await _firestore.collection('users').doc(uid).update({
+          "questions."+question : answer
+        });
+
+      }catch(e){
+        print(e.toString());
+      }
+    }
 
 }
 

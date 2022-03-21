@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/model/SignUpCheckboxes.dart';
@@ -14,11 +16,13 @@ class question3 extends StatefulWidget {
 class _question3State extends State<question3> {
 
   final checkboxes = [
-    SignUpCheckboxes(title: 'Business.'),
-    SignUpCheckboxes(title: 'Tourism.'),
-    SignUpCheckboxes(title: 'Visiting family/friends.'),
+    SignUpCheckboxes(title: 'Business.', name: "Business"),
+    SignUpCheckboxes(title: 'Tourism.', name: "Tourism"),
+    SignUpCheckboxes(title: 'Visiting family/friends.', name: "Visiting family and friends"),
   ];
   bool isButtonActive = false;
+  //database
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -95,6 +99,15 @@ class _question3State extends State<question3> {
             height: 50.0,
             minWidth: 350,
             child: FlatButton(onPressed: isButtonActive? (){
+              checkboxes.forEach(
+                      (checkbox) async {
+                    if(checkbox.value){
+                      await addAnswer("purpose",checkbox.name, 1);
+                    }else{
+                      await addAnswer("purpose",checkbox.name, 0);
+                    }
+                  }
+              );
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/question4');
             } :null,
@@ -155,6 +168,18 @@ class _question3State extends State<question3> {
       )
   );
 
+  Future<void> addAnswer(String question,String q,  int answer) async {
+    try{
+      var uid =   FirebaseAuth.instance.currentUser!.uid;
+      DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+      await _firestore.collection('users').doc(uid).update({
+        "questions."+question+"."+q : answer
+      });
+
+    }catch(e){
+      print(e.toString());
+    }
+  }
 
 
 }
