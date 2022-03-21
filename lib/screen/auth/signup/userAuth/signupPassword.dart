@@ -28,6 +28,10 @@ class _signupPasswordState extends State<signupPassword> {
   String password = "",
          repassword="";
 
+  // for show/hide password
+  bool isHidden1 = true;
+  bool isHidden2 = true;
+
   //for button disable
   bool isPassEmpty= true,
       isReEmpty = true;
@@ -121,7 +125,7 @@ class _signupPasswordState extends State<signupPassword> {
                     padding: const EdgeInsets.symmetric( vertical: 10),
                     child: const Center(
                       child:  Text(
-                        'You need to enter your password twice, to make sure you enter it right.',
+                        'Use 8 or more characters with a mix of upper and lower case letters, numbers and symbols.',
                         style: TextStyle(
                           fontSize: 18,
                           color: Palette.grey,
@@ -198,14 +202,24 @@ class _signupPasswordState extends State<signupPassword> {
                               }
                               return null;
                             },
-                            /*controller for button enble*/
+                            /*controller for button enable*/
                             controller: _passwordController,
                             //design
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
 
                               /*background color*/
                               fillColor: Palette.lightgrey,
                               filled: true,
+
+                              /* password icon */
+                              prefixIcon: Icon(Icons.lock),
+
+                              /* show/hide password */
+                              suffixIcon: IconButton(
+                                icon:
+                                isHidden1 ? Icon(Icons.visibility) :  Icon(Icons.visibility_off),
+                                onPressed: togglePasswordVisibility1,
+                              ),
 
                               /*hint*/
                               border: OutlineInputBorder(),
@@ -229,12 +243,12 @@ class _signupPasswordState extends State<signupPassword> {
                               ),
                             ),
 
-                            obscureText: true,
+                            obscureText: isHidden1,
                           ),
                         ),
                         /*end of password*/
 
-                        /*password*/
+                        /*confirm password*/
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
@@ -301,14 +315,24 @@ class _signupPasswordState extends State<signupPassword> {
                               }
                               return null;
                             },
-                            /*controller for button enble*/
+                            /*controller for button enable*/
                             controller: _rePasswordController,
                             //design
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
 
                               /*background color*/
                               fillColor: Palette.lightgrey,
                               filled: true,
+
+                              /* password icon */
+                              prefixIcon: Icon(Icons.lock),
+
+                              /* show/hide password */
+                              suffixIcon: IconButton(
+                                icon:
+                                isHidden2 ? Icon(Icons.visibility) :  Icon(Icons.visibility_off),
+                                onPressed: togglePasswordVisibility2,
+                              ),
 
                               /*hint*/
                               border: OutlineInputBorder(),
@@ -332,7 +356,7 @@ class _signupPasswordState extends State<signupPassword> {
                               ),
                             ),
 
-                            obscureText: true,
+                            obscureText: isHidden2,
                           ),
                         ),
                         /*end of password*/
@@ -546,6 +570,10 @@ class _signupPasswordState extends State<signupPassword> {
       ),
     );
   }
+
+  void togglePasswordVisibility1 () => setState(() => isHidden1 = !isHidden1);
+  void togglePasswordVisibility2 () => setState(() => isHidden2 = !isHidden2);
+
 }
 
 

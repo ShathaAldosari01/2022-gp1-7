@@ -179,8 +179,6 @@ Widget buildRadios() => Column(
 );
 
 
-
-
     Future<void> addAnswer(String question, int answer) async {
       try{
         var uid =   FirebaseAuth.instance.currentUser!.uid;
