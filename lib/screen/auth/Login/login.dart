@@ -24,6 +24,9 @@ class _LoginState extends State<Login> {
   String email = "",
       password="";
 
+  // for show/hide password
+  bool isHidden = true;
+
   //for button disable
   bool isPassEmpty= true,
       isEmailEmpty = true;
@@ -100,13 +103,13 @@ class _LoginState extends State<Login> {
                     // margin: const EdgeInsets.all(14),
                     child: const Center(
                       child:Text(
-                        "ODYSSY",
+                        "ODYSSEY",
                         style: TextStyle(
-                          fontWeight: FontWeight.w500,
+                          // fontWeight: FontWeight.w500,
                           fontSize: 50,
                           color: Palette.link,
-                         fontFamily: 'Anton',
-                         letterSpacing: 2,
+                          fontFamily: 'Anton',
+                          letterSpacing: 2,
                         ),
                       ),
                     ),
@@ -145,6 +148,9 @@ class _LoginState extends State<Login> {
                                 /*background color*/
                                 fillColor: Palette.lightgrey,
                                 filled: true,
+
+                                /* email icon */
+                                prefixIcon: Icon(Icons.email),
 
                                 /*hint*/
                                 border: OutlineInputBorder(),
@@ -232,12 +238,22 @@ class _LoginState extends State<Login> {
                               /*controller for button enable*/
                               controller: _passwordController,
                               //design
-                              decoration: const InputDecoration(
+                              decoration:  InputDecoration(
 
                                 /*background color*/
                                 fillColor: Palette.lightgrey,
                                 filled: true,
 
+                                /* password icon */
+                                prefixIcon: Icon(Icons.lock),
+
+                                /* show/hide password */
+                                suffixIcon: IconButton(
+                                  icon:
+                                    isHidden ? Icon(Icons.visibility) :  Icon(Icons.visibility_off),
+                                  onPressed: togglePasswordVisibility,
+                                ),
+                                
                                 /*hint*/
                                 border: OutlineInputBorder(),
                                 hintText: "Password",
@@ -245,7 +261,7 @@ class _LoginState extends State<Login> {
                                     fontSize: 18.0,
                                     color: Palette.grey
                                 ),
-
+                                
                                 /*Border*/
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -259,7 +275,7 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                               ),
-                              obscureText: true,
+                              obscureText: isHidden,
                             ),
                           ),
                           /*end of password*/
@@ -458,4 +474,5 @@ class _LoginState extends State<Login> {
       ),
     );
   }
+  void togglePasswordVisibility () => setState(() => isHidden = !isHidden);
 }
