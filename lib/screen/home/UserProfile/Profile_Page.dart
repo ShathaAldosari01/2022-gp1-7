@@ -41,7 +41,6 @@ class _Profile_pageState extends State<Profile_page> {
         setState(() {
           _isloaded = true;
         });
-        print("in");
         if (userData['name']
             .toString()
             .isEmpty) {
