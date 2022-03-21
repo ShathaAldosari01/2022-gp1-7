@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
+//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
@@ -11,7 +11,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/Widgets/follow_button.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
+//import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
 
 class Profile_page extends StatefulWidget {
   final uid;
@@ -181,9 +181,9 @@ class _Profile_pageState extends State<Profile_page> {
                             mainAxisSize: MainAxisSize.max,
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              buildStatColumn(20, "posts"),
-                              buildStatColumn(150, "Followers"),
-                              buildStatColumn(10, "Following"),
+                              buildStatColumn(0, "posts"),
+                              buildStatColumn(0, "Followers"),
+                              buildStatColumn(0, "Following"),
                             ],
                           ),
                           //end post, followers and following
@@ -212,8 +212,8 @@ class _Profile_pageState extends State<Profile_page> {
                 Container(
                   alignment: Alignment.centerLeft,
                   padding: const EdgeInsets.fromLTRB(10, 1, 0, 0),
-                  child: const Text(
-                    'bio',
+                  child:  Text(
+                    userData['bio'],
                     style: TextStyle(
                       fontSize: 16,
                     ),
