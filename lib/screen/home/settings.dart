@@ -16,6 +16,8 @@ class settings extends StatefulWidget {
 }
 
 class _settingsState extends State<settings> {
+  //get user id
+  var uid =   FirebaseAuth.instance.currentUser!.uid;
 //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   @override
@@ -88,12 +90,10 @@ class _settingsState extends State<settings> {
                           ),
                         ),
                         onPressed: () {
-                        //get user id
-                          var uid =   FirebaseAuth.instance.currentUser!.uid;
-                          //delete user info in the database
-                          var delete = FirebaseFirestore.instance.collection('users').doc(uid).delete();
                           //delete user
                           FirebaseAuth.instance.currentUser!.delete();
+                          //delete user info in the database
+                          var delete = FirebaseFirestore.instance.collection('users').doc(uid).delete();
                           //go to sign up log in page
                           Navigator.pushNamed(context, '/Signup_Login');
                           print("user deleted");

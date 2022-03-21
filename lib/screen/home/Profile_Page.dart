@@ -42,7 +42,6 @@ class _Profile_pageState extends State<Profile_page> {
         if (userData['name']
             .toString()
             .isEmpty) {
-          print("n0 name");
           Navigator.of(context).popAndPushNamed('/name');
         } else if (userData["birthday"]
             .toString()
