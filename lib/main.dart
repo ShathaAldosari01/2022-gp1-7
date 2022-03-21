@@ -58,11 +58,16 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  String uid = FirebaseAuth.instance.currentUser!.uid;
+  String uid = "";
+
+
 
   @override
   Widget build(BuildContext context) {
 
+    if(FirebaseAuth.instance.currentUser != null){
+      uid = FirebaseAuth.instance.currentUser!.uid;
+    }
     return Scaffold(
       body: StreamBuilder<User?>(
 
