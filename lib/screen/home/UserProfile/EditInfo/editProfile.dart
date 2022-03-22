@@ -87,6 +87,7 @@ class _EditProfileState extends State<EditProfile> {
 
 
     }catch(e){
+      print(e.toString());
       Alert(
         context: context,
         title: "Something went wrong!" ,
@@ -169,10 +170,10 @@ class _EditProfileState extends State<EditProfile> {
                 Column(
                   children: [
                     //user photo
-                    userData['photoPath']!="no"?
+                    path!="no"?
                     CircleAvatar(
                         backgroundColor: Palette.grey,
-                        backgroundImage:NetworkImage(userData['photoPath']),
+                        backgroundImage:NetworkImage(path),
                         radius:45
                     )
 

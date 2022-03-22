@@ -52,9 +52,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
       DateTime younge = new DateTime(timeNow.year-12, timeNow.month, timeNow.day);
       bool isfuture = birthday.isAfter(younge);
 
-      print(birthday);
-      print(younge);
-
       setState(() {
         isButtonActive = !isfuture;//&&isNotoldest ;
       });
@@ -311,7 +308,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                               try {
 
                                 var uid =   FirebaseAuth.instance.currentUser!.uid;
-                                print(uid);
                                 await _firestore.collection("users").doc(uid).update({
                                   'birthday': birthday,
                                 });
@@ -356,9 +352,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                       bool isoldest = birthday.isBefore(oldest);
                       DateTime younge = new DateTime(timeNow.year-12, timeNow.month, timeNow.day);
                       bool isfuture = birthday.isAfter(younge);
-
-                      print(isoldest);
-                      print(isfuture);
 
                       setState(() {
                         isButtonActive = !isfuture&&!isoldest ;
