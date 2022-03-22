@@ -7,9 +7,9 @@ import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupConfirmationCode.da
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../../config/palette.dart';
-import '../../auth/signup/userInfo/photo/storageMethods.dart';
-import '../../auth/signup/userInfo/photo/utils.dart';
+import '../../../../config/palette.dart';
+import '../../../auth/signup/userInfo/photo/storageMethods.dart';
+import '../../../auth/signup/userInfo/photo/utils.dart';
 class EditProfile extends StatefulWidget {
   final uid;
   const EditProfile({Key? key, this.uid}) : super(key: key);
@@ -22,9 +22,10 @@ class _EditProfileState extends State<EditProfile> {
   bool _isloaded = false;
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  var padding= 0.8;
+  /*photo*/
   Uint8List? _image;
   String path = "no";
+  /*user data*/
   var userData = {};
 
 
@@ -33,32 +34,23 @@ class _EditProfileState extends State<EditProfile> {
     getData();
     super.initState();
   }
+
   /* get data method */
   getData() async {
     try {
       if (widget.uid != null) {
+        //we have uid
         var userSnap = await FirebaseFirestore.instance.collection('users').doc(
             widget.uid).get();
         if(userSnap.data()!=null) {
+          //we have user data
           userData = userSnap.data()!;
-          print("in");
-          if (userData['name']
-              .toString()
-              .isEmpty) {
-            Navigator.of(context).popAndPushNamed('/name');
-          } else if (userData["birthday"]
-              .toString()
-              .isEmpty) {
-            Navigator.of(context).popAndPushNamed('/signupBirthday');
-          } else if (userData['username']
-              .toString()
-              .isEmpty) {
-            Navigator.of(context).popAndPushNamed('/signupUsername');
-          }
+          //stop loading
           setState(() {
             path = userData['photoPath'];
             _isloaded = true;
           });
+
         }else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
       }
@@ -79,16 +71,16 @@ class _EditProfileState extends State<EditProfile> {
       _image = im;
     });
 
-    /*add to database*/
+    /*update to database*/
     try {
-
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      print(uid);
 
       String p = await StorageMethods().uploadImageToStorage("profilePics", _image!, false);
+
       setState(() {
         path =p;
       });
+
       await _firestore.collection("users").doc(uid).update({
         'photoPath': p,
       });
@@ -136,7 +128,7 @@ class _EditProfileState extends State<EditProfile> {
                   onPressed: () {
                     Navigator.of(context).popAndPushNamed('/Profile_Page');
                   },
-                  child: Text("Cancel", style: TextStyle(fontSize: 18),),
+                  child: Text("Back", style: TextStyle(fontSize: 18),),
                   shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
                 Padding(
@@ -153,12 +145,13 @@ class _EditProfileState extends State<EditProfile> {
                 FlatButton(
                   textColor: Palette.link,
                   onPressed: () {},
-                  child: Text("Dane", style: TextStyle(fontSize: 18),),
+                  child: Text("", style: TextStyle(fontSize: 18, color: Palette.backgroundColor),),
                   shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
 
               ],
             ),
+            //line
             Divider(
               height: 1,
             ),
@@ -267,17 +260,22 @@ class _EditProfileState extends State<EditProfile> {
                           /*value*/
                           //name
                           Container(
-                            margin: EdgeInsets.fromLTRB(15, 15, 15, 13),
-                            child:  Text(
-                                (userData['name'].toString().isNotEmpty)
-                                    ? userData['name']
-                                    : "Name",
-                                style:
-                                TextStyle(
-                                  color:(userData['name'].toString().isNotEmpty)
-                                      ? Palette.textColor
-                                      : Palette.grey,
-                                )
+                            // margin: EdgeInsets.fromLTRB(15, 15, 15, 13),
+                            child:  TextButton(
+                              onPressed: (){
+                                Navigator.of(context).popAndPushNamed('/editName');
+                              },
+                                      child: Text(
+                                          (userData['name'].toString().isNotEmpty)
+                                              ? userData['name']
+                                              : "Name",
+                                          style:
+                                          TextStyle(
+                                            color:(userData['name'].toString().isNotEmpty)
+                                                ? Palette.textColor
+                                                : Palette.grey,
+                                          )
+                                      ),
                             ),
                           ),
 
@@ -288,17 +286,22 @@ class _EditProfileState extends State<EditProfile> {
 
                           //username
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-                            child:  Text(
-                                (userData['username'].toString().isNotEmpty)
-                                    ? userData['username']
-                                    : "Username",
-                                style:
-                                TextStyle(
-                                  color:(userData['username'].toString().isNotEmpty)
-                                      ? Palette.textColor
-                                      : Palette.grey,
-                                )
+                            // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+                            child:  TextButton(
+                              onPressed: (){
+                                Navigator.of(context).popAndPushNamed('/editUsername');
+                              },
+                              child: Text(
+                                  (userData['username'].toString().isNotEmpty)
+                                      ? userData['username']
+                                      : "Username",
+                                  style:
+                                  TextStyle(
+                                    color:(userData['username'].toString().isNotEmpty)
+                                        ? Palette.textColor
+                                        : Palette.grey,
+                                  )
+                              ),
                             ),
                           ),
 
@@ -309,17 +312,23 @@ class _EditProfileState extends State<EditProfile> {
 
                           //bio
                           Container(
-                            margin: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-                            child: Text(
-                              (userData['bio'].toString().isNotEmpty)
-                                  ? userData['bio']
-                                  : "Bio",
-                              style:
-                                TextStyle(
-                                  color:(userData['bio'].toString().isNotEmpty)
-                                          ? Palette.textColor
-                                          : Palette.grey,
-                                )
+                            color: Colors.red,
+                            // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+                            child: TextButton(
+                              onPressed: (){
+                                Navigator.of(context).popAndPushNamed('/editBio');
+                              },
+                              child: Text(
+                                (userData['bio'].toString().isNotEmpty)
+                                    ? userData['bio']
+                                    : "Bio",
+                                style:
+                                  TextStyle(
+                                    color:(userData['bio'].toString().isNotEmpty)
+                                            ? Palette.textColor
+                                            : Palette.grey,
+                                  )
+                              ),
                             ),
                           ),
                         ],

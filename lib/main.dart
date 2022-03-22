@@ -8,6 +8,9 @@ import 'package:gp1_7_2022/screen/auth/signup/Questions/question3.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question4.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question5.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editBio.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editName.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editUsername.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
 /*pages */
@@ -19,7 +22,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
-import 'package:gp1_7_2022/screen/home/UserProfile/editProfile.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 void main() async{
@@ -30,24 +33,39 @@ void main() async{
           initialRoute: "/",
           routes: {
             "/": (context) => MainPage(),
-            "/signup": (context)=> Signup(),
+
+            /*Signup_Login*/
+            '/Signup_Login':(context) => Signup_Login(),
+
+            /*log in */
             '/login':(context)=>Login(),
-            '/Profile_Page':(context) => Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
-            // '/confirmationCode':(context) => ConfirmationCode(),
-            // '/signupPassword':(context) => signupPassword(),
+            '/forget_password':(context) => forget_password(),
+
+            /*sign up*/
+            "/signup": (context)=> Signup(),
+
+            /*user info*/
             '/signupBirthday':(context) => SignupBirthday(),
             '/signupUsername':(context) => SignupUsername(),
-            '/forget_password':(context) => forget_password(),
             '/name':(context) => name(),
+            '/photo':(context) => Photo(),
+
+            /*questions*/
             '/question1':(context) => question1(),
             '/question2':(context) => question2(),
             '/question3':(context) => question3(),
             '/question4':(context) => question4(),
             '/question5':(context) => question5(),
-            '/photo':(context) => Photo(),
+
+            /*profile*/
+            '/Profile_Page':(context) => Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
             '/settings':(context) => settings(),
-            '/Signup_Login':(context) => Signup_Login(),
+
+            /*edit profile*/
             '/editProfile':(context) => EditProfile(uid: FirebaseAuth.instance.currentUser!.uid),
+            '/editName':(context) => EditName(uid: FirebaseAuth.instance.currentUser!.uid),
+            '/editUsername':(context) => EditUsername(uid: FirebaseAuth.instance.currentUser!.uid),
+            '/editBio':(context) => EditBio(uid: FirebaseAuth.instance.currentUser!.uid),
           }
       )
   );
