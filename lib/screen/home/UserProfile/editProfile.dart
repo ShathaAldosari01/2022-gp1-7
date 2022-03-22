@@ -83,7 +83,6 @@ class _EditProfileState extends State<EditProfile> {
     try {
 
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      print(uid);
 
       String p = await StorageMethods().uploadImageToStorage("profilePics", _image!, false);
       setState(() {
@@ -95,6 +94,7 @@ class _EditProfileState extends State<EditProfile> {
 
 
     }catch(e){
+      print(e.toString());
       Alert(
         context: context,
         title: "Something went wrong!" ,
@@ -176,10 +176,10 @@ class _EditProfileState extends State<EditProfile> {
                 Column(
                   children: [
                     //user photo
-                    userData['photoPath']!="no"?
+                    path!="no"?
                     CircleAvatar(
                         backgroundColor: Palette.grey,
-                        backgroundImage:NetworkImage(userData['photoPath']),
+                        backgroundImage:NetworkImage(path),
                         radius:45
                     )
 

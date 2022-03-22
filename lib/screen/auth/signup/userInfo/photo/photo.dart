@@ -155,7 +155,7 @@ class _PhotoState extends State<Photo> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                SizedBox(width: double.infinity,),
+                                // SizedBox(width: double.infinity,),
                                 ShaderMask(
                                   blendMode: BlendMode.srcATop,
                                   shaderCallback: (bounds)=>
