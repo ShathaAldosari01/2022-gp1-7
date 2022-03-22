@@ -185,6 +185,7 @@ class _EditProfileState extends State<EditProfile> {
                               color: Colors.grey,
                               size: 90,
                            ),
+
                         ),
                         //end user photo
 
