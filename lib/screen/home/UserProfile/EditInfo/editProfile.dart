@@ -188,7 +188,6 @@ class _EditProfileState extends State<EditProfile> {
 
                         ),
                         //end user photo
-
                     /*change phofile photo*/
                     TextButton(
                       onPressed:
