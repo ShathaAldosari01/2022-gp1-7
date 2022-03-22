@@ -313,7 +313,6 @@ class _EditProfileState extends State<EditProfile> {
 
                           //bio
                           Container(
-                            color: Colors.red,
                             // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             child: TextButton(
                               onPressed: (){
