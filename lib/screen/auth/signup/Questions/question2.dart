@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 
 
@@ -18,6 +19,57 @@ class _question2State extends State<question2> {
   bool isButtonActive = false;
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  int children = -1;
+  //user id
+  var uid= FirebaseAuth.instance.currentUser!.uid;
+  /*user data*/
+  var userData = {};
+
+  /* get data method */
+  getData() async {
+    try {
+      if (uid != null) {
+        //we have uid
+        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+            uid).get();
+        if(userSnap.data()!=null) {
+          //we have user data
+          userData = userSnap.data()!;
+
+          setState(() {
+            children =  userData['questions']["children"];
+            print(children.toString());
+            if(children.toString().compareTo("0")==0){
+              this.selectedQuest2 = "No.";
+              isButtonActive = true;
+            } if(children.toString().compareTo("1")==0){
+              this.selectedQuest2 = "Yes.";
+              isButtonActive = true;
+            }
+          });
+
+        }else
+          Navigator.of(context).popAndPushNamed('/Signup_Login');
+      }
+    }
+    catch(e){
+      Alert(
+        context: context,
+        title: "Something went wrong!",
+        desc: e.toString(),
+      ).show();
+    }
+
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    //getting user info
+    getData();
+
+  }
 
 
   @override

@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 
 
@@ -19,6 +20,59 @@ class _question1State extends State<question1> {
     //database
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+
+    int married = -1;
+    //user id
+    var uid= FirebaseAuth.instance.currentUser!.uid;
+    /*user data*/
+    var userData = {};
+
+    /* get data method */
+    getData() async {
+      try {
+        if (uid != null) {
+          //we have uid
+          var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+              uid).get();
+          if(userSnap.data()!=null) {
+            //we have user data
+            userData = userSnap.data()!;
+
+            setState(() {
+              married =  userData['questions']["married"];
+              print(married.toString());
+              if(married.toString().compareTo("0")==0){
+                this.selectedQuest1 = "No.";
+                isButtonActive = true;
+              } if(married.toString().compareTo("1")==0){
+                this.selectedQuest1 = "Yes.";
+                isButtonActive = true;
+              }
+            });
+
+          }else
+            Navigator.of(context).popAndPushNamed('/Signup_Login');
+        }
+      }
+      catch(e){
+        Alert(
+          context: context,
+          title: "Something went wrong!",
+          desc: e.toString(),
+        ).show();
+      }
+
+    }
+
+    @override
+    void initState(){
+      super.initState();
+      //getting user info
+      getData();
+
+    }
+
+
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: Palette.backgroundColor,
@@ -26,13 +80,7 @@ class _question1State extends State<question1> {
       backgroundColor: Palette.backgroundColor,
       foregroundColor: Palette.textColor,
       elevation: 0,//no shadow
-      /*back arrow */
-      leading: IconButton(
-        icon: const Icon(
-            Icons.arrow_back, color: Palette.textColor
-        ),
-        onPressed: () => Navigator.pushNamed(context, '/photo'),
-      ),
+      automaticallyImplyLeading: false,//no arrow
     ),
 
 
@@ -58,8 +106,7 @@ class _question1State extends State<question1> {
             padding: const EdgeInsets.symmetric(vertical: 5),
             child:const Center(
               child: Text(
-              //  "Answer the following to personalize your experience in Odyssey.",
-                "This information won't be listed in your profile.",
+               "Answer the following to personalize your experience in Odyssey.",
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 18,
@@ -70,9 +117,20 @@ class _question1State extends State<question1> {
           ),
 
 
-
-
-
+          Container(
+            margin:  const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child:const Center(
+              child: Text(
+                "Note: Data won't be displayed in your profile.",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Palette.grey,
+                ),
+              ),
+            ),
+          ),
 
 
 
@@ -147,10 +205,9 @@ class _question1State extends State<question1> {
           ),
           /*end of next button */
 
-
-  ],
-    ),
-  );
+      ],
+        ),
+      );
 
 
 

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/model/SignUpCheckboxes.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 
 
@@ -25,6 +26,97 @@ class _question5State extends State<question5> {
   bool isButtonActive = false;
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  int a= 0, b= 0, c= 0, d = 0 , e= 0;
+  //user id
+  var uid= FirebaseAuth.instance.currentUser!.uid;
+  /*user data*/
+  var userData = {};
+
+  /* get data method */
+  getData() async {
+    try {
+      if (uid != null) {
+        //we have uid
+        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+            uid).get();
+        if(userSnap.data()!=null) {
+          //we have user data
+          userData = userSnap.data()!;
+          print(uid);
+
+          setState(() {
+            a =  userData['questions']["places"]["Restaurants and cafes"];
+            b =  userData['questions']["places"]["Museums"];
+            c =  userData['questions']["places"]["Shopping malls"];
+            d =  userData['questions']["places"]["Parks"];
+            e =  userData['questions']["places"]["Sports attractions"];
+
+
+            //a
+            if(a.toString().compareTo("0")==0){
+              checkboxes[0].value= false;
+            }
+            if(a.toString().compareTo("1")==0){
+              checkboxes[0].value= true;
+              isButtonActive = true;
+            }
+            //b
+            if(b.toString().compareTo("0")==0){
+              checkboxes[1].value= false;
+            }
+            if(b.toString().compareTo("1")==0){
+              checkboxes[1].value= true;
+              isButtonActive = true;
+            }
+            //c
+            if(c.toString().compareTo("0")==0){
+              checkboxes[2].value= false;
+            }
+            if(c.toString().compareTo("1")==0){
+              checkboxes[2].value= true;
+              isButtonActive = true;
+            }
+            //d
+            if(d.toString().compareTo("0")==0){
+              checkboxes[3].value= false;
+            }
+            if(d.toString().compareTo("1")==0){
+              checkboxes[3].value= true;
+              isButtonActive = true;
+            }
+            //e
+            if(e.toString().compareTo("0")==0){
+              checkboxes[4].value= false;
+            }
+            if(e.toString().compareTo("1")==0){
+              checkboxes[4].value= true;
+              isButtonActive = true;
+            }
+
+          });
+
+        }else
+          Navigator.of(context).popAndPushNamed('/Signup_Login');
+      }
+    }
+    catch(e){
+      Alert(
+        context: context,
+        title: "Something went wrong!",
+        desc: e.toString(),
+      ).show();
+    }
+
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    //getting user info
+    getData();
+
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -113,7 +205,7 @@ class _question5State extends State<question5> {
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/Profile_Page');
             } :null,
-              child: Text('Sign Up',
+              child: Text('Done',
                 style: TextStyle(
                   color: Palette.backgroundColor,
                   fontWeight: FontWeight.bold,

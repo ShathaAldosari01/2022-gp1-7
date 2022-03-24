@@ -83,7 +83,7 @@ class _signupPasswordState extends State<signupPassword> {
         backgroundColor: Palette.backgroundColor,
         foregroundColor: Palette.textColor,
         elevation: 0,//no shadow
-        /*back arowe */
+        /*back arrow */
         leading: IconButton(
           icon: const Icon(
               Icons.arrow_back, color: Palette.textColor
@@ -91,7 +91,7 @@ class _signupPasswordState extends State<signupPassword> {
           onPressed: () => Navigator.pushNamed(context, '/signup'),
         ),
       ),
-      //fix overloade error
+      //fix overload error
       resizeToAvoidBottomInset: false,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -412,8 +412,8 @@ class _signupPasswordState extends State<signupPassword> {
                                       'bio': '',
                                       'photoPath': 'no',
                                       'questions': {
-                                        'married' : 0,
-                                        'children' : 0,
+                                        'married' : -1,
+                                        'children' : -1,
                                         'purpose' : {
                                           "Business" : 0,
                                           "Tourism" : 0,
@@ -527,7 +527,7 @@ class _signupPasswordState extends State<signupPassword> {
             ),
           ),
 
-          /*log out?*/
+          /*log in?*/
           Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -564,7 +564,7 @@ class _signupPasswordState extends State<signupPassword> {
               )
             ],
           )
-          //ean of login?
+          //end of login?
 
         ],
       ),
