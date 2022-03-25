@@ -150,7 +150,7 @@ class _LoginState extends State<Login> {
                                 filled: true,
 
                                 /* email icon */
-                                prefixIcon: Icon(Icons.email),
+                                prefixIcon: Icon(Icons.email, color: Colors.grey),
 
                                 /*hint*/
                                 border: OutlineInputBorder(),
@@ -245,12 +245,12 @@ class _LoginState extends State<Login> {
                                 filled: true,
 
                                 /* password icon */
-                                prefixIcon: Icon(Icons.lock),
+                                prefixIcon: Icon(Icons.lock, color: Colors.grey),
 
                                 /* show/hide password */
                                 suffixIcon: IconButton(
                                   icon:
-                                    isHidden ? Icon(Icons.visibility) :  Icon(Icons.visibility_off),
+                                    isHidden ? Icon(Icons.visibility, color: Colors.grey) :  Icon(Icons.visibility_off, color: Colors.grey),
                                   onPressed: togglePasswordVisibility,
                                 ),
                                 

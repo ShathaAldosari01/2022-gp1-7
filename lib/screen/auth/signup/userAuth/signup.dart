@@ -152,7 +152,7 @@ class _SignupState extends State<Signup> {
                                   filled: true,
 
                                   /* email icon */
-                                  prefixIcon: Icon(Icons.email),
+                                  prefixIcon: Icon(Icons.email, color: Colors.grey),
 
                                   /*hint*/
                                   border: OutlineInputBorder(),

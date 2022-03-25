@@ -212,12 +212,12 @@ class _signupPasswordState extends State<signupPassword> {
                               filled: true,
 
                               /* password icon */
-                              prefixIcon: Icon(Icons.lock),
+                              prefixIcon: Icon(Icons.lock, color: Colors.grey),
 
                               /* show/hide password */
                               suffixIcon: IconButton(
                                 icon:
-                                isHidden1 ? Icon(Icons.visibility) :  Icon(Icons.visibility_off),
+                                isHidden1 ? Icon(Icons.visibility, color: Colors.grey) :  Icon(Icons.visibility_off, color: Colors.grey),
                                 onPressed: togglePasswordVisibility1,
                               ),
 
@@ -325,12 +325,12 @@ class _signupPasswordState extends State<signupPassword> {
                               filled: true,
 
                               /* password icon */
-                              prefixIcon: Icon(Icons.lock),
+                              prefixIcon: Icon(Icons.lock, color: Colors.grey),
 
                               /* show/hide password */
                               suffixIcon: IconButton(
                                 icon:
-                                isHidden2 ? Icon(Icons.visibility) :  Icon(Icons.visibility_off),
+                                isHidden2 ? Icon(Icons.visibility, color: Colors.grey) :  Icon(Icons.visibility_off, color: Colors.grey),
                                 onPressed: togglePasswordVisibility2,
                               ),
 
