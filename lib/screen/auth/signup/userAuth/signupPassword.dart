@@ -2,10 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 /*services */
-import 'package:gp1_7_2022/screen/services/auth.dart';
+
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupConfirmationCode.dart';
-import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -20,7 +19,6 @@ class signupPassword extends StatefulWidget {
 
 class _signupPasswordState extends State<signupPassword> {
   //for service
-  final AuthService _auth = AuthService();
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
 
@@ -324,6 +322,7 @@ class _signupPasswordState extends State<signupPassword> {
                               fillColor: Palette.lightgrey,
                               filled: true,
 
+
                               /* password icon */
                               prefixIcon: Icon(Icons.lock, color: Colors.grey),
 
@@ -389,7 +388,7 @@ class _signupPasswordState extends State<signupPassword> {
                           child: ButtonTheme(
                             height: 50.0,
                             minWidth: 350,
-                            child: FlatButton(
+                            child: TextButton(
                               onPressed:isButtonActive
                                   ?() async {
                                 if(_formKey.currentState!.validate()){
