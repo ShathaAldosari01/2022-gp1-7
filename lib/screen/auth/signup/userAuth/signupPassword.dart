@@ -516,8 +516,6 @@ class _signupPasswordState extends State<signupPassword> {
                           ),
                         ),
                         /*end of next button */
-
-
                       ],
                     ),
                   ),
