@@ -10,6 +10,9 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../../../config/palette.dart';
 import '../../../auth/signup/userInfo/photo/storageMethods.dart';
 import '../../../auth/signup/userInfo/photo/utils.dart';
+import 'package:flutter/cupertino.dart';
+
+
 class EditProfile extends StatefulWidget {
   final uid;
   const EditProfile({Key? key, this.uid}) : super(key: key);
@@ -198,6 +201,9 @@ class _EditProfileState extends State<EditProfile> {
                           'Change profile photo',
                         style: TextStyle(
                           color: Palette.link,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold
+
                         ),
                       ),
                     ),
@@ -225,7 +231,7 @@ class _EditProfileState extends State<EditProfile> {
                             child: Text(
                               "Name",
                               style: TextStyle(
-
+                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -236,7 +242,7 @@ class _EditProfileState extends State<EditProfile> {
                             child: Text(
                               "Username",
                               style: TextStyle(
-
+                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -247,7 +253,7 @@ class _EditProfileState extends State<EditProfile> {
                             child: Text(
                               "Bio",
                               style: TextStyle(
-
+                                fontSize: 16,
                               ),
                             ),
                           ),
@@ -272,9 +278,11 @@ class _EditProfileState extends State<EditProfile> {
                                               : "Name",
                                           style:
                                           TextStyle(
+                                            fontSize: 16,
                                             color:(userData['name'].toString().isNotEmpty)
                                                 ? Palette.textColor
                                                 : Palette.grey,
+
                                           )
                                       ),
                             ),
@@ -301,6 +309,7 @@ class _EditProfileState extends State<EditProfile> {
                                     color:(userData['username'].toString().isNotEmpty)
                                         ? Palette.textColor
                                         : Palette.grey,
+                                    fontSize: 16,
                                   )
                               ),
                             ),
@@ -327,6 +336,7 @@ class _EditProfileState extends State<EditProfile> {
                                     color:(userData['bio'].toString().isNotEmpty)
                                             ? Palette.textColor
                                             : Palette.grey,
+                                    fontSize: 16,
                                   )
                               ),
                             ),
@@ -336,6 +346,33 @@ class _EditProfileState extends State<EditProfile> {
                     )
                   ],
                 ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    /*line*/
+                    Divider(
+                      height: 4,
+                      color: Palette.grey,
+                    ),
+
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                      child: TextButton(
+                          onPressed: (){
+                            Navigator.of(context).popAndPushNamed('/question1');
+                          },
+                          child:Text(
+                            "Edit Answers",
+                            style: TextStyle(
+                                color: Palette.link,
+                                fontSize: 16
+                            ),
+                          )
+                      ),
+                    ),
+                  ],
+                )
 
               ],
             ),
