@@ -27,6 +27,47 @@ class _PhotoState extends State<Photo> {
   final _formKey = GlobalKey<FormState>();
    Uint8List? _image;
    String path = "no";
+  //user id
+  var uid= FirebaseAuth.instance.currentUser!.uid;
+  /*user data*/
+  var userData = {};
+
+  /* get data method */
+  getData() async {
+    try {
+      if (uid != null) {
+        //we have uid
+        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+            uid).get();
+        if(userSnap.data()!=null) {
+          //we have user data
+          userData = userSnap.data()!;
+          //set img path to path
+          setState(() {
+            path = userData['photoPath'].toString();
+          });
+
+        }else
+          Navigator.of(context).popAndPushNamed('/Signup_Login');
+      }
+    }
+    catch(e){
+      Alert(
+        context: context,
+        title: "Something went wrong!",
+        desc: e.toString(),
+      ).show();
+    }
+
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    //getting user info
+    getData();
+
+  }
 
   void selectImage() async{
     Uint8List im= await pickImage(ImageSource.gallery);
@@ -150,7 +191,7 @@ class _PhotoState extends State<Photo> {
                           left: 180,
                           child:
                           /*add icon */
-                          Container(
+                          path =="no"?Container(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -177,7 +218,7 @@ class _PhotoState extends State<Photo> {
                                 ),
                               ],
                             ),
-                          ),
+                          ):SizedBox(height: 1,),
                           /*end of the cake icon*/
                         )
                       ],
@@ -251,12 +292,7 @@ class _PhotoState extends State<Photo> {
                               height: 50.0,
                               minWidth: 350,
                               child: FlatButton(onPressed: () async {
-                                var uid =   FirebaseAuth.instance.currentUser!.uid;
-                                print(uid);
 
-                                await _firestore.collection("users").doc(uid).update({
-                                  'photoPath': path,
-                                });
                                   /*go to sign up page*/
                                   Navigator.pushNamed(context, '/question1');
                               },

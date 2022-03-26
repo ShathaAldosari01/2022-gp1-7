@@ -20,31 +20,69 @@ class name extends StatefulWidget {
 class _nameState extends State<name> {
   //name
   String name="";
+  late TextEditingController _nameController ;
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  //name
-  late TextEditingController _nameController ;
-  //
+  //button
   bool isButtonActive = false;
   //form
   final _formKey = GlobalKey<FormState>();
+  //user id
+  var uid= FirebaseAuth.instance.currentUser!.uid;
+  /*user data*/
+  var userData = {};
+
+  /* get data method */
+  getData() async {
+    try {
+      if (uid != null) {
+        //we have uid
+        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+            uid).get();
+        if(userSnap.data()!=null) {
+          //we have user data
+          userData = userSnap.data()!;
+          setState(() {
+            if(userData['name'].toString().isNotEmpty){
+              name = userData['name'].toString();
+              _nameController = TextEditingController(text:userData['name'].toString());
+              isButtonActive= true;
+            }else name ="";
+          });
+
+          _nameController.addListener(() {
+            final isnameNotEmpty = _nameController.text.isNotEmpty ;
+
+            setState(() {
+              isButtonActive = isnameNotEmpty;
+            });
+          });
+
+        }else
+          Navigator.of(context).popAndPushNamed('/Signup_Login');
+      }
+    }
+    catch(e){
+      Alert(
+        context: context,
+        title: "Something went wrong!",
+        desc: e.toString(),
+      ).show();
+    }
+
+  }
 
   @override
   void initState(){
     super.initState();
+    //getting user info
+    getData();
 
+    //this to know if the user full the name filed to disabile the button
     _nameController = TextEditingController();
 
-    _nameController.addListener(() {
-      final isnameNotEmpty = _nameController.text.isNotEmpty ;
-
-      setState(() {
-        isButtonActive = isnameNotEmpty;
-      });
-    });
-
   }
-
+//this method > for controler > for naem
   @override
   void dispose(){
     _nameController.dispose();
@@ -59,13 +97,17 @@ class _nameState extends State<name> {
       key: _scaffoldKey,
       backgroundColor: Palette.backgroundColor,
 
+      //header
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
         elevation: 0,//no shadow
         automaticallyImplyLeading: false,//no arrow
       ),
+
       //fix overload error
       resizeToAvoidBottomInset: false,
+
+      //body
       body: Container(
         child: Column(
 
@@ -131,6 +173,7 @@ class _nameState extends State<name> {
                                         name = val;
                                       });
                                     },
+
                                     /*value*/
                                     validator: (val){
                                       if(val!.isEmpty){
@@ -138,7 +181,7 @@ class _nameState extends State<name> {
                                       }
                                       return null;
                                     },
-                                    /*controller for button enble*/
+                                    /*controller for button enable*/
                                     controller: _nameController,
 
                                     //design

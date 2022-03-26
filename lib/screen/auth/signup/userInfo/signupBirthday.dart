@@ -25,10 +25,9 @@ class SignupBirthday extends StatefulWidget {
 
 class _SignupBirthdayState extends State<SignupBirthday> {
   //date
-  // DateTime now = DateTime.now();
   DateTime birthday  = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   String _dataFormate = DateFormat.yMMMMd('en_US').format(DateTime.now());
-  //date contro
+  //date controller
   late TextEditingController _birthdayController;
   //button
   bool isButtonActive = false;
@@ -36,35 +35,54 @@ class _SignupBirthdayState extends State<SignupBirthday> {
   final _formKey = GlobalKey<FormState>();
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //user id
+  var uid= FirebaseAuth.instance.currentUser!.uid;
+  /*user data*/
+  var userData = {};
 
+  /* get data method */
+  getData() async {
+    try {
+      if (uid != null) {
+        //we have uid
+        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+            uid).get();
+        if(userSnap.data()!=null) {
+          //we have user data
+          userData = userSnap.data()!;
+
+          //use value
+          setState(() {
+            if(userData['birthday'].toString().isNotEmpty){
+              birthday = userData['birthday'].toDate();
+              _dataFormate = DateFormat.yMMMMd('en_US').format(userData['birthday'].toDate());
+              isButtonActive= true;
+            }
+          });
+
+        }else
+          Navigator.of(context).popAndPushNamed('/Signup_Login');
+      }
+    }
+    catch(e){
+      Alert(
+        context: context,
+        title: "Something went wrong!",
+        desc: e.toString(),
+      ).show();
+    }
+
+  }
 
   @override
   void initState(){
     super.initState();
-
-    _birthdayController = TextEditingController();
-
-    _birthdayController.addListener(() {
-
-      DateTime timeNow = DateTime.now();
-      // DateTime oldest = new DateTime(timeNow.year+100, timeNow.month, timeNow.day);
-      // bool isNotoldest = birthday.isBefore(oldest);
-      DateTime younge = new DateTime(timeNow.year-12, timeNow.month, timeNow.day);
-      bool isfuture = birthday.isAfter(younge);
-
-      setState(() {
-        isButtonActive = !isfuture;//&&isNotoldest ;
-      });
-    });
+    //getting user info
+    getData();
 
   }
 
-  @override
-  void dispose(){
-    _birthdayController.dispose();
 
-    super.dispose();
-  }
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -85,8 +103,11 @@ class _SignupBirthdayState extends State<SignupBirthday> {
           onPressed: () => Navigator.pushNamed(context, '/name'),
         ),
       ),
-      //fix overloade error
+
+      //fix over loade error
       resizeToAvoidBottomInset: false,
+
+      /*body*/
       body: Container(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -100,7 +121,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
-                    /*ceke icon */
+                    /*cake icon */
                     Container(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -131,7 +152,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     ),
                     /*end of the cake icon*/
 
-                    /*Enter your barithday*/
+                    /*Enter your birthday*/
                     Container(
                       padding: EdgeInsets.symmetric(vertical: 10),
                       // color: Colors.red,
@@ -162,7 +183,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     ),
 
 
-
                     /*form*/
                     Form(
                       key: _formKey,
@@ -177,7 +197,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                   //Clickable and not editable
                                   readOnly: true,
 
-
                                   //function
                                   onChanged: (val){
                                     /*change the val of pass*/
@@ -185,6 +204,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                       _dataFormate = val;
                                     });
                                   },
+
                                   /*value*/
                                   validator: (val){
                                     DateTime timeNow = DateTime.now();
@@ -215,8 +235,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                     });
                                     return null;
                                   },
-                                  /*controller for button enble*/
-                                  controller: _birthdayController,
 
 
                                   //design
@@ -343,6 +361,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                 SizedBox(
                   height: 180,
                   child: CupertinoDatePicker(
+                    key: UniqueKey(),
                     initialDateTime: birthday,
                     backgroundColor: Palette.backgroundColor,
                     mode: CupertinoDatePickerMode.date,
