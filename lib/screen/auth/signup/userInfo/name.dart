@@ -222,7 +222,7 @@ class _nameState extends State<name> {
                                       }catch(e){
                                         Alert(
                                           context: context,
-                                          title: "Something went wrong!" ,
+                                          title: "Invalid input!" ,
                                           desc: e.toString(),
 
                                         ).show();

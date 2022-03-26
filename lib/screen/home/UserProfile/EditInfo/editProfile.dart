@@ -89,7 +89,7 @@ class _EditProfileState extends State<EditProfile> {
       print(e.toString());
       Alert(
         context: context,
-        title: "Something went wrong!" ,
+        title: "Invalid input!" ,
         desc: e.toString(),
 
       ).show();

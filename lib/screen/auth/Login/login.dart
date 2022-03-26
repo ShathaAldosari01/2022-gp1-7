@@ -364,7 +364,7 @@ class _LoginState extends State<Login> {
                             }on FirebaseAuthException catch(e){
                               Alert(
                                   context: context,
-                                  title: "Something went wrong!" ,
+                                  title: "Invalid input!" ,
                                   desc: e.message.toString(),
                                   buttons: [
                                     DialogButton(

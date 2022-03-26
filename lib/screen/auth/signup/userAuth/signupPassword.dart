@@ -447,13 +447,10 @@ class _signupPasswordState extends State<signupPassword> {
                                     Navigator.of(context).push(route);
 
                                   }on FirebaseAuthException catch(e){
-                                    //something went wrong
-                                    /*go to Profile_Page page*/
-                                    // Navigator.of(context).popUntil((route) => route.isFirst);
                                     //error msg
                                     Alert(
                                         context: context,
-                                        title: "Something went wrong!" ,
+                                        title: "Invalid input!" ,
                                         desc: e.message.toString()+" Try to log in to you account or try to sign up with different email address.",
                                         buttons: [
                                           DialogButton(

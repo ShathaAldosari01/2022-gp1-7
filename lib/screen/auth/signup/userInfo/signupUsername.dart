@@ -264,7 +264,7 @@ class _SignupUsernameState extends State<SignupUsername> {
                                             else {
                                                 Alert(
                                                   context: context,
-                                                  title: "Something went wrong!" ,
+                                                  title: "Invalid input!" ,
                                                   desc: errMsg,
                                                 ).show();
                                                 print(errMsg);
@@ -273,7 +273,7 @@ class _SignupUsernameState extends State<SignupUsername> {
                                           }catch(e){
                                             Alert(
                                               context: context,
-                                              title: "Something went wrong!" ,
+                                              title: "Invalid input!" ,
                                               desc: e.toString(),
 
                                             ).show();

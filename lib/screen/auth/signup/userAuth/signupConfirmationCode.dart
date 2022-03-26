@@ -95,7 +95,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
  if (!message) {
    Alert(
        context: context,
-       title: "Something went wrong!",
+       title: "Invalid input!",
        desc: e.toString(),
        buttons: [
          DialogButton(

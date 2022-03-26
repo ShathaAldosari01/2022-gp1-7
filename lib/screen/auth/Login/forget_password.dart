@@ -258,7 +258,7 @@ final auth = FirebaseAuth.instance ;
                           }on FirebaseAuthException catch(e){
                             Alert(
                                 context: context,
-                                title: "invalid input!" ,
+                                title: "Invalid input!" ,
                                 desc: e.message.toString(),
                                 buttons: [
                                   DialogButton(

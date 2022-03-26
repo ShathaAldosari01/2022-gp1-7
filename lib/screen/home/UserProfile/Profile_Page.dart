@@ -62,7 +62,7 @@ class _Profile_pageState extends State<Profile_page> {
     catch(e){
       Alert(
           context: context,
-          title: "Something went wrong!",
+          title: "Invalid input!",
           desc: e.toString(),
       ).show();
     }
