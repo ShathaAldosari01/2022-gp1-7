@@ -70,11 +70,7 @@ class _Profile_pageState extends State<Profile_page> {
   
   @override
   Widget build(BuildContext context) {
-    return _isloaded == false ?
-    Center(
-      child: CircularProgressIndicator(), // Show indicator
-    )
-  : Scaffold(
+    return  Scaffold(
       backgroundColor: Palette.backgroundColor,
 
       appBar: AppBar(
@@ -82,17 +78,29 @@ class _Profile_pageState extends State<Profile_page> {
         elevation: 0,
         backgroundColor: Palette.backgroundColor,
         automaticallyImplyLeading: false,//no arrow
+        centerTitle: true ,
         //username
         title:  Padding(
           padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-          child: Text(
-              userData['username'],
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-            ),
-          ),
+          child:
+              _isloaded?
+                Text(
+                    userData['username'],
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                  ),
+                ) :Container(
+                      width: 100,
+                      child: LinearProgressIndicator(
+                        minHeight:15,
+                        backgroundColor: Palette.lightgrey,
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>
+                          (Palette.midgrey),
+                      ),
+                    ),
         ),
 
         //setting icon
@@ -121,6 +129,14 @@ class _Profile_pageState extends State<Profile_page> {
                     Navigator.of(context).popAndPushNamed('/settings');
                   },
               ),
+
+              FocusedMenuItem(
+                title: const Text("Edit Profile"),
+                trailingIcon: const Icon(Icons.edit),
+                onPressed: (){
+                  Navigator.of(context).popAndPushNamed('/editProfile');
+                },
+              ),
             ],
 
             openWithTap: true,
@@ -143,15 +159,18 @@ class _Profile_pageState extends State<Profile_page> {
         children: [
           Container(
             margin: const EdgeInsets.all(16),
+            alignment: Alignment.center,
             child: Column(
+
               children: [
-                Row(
-                  children: [
+                    _isloaded?
                     userData['photoPath']!="no"?
                     CircleAvatar(
+
                       backgroundColor: Palette.grey,
                       backgroundImage:NetworkImage(userData['photoPath']),
                         radius:44
+
                     )
                     //user photo
                     :CircleAvatar(
@@ -162,78 +181,87 @@ class _Profile_pageState extends State<Profile_page> {
                      color: Colors.grey,
                      size: 90,
 
-
                     ),
 
 
-                    ),
-                    //end user photo
-
-                    Expanded(
-                      flex: 7,
-                      child: Column(
-                        children: [
-                          //post, followers and following
-                          Row(
-                            mainAxisSize: MainAxisSize.max,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              buildStatColumn(0, "posts"),
-                              buildStatColumn(0, "Followers"),
-                              buildStatColumn(0, "Following"),
-                            ],
-                          ),
-                          //end post, followers and following
-
-                        ],
+                    ): Container(
+                      margin:EdgeInsets.all(30),
+                      child: CircularProgressIndicator(
+                        backgroundColor: Palette.lightgrey,
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>
+                          (Palette.midgrey),
                       ),
                     ),
-                  ],
-                ),
 
                 //username
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding:  EdgeInsets.fromLTRB(10, 40, 0, 0),
-                  child:  Text(
-                    userData['name'],
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                  alignment: Alignment.center,
+                  padding:  EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  child: _isloaded?
+                      Text(
+                        userData['name'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ) :Container(
+                        width: 100,
+                        child: LinearProgressIndicator(
+                          minHeight:15,
+                          backgroundColor: Palette.lightgrey,
+                          valueColor:
+                          AlwaysStoppedAnimation<Color>
+                            (Palette.midgrey),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                 //end of username
 
                 //bio
                 Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.fromLTRB(10, 1, 0, 0),
-                  child:  Text(
-                    userData['bio'],
-                    style: TextStyle(
-                      fontSize: 16,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
+                  child:  _isloaded?
+                      Text(
+                        userData['bio'],
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ) :Container(
+                        width: 100,
+                        child: LinearProgressIndicator(
+                          minHeight:15,
+                          backgroundColor: Palette.lightgrey,
+                          valueColor:
+                          AlwaysStoppedAnimation<Color>
+                            (Palette.midgrey),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
                 //end of bio
 
-                //edit profile button
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    FollowButton(
-                      text: 'Edit profile',
-                      backgroundColor: Palette.backgroundColor,
-                      borderColor: Palette.grey,
-                      textColor: Colors.black,
-                      function: () {
-                        Navigator.of(context).popAndPushNamed('/editProfile');
-                      },
-                    )
-                  ],
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 20),
+                  child: Row(
+
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Expanded(
+                          flex: 10,
+                          child: buildStatColumn(0, "posts")),
+
+                      Expanded(
+                          flex: 10,
+                          child: buildStatColumn(0, "Followers")),
+
+                      Expanded(
+                          flex: 10,
+                          child: buildStatColumn(0, "Following")),
+                    ],
+                  ),
                 ),
-                //end of button
+
 
 
 
@@ -254,8 +282,7 @@ class _Profile_pageState extends State<Profile_page> {
 
 Column buildStatColumn(int num, String label) {
   return Column(
-    mainAxisSize: MainAxisSize.min,
-    mainAxisAlignment: MainAxisAlignment.center,
+
     children: [
 
       Text(
@@ -270,7 +297,7 @@ Column buildStatColumn(int num, String label) {
 
 
       Container(
-        margin: const EdgeInsets.only(top: 4),
+
         child: Text(
           label,
           style: const TextStyle(
