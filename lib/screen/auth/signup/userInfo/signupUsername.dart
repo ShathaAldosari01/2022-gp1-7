@@ -29,20 +29,58 @@ class _SignupUsernameState extends State<SignupUsername> {
   final _formKey = GlobalKey<FormState>();
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  //user id
+  var uid= FirebaseAuth.instance.currentUser!.uid;
+  /*user data*/
+  var userData = {};
+
+  /* get data method */
+  getData() async {
+    try {
+      if (uid != null) {
+        //we have uid
+        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+            uid).get();
+        if(userSnap.data()!=null) {
+          //we have user data
+          userData = userSnap.data()!;
+          setState(() {
+            if(userData['username'].toString().isNotEmpty){
+              username = userData['username'].toString();
+              _usernameController = TextEditingController(text:userData['username'].toString());
+              isButtonActive= true;
+            }else username ="";
+          });
+
+          _usernameController.addListener(() {
+            final isnameNotEmpty = _usernameController.text.isNotEmpty ;
+
+            setState(() {
+              isButtonActive = isnameNotEmpty;
+            });
+          });
+
+        }else
+          Navigator.of(context).popAndPushNamed('/Signup_Login');
+      }
+    }
+    catch(e){
+      Alert(
+        context: context,
+        title: "Invalid input!",
+        desc: e.toString(),
+      ).show();
+    }
+
+  }
 
   @override
   void initState(){
     super.initState();
+    //getting user info
+    getData();
 
     _usernameController = TextEditingController();
-
-    _usernameController.addListener(() {
-      final isusernameNotEmpty = _usernameController.text.isNotEmpty ;
-
-      setState(() {
-        isButtonActive = isusernameNotEmpty;
-      });
-    });
 
   }
 
@@ -62,9 +100,13 @@ class _SignupUsernameState extends State<SignupUsername> {
       key: _scaffoldKey,
       backgroundColor: Palette.backgroundColor,
 
+      /*header*/
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
-        elevation: 0,//no shadow
+
+        //no shadow
+        elevation: 0,
+
         /*back arrow */
         leading: IconButton(
           icon: const Icon(
@@ -73,8 +115,11 @@ class _SignupUsernameState extends State<SignupUsername> {
           onPressed: () => Navigator.pushNamed(context, '/signupBirthday'),
         ),
       ),
+
       //fix overload error
       resizeToAvoidBottomInset: false,
+
+      /*body*/
       body: Container(
         child: Column(
 
@@ -125,131 +170,133 @@ class _SignupUsernameState extends State<SignupUsername> {
                       child: Column(
                           children:[
                             Column(
-                            children: [
+                              children: [
 
-                              /*username*/
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                child: TextFormField(
-                                  //function
-                                  onChanged: (val){
-                                    /*change the val of pass*/
-                                    setState(() {
-                                      username = val;
-                                    });
-                                  },
-                                  /*value*/
-                                  validator: (val){
-                                    if(val!.isEmpty){
-                                      return "username should not be empty";
-                                    }else if(
-                                    val.contains('&')||
-                                        val.contains("#")||
-                                        val.contains("*")||
-                                        val.contains("!")||
-                                        val.contains("%")||
-                                        val.contains("~")||
-                                        val.contains("`")||
-                                        val.contains("@")||
-                                        val.contains("^")||
-                                        val.contains("(")||
-                                        val.contains(")")||
-                                        val.contains("+")||
-                                        val.contains("=")||
-                                        val.contains("{")||
-                                        val.contains("[")||
-                                        val.contains("}")||
-                                        val.contains("]")||
-                                        val.contains("|")||
-                                        val.contains(":")||
-                                        val.contains(";")||
-                                        val.contains("<")||
-                                        val.contains(">")||
-                                        val.contains(",")||
-                                        val.contains(".")||
-                                        val.contains("?")||
-                                        val.contains("\$")
-                                    ){
-                                      return "Username should not have spatial characteristics but _ or -.";
-                                    }else if(!isUsername){
-                                      return errMsg;
-                                    }
-                                    return null;
-                                  },
-                                  /*controller for button enable*/
-                                  controller: _usernameController,
+                                /*username*/
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  child: TextFormField(
+                                    //function
+                                    onChanged: (val){
+                                      /*change the val of pass*/
+                                      setState(() {
+                                        username = val;
+                                      });
+                                    },
+                                    /*value*/
+                                    validator: (val){
+                                      if(val!.isEmpty){
+                                        return "username should not be empty";
+                                      }else if(
+                                      val.contains('&')||
+                                          val.contains("#")||
+                                          val.contains("*")||
+                                          val.contains("!")||
+                                          val.contains("%")||
+                                          val.contains("~")||
+                                          val.contains("`")||
+                                          val.contains("@")||
+                                          val.contains("^")||
+                                          val.contains("(")||
+                                          val.contains(")")||
+                                          val.contains("+")||
+                                          val.contains("=")||
+                                          val.contains("{")||
+                                          val.contains("[")||
+                                          val.contains("}")||
+                                          val.contains("]")||
+                                          val.contains("|")||
+                                          val.contains(":")||
+                                          val.contains(";")||
+                                          val.contains("<")||
+                                          val.contains(">")||
+                                          val.contains(",")||
+                                          val.contains("?")||
+                                          val.contains("/")||
+                                          val.contains(" ")
+                                      ){
+                                        return "Username should not have space or spatial characteristics but _ or -.";
+                                      }else if(!isUsername){
+                                        return errMsg;
+                                      }
+                                      return null;
+                                    },
+                                    /*controller for button enable*/
+                                    controller: _usernameController,
 
-                                  //design
-                                  decoration: InputDecoration(
+                                    //design
+                                    decoration: InputDecoration(
 
-                                    /*background color*/
-                                    fillColor: Palette.lightgrey,
-                                    filled: true,
+                                      /*background color*/
+                                      fillColor: Palette.lightgrey,
+                                      filled: true,
 
-                                    /*hint*/
-                                    border: OutlineInputBorder(),
-                                    hintText: "Username",
-                                    hintStyle: TextStyle(
-                                        fontSize: 18.0,
-                                        color: Palette.grey
-                                    ),
+                                      /*hint*/
+                                      border: OutlineInputBorder(),
+                                      hintText: "Username",
+                                      hintStyle: TextStyle(
+                                          fontSize: 18.0,
+                                          color: Palette.grey
+                                      ),
 
-                                    /*Border*/
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Palette.midgrey,
+                                      /*Border*/
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Palette.midgrey,
+                                        ),
+                                      ),
+                                      enabledBorder: OutlineInputBorder(
+                                        borderSide: BorderSide(
+                                          color: Palette.midgrey,
+                                          width: 2.0,
+                                        ),
                                       ),
                                     ),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                        color: Palette.midgrey,
-                                        width: 2.0,
-                                      ),
-                                    ),
-                                  ),
 
-                                ),
-                              ),
-                              /*end of email*/
-
-
-                              /*next button*/
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                height: 50.0,
-                                /*button colors*/
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                  gradient: isButtonActive
-                                      ? LinearGradient(
-                                      colors: [
-                                        Palette.buttonColor,
-                                        Palette.nameColor,
-                                      ]
-                                  ):LinearGradient(
-                                      colors: [
-                                        Palette.buttonDisableColor,
-                                        Palette.nameDisablColor,
-                                      ]
                                   ),
                                 ),
-                                /*button*/
-                                child: ButtonTheme(
+                                /*end of email*/
+
+
+                                /*next button*/
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 10),
+                                  alignment: Alignment.center,
+                                  width: double.infinity,
                                   height: 50.0,
-                                  minWidth: 350,
-                                  child: FlatButton(
-                                    onPressed: isButtonActive
-                                      ?()async{
+                                  /*button colors*/
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                                    gradient: isButtonActive
+                                        ? LinearGradient(
+                                        colors: [
+                                          Palette.buttonColor,
+                                          Palette.nameColor,
+                                        ]
+                                    ):LinearGradient(
+                                        colors: [
+                                          Palette.buttonDisableColor,
+                                          Palette.nameDisablColor,
+                                        ]
+                                    ),
+                                  ),
+                                  /*button*/
+                                  child: ButtonTheme(
+                                    height: 50.0,
+                                    minWidth: 350,
+                                    child: FlatButton(
+                                      onPressed: isButtonActive
+                                          ?()async{
+                                        if(_formKey.currentState!.validate()){
                                           /*add to database*/
                                           try {
 
                                             final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
                                                 .collection('users')
                                                 .where('username', isEqualTo: username.toLowerCase()).get();
-                                                // .get;
+                                            // .get;
                                             final valid = await snapshot.docs.isEmpty;
+
                                             if (valid) {
                                               // username not exists
                                               var uid =   FirebaseAuth.instance.currentUser!.uid;
@@ -261,39 +308,46 @@ class _SignupUsernameState extends State<SignupUsername> {
                                               /*go to sign up page*/
                                               Navigator.pushNamed(context, '/photo');
                                             }
-                                            else {
-                                                Alert(
-                                                  context: context,
-                                                  title: "Something went wrong!" ,
-                                                  desc: errMsg,
-                                                ).show();
-                                                print(errMsg);
-                                              }
+                                            else if(username.isEmpty &&
+                                                username.toLowerCase().compareTo(userData['username'].toString())==0){
+                                              /*go to sign up page*/
+                                              Navigator.pushNamed(context, '/photo');
+                                            }else{
+                                              print(snapshot.docs);
+                                              Alert(
+                                                context: context,
+                                                title: "Invalid input!" ,
+                                                desc: errMsg,
+                                              ).show();
+                                              print(errMsg);
+                                            }
+
 
                                           }catch(e){
                                             Alert(
                                               context: context,
-                                              title: "Something went wrong!" ,
+                                              title: "Invalid input!" ,
                                               desc: e.toString(),
 
                                             ).show();
                                             print(e);
                                           }
+                                        }
 
                                       }:null,
-                                    child: Text('Next',
-                                      style: TextStyle(
-                                        color: Palette.backgroundColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
+                                      child: Text('Next',
+                                        style: TextStyle(
+                                          color: Palette.backgroundColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 18,
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ),
-                              ),
-                              /*end of next button */
-                            ],
-                          ),]
+                                /*end of next button */
+                              ],
+                            ),]
                       ),
                     ),
                     /*/form*/
@@ -308,4 +362,3 @@ class _SignupUsernameState extends State<SignupUsername> {
     );
   }
 }
-

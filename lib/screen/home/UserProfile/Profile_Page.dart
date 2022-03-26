@@ -50,6 +50,59 @@ class _Profile_pageState extends State<Profile_page> {
             .toString()
             .isEmpty) {
           Navigator.of(context).popAndPushNamed('/signupUsername');
+        }else if (userData['questions']["married"]
+            .toString()
+            .compareTo("-1")==0) {
+          Navigator.of(context).popAndPushNamed('/question1');
+        }else if (userData['questions']["children"]
+            .toString()
+            .compareTo("-1")==0) {
+          Navigator.of(context).popAndPushNamed('/question2');
+        }else if ((userData['questions']["purpose"]["Business"]
+            .toString()
+            .compareTo("0")==0)
+            &&(userData['questions']["purpose"]["Tourism"]
+                .toString()
+                .compareTo("0")==0)
+            &&(userData['questions']["purpose"]["Visiting family and friends"]
+                .toString()
+                .compareTo("0")==0)
+        ) {
+          Navigator.of(context).popAndPushNamed('/question3');
+        }else if ((userData['questions']["countries"]["Middle eastern"]
+            .toString()
+            .compareTo("0")==0)
+            &&(userData['questions']["countries"]["Asian"]
+                .toString()
+                .compareTo("0")==0)
+            &&(userData['questions']["countries"]["European"]
+                .toString()
+                .compareTo("0")==0)
+            &&(userData['questions']["countries"]["American"]
+                .toString()
+                .compareTo("0")==0)
+            &&(userData['questions']["countries"]["African"]
+                .toString()
+                .compareTo("0")==0)
+        ) {
+          Navigator.of(context).popAndPushNamed('/question4');
+        }else if ((userData['questions']["places"]["Restaurants and cafes"]
+            .toString()
+            .compareTo("0")==0)
+            &&(userData['questions']["places"]["Museums"]
+                .toString()
+                .compareTo("0")==0)
+            &&(userData['questions']["places"]["Shopping malls"]
+                .toString()
+                .compareTo("0")==0)
+            &&(userData['questions']["places"]["Parks"]
+                .toString()
+                .compareTo("0")==0)
+            &&(userData['questions']["places"]["Sports attractions"]
+                .toString()
+                .compareTo("0")==0)
+        ) {
+          Navigator.of(context).popAndPushNamed('/question5');
         }
 
       }else
@@ -80,28 +133,24 @@ class _Profile_pageState extends State<Profile_page> {
         automaticallyImplyLeading: false,//no arrow
         centerTitle: true ,
         //username
-        title:  Padding(
-          padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-          child:
-              _isloaded?
-                Text(
-                    userData['username'],
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                  ),
-                ) :Container(
-                      width: 100,
-                      child: LinearProgressIndicator(
-                        minHeight:15,
-                        backgroundColor: Palette.lightgrey,
-                        valueColor:
-                        AlwaysStoppedAnimation<Color>
-                          (Palette.midgrey),
-                      ),
-                    ),
-        ),
+        title:  _isloaded?
+          Text(
+              userData['username'],
+            style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
+          ) :Container(
+                width: 100,
+                child: LinearProgressIndicator(
+                  minHeight:15,
+                  backgroundColor: Palette.lightgrey,
+                  valueColor:
+                  AlwaysStoppedAnimation<Color>
+                    (Palette.midgrey),
+                ),
+              ),
 
         //setting icon
         actions:[
@@ -169,13 +218,13 @@ class _Profile_pageState extends State<Profile_page> {
 
                       backgroundColor: Palette.grey,
                       backgroundImage:NetworkImage(userData['photoPath']),
-                        radius:44
+                        radius:45
 
                     )
                     //user photo
                     :CircleAvatar(
                     backgroundColor: Colors.white ,
-                      radius: 44,
+                      radius: 45,
                       child:  Icon(
                      Icons.account_circle_sharp,
                      color: Colors.grey,
@@ -185,7 +234,7 @@ class _Profile_pageState extends State<Profile_page> {
 
 
                     ): Container(
-                      margin:EdgeInsets.all(30),
+                      margin:EdgeInsets.all(32),
                       child: CircularProgressIndicator(
                         backgroundColor: Palette.lightgrey,
                         valueColor:
@@ -203,7 +252,7 @@ class _Profile_pageState extends State<Profile_page> {
                         userData['name'],
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                       ) :Container(
                         width: 100,

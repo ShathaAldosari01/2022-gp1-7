@@ -140,30 +140,31 @@ class _EditNameState extends State<EditName> {
                   textColor: Palette.link,
                   onPressed: isButtonActive && userData['name'].toString().compareTo(name)!=0
                       ? () async {
-                    /*go to sign up page*/
-                    Navigator.pushNamed(context, '/editProfile');
+                          if(_formKey.currentState!.validate()){
+                            /*go to sign up page*/
+                            Navigator.pushNamed(context, '/editProfile');
 
-                    /*add to database*/
-                    try {
+                            /*add to database*/
+                            try {
 
-                      var uid =   FirebaseAuth.instance.currentUser!.uid;
-                      print(uid);
-                      await _firestore.collection("users").doc(uid).update({
-                        'name': name,
-                      });
+                              var uid =   FirebaseAuth.instance.currentUser!.uid;
+                              print(uid);
+                              await _firestore.collection("users").doc(uid).update({
+                                'name': name,
+                              });
 
 
 
-                    }catch(e){
-                      Alert(
-                        context: context,
-                        title: "Something went wrong!" ,
-                        desc: e.toString(),
+                            }catch(e){
+                              Alert(
+                                context: context,
+                                title: "Something went wrong!" ,
+                                desc: e.toString(),
 
-                      ).show();
-                      print(e);
-                    }
-
+                              ).show();
+                              print(e);
+                            }
+                          }
 
                   }:null,
                   child: Text("Save", style: TextStyle(fontSize: 18, color: userData['name'].toString().compareTo(name)!=0?Palette.link:Palette.grey),),
@@ -223,6 +224,38 @@ class _EditNameState extends State<EditName> {
                                     validator: (val){
                                       if(val!.isEmpty){
                                         return "name should not be empty";
+                                      }
+                                      if (val.length > 35) {
+                                        return "Create a shorter name under 35 characters.";
+                                      }
+                                      if((
+                                          val.contains('&')||
+                                              val.contains("#")||
+                                              val.contains("*")||
+                                              val.contains("!")||
+                                              val.contains("%")||
+                                              val.contains("~")||
+                                              val.contains("`")||
+                                              val.contains("@")||
+                                              val.contains("^")||
+                                              val.contains("(")||
+                                              val.contains(")")||
+                                              val.contains("+")||
+                                              val.contains("=")||
+                                              val.contains("{")||
+                                              val.contains("[")||
+                                              val.contains("}")||
+                                              val.contains("]")||
+                                              val.contains("|")||
+                                              val.contains(":")||
+                                              val.contains(";")||
+                                              val.contains("<")||
+                                              val.contains(">")||
+                                              val.contains(",")||
+                                              val.contains("?")||
+                                              val.contains("/")
+                                      )){
+                                        return "name should not contain special characters. only '-', '_' and '.'.";
                                       }
                                       return null;
                                     },

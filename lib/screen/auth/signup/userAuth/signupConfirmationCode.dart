@@ -5,13 +5,8 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 /*extra */
-// import 'package:flutter/services.dart';
-import 'package:flutter/gestures.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
 
-/*pages */
-import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
-// import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -78,7 +73,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
       });
       /*after 5 sec they can */
       await Future.delayed(
-          const Duration(
+          Duration(
               seconds: 5
           )
       );

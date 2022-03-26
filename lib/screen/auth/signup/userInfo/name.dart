@@ -179,6 +179,38 @@ class _nameState extends State<name> {
                                       if(val!.isEmpty){
                                         return "name should not be empty";
                                       }
+                                      if (val.length > 35) {
+                                        return "Create a shorter name under 35 characters.";
+                                      }
+                                      if((
+                                          val.contains('&')||
+                                              val.contains("#")||
+                                              val.contains("*")||
+                                              val.contains("!")||
+                                              val.contains("%")||
+                                              val.contains("~")||
+                                              val.contains("`")||
+                                              val.contains("@")||
+                                              val.contains("^")||
+                                              val.contains("(")||
+                                              val.contains(")")||
+                                              val.contains("+")||
+                                              val.contains("=")||
+                                              val.contains("{")||
+                                              val.contains("[")||
+                                              val.contains("}")||
+                                              val.contains("]")||
+                                              val.contains("|")||
+                                              val.contains(":")||
+                                              val.contains(";")||
+                                              val.contains("<")||
+                                              val.contains(">")||
+                                              val.contains(",")||
+                                              val.contains("?")||
+                                              val.contains("/")
+                                      )){
+                                        return "name should not contain special characters. only '-', '_' and '.'.";
+                                      }
                                       return null;
                                     },
                                     /*controller for button enable*/
@@ -249,27 +281,28 @@ class _nameState extends State<name> {
                                   child: FlatButton(
                                     onPressed:isButtonActive
                                         ? () async {
+                                      if(_formKey.currentState!.validate()){
+                                        /*add to database*/
+                                        try {
 
-                                      /*add to database*/
-                                      try {
+                                          var uid =   FirebaseAuth.instance.currentUser!.uid;
+                                          print(uid);
+                                          await _firestore.collection("users").doc(uid).update({
+                                            'name': name,
+                                          });
 
-                                        var uid =   FirebaseAuth.instance.currentUser!.uid;
-                                        print(uid);
-                                        await _firestore.collection("users").doc(uid).update({
-                                          'name': name,
-                                        });
+                                          /*go to sign up page*/
+                                          Navigator.pushNamed(context, '/signupBirthday');
 
-                                        /*go to sign up page*/
-                                        Navigator.pushNamed(context, '/signupBirthday');
+                                        }catch(e){
+                                          Alert(
+                                            context: context,
+                                            title: "Invalid input!" ,
+                                            desc: e.toString(),
 
-                                      }catch(e){
-                                        Alert(
-                                          context: context,
-                                          title: "Invalid input!" ,
-                                          desc: e.toString(),
-
-                                        ).show();
-                                        print(e);
+                                          ).show();
+                                          print(e);
+                                        }
                                       }
 
 

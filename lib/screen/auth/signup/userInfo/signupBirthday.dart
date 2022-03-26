@@ -303,17 +303,17 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     gradient:isButtonActive
                         ?LinearGradient(
-                            colors: [
-                              Palette.buttonColor,
-                              Palette.nameColor,
-                            ]
-                        )
+                        colors: [
+                          Palette.buttonColor,
+                          Palette.nameColor,
+                        ]
+                    )
                         :LinearGradient(
-                            colors: [
-                              Palette.buttonDisableColor,
-                              Palette.nameDisablColor,
-                            ]
-                        ),
+                        colors: [
+                          Palette.buttonDisableColor,
+                          Palette.nameDisablColor,
+                        ]
+                    ),
                   ),
                   /*button*/
                   child: ButtonTheme(
@@ -322,29 +322,29 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     child: FlatButton(
                       onPressed: isButtonActive
                           ?() async{
-                              /*add to database*/
-                              try {
+                        /*add to database*/
+                        try {
 
-                                var uid =   FirebaseAuth.instance.currentUser!.uid;
-                                await _firestore.collection("users").doc(uid).update({
-                                  'birthday': birthday,
-                                });
+                          var uid =   FirebaseAuth.instance.currentUser!.uid;
+                          await _firestore.collection("users").doc(uid).update({
+                            'birthday': birthday,
+                          });
 
-                                /*go to sign up page*/
-                                Navigator.pushNamed(context, '/signupBirthday');
+                          /*go to sign up page*/
+                          Navigator.pushNamed(context, '/signupBirthday');
 
-                              }catch(e){
-                                Alert(
-                                  context: context,
-                                  title: "Invalid input!" ,
-                                  desc: e.toString(),
+                        }catch(e){
+                          Alert(
+                            context: context,
+                            title: "Invalid input!" ,
+                            desc: e.toString(),
 
-                                ).show();
-                                print(e);
-                              }
-                            /*go to sign up page*/
-                            Navigator.pushNamed(context, '/signupUsername');
-                          }:null,
+                          ).show();
+                          print(e);
+                        }
+                        /*go to sign up page*/
+                        Navigator.pushNamed(context, '/signupUsername');
+                      }:null,
                       child: Text('Next',
                         style: TextStyle(
                           color: Palette.backgroundColor,
@@ -376,10 +376,10 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                         isButtonActive = !isfuture&&!isoldest ;
                       });
 
-                        setState(() {
-                          birthday = n;
-                          _dataFormate = DateFormat.yMMMMd('en_US').format(n);
-                        });
+                      setState(() {
+                        birthday = n;
+                        _dataFormate = DateFormat.yMMMMd('en_US').format(n);
+                      });
 
                     },
                   ),
@@ -395,4 +395,3 @@ class _SignupBirthdayState extends State<SignupBirthday> {
     );
   }
 }
-

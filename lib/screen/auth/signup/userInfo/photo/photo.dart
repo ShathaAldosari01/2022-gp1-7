@@ -14,7 +14,7 @@ import 'package:gp1_7_2022/config/palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 class Photo extends StatefulWidget {
-   Photo({Key? key}) : super(key: key);
+  Photo({Key? key}) : super(key: key);
 
   @override
   State<Photo> createState() => _PhotoState();
@@ -25,8 +25,8 @@ class _PhotoState extends State<Photo> {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //form
   final _formKey = GlobalKey<FormState>();
-   Uint8List? _image;
-   String path = "no";
+  Uint8List? _image;
+  String path = "no";
   //user id
   var uid= FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
@@ -264,7 +264,7 @@ class _PhotoState extends State<Photo> {
                               height: 50.0,
                               minWidth: 350,
                               child: FlatButton(
-                                 onPressed:
+                                onPressed:
                                 /*select image */
                                 selectImage,
 
@@ -293,8 +293,8 @@ class _PhotoState extends State<Photo> {
                               minWidth: 350,
                               child: FlatButton(onPressed: () async {
 
-                                  /*go to sign up page*/
-                                  Navigator.pushNamed(context, '/question1');
+                                /*go to sign up page*/
+                                Navigator.pushNamed(context, '/question1');
                               },
                                 child: Text('Skip',
                                   style: TextStyle(
@@ -322,6 +322,3 @@ class _PhotoState extends State<Photo> {
     );
   }
 }
-
-
-

@@ -68,7 +68,7 @@ class _EditUsernameState extends State<EditUsername> {
     catch(e){
       Alert(
         context: context,
-        title: "Something went wrong!",
+        title: "Invalid input!",
         desc: e.toString(),
       ).show();
     }
@@ -142,43 +142,51 @@ class _EditUsernameState extends State<EditUsername> {
                   textColor: Palette.link,
                   onPressed: isButtonActive && userData['username'].toString().compareTo(username)!=0
                       ?()async{
-                    /*add to database*/
-                    try {
+                      if(_formKey.currentState!.validate()){
+                        /*add to database*/
+                        try {
 
-                      final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
-                          .collection('users')
-                          .where('username', isEqualTo: username.toLowerCase()).get();
-                      // .get;
-                      final valid = await snapshot.docs.isEmpty;
-                      if (valid) {
-                        // username not exists
-                        var uid =   FirebaseAuth.instance.currentUser!.uid;
-                        print(uid);
-                        await _firestore.collection("users").doc(uid).update({
-                          'username': username.toLowerCase(),
-                        });
+                          final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+                              .collection('users')
+                              .where('username', isEqualTo: username.toLowerCase()).get();
+                          // .get;
+                          final valid = await snapshot.docs.isEmpty;
 
-                        /*go to sign up page*/
-                        Navigator.pushNamed(context, '/editProfile');
+                          if (valid) {
+                            // username not exists
+                            var uid =   FirebaseAuth.instance.currentUser!.uid;
+                            print(uid);
+                            await _firestore.collection("users").doc(uid).update({
+                              'username': username.toLowerCase(),
+                            });
+
+                            /*go to sign up page*/
+                            Navigator.pushNamed(context, '/editProfile');
+                          }
+                          else if(username.isEmpty &&
+                              username.toLowerCase().compareTo(userData['username'].toString())==0){
+                            /*go to sign up page*/
+                            Navigator.pushNamed(context, '/editProfile');
+                          }else{
+                            print(snapshot.docs);
+                            Alert(
+                              context: context,
+                              title: "Invalid input!" ,
+                              desc: errMsg,
+                            ).show();
+                            print(errMsg);
+                          }
+
+                        }catch(e){
+                          Alert(
+                            context: context,
+                            title: "Invalid input!" ,
+                            desc: e.toString(),
+
+                          ).show();
+                          print(e);
+                        }
                       }
-                      else {
-                        Alert(
-                          context: context,
-                          title: "Invalid input!" ,
-                          desc: errMsg,
-                        ).show();
-                        print(errMsg);
-                      }
-
-                    }catch(e){
-                      Alert(
-                        context: context,
-                        title: "Invalid input!" ,
-                        desc: e.toString(),
-
-                      ).show();
-                      print(e);
-                    }
 
                   }:null,
 
@@ -239,6 +247,39 @@ class _EditUsernameState extends State<EditUsername> {
                                     validator: (val){
                                       if(val!.isEmpty){
                                         return "username should not be empty";
+                                      }
+                                      if (val.length > 35) {
+                                        return "Create a shorter user under 35 characters.";
+                                      }
+                                      if((
+                                          val.contains('&')||
+                                              val.contains("#")||
+                                              val.contains("*")||
+                                              val.contains("!")||
+                                              val.contains("%")||
+                                              val.contains("~")||
+                                              val.contains("`")||
+                                              val.contains("@")||
+                                              val.contains("^")||
+                                              val.contains("(")||
+                                              val.contains(")")||
+                                              val.contains("+")||
+                                              val.contains("=")||
+                                              val.contains("{")||
+                                              val.contains("[")||
+                                              val.contains("}")||
+                                              val.contains("]")||
+                                              val.contains("|")||
+                                              val.contains(":")||
+                                              val.contains(";")||
+                                              val.contains("<")||
+                                              val.contains(">")||
+                                              val.contains(",")||
+                                              val.contains("?")||
+                                              val.contains("/")||
+                                              val.contains(" ")
+                                      )){
+                                        return "username should not contain space or special characters. only '-', '_' and '.'.";
                                       }
                                       return null;
                                     },

@@ -307,6 +307,7 @@ class _EditProfileState extends State<EditProfile> {
 
                           //username
                           Container(
+                            alignment: Alignment.centerLeft,
                             child:  TextButton(
                               onPressed: (){
                                 Navigator.of(context).popAndPushNamed('/editUsername');
@@ -385,27 +386,7 @@ class _EditProfileState extends State<EditProfile> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
 
-                    /*line*/
-                    Divider(
-                      height: 4,
-                      color: Palette.grey,
-                    ),
 
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 7, vertical: 4),
-                      child: TextButton(
-                          onPressed: (){
-                            Navigator.of(context).popAndPushNamed('/question1');
-                          },
-                          child:Text(
-                            "Edit Answers",
-                            style: TextStyle(
-                                color: Palette.link,
-                                fontSize: 16
-                            ),
-                          )
-                      ),
-                    ),
                   ],
                 )
 
