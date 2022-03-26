@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 /*services */
 import 'package:gp1_7_2022/screen/services/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -85,7 +86,7 @@ class _LoginState extends State<Login> {
             icon: const Icon(
                 Icons.arrow_back, color: Palette.textColor
             ),
-            onPressed: () => Navigator.pushNamed(context, '/'),
+            onPressed: () => Navigator.pushNamed(context, '/Signup_Login'),
           ),
         ),
         //fix overload error
@@ -301,7 +302,12 @@ class _LoginState extends State<Login> {
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),
                       child: TextButton( onPressed: (){
-                        Navigator.pushNamed(context, '/forget_password');
+                        /*go to sign up page*/
+                        var route =  MaterialPageRoute(
+                            builder: (BuildContext context)=>
+                                forget_password(email: _emailController.text)
+                        );
+                        Navigator.of(context).push(route);
                       }, child: Text('Forgot password?',
                         style: TextStyle(
                           fontSize: 17,

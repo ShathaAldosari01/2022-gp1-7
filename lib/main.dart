@@ -39,7 +39,6 @@ void main() async{
 
             /*log in */
             '/login':(context)=>Login(),
-            '/forget_password':(context) => forget_password(),
 
             /*sign up*/
             "/signup": (context)=> Signup(),

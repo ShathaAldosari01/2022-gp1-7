@@ -12,7 +12,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class forget_password extends StatefulWidget {
-  const forget_password({Key? key}) : super(key: key);
+  final String email;
+  const forget_password({Key? key, required this.email}) : super(key: key);
 
   @override
   _forget_passwordState createState() => _forget_passwordState();
@@ -39,7 +40,7 @@ final auth = FirebaseAuth.instance ;
   void initState(){
     super.initState();
 
-    _emailController = TextEditingController();
+    _emailController = TextEditingController(text:widget.email.toString());
 
 
     _emailController.addListener(() {
@@ -87,7 +88,7 @@ final auth = FirebaseAuth.instance ;
             icon: const Icon(
                 Icons.arrow_back, color: Palette.textColor
             ),
-            onPressed: () => Navigator.pushNamed(context, '/'),
+            onPressed: () => Navigator.pushNamed(context, '/login'),
           ),
         ),
         //fix overload error
@@ -153,7 +154,7 @@ final auth = FirebaseAuth.instance ;
 
                           /*email*/
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 50, vertical: 5),
+                            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
                             child: TextFormField(
                               //function
                               onChanged: (val){
@@ -221,7 +222,7 @@ final auth = FirebaseAuth.instance ;
 
                   /*send email button*/
                   Container(
-                    margin: const EdgeInsets.symmetric( horizontal:50, vertical: 10),
+                    margin: const EdgeInsets.symmetric( horizontal:40, vertical: 10),
                     alignment: Alignment.center,
                     width: double.infinity,
                     height: 50.0,
@@ -253,7 +254,6 @@ final auth = FirebaseAuth.instance ;
 
                           try {
                             await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-                            // Utils.showSnackBar("Password Reset Email Sent");
                             Navigator.of(context).pop();
                           }on FirebaseAuthException catch(e){
                             Alert(
