@@ -219,14 +219,12 @@ class _SignupState extends State<Signup> {
                                         isButtonActive= false;
                                       });
                                       // /*clear the text*/
-                                      // _emailController.clear();
                                       /*go to sign up page*/
                                       var route =  MaterialPageRoute(
                                           builder: (BuildContext context)=>
                                               signupPassword(email: _emailController.text)
                                       );
                                       Navigator.of(context).push(route);
-                                      // Navigator.pushNamed(context, '/confirmationCode');
                                     }
                                   }
                                       :null,

@@ -120,10 +120,7 @@ class _Signup_LoginState extends State<Signup_Login> {
 
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: (){},
-      //   child: Text("Click me!"),
-      // ),
+
     );
   }
 }

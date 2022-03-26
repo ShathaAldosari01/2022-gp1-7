@@ -199,7 +199,7 @@ class _question2State extends State<question2> {
     try{
       var uid =   FirebaseAuth.instance.currentUser!.uid;
       DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
-      // List questions = (snap.data()! as dynamic)['questions'];
+
       await _firestore.collection('users').doc(uid).update({
         "questions."+question : answer
       });

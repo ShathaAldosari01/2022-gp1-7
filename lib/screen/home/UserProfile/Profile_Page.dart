@@ -1,8 +1,5 @@
-// import 'dart:html';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-//import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
@@ -11,7 +8,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/Widgets/follow_button.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-//import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
+
 
 class Profile_page extends StatefulWidget {
   final uid;
@@ -224,7 +221,6 @@ class _Profile_pageState extends State<Profile_page> {
                 //edit profile button
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     FollowButton(
                       text: 'Edit profile',

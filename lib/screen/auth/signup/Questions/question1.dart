@@ -135,7 +135,7 @@ class _question1State extends State<question1> {
 
 
           Container(
-          //  margin:  const EdgeInsets.symmetric(horizontal: 10),
+
             padding: const EdgeInsets.symmetric(vertical: 40),
             child:const Center(
               child: Text(
@@ -240,7 +240,7 @@ Widget buildRadios() => Column(
       try{
         var uid =   FirebaseAuth.instance.currentUser!.uid;
         DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
-        // List questions = (snap.data()! as dynamic)['questions'];
+
         await _firestore.collection('users').doc(uid).update({
           "questions."+question : answer
         });

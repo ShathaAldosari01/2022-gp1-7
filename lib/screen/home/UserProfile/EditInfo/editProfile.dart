@@ -221,7 +221,6 @@ class _EditProfileState extends State<EditProfile> {
                   // mainAxisAlignment: M,
                   children: [
                     Container(
-                      // margin: EdgeInsets.symmetric(),
                       // color: Colors.red,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -269,7 +268,6 @@ class _EditProfileState extends State<EditProfile> {
                           /*value*/
                           //name
                           Container(
-                            // margin: EdgeInsets.fromLTRB(15, 15, 15, 13),
                             child:  TextButton(
                               onPressed: (){
                                 Navigator.of(context).popAndPushNamed('/editName');
@@ -309,7 +307,6 @@ class _EditProfileState extends State<EditProfile> {
 
                           //username
                           Container(
-                            // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
                             child:  TextButton(
                               onPressed: (){
                                 Navigator.of(context).popAndPushNamed('/editUsername');
@@ -348,7 +345,7 @@ class _EditProfileState extends State<EditProfile> {
 
                           //bio
                           Container(
-                            // margin: EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+
                             child: TextButton(
                               onPressed: (){
                                 Navigator.of(context).popAndPushNamed('/editBio');
