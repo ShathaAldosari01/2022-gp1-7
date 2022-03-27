@@ -102,7 +102,7 @@ class _Profile_pageState extends State<Profile_page> {
                 .toString()
                 .compareTo("0")==0)
         ) {
-          Navigator.of(context).popAndPushNamed('/question5');
+        //  Navigator.of(context).popAndPushNamed('/question5');
         }
 
       }else

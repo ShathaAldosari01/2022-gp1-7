@@ -203,7 +203,7 @@ class _question5State extends State<question5> {
                   }
               );
               /*go to question 2 page*/
-              Navigator.pushNamed(context, '/Profile_Page');
+              Navigator.of(context).popAndPushNamed('/Profile_Page');
             } :null,
               child: Text('Done',
                 style: TextStyle(

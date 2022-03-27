@@ -189,53 +189,7 @@ class _LoginState extends State<Login> {
                                   password = val;
                                 });
                               },
-                              /*value*/
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return "Password mismatch.";
-                                }if(val.length>255){
-                                  return "Password mismatch.";
-                                }if(val.length<8){
-                                  return "Password mismatch.";
-                                }if(!val.contains(RegExp(r'[A-Z]'), 0)){
-                                  return "Password mismatch.";
-                                }if(!val.contains(RegExp(r'[a-z]'), 0)){
-                                  return "Password mismatch.";
-                                }if(!val.contains(RegExp(r'[0-9]'), 0)){
-                                  return "Password mismatch.";
-                                }if(!(
-                                    val.contains('&')||
-                                        val.contains("#")||
-                                        val.contains("*")||
-                                        val.contains("!")||
-                                        val.contains("%")||
-                                        val.contains("~")||
-                                        val.contains("`")||
-                                        val.contains("@")||
-                                        val.contains("^")||
-                                        val.contains("(")||
-                                        val.contains(")")||
-                                        val.contains("_")||
-                                        val.contains("-")||
-                                        val.contains("+")||
-                                        val.contains("=")||
-                                        val.contains("{")||
-                                        val.contains("[")||
-                                        val.contains("}")||
-                                        val.contains("]")||
-                                        val.contains("|")||
-                                        val.contains(":")||
-                                        val.contains(";")||
-                                        val.contains("<")||
-                                        val.contains(">")||
-                                        val.contains(",")||
-                                        val.contains(".")||
-                                        val.contains("?")
-                                )){
-                                  return "Password mismatch.";
-                                }
-                                return null;
-                              },
+
                               /*controller for button enable*/
                               controller: _passwordController,
                               //design
@@ -398,7 +352,7 @@ class _LoginState extends State<Login> {
                                           ),),
                                         onPressed: (){
                                           /*go to sign up page*/
-                                          Navigator.pushNamed(context, '/login');
+                                          Navigator.pushNamed(context, '/Profile_Page');
                                         },
                                         gradient:const LinearGradient(
                                             colors: [
