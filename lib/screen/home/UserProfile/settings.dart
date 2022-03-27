@@ -58,7 +58,7 @@ class _settingsState extends State<settings> {
                         Navigator.of(context).popAndPushNamed('/question1');
                       },
                       child:Text(
-                        "Edit questions",
+                        "Edit preferences",
                         style: TextStyle(
                             color: Palette.textColor,
                             fontSize: 18
@@ -159,7 +159,7 @@ class _settingsState extends State<settings> {
                   ).show();
 
                     },
-                child: Text('delete account',
+                child: Text('Delete account',
                       style: TextStyle(
                           color: Palette.backgroundColor,
                           fontWeight: FontWeight.bold,

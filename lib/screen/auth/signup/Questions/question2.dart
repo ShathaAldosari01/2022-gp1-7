@@ -99,7 +99,7 @@ class _question2State extends State<question2> {
           padding: const EdgeInsets.symmetric(vertical: 40),
           child:const Center(
             child: Text(
-              "Do you have children?",
+              "Do you have children in your family?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,

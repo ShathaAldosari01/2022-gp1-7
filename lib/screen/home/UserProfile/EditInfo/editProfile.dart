@@ -194,7 +194,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
 
                     //end user photo
-                    /*change phofile photo*/
+                    /*change profile photo*/
                     TextButton(
                       onPressed:
                         /*select image */
@@ -225,7 +225,7 @@ class _EditProfileState extends State<EditProfile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          /*lable*/
+                          /*label*/
                           //name
                           Container(
                             padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
