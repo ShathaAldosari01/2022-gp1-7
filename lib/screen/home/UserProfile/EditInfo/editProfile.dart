@@ -196,10 +196,90 @@ class _EditProfileState extends State<EditProfile> {
                     //end user photo
                     /*change profile photo*/
                     TextButton(
-                      onPressed:
-                        /*select image */
-                        selectImage,
-                      child: Text(
+                      onPressed:(){
+                        Alert(
+                            context: context,
+                            title: "Change profile photo" ,
+                            buttons: [
+                              DialogButton(
+                                  child: Text(
+                                    "Add",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Palette.backgroundColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18
+                                    ),),
+                                  onPressed:
+                                    /*select image */
+                                    selectImage,
+                                  gradient:const LinearGradient(
+                                      colors: [
+                                        Palette.buttonColor,
+                                        Palette.nameColor,
+                                      ]
+                                  )
+                              ),
+                              DialogButton(
+                                  color: Palette.red,
+                                  child: Text(
+                                    "Remove",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        color: Palette.backgroundColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18
+                                    ),
+                                  ),
+                                  onPressed: (){
+                                    Alert(
+                                        context: context,
+                                        title: "Are You Sure." ,
+                                        //change me latter
+                                        //Your profile, post, video, comments, likes and followers will be permanently deleted.
+                                        desc: "Your profile photo will be permanently deleted.",
+                                        buttons: [
+                                          DialogButton(
+                                            color: Palette.grey,
+                                            child: Text(
+                                              "Cancel",
+                                              style: TextStyle(
+                                                  color: Palette.backgroundColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18
+                                              ),
+                                            ),
+                                            onPressed: (){
+                                              Navigator.of(context).popAndPushNamed('/editProfile');
+                                            },
+                                          ),
+                                          DialogButton(
+                                            color: Palette.red,
+                                            child: const Text(
+                                              "Remove",
+                                              style: TextStyle(
+                                                  color: Palette.backgroundColor,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 18
+                                              ),
+                                            ),
+                                            onPressed: () async {
+                                              await _firestore.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
+                                                'photoPath': 'no',
+                                              });
+                                              Navigator.of(context).popAndPushNamed('/editProfile');
+                                            },
+
+                                          )
+                                        ]
+                                    ).show();
+                                  }
+                              )
+                            ]
+                        ).show();
+
+                      }
+                      ,child: Text(
                           'Change profile photo',
                         style: TextStyle(
                           color: Palette.link,
