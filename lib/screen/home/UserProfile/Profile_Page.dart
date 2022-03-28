@@ -58,17 +58,10 @@ class _Profile_pageState extends State<Profile_page> {
             .toString()
             .compareTo("-1")==0) {
           Navigator.of(context).popAndPushNamed('/question2');
-        }else if ((userData['questions']["purpose"]["Business"]
+        }else if (userData['questions']["gender"]
             .toString()
-            .compareTo("0")==0)
-            &&(userData['questions']["purpose"]["Tourism"]
-                .toString()
-                .compareTo("0")==0)
-            &&(userData['questions']["purpose"]["Visiting family and friends"]
-                .toString()
-                .compareTo("0")==0)
-        ) {
-          Navigator.of(context).popAndPushNamed('/question3');
+            .compareTo("-1")==0) {
+          Navigator.of(context).popAndPushNamed('/gender');
         }else if ((userData['questions']["countries"]["Middle eastern"]
             .toString()
             .compareTo("0")==0)

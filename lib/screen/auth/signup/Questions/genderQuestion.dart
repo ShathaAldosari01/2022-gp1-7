@@ -2,32 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
-import 'package:gp1_7_2022/model/SignUpCheckboxes.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 
 
-class question5 extends StatefulWidget {
+class GenderQuestion extends StatefulWidget {
+  const GenderQuestion({Key? key}) : super(key: key);
   @override
-  _question5State createState() => _question5State();
+  _GenderQuestionState createState() => _GenderQuestionState();
 }
 
 
 
-class _question5State extends State<question5> {
-
-  final checkboxes = [
-    SignUpCheckboxes(title: 'Restaurants/cafes.', name: "Restaurants and cafes"),
-    SignUpCheckboxes(title: 'Museums.', name: "Museums"),
-    SignUpCheckboxes(title: 'Shopping malls.', name: "Shopping malls"),
-    SignUpCheckboxes(title: 'Parks.', name: "Parks"),
-    SignUpCheckboxes(title: 'Sports attractions (golf, bowling, tennis,...).', name: "Sports attractions"),
-  ];
+class _GenderQuestionState extends State<GenderQuestion> {
+  static const questg = <String> ['Female', 'Male', 'Specify another'];
+  String selectedQuestg = "";
   bool isButtonActive = false;
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  int a= 0, b= 0, c= 0, d = 0 , e= 0;
+  int gender = -1;
   //user id
   var uid= FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
@@ -43,57 +37,20 @@ class _question5State extends State<question5> {
         if(userSnap.data()!=null) {
           //we have user data
           userData = userSnap.data()!;
-          print(uid);
 
           setState(() {
-            a =  userData['questions']["places"]["Restaurants and cafes"];
-            b =  userData['questions']["places"]["Museums"];
-            c =  userData['questions']["places"]["Shopping malls"];
-            d =  userData['questions']["places"]["Parks"];
-            e =  userData['questions']["places"]["Sports attractions"];
-
-
-            //a
-            if(a.toString().compareTo("0")==0){
-              checkboxes[0].value= false;
-            }
-            if(a.toString().compareTo("1")==0){
-              checkboxes[0].value= true;
+            gender =  userData['questions']["gender"];
+            print(gender.toString());
+            if(gender.toString().compareTo("0")==0){
+              this.selectedQuestg = "Female";
+              isButtonActive = true;
+            } if(gender.toString().compareTo("1")==0){
+              this.selectedQuestg = "Male";
+              isButtonActive = true;
+            }if(gender.toString().compareTo("2")==0){
+              this.selectedQuestg = "Specify another";
               isButtonActive = true;
             }
-            //b
-            if(b.toString().compareTo("0")==0){
-              checkboxes[1].value= false;
-            }
-            if(b.toString().compareTo("1")==0){
-              checkboxes[1].value= true;
-              isButtonActive = true;
-            }
-            //c
-            if(c.toString().compareTo("0")==0){
-              checkboxes[2].value= false;
-            }
-            if(c.toString().compareTo("1")==0){
-              checkboxes[2].value= true;
-              isButtonActive = true;
-            }
-            //d
-            if(d.toString().compareTo("0")==0){
-              checkboxes[3].value= false;
-            }
-            if(d.toString().compareTo("1")==0){
-              checkboxes[3].value= true;
-              isButtonActive = true;
-            }
-            //e
-            if(e.toString().compareTo("0")==0){
-              checkboxes[4].value= false;
-            }
-            if(e.toString().compareTo("1")==0){
-              checkboxes[4].value= true;
-              isButtonActive = true;
-            }
-
           });
 
         }else
@@ -118,6 +75,7 @@ class _question5State extends State<question5> {
 
   }
 
+
   @override
   Widget build(BuildContext context) => Scaffold(
     backgroundColor: Palette.backgroundColor,
@@ -130,30 +88,32 @@ class _question5State extends State<question5> {
         icon: const Icon(
             Icons.arrow_back, color: Palette.textColor
         ),
-        onPressed: () => Navigator.pushNamed(context, '/question4'),
+        onPressed: () => Navigator.pushNamed(context, '/question1'),
       ),
     ),
 
 
-    body: Column(
-
+    body: ListView(
+      padding: EdgeInsets.symmetric(vertical: 16),
       children: [
+
 
         Container(
           margin:  const EdgeInsets.symmetric(horizontal: 20),
           padding: const EdgeInsets.symmetric(vertical: 5),
           child:const Center(
             child: Text(
-              "Which places do you enjoy visiting while traveling? Check all that applies.",
+              "How do you identify?",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
                 color: Colors.black,
-                  fontWeight: FontWeight.bold
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),
         ),
+
 
 
         Container(
@@ -171,8 +131,8 @@ class _question5State extends State<question5> {
           ),
         ),
 
-        ...checkboxes.map(buildSingleCheckbox).toList(),
 
+        buildRadios(),
 
 
 /*next button*/
@@ -205,19 +165,17 @@ class _question5State extends State<question5> {
             height: 50.0,
             minWidth: 350,
             child: FlatButton(onPressed: isButtonActive? (){
-              checkboxes.forEach(
-                      (checkbox) async {
-                    if(checkbox.value){
-                      await addAnswer("places",checkbox.name, 1);
-                    }else{
-                      await addAnswer("places",checkbox.name, 0);
-                    }
-                  }
-              );
-              /*go to profile page*/
-              Navigator.of(context).popAndPushNamed('/Profile_Page');
+              if(this.selectedQuestg.toString().compareTo("Female")==0){
+                addAnswer("gender", 0);
+              }else if(this.selectedQuestg.toString().compareTo("Male")==0){
+                addAnswer("gender", 1);
+              }else if(this.selectedQuestg.toString().compareTo("Specify another")==0){
+                addAnswer("gender", 2);
+              }
+              /*go to question 2 page*/
+              Navigator.pushNamed(context, '/question4');
             } :null,
-              child: Text('Done',
+              child: Text('Next',
                 style: TextStyle(
                   color: Palette.backgroundColor,
                   fontWeight: FontWeight.bold,
@@ -229,59 +187,44 @@ class _question5State extends State<question5> {
         ),
         /*end of next button */
 
+
+
       ],
+
     ),
   );
 
 
 
-  Widget buildSingleCheckbox(SignUpCheckboxes checkbox) => buildCheckbox(
-    checkboxes: checkbox,
-    onClicked: (){
-      setState(() {
-        final newValue = !checkbox.value;
-        checkbox.value = newValue;
-        bool isTrue = false;
-        checkboxes.forEach(
-                (checkbox){
-              if(checkbox.value){
-                isTrue = true;
-              }
-            }
+
+  Widget buildRadios() => Column(
+    children: questg.map(
+          (value){
+        return RadioListTile<String>(
+          value: value,
+          groupValue: selectedQuestg,
+          title: Text(value,
+            style: TextStyle(
+                fontSize: 20,
+                color: Palette.textColor),
+          ),
+          onChanged: (value) => setState(() { this.selectedQuestg = value!;
+          isButtonActive = true;
+          }),
         );
-        isButtonActive = isTrue;
-      });
-    },
+      },
+    ).toList(),
   );
 
 
 
-  Widget buildCheckbox({
-    required SignUpCheckboxes checkboxes,
-    required VoidCallback onClicked,
-
-
-  }) => ListTile(
-      onTap: onClicked,
-      leading: Checkbox(
-        value: checkboxes.value,
-        onChanged: (value) => onClicked(),
-      ),
-      title: Text(
-        checkboxes.title,
-        style: TextStyle(
-            fontSize: 20,
-        ),
-
-      )
-  );
-
-  Future<void> addAnswer(String question,String q,  int answer) async {
+  Future<void> addAnswer(String question, int answer) async {
     try{
       var uid =   FirebaseAuth.instance.currentUser!.uid;
       DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+
       await _firestore.collection('users').doc(uid).update({
-        "questions."+question+"."+q : answer
+        "questions."+question : answer
       });
 
     }catch(e){

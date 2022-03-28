@@ -130,7 +130,7 @@ class _question4State extends State<question4> {
         icon: const Icon(
             Icons.arrow_back, color: Palette.textColor
         ),
-        onPressed: () => Navigator.pushNamed(context, '/question3'),
+        onPressed: () => Navigator.pushNamed(context, '/gender'),
       ),
     ),
 
@@ -141,7 +141,7 @@ class _question4State extends State<question4> {
 
         Container(
           margin:  const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(vertical: 40),
+          padding: const EdgeInsets.symmetric(vertical: 5),
           child:const Center(
             child: Text(
               "Which countries do you most like traveling to? Check all that applies.",
@@ -156,14 +156,25 @@ class _question4State extends State<question4> {
         ),
 
 
-
-
+        Container(
+          margin:  const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.fromLTRB(0,5 , 0, 40),
+          child:const Center(
+            child: Text(
+              "This information won't be displayed in your profile.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Palette.grey,
+              ),
+            ),
+          ),
+        ),
 
         ...checkboxes.map(buildSingleCheckbox).toList(),
 
 
-
-/*next button*/
+        /*next button*/
         Container(
           margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
           alignment: Alignment.center,

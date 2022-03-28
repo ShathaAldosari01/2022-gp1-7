@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gp1_7_2022/screen/auth/signup/Questions/genderQuestion.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question1.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question2.dart';
@@ -55,6 +56,7 @@ void main() async{
             '/question3':(context) => question3(),
             '/question4':(context) => question4(),
             '/question5':(context) => question5(),
+            '/gender': (context)=> GenderQuestion(),
 
             /*profile*/
             '/Profile_Page':(context) => Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),

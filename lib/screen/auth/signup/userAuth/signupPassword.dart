@@ -413,11 +413,7 @@ class _signupPasswordState extends State<signupPassword> {
                                       'questions': {
                                         'married' : -1,
                                         'children' : -1,
-                                        'purpose' : {
-                                          "Business" : 0,
-                                          "Tourism" : 0,
-                                          "Visiting family and friends" : 0,
-                                        },
+                                        'gender' : -1,// 0:F, 1:M, 2:Other, -1: unknown
                                         'countries' : {
                                           "Middle eastern" : 0,
                                           "Asian" : 0,

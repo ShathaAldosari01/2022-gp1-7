@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:gp1_7_2022/screen/auth/signup/Questions/genderQuestion.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 
@@ -96,7 +97,7 @@ class _question2State extends State<question2> {
 
         Container(
           margin:  const EdgeInsets.symmetric(horizontal: 20),
-          padding: const EdgeInsets.symmetric(vertical: 40),
+          padding: const EdgeInsets.symmetric(vertical: 5),
           child:const Center(
             child: Text(
               "Do you have children in your family?",
@@ -105,6 +106,21 @@ class _question2State extends State<question2> {
                 fontSize: 20,
                 color: Colors.black,
                 fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+
+        Container(
+          margin:  const EdgeInsets.symmetric(horizontal: 20),
+          padding: const EdgeInsets.fromLTRB(0,5 , 0, 40),
+          child:const Center(
+            child: Text(
+              "This information won't be displayed in your profile.",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 16,
+                color: Palette.grey,
               ),
             ),
           ),
@@ -150,7 +166,8 @@ class _question2State extends State<question2> {
                 addAnswer("children", 1);
               }
               /*go to question 2 page*/
-              Navigator.pushNamed(context, '/question3');
+              Navigator.pushNamed(context, '/gender');
+
             } :null,
               child: Text('Next',
                 style: TextStyle(
