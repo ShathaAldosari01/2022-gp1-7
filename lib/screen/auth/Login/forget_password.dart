@@ -254,7 +254,48 @@ final auth = FirebaseAuth.instance ;
 
                           try {
                             await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-                            Navigator.of(context).pop();
+
+                            Alert(
+                                context: context,
+                                title: "Check your Email" ,
+                                desc: "click the link to reset",
+                                buttons: [
+                                  DialogButton(
+                                      child: Text(
+                                        "OK",
+                                        style: TextStyle(
+                                            color: Palette.backgroundColor
+                                        ),),
+                                      onPressed: (){
+
+                                        Navigator.pushNamed(context, '/login');
+                                      },
+                                      gradient:const LinearGradient(
+                                          colors: [
+                                            Palette.buttonColor,
+                                            Palette.nameColor,
+                                          ]
+                                      )
+                                  ),
+                                  DialogButton(
+                                      child: const Text(
+                                        "Send Email",
+                                        style: TextStyle(
+                                            color: Palette.backgroundColor
+                                        ),),
+                                      onPressed: () async {
+                                        /*go to sign up page*/
+                                        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+                                      },
+                                      gradient:const LinearGradient(
+                                          colors: [
+                                            Palette.buttonColor,
+                                            Palette.nameColor,
+                                          ]
+                                      )
+                                  )
+                                ]
+                            ).show();
                           }on FirebaseAuthException catch(e){
                             Alert(
                                 context: context,
@@ -285,7 +326,7 @@ final auth = FirebaseAuth.instance ;
                                             color: Palette.backgroundColor
                                         ),),
                                       onPressed: (){
-                                        /*go to sign up page*/
+                                        /*go to log in page*/
                                         Navigator.pushNamed(context, '/login');
                                       },
                                       gradient:const LinearGradient(
