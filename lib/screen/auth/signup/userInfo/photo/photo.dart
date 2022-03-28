@@ -54,7 +54,7 @@ class _PhotoState extends State<Photo> {
     catch(e){
       Alert(
         context: context,
-        title: "Something went wrong!",
+        title: "Invalid input!",
         desc: e.toString(),
       ).show();
     }

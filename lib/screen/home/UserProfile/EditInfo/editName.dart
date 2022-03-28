@@ -66,7 +66,7 @@ class _EditNameState extends State<EditName> {
     catch(e){
       Alert(
         context: context,
-        title: "Something went wrong!",
+        title: "Invalid input!",
         desc: e.toString(),
       ).show();
     }
@@ -158,7 +158,7 @@ class _EditNameState extends State<EditName> {
                             }catch(e){
                               Alert(
                                 context: context,
-                                title: "Something went wrong!" ,
+                                title: "Invalid input!" ,
                                 desc: e.toString(),
 
                               ).show();
