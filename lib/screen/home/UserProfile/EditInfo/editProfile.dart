@@ -95,8 +95,7 @@ class _EditProfileState extends State<EditProfile> {
       ).show();
       print(e);
     }
-
-
+    Navigator.of(context).popAndPushNamed('/editProfile');
 
   }
 
