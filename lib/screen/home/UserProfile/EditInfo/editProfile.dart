@@ -69,7 +69,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _image = im;
     });
-
+    Navigator.of(context).popAndPushNamed('/editProfile');
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
@@ -83,6 +83,7 @@ class _EditProfileState extends State<EditProfile> {
       await _firestore.collection("users").doc(uid).update({
         'photoPath': p,
       });
+      Navigator.of(context).popAndPushNamed('/editProfile');
 
 
     }catch(e){
@@ -95,7 +96,7 @@ class _EditProfileState extends State<EditProfile> {
       ).show();
       print(e);
     }
-    Navigator.of(context).popAndPushNamed('/editProfile');
+
 
   }
 
