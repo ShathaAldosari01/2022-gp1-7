@@ -176,6 +176,13 @@ class _SignupUsernameState extends State<SignupUsername> {
                                 Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: TextFormField(
+
+                                    /*go next when submitted*/
+                                    onFieldSubmitted: (value) {
+                                      if (isButtonActive)
+                                        goQues1Page();
+                                    },
+
                                     //function
                                     onChanged: (val){
                                       /*change the val of pass*/
@@ -286,55 +293,8 @@ class _SignupUsernameState extends State<SignupUsername> {
                                     minWidth: 350,
                                     child: FlatButton(
                                       onPressed: isButtonActive
-                                          ?()async{
-                                        if(_formKey.currentState!.validate()){
-                                          /*add to database*/
-                                          try {
-
-                                            final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
-                                                .collection('users')
-                                                .where('username', isEqualTo: username.toLowerCase()).get();
-                                            // .get;
-                                            final valid = await snapshot.docs.isEmpty;
-
-                                            if (valid) {
-                                              // username not exists
-                                              var uid =   FirebaseAuth.instance.currentUser!.uid;
-                                              print(uid);
-                                              await _firestore.collection("users").doc(uid).update({
-                                                'username': username.toLowerCase(),
-                                              });
-
-                                              /*go to sign up page*/
-                                              Navigator.pushNamed(context, '/photo');
-                                            }
-                                            else if(username.isEmpty &&
-                                                username.toLowerCase().compareTo(userData['username'].toString())==0){
-                                              /*go to sign up page*/
-                                              Navigator.pushNamed(context, '/photo');
-                                            }else{
-                                              print(snapshot.docs);
-                                              Alert(
-                                                context: context,
-                                                title: "Invalid input!" ,
-                                                desc: errMsg,
-                                              ).show();
-                                              print(errMsg);
-                                            }
-
-
-                                          }catch(e){
-                                            Alert(
-                                              context: context,
-                                              title: "Invalid input!" ,
-                                              desc: e.toString(),
-
-                                            ).show();
-                                            print(e);
-                                          }
-                                        }
-
-                                      }:null,
+                                          ?goQues1Page
+                                          :null,
                                       child: Text('Next',
                                         style: TextStyle(
                                           color: Palette.backgroundColor,
@@ -360,5 +320,60 @@ class _SignupUsernameState extends State<SignupUsername> {
         ),
       ),
     );
+  }
+
+  goQues1Page()async{
+    if(_formKey.currentState!.validate()){
+      /*add to database*/
+      try {
+
+        final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where('username', isEqualTo: username.toLowerCase()).get();
+        // .get;
+        final valid = await snapshot.docs.isEmpty;
+
+        if (valid) {
+          // username not exists
+          var uid =   FirebaseAuth.instance.currentUser!.uid;
+          print(uid);
+          await _firestore.collection("users").doc(uid).update({
+            'username': username.toLowerCase(),
+          });
+
+          /*deactivate the button*/
+          setState(() {
+            isButtonActive= false;
+          });
+
+          /*go to sign up page*/
+          Navigator.pushNamed(context, '/photo');
+        }
+        else if(username.isNotEmpty &&
+            username.toLowerCase().compareTo(userData['username'].toString())==0){
+          /*go to sign up page*/
+          Navigator.pushNamed(context, '/photo');
+        }else{
+          print(snapshot.docs);
+          Alert(
+            context: context,
+            title: "Invalid input!" ,
+            desc: errMsg,
+          ).show();
+          print(errMsg);
+        }
+
+
+      }catch(e){
+        Alert(
+          context: context,
+          title: "Invalid input!" ,
+          desc: e.toString(),
+
+        ).show();
+        print(e);
+      }
+    }
+
   }
 }

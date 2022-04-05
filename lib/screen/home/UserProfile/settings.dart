@@ -17,12 +17,70 @@ class settings extends StatefulWidget {
 }
 
 class _settingsState extends State<settings> {
+  //database
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //get user id
   var uid = FirebaseAuth.instance.currentUser!.uid;
   User? current = FirebaseAuth.instance.currentUser;
+  /*user data*/
+  var userData = {};
+  DateTime now  = DateTime.now();
+  DateTime birthday  = DateTime.now();
+  int adult = 1;
 
-//database
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  /* get data method */
+  getData() async {
+    try {
+      if (uid != null) {
+        //we have uid
+        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
+            uid).get();
+        if(userSnap.data()!=null) {
+          //we have user data
+          userData = userSnap.data()!;
+          //set img path to path
+          setState(() {
+            birthday = userData['birthday'].toDate();
+            int yearDiff = now.year - birthday.year;
+            int monthDiff = now.month - birthday.month;
+            int dayDiff = now.day - birthday.day;
+            if(yearDiff > 18 || yearDiff == 18 && monthDiff >= 0 && dayDiff >= 0)
+              adult =1;
+            else
+              adult = 0;
+          });
+
+          await _firestore.collection("users").doc(uid).update({
+            'isAdult' :adult,
+            if(adult==0)
+              "questions.married" : 0,
+            if(adult==0)
+              "questions.children" : 0
+
+          });
+
+        }else
+          Navigator.of(context).popAndPushNamed('/Signup_Login');
+      }
+    }
+    catch(e){
+      Alert(
+        context: context,
+        title: "Invalid input!",
+        desc: e.toString(),
+      ).show();
+    }
+
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    //getting user info
+    getData();
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,10 +113,14 @@ class _settingsState extends State<settings> {
                   margin: EdgeInsets.symmetric(horizontal: 30, vertical: 4),
                   child: TextButton(
                       onPressed: (){
-                        Navigator.of(context).popAndPushNamed('/question1');
+                        /*go to sign up page*/
+                        if(adult==1)
+                          Navigator.pushNamed(context, '/question1');
+                        else
+                          Navigator.pushNamed(context, '/gender');
                       },
                       child:Text(
-                        "Edit questions",
+                        "Edit answers",
                         style: TextStyle(
                             color: Palette.textColor,
                             fontSize: 18
@@ -73,7 +135,11 @@ class _settingsState extends State<settings> {
                 padding: EdgeInsets.symmetric(horizontal: 20),
                 child: IconButton(
                     onPressed: (){
-                      Navigator.of(context).popAndPushNamed('/question1');
+                      /*go to sign up page*/
+                      if(adult==1)
+                        Navigator.pushNamed(context, '/question1');
+                      else
+                        Navigator.pushNamed(context, '/gender');
                     },
                     icon: Icon(
                       Icons.arrow_forward_ios,
@@ -145,13 +211,13 @@ class _settingsState extends State<settings> {
                             ),
                           ),
                           onPressed: () async {
-                            //go to sign up log in page
-                            Navigator.pushNamed(context, '/Signup_Login');
-                            await FirebaseAuth.instance.signOut();
                             //delete user
                             current!.delete();
+                            await FirebaseAuth.instance.signOut();
                             //delete user info in the database
                             var delete = await FirebaseFirestore.instance.collection('users').doc(uid).delete();
+                            //go to sign up log in page
+                            await Navigator.pushNamed(context, '/');
 
                           },
 
@@ -160,7 +226,7 @@ class _settingsState extends State<settings> {
                   ).show();
 
                 },
-                child: Text('delete account',
+                child: Text('Delete account',
                   style: TextStyle(
                     color: Palette.backgroundColor,
                     fontWeight: FontWeight.bold,

@@ -24,27 +24,30 @@ class _signupPasswordState extends State<signupPassword> {
 
   // text field state
   String password = "",
-         repassword="";
+      repassword = "";
 
   // for show/hide password
   bool isHidden1 = true;
   bool isHidden2 = true;
 
   //for button disable
-  bool isPassEmpty= true,
+  bool isPassEmpty = true,
       isReEmpty = true;
   bool isButtonActive = false;
   late TextEditingController _passwordController, _rePasswordController;
 
+  //for button go next
+  final focus = FocusNode();
+
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     _passwordController = TextEditingController();
     _rePasswordController = TextEditingController();
 
     _passwordController.addListener(() {
-      final isPassNotEmpty = _passwordController.text.length>=8 ;
+      final isPassNotEmpty = _passwordController.text.length >= 8;
 
       setState(() {
         isPassEmpty = !isPassNotEmpty;
@@ -53,7 +56,7 @@ class _signupPasswordState extends State<signupPassword> {
     });
 
     _rePasswordController.addListener(() {
-      final isReNotEmpty = _rePasswordController.text.length>=8 ;
+      final isReNotEmpty = _rePasswordController.text.length >= 8;
 
       setState(() {
         isReEmpty = !isReNotEmpty;
@@ -63,12 +66,13 @@ class _signupPasswordState extends State<signupPassword> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _passwordController.dispose();
     _rePasswordController.dispose();
 
     super.dispose();
   }
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -80,7 +84,7 @@ class _signupPasswordState extends State<signupPassword> {
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
         foregroundColor: Palette.textColor,
-        elevation: 0,//no shadow
+        elevation: 0, //no shadow
         /*back arrow */
         leading: IconButton(
           icon: const Icon(
@@ -98,7 +102,7 @@ class _signupPasswordState extends State<signupPassword> {
           /*first column*/
           Expanded(
             child: Container(
-              margin:  const EdgeInsets.symmetric(horizontal: 40),
+              margin: const EdgeInsets.symmetric(horizontal: 40),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -107,7 +111,7 @@ class _signupPasswordState extends State<signupPassword> {
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     // color: Colors.red,
-                    child:const Center(
+                    child: const Center(
                       child: Text(
                         "Create a password",
                         textAlign: TextAlign.center,
@@ -120,9 +124,9 @@ class _signupPasswordState extends State<signupPassword> {
                   ),
 
                   Container(
-                    padding: const EdgeInsets.symmetric( vertical: 10),
+                    padding: const EdgeInsets.symmetric(vertical: 10),
                     child: const Center(
-                      child:  Text(
+                      child: Text(
                         'Use 8 or more characters with a mix of upper and lower case letters, numbers and symbols.',
                         style: TextStyle(
                           fontSize: 18,
@@ -132,7 +136,6 @@ class _signupPasswordState extends State<signupPassword> {
                       ),
                     ),
                   ),
-
 
 
                   /*form*/
@@ -147,55 +150,61 @@ class _signupPasswordState extends State<signupPassword> {
                           child: TextFormField(
 
                             //function
-                            onChanged: (val){
+                            onChanged: (val) {
                               /*change the val of pass*/
                               setState(() {
                                 password = val;
                               });
                             },
                             /*value*/
-                            validator: (val){
-                              if(val!.isEmpty){
+                            validator: (val) {
+                              if (val!.isEmpty) {
                                 return "Password should not be empty";
-                              }if(val.length>255){
+                              }
+                              if (val.length > 255) {
                                 return "Create a shorter password under 255 characters.";
-                              }if(val.length<8){
+                              }
+                              if (val.length < 8) {
                                 return "Password should contain at least 8 characters.";
-                              }if(!val.contains(RegExp(r'[A-Z]'), 0)){
+                              }
+                              if (!val.contains(RegExp(r'[A-Z]'), 0)) {
                                 return "Password should contain upper case.";
-                              }if(!val.contains(RegExp(r'[a-z]'), 0)){
+                              }
+                              if (!val.contains(RegExp(r'[a-z]'), 0)) {
                                 return "Password should contain lower case.";
-                              }if(!val.contains(RegExp(r'[0-9]'), 0)){
+                              }
+                              if (!val.contains(RegExp(r'[0-9]'), 0)) {
                                 return "Password should contain number.";
-                              }if(!(
-                                  val.contains('&')||
-                                      val.contains("#")||
-                                      val.contains("*")||
-                                      val.contains("!")||
-                                      val.contains("%")||
-                                      val.contains("~")||
-                                      val.contains("`")||
-                                      val.contains("@")||
-                                      val.contains("^")||
-                                      val.contains("(")||
-                                      val.contains(")")||
-                                      val.contains("_")||
-                                      val.contains("-")||
-                                      val.contains("+")||
-                                      val.contains("=")||
-                                      val.contains("{")||
-                                      val.contains("[")||
-                                      val.contains("}")||
-                                      val.contains("]")||
-                                      val.contains("|")||
-                                      val.contains(":")||
-                                      val.contains(";")||
-                                      val.contains("<")||
-                                      val.contains(">")||
-                                      val.contains(",")||
-                                      val.contains(".")||
+                              }
+                              if (!(
+                                  val.contains('&') ||
+                                      val.contains("#") ||
+                                      val.contains("*") ||
+                                      val.contains("!") ||
+                                      val.contains("%") ||
+                                      val.contains("~") ||
+                                      val.contains("`") ||
+                                      val.contains("@") ||
+                                      val.contains("^") ||
+                                      val.contains("(") ||
+                                      val.contains(")") ||
+                                      val.contains("_") ||
+                                      val.contains("-") ||
+                                      val.contains("+") ||
+                                      val.contains("=") ||
+                                      val.contains("{") ||
+                                      val.contains("[") ||
+                                      val.contains("}") ||
+                                      val.contains("]") ||
+                                      val.contains("|") ||
+                                      val.contains(":") ||
+                                      val.contains(";") ||
+                                      val.contains("<") ||
+                                      val.contains(">") ||
+                                      val.contains(",") ||
+                                      val.contains(".") ||
                                       val.contains("?")
-                              )){
+                              )) {
                                 return "Password should contain special characters.";
                               }
                               return null;
@@ -215,7 +224,10 @@ class _signupPasswordState extends State<signupPassword> {
                               /* show/hide password */
                               suffixIcon: IconButton(
                                 icon:
-                                isHidden1 ? Icon(Icons.visibility, color: Colors.grey) :  Icon(Icons.visibility_off, color: Colors.grey),
+                                isHidden1
+                                    ? Icon(Icons.visibility, color: Colors.grey)
+                                    : Icon(
+                                    Icons.visibility_off, color: Colors.grey),
                                 onPressed: togglePasswordVisibility1,
                               ),
 
@@ -241,6 +253,12 @@ class _signupPasswordState extends State<signupPassword> {
                               ),
                             ),
 
+                            /*go to next field*/
+                            textInputAction: TextInputAction.next,
+                            onFieldSubmitted: (v) {
+                              FocusScope.of(context).requestFocus(focus);
+                            },
+
                             obscureText: isHidden1,
                           ),
                         ),
@@ -250,18 +268,26 @@ class _signupPasswordState extends State<signupPassword> {
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
+
+                            focusNode: focus,
+                            textInputAction: TextInputAction.done,
+                            onFieldSubmitted: (value) {
+                              if (isButtonActive)
+                                goConfPage();
+                            },
+
                             //function
-                            onChanged: (val){
+                            onChanged: (val) {
                               /*change the val of pass*/
                               setState(() {
                                 repassword = val;
                               });
                             },
                             /*value*/
-                            validator: (val){
-                              if(val!=password){
+                            validator: (val) {
+                              if (val != password) {
                                 return "password mismatch";
-                              }else {
+                              } else {
                                 if (val!.isEmpty) {
                                   return "Password should not be empty";
                                 }
@@ -279,35 +305,36 @@ class _signupPasswordState extends State<signupPassword> {
                                 }
                                 if (!val.contains(RegExp(r'[0-9]'), 0)) {
                                   return "Password should contain number.";
-                                }if(!(
-                                    val.contains('&')||
-                                        val.contains("#")||
-                                        val.contains("*")||
-                                        val.contains("!")||
-                                        val.contains("%")||
-                                        val.contains("~")||
-                                        val.contains("`")||
-                                        val.contains("@")||
-                                        val.contains("^")||
-                                        val.contains("(")||
-                                        val.contains(")")||
-                                        val.contains("_")||
-                                        val.contains("-")||
-                                        val.contains("+")||
-                                        val.contains("=")||
-                                        val.contains("{")||
-                                        val.contains("[")||
-                                        val.contains("}")||
-                                        val.contains("]")||
-                                        val.contains("|")||
-                                        val.contains(":")||
-                                        val.contains(";")||
-                                        val.contains("<")||
-                                        val.contains(">")||
-                                        val.contains(",")||
-                                        val.contains(".")||
+                                }
+                                if (!(
+                                    val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("_") ||
+                                        val.contains("-") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains(".") ||
                                         val.contains("?")
-                                )){
+                                )) {
                                   return "Password should contain special characters.";
                                 }
                               }
@@ -329,7 +356,10 @@ class _signupPasswordState extends State<signupPassword> {
                               /* show/hide password */
                               suffixIcon: IconButton(
                                 icon:
-                                isHidden2 ? Icon(Icons.visibility, color: Colors.grey) :  Icon(Icons.visibility_off, color: Colors.grey),
+                                isHidden2
+                                    ? Icon(Icons.visibility, color: Colors.grey)
+                                    : Icon(
+                                    Icons.visibility_off, color: Colors.grey),
                                 onPressed: togglePasswordVisibility2,
                               ),
 
@@ -368,136 +398,31 @@ class _signupPasswordState extends State<signupPassword> {
                           width: double.infinity,
                           height: 50.0,
                           /*button colors*/
-                          decoration:  BoxDecoration(
-                            borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.all(
+                                Radius.circular(8.0)),
                             gradient: isButtonActive
-                                ?const LinearGradient(
-                                      colors: [
-                                        Palette.buttonColor,
-                                        Palette.nameColor,
-                                      ]
-                                  )
-                                :const LinearGradient(
-                                    colors: [
-                                      Palette.buttonDisableColor,
-                                      Palette.nameDisablColor,
-                                    ]
-                                  ),
+                                ? const LinearGradient(
+                                colors: [
+                                  Palette.buttonColor,
+                                  Palette.nameColor,
+                                ]
+                            )
+                                : const LinearGradient(
+                                colors: [
+                                  Palette.buttonDisableColor,
+                                  Palette.nameDisablColor,
+                                ]
+                            ),
                           ),
                           /*button*/
                           child: ButtonTheme(
                             height: 50.0,
                             minWidth: 350,
                             child: TextButton(
-                              onPressed:isButtonActive
-                                  ?() async {
-                                if(_formKey.currentState!.validate()){
-
-                                  /*add to database*/
-                                  try {
-
-                                    UserCredential cred = await FirebaseAuth.instance
-                                        .createUserWithEmailAndPassword(
-                                        email: widget.email,
-                                        password: password
-                                    );
-                                    print(cred.user!.uid);
-                                    await _firestore.collection("users").doc(cred.user!.uid).set({
-                                      'email': widget.email,
-                                      'uid': cred.user!.uid,
-                                      "username": '',
-                                      'birthday': '',
-                                      'name': '',
-                                      'bio': '',
-                                      'photoPath': 'no',
-                                      'questions': {
-                                        'married' : -1,
-                                        'children' : -1,
-                                        'gender' : -1,// 0:F, 1:M, 2:Other, -1: unknown
-                                        'countries' : {
-                                          "Middle eastern" : 0,
-                                          "Asian" : 0,
-                                          "European" : 0,
-                                          "American" : 0,
-                                          "African" : 0,
-                                        },
-                                        'places' : {
-                                          "Restaurants and cafes" : 0,
-                                          "Museums" : 0,
-                                          "Shopping malls" : 0,
-                                          "Parks" : 0,
-                                          "Sports attractions" : 0,
-                                        },
-                                      },
-                                      'followers': [],
-                                      'following': [],
-                                    });
-
-                                    /*go to Profile_Page page*/
-                                    Navigator.of(context).popUntil((route) => route.isFirst);
-                                    /*go to sign up page*/
-                                    var route =  MaterialPageRoute(
-                                        builder: (BuildContext context)=>
-                                            ConfirmationCode(email: widget.email)
-                                    );
-                                    Navigator.of(context).push(route);
-
-                                  }on FirebaseAuthException catch(e){
-                                    //error msg
-                                    Alert(
-                                        context: context,
-                                        title: "Invalid input!" ,
-                                        desc: e.message.toString()+" Try to log in to you account or try to sign up with different email address.",
-                                        buttons: [
-                                          DialogButton(
-                                              child: Text(
-                                                "Sign up",
-                                                style: TextStyle(
-                                                    color: Palette.backgroundColor
-                                                ),
-                                              ),
-                                              onPressed: (){
-                                              /*go to sign up page*/
-                                                Navigator.pushNamed(context, '/signup');
-                                                },
-                                              gradient:const LinearGradient(
-                                                  colors: [
-                                                    Palette.buttonColor,
-                                                    Palette.nameColor,
-                                                  ]
-                                              )
-                                          ),
-                                          DialogButton(
-                                              child: const Text(
-                                                "Log in",
-                                                style: TextStyle(
-                                                    color: Palette.backgroundColor
-                                                ),
-                                              ),
-                                              onPressed: (){
-                                              /*go to sign up page*/
-                                                Navigator.pushNamed(context, '/login');
-                                                },
-                                              gradient:const LinearGradient(
-                                                  colors: [
-                                                    Palette.buttonColor,
-                                                    Palette.nameColor,
-                                                  ]
-                                              )
-                                          )
-                                        ]
-                                    ).show();
-                                    print(e);
-                                  }
-
-                                  /*deactivate the button*/
-                                  setState(() {
-                                    isButtonActive= false;
-                                  });
-
-                                }
-                              }
-                                  :null,
+                              onPressed: isButtonActive
+                                  ? goConfPage
+                                  : null,
                               child: const Text('Next',
                                 style: TextStyle(
                                   color: Palette.backgroundColor,
@@ -526,10 +451,11 @@ class _signupPasswordState extends State<signupPassword> {
                 height: 5,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 25, horizontal: 25),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children:[
+                    children: [
                       //Already have an account?
                       const Text(
                         "Already have an account? ",
@@ -562,9 +488,120 @@ class _signupPasswordState extends State<signupPassword> {
     );
   }
 
-  void togglePasswordVisibility1 () => setState(() => isHidden1 = !isHidden1);
-  void togglePasswordVisibility2 () => setState(() => isHidden2 = !isHidden2);
+  void togglePasswordVisibility1() => setState(() => isHidden1 = !isHidden1);
+
+  void togglePasswordVisibility2() => setState(() => isHidden2 = !isHidden2);
+
+  void goConfPage() async {
+    if (_formKey.currentState!.validate()) {
+
+      /*add to database*/
+      try {
+        UserCredential cred = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+            email: widget.email,
+            password: password
+        );
+        print(cred.user!.uid);
+        await _firestore.collection("users").doc(cred.user!.uid).set({
+          'email': widget.email,
+          'uid': cred.user!.uid,
+          "username": '',
+          'birthday': '',
+          'name': '',
+          'bio': '',
+          'photoPath': 'no',
+          'questions': {
+            'married': -1,
+            'children': -1,
+            'gender': -1, // 0:F, 1:M, 2:Other, -1: unknown
+            'countries': {
+              "Middle eastern": 0,
+              "Asian": 0,
+              "European": 0,
+              "American": 0,
+              "African": 0,
+            },
+            'places': {
+              "Restaurants and cafes": 0,
+              "Museums": 0,
+              "Shopping malls": 0,
+              "Parks": 0,
+              "Sports attractions": 0,
+            },
+          },
+          'followers': [],
+          'following': [],
+        });
+
+        /*go to Profile_Page page*/
+        Navigator.of(context).popUntil((route) => route.isFirst);
+        /*go to sign up page*/
+        var route = MaterialPageRoute(
+            builder: (BuildContext context) =>
+                ConfirmationCode(email: widget.email)
+        );
+
+        /*deactivate the button*/
+        setState(() {
+          isButtonActive = false;
+        });
+
+        Navigator.of(context).push(route);
+      } on FirebaseAuthException catch (e) {
+        //error msg
+        Alert(
+            context: context,
+            title: "Invalid input!",
+            desc: e.message.toString() +
+                " Try to log in to you account or try to sign up with different email address.",
+            buttons: [
+              DialogButton(
+                  child: Text(
+                    "Sign up",
+                    style: TextStyle(
+                        color: Palette.backgroundColor
+                    ),
+                  ),
+                  onPressed: () {
+                    /*go to sign up page*/
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  gradient: const LinearGradient(
+                      colors: [
+                        Palette.buttonColor,
+                        Palette.nameColor,
+                      ]
+                  )
+              ),
+              DialogButton(
+                  child: const Text(
+                    "Log in",
+                    style: TextStyle(
+                        color: Palette.backgroundColor
+                    ),
+                  ),
+                  onPressed: () {
+                    /*go to sign up page*/
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  gradient: const LinearGradient(
+                      colors: [
+                        Palette.buttonColor,
+                        Palette.nameColor,
+                      ]
+                  )
+              )
+            ]
+        ).show();
+        print(e);
+      }
+
+      /*deactivate the button*/
+      setState(() {
+        isButtonActive = false;
+      });
+    }
+  }
 
 }
-
-

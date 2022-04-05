@@ -14,7 +14,7 @@ class question1 extends StatefulWidget {
 
 
 class _question1State extends State<question1> {
-    static const quest1 = <String> ['Yes.', 'No.'];
+    static const quest1 = <String> ['Yes', 'No'];
     String selectedQuest1 = "";
     bool isButtonActive = false;
     //database
@@ -42,10 +42,10 @@ class _question1State extends State<question1> {
               married =  userData['questions']["married"];
               print(married.toString());
               if(married.toString().compareTo("0")==0){
-                this.selectedQuest1 = "No.";
+                this.selectedQuest1 = "No";
                 isButtonActive = true;
               } if(married.toString().compareTo("1")==0){
-                this.selectedQuest1 = "Yes.";
+                this.selectedQuest1 = "Yes";
                 isButtonActive = true;
               }
             });
@@ -185,13 +185,25 @@ class _question1State extends State<question1> {
               height: 50.0,
               minWidth: 350,
               child: FlatButton(onPressed: isButtonActive? (){
-                if(this.selectedQuest1.toString().compareTo("No.")==0){
+                if(this.selectedQuest1.toString().compareTo("No")==0){
                   addAnswer("married", 0);
-                }else if(this.selectedQuest1.toString().compareTo("Yes.")==0){
+                }else if(this.selectedQuest1.toString().compareTo("Yes")==0){
                   addAnswer("married", 1);
                 }
-                /*go to question 2 page*/
-                Navigator.pushNamed(context, '/question2');
+
+                /*deactivate the button*/
+                setState(() {
+                  isButtonActive= false;
+                });
+
+                if(this.selectedQuest1.toString().compareTo("No")==0){
+                  /*go to question 2 page*/
+                  Navigator.pushNamed(context, '/gender');
+                }else if(this.selectedQuest1.toString().compareTo("Yes")==0){
+                  /*go to question 2 page*/
+                  Navigator.pushNamed(context, '/question2');
+                }
+
               } :null,
                 child: Text('Next',
                   style: TextStyle(
@@ -242,7 +254,9 @@ Widget buildRadios() => Column(
         DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
 
         await _firestore.collection('users').doc(uid).update({
-          "questions."+question : answer
+          "questions."+question : answer,
+          if(answer==0)
+            "questions.children" : 0,
         });
 
       }catch(e){

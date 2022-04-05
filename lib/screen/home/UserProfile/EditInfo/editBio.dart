@@ -32,6 +32,8 @@ class _EditBioState extends State<EditBio> {
   var uid= FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
+  //for key go up
+  final focus = FocusNode();
 
   /* get data method */
   getData() async {
@@ -138,34 +140,9 @@ class _EditBioState extends State<EditBio> {
                 ),
                 FlatButton(
                   textColor: Palette.link,
-                  onPressed: isButtonActive&& userData['bio'].toString().compareTo(bio)!=0
-                      ? () async {
-                    if(_formKey.currentState!.validate()){
-                      /*go to sign up page*/
-                      Navigator.pushNamed(context, '/editProfile');
-
-                      /*add to database*/
-                      try {
-
-                        var uid =   FirebaseAuth.instance.currentUser!.uid;
-                        print(uid);
-                        await _firestore.collection("users").doc(uid).update({
-                          'bio': bio,
-                        });
-
-                      }catch(e){
-                        Alert(
-                          context: context,
-                          title: "Something went wrong!" ,
-                          desc: e.toString(),
-
-                        ).show();
-                        print(e);
-                      }
-                    }
-
-
-                  }:null,
+                  onPressed: userData['bio'].toString().compareTo(bio)!=0
+                      ? editBio
+                      :null,
                   child: Text("Save", style: TextStyle(fontSize: 18, color: userData['bio'].toString().compareTo(bio)!=0?Palette.link:Palette.grey),),
                   shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
@@ -211,6 +188,16 @@ class _EditBioState extends State<EditBio> {
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: TextFormField(
 
+                                    /*to make the keyboard go up */
+                                      focusNode: focus,
+                                      autofocus:true,
+
+                                    /*go next when submitted*/
+                                    onFieldSubmitted: (value) {
+                                      if (userData['bio'].toString().compareTo(bio)!=0)
+                                        editBio();
+                                    },
+
                                     //function
                                     onChanged: (val){
                                       /*change the val of pass*/
@@ -224,8 +211,8 @@ class _EditBioState extends State<EditBio> {
                                       if (val!.isEmpty) {
 
                                       }
-                                      if (val.length > 255) {
-                                        return "Create a shorter bio under 255 characters.";
+                                      if (val.length > 161) {
+                                        return "Create a shorter bio under 160 characters.";
                                       }
                                       if((
                                           val.contains('&')||
@@ -292,5 +279,33 @@ class _EditBioState extends State<EditBio> {
         ),
       ),
     );
+  }
+
+  void editBio() async {
+    if(_formKey.currentState!.validate()){
+      /*go to sign up page*/
+      Navigator.pushNamed(context, '/editProfile');
+
+      /*add to database*/
+      try {
+
+        var uid =   FirebaseAuth.instance.currentUser!.uid;
+        print(uid);
+        await _firestore.collection("users").doc(uid).update({
+          'bio': bio,
+        });
+
+      }catch(e){
+        Alert(
+          context: context,
+          title: "Something went wrong!" ,
+          desc: e.toString(),
+
+        ).show();
+        print(e);
+      }
+    }
+
+
   }
 }

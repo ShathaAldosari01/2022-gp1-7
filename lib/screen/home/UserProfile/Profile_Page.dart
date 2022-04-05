@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
@@ -243,6 +244,7 @@ class _Profile_pageState extends State<Profile_page> {
                   child: _isloaded?
                       Text(
                         userData['name'],
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
@@ -265,12 +267,16 @@ class _Profile_pageState extends State<Profile_page> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                   child:  _isloaded?
-                      Text(
-                        userData['bio'],
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ) :Container(
+                      userData['bio'].toString().isNotEmpty
+                        ?Text(
+                          userData['bio'],
+                        textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                        ):SizedBox(
+                            )
+                      :Container(
                         width: 100,
                         child: LinearProgressIndicator(
                           minHeight:15,

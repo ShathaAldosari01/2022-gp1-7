@@ -17,11 +17,11 @@ class question4 extends StatefulWidget {
 class _question4State extends State<question4> {
 
   final checkboxes = [
-    SignUpCheckboxes(title: 'Middle-eastern countries.', name: "Middle eastern"),
-    SignUpCheckboxes(title: 'Asian countries.', name: "Asian"),
-    SignUpCheckboxes(title: 'European countries.', name: "European"),
-    SignUpCheckboxes(title: 'American countries.', name: "American"),
-    SignUpCheckboxes(title: 'African countries.', name: "African"),
+    SignUpCheckboxes(title: 'Middle-eastern countries', name: "Middle eastern"),
+    SignUpCheckboxes(title: 'Asian countries', name: "Asian"),
+    SignUpCheckboxes(title: 'European countries', name: "European"),
+    SignUpCheckboxes(title: 'American countries', name: "American"),
+    SignUpCheckboxes(title: 'African countries', name: "African"),
   ];
   bool isButtonActive = false;
   //database
@@ -213,6 +213,12 @@ class _question4State extends State<question4> {
                     }
                   }
               );
+
+              /*deactivate the button*/
+              setState(() {
+                isButtonActive= false;
+              });
+
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/question5');
             } :null,

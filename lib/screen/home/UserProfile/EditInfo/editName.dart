@@ -32,6 +32,8 @@ class _EditNameState extends State<EditName> {
   var uid= FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
+  //for key go up
+  final focus = FocusNode();
 
   /* get data method */
   getData() async {
@@ -139,35 +141,8 @@ class _EditNameState extends State<EditName> {
                 FlatButton(
                   textColor: Palette.link,
                   onPressed: isButtonActive && userData['name'].toString().compareTo(name)!=0
-                      ? () async {
-                          if(_formKey.currentState!.validate()){
-                            /*go to sign up page*/
-                            Navigator.pushNamed(context, '/editProfile');
-
-                            /*add to database*/
-                            try {
-
-                              var uid =   FirebaseAuth.instance.currentUser!.uid;
-                              print(uid);
-                              await _firestore.collection("users").doc(uid).update({
-                                'name': name,
-                              });
-
-
-
-                            }catch(e){
-                              Alert(
-                                context: context,
-                                title: "Invalid input!" ,
-                                desc: e.toString(),
-
-                              ).show();
-                              print(e);
-                            }
-                          }
-
-                  }:null,
-                  child: Text("Save", style: TextStyle(fontSize: 18, color: userData['name'].toString().compareTo(name)!=0?Palette.link:Palette.grey),),
+                      ? editName:null,
+                  child: Text("Save", style: TextStyle(fontSize: 18, color: isButtonActive && userData['name'].toString().compareTo(name)!=0?Palette.link:Palette.grey),),
                   shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
               ],
@@ -211,6 +186,16 @@ class _EditNameState extends State<EditName> {
                                 Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: TextFormField(
+
+                                    /*to make the keyboard go up */
+                                    focusNode: focus,
+                                    autofocus:true,
+
+                                    /*go next when submitted*/
+                                    onFieldSubmitted: (value) {
+                                      if ( isButtonActive && userData['name'].toString().compareTo(name)!=0)
+                                        editName();
+                                    },
 
                                     //function
                                     onChanged: (val){
@@ -293,6 +278,35 @@ class _EditNameState extends State<EditName> {
         ),
       ),
     );
+  }
+
+  void editName() async {
+    if(_formKey.currentState!.validate()){
+      /*go to sign up page*/
+      Navigator.pushNamed(context, '/editProfile');
+
+      /*add to database*/
+      try {
+
+        var uid =   FirebaseAuth.instance.currentUser!.uid;
+        print(uid);
+        await _firestore.collection("users").doc(uid).update({
+          'name': name,
+        });
+
+
+
+      }catch(e){
+        Alert(
+          context: context,
+          title: "Invalid input!" ,
+          desc: e.toString(),
+
+        ).show();
+        print(e);
+      }
+    }
+
   }
 }
 

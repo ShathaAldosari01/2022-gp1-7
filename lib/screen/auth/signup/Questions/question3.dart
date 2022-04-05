@@ -181,6 +181,12 @@ class _question3State extends State<question3> {
                     }
                   }
               );
+
+              /*deactivate the button*/
+              setState(() {
+                isButtonActive= false;
+              });
+
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/question4');
             } :null,

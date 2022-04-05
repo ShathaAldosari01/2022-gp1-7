@@ -166,6 +166,12 @@ class _nameState extends State<name> {
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: TextFormField(
 
+                                    /*go next when submitted*/
+                                    onFieldSubmitted: (value) {
+                                      if (isButtonActive)
+                                        goBirthPage();
+                                    },
+
                                     //function
                                     onChanged: (val){
                                       /*change the val of pass*/
@@ -280,33 +286,8 @@ class _nameState extends State<name> {
                                   minWidth: 350,
                                   child: FlatButton(
                                     onPressed:isButtonActive
-                                        ? () async {
-                                      if(_formKey.currentState!.validate()){
-                                        /*add to database*/
-                                        try {
-
-                                          var uid =   FirebaseAuth.instance.currentUser!.uid;
-                                          print(uid);
-                                          await _firestore.collection("users").doc(uid).update({
-                                            'name': name,
-                                          });
-
-                                          /*go to sign up page*/
-                                          Navigator.pushNamed(context, '/signupBirthday');
-
-                                        }catch(e){
-                                          Alert(
-                                            context: context,
-                                            title: "Invalid input!" ,
-                                            desc: e.toString(),
-
-                                          ).show();
-                                          print(e);
-                                        }
-                                      }
-
-
-                                    }:null,
+                                        ? goBirthPage
+                                        :null,
                                     child: Text('Next',
                                       style: TextStyle(
                                         color: Palette.backgroundColor,
@@ -333,6 +314,39 @@ class _nameState extends State<name> {
         ),
       ),
     );
+  }
+
+  goBirthPage() async {
+    if(_formKey.currentState!.validate()){
+      /*add to database*/
+      try {
+
+        var uid =   FirebaseAuth.instance.currentUser!.uid;
+        print(uid);
+        await _firestore.collection("users").doc(uid).update({
+          'name': name,
+        });
+
+        /*deactivate the button*/
+        setState(() {
+          isButtonActive= false;
+        });
+
+        /*go to sign up page*/
+        Navigator.pushNamed(context, '/signupBirthday');
+
+      }catch(e){
+        Alert(
+          context: context,
+          title: "Invalid input!" ,
+          desc: e.toString(),
+
+        ).show();
+        print(e);
+      }
+    }
+
+
   }
 }
 

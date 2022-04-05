@@ -3,6 +3,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:flutter/services.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
 /*colors */
@@ -64,7 +65,7 @@ class _SignupState extends State<Signup> {
           icon: const Icon(
               Icons.arrow_back, color: Palette.textColor
           ),
-          onPressed: () => Navigator.pushNamed(context, '/'),
+          onPressed: () => Navigator.pushNamed(context, '/Signup_Login'),
         ),
       ),
       //fix overload error
@@ -121,63 +122,68 @@ class _SignupState extends State<Signup> {
 
                             /*email*/
                             Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              child: TextFormField(
-                                //function
-                                onChanged: (val){
-                                  /*change the val of email*/
-                                  setState(() {
-                                    email = val;
-                                  });
-                                },
-                                /*value*/
-                                validator: (val){
-                                  if(val!.isEmpty){
-                                    return "Please enter a valid email.";
-                                  }else if(val.length>254){
-                                    return "Enter an email address under 254 characters.";
-                                  }else if(!EmailValidator.validate(email)){
-                                    return "Please enter a valid email.";
-                                  }
-                                  return null;
-                                },
-                                /*controller for button enable*/
-                                controller: _emailController,
+                                margin: const EdgeInsets.symmetric(vertical: 10),
+                                child: TextFormField(
 
-                                //design//
-                                decoration: const InputDecoration(
+                                  onFieldSubmitted: (value){
+                                    if(isButtonActive)
+                                      goPassPage();
+                                   },
 
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  filled: true,
+                                  //function
+                                  onChanged: (val){
+                                    /*change the val of email*/
+                                    setState(() {
+                                      email = val;
+                                    });
+                                  },
+                                  /*value*/
+                                  validator: (val){
+                                    if(val!.isEmpty){
+                                      return "Please enter a valid email.";
+                                    }else if(val.length>254){
+                                      return "Enter an email address under 254 characters.";
+                                    }else if(!EmailValidator.validate(email)){
+                                      return "Please enter a valid email.";
+                                    }
+                                    return null;
+                                  },
+                                  /*controller for button enable*/
+                                  controller: _emailController,
 
-                                  /* email icon */
-                                  prefixIcon: Icon(Icons.email, color: Colors.grey),
+                                  //design//
+                                  decoration: const InputDecoration(
 
-                                  /*hint*/
-                                  border: OutlineInputBorder(),
-                                  hintText: "Email address",
-                                  hintStyle: TextStyle(
-                                      fontSize: 18.0,
-                                      color: Palette.grey
-                                  ),
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    filled: true,
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                    /* email icon */
+                                    prefixIcon: Icon(Icons.email, color: Colors.grey),
+
+                                    /*hint*/
+                                    border: OutlineInputBorder(),
+                                    hintText: "Email address",
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0,
+                                        color: Palette.grey
+                                    ),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
+                                    ),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
-                                    ),
-                                  ),
+
                                 ),
-
-
-                              ),
                             ),
                             /*end of email*/
 
@@ -212,21 +218,8 @@ class _SignupState extends State<Signup> {
                                 height: 50.0,
                                 minWidth: 350,
                                 child: FlatButton(
-                                  onPressed:isButtonActive ?() async {
-                                    if(_formKey.currentState!.validate()){
-                                      /*deactivate the button*/
-                                      setState(() {
-                                        isButtonActive= false;
-                                      });
-                                      // /*clear the text*/
-                                      /*go to sign up page*/
-                                      var route =  MaterialPageRoute(
-                                          builder: (BuildContext context)=>
-                                              signupPassword(email: _emailController.text)
-                                      );
-                                      Navigator.of(context).push(route);
-                                    }
-                                  }
+                                  onPressed:isButtonActive
+                                      ? goPassPage
                                       :null,
                                   child: const Text('Next',
                                     style: TextStyle(
@@ -293,5 +286,21 @@ class _SignupState extends State<Signup> {
       ),
     );
 
+  }
+
+  goPassPage() async {
+    if(_formKey.currentState!.validate()){
+      /*deactivate the button*/
+      setState(() {
+        isButtonActive= false;
+      });
+      // /*clear the text*/
+      /*go to sign up page*/
+      var route =  MaterialPageRoute(
+          builder: (BuildContext context)=>
+              signupPassword(email: _emailController.text)
+      );
+      Navigator.of(context).push(route);
+    }
   }
 }

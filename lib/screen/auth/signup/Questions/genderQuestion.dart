@@ -26,6 +26,8 @@ class _GenderQuestionState extends State<GenderQuestion> {
   var uid= FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
+  int adult= 0;
+  int married=-1;
 
   /* get data method */
   getData() async {
@@ -40,6 +42,8 @@ class _GenderQuestionState extends State<GenderQuestion> {
 
           setState(() {
             gender =  userData['questions']["gender"];
+            adult = userData['isAdult'];
+            married = userData['questions']['married'];
             print(gender.toString());
             if(gender.toString().compareTo("0")==0){
               this.selectedQuestg = "Female";
@@ -83,13 +87,20 @@ class _GenderQuestionState extends State<GenderQuestion> {
       backgroundColor: Palette.backgroundColor,
       foregroundColor: Palette.textColor,
       elevation: 0,//no shadow
+      automaticallyImplyLeading: adult==0?false:true,//no arrow
       /*back arrow */
-      leading: IconButton(
+      leading: adult==1?IconButton(
         icon: const Icon(
             Icons.arrow_back, color: Palette.textColor
         ),
-        onPressed: () => Navigator.pushNamed(context, '/question1'),
-      ),
+        onPressed: () {
+          if(married==1){
+            Navigator.pushNamed(context, '/question2');
+          }else if (married==0){
+            Navigator.pushNamed(context, '/question1');
+          }
+        }
+      ):null,
     ),
 
 
@@ -169,9 +180,15 @@ class _GenderQuestionState extends State<GenderQuestion> {
                 addAnswer("gender", 0);
               }else if(this.selectedQuestg.toString().compareTo("Male")==0){
                 addAnswer("gender", 1);
-              }else if(this.selectedQuestg.toString().compareTo("Specify another")==0){
+              }else if(this.selectedQuestg.toString().compareTo("I'd rather not to say")==0){
                 addAnswer("gender", 2);
               }
+
+              /*deactivate the button*/
+              setState(() {
+                isButtonActive= false;
+              });
+              
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/question4');
             } :null,

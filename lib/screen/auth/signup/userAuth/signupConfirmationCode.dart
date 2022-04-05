@@ -25,6 +25,9 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
   bool canResendEmail = false;
   Timer? timer;
 
+  //time to resend
+  int _Conter= 30;
+
   @override
   void initState(){
     super.initState();
@@ -35,6 +38,19 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     if(!isEmailVerified){
       sendVerificationEmail();
     }
+
+
+    timer= Timer.periodic(
+      Duration(seconds:1),
+          (timer) {
+           setState(() {
+             if(_Conter>0){
+               _Conter--;
+             }else{
+               _Conter = 30;
+             }
+           });
+          });
 
     timer= Timer.periodic(
       Duration(seconds:3),
@@ -70,11 +86,12 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
       /*now he/she can not resend email again*/
       setState(() {
         canResendEmail = false;
+        _Conter = 30;
       });
-      /*after 5 sec they can */
+      /*after 30 sec they can */
       await Future.delayed(
           Duration(
-              seconds: 5
+              seconds: 30
           )
       );
       /*resend okay*/
@@ -86,34 +103,34 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     }catch(e){
       //error msg
       bool message =
-    e.toString().contains("We have blocked");
- if (!message) {
-   Alert(
-       context: context,
-       title: "Invalid input!",
-       desc: e.toString(),
-       buttons: [
-         DialogButton(
-             child: const Text(
-               "Sign up",
-               style: TextStyle(
-                   color: Palette.backgroundColor
+      e.toString().contains("We have blocked");
+       if (!message) {
+         Alert(
+             context: context,
+             title: "Invalid input!",
+             desc: e.toString(),
+             buttons: [
+               DialogButton(
+                   child: const Text(
+                     "Sign up",
+                     style: TextStyle(
+                         color: Palette.backgroundColor
+                     ),
+                   ),
+                   onPressed: () {
+                     /*go to sign up page*/
+                     Navigator.pushNamed(context, '/signup');
+                   },
+                   gradient: const LinearGradient(
+                       colors: [
+                         Palette.buttonColor,
+                         Palette.nameColor,
+                       ]
+                   )
                ),
-             ),
-             onPressed: () {
-               /*go to sign up page*/
-               Navigator.pushNamed(context, '/signup');
-             },
-             gradient: const LinearGradient(
-                 colors: [
-                   Palette.buttonColor,
-                   Palette.nameColor,
-                 ]
-             )
-         ),
-       ]
-   ).show();
- }
+             ]
+         ).show();
+       }
       print(e);
     }
   }
@@ -122,19 +139,19 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
   Widget build(BuildContext context) => isEmailVerified
       ?const name()
       :Scaffold(
-    backgroundColor: Palette.backgroundColor,
+        backgroundColor: Palette.backgroundColor,
 
-    appBar: AppBar(
-      backgroundColor: Palette.backgroundColor,
-      foregroundColor: Palette.textColor,
-      elevation: 0,//no shadow
-      automaticallyImplyLeading: false,//no arrow
-    ),
-    //fix overloade error
-    resizeToAvoidBottomInset: false,
-    body: Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
+        appBar: AppBar(
+          backgroundColor: Palette.backgroundColor,
+          foregroundColor: Palette.textColor,
+          elevation: 0,//no shadow
+          automaticallyImplyLeading: false,//no arrow
+        ),
+        //fix overloade error
+        resizeToAvoidBottomInset: false,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
 
 
         /*first column*/
@@ -163,20 +180,15 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                 Container(
                   padding: const EdgeInsets.symmetric( vertical: 10),
                   child: Center(
-                    child:  RichText(
-                      textAlign: TextAlign.center,
-                      text:  const TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'To confirm your email address, tap the the link that we just send you.',
+                    child: Text(
+                         canResendEmail?'To confirm your email address, tap the the link that we just send you.'
+                             :'To confirm your email address, tap the the link that we just send you. You can tap the button to resend after $_Conter',
+                            textAlign: TextAlign.center,
                             style:  TextStyle(
                               fontSize: 18,
                               color: Palette.grey,
                             ),
                           ),
-                        ],
-                      ),
-                    ),
                   ),
                 ),
 

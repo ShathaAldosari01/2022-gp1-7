@@ -36,6 +36,9 @@ class _LoginState extends State<Login> {
 
   get navigatorKey => GlobalKey<NavigatorState>();
 
+  //for button go next
+  final focus = FocusNode();
+
   @override
   void initState(){
     super.initState();
@@ -174,6 +177,13 @@ class _LoginState extends State<Login> {
                                   ),
                                 ),
                               ),
+
+                              /*go to next field*/
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (v) {
+                                FocusScope.of(context).requestFocus(focus);
+                              },
+
                             ),
                           ),
                           /*end of email*/
@@ -182,6 +192,14 @@ class _LoginState extends State<Login> {
                           Container(
                             margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
                             child: TextFormField(
+
+                              focusNode: focus,
+                              textInputAction: TextInputAction.done,
+                              onFieldSubmitted: (value) {
+                                if (isButtonActive)
+                                  goProfilePage();
+                              },
+
                               //function
                               onChanged: (val){
                                 /*change the val of pass*/
@@ -256,7 +274,7 @@ class _LoginState extends State<Login> {
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),
                       child: TextButton( onPressed: (){
-                        /*go to sign up page*/
+                        /*go to Forgot password page*/
                         var route =  MaterialPageRoute(
                             builder: (BuildContext context)=>
                                 forget_password(email: _emailController.text)
@@ -303,75 +321,7 @@ class _LoginState extends State<Login> {
                       minWidth: 350,
                       child: FlatButton(
                         onPressed:isButtonActive
-                            ?() async {
-                          if(_formKey.currentState!.validate()){
-                            //showDialog
-                            showDialog(
-                              context: context,
-                              barrierDismissible: false,
-                              builder: (context)=> const Center(child: CircularProgressIndicator()),
-                            );
-                            /*log in using database*/
-                            try {
-                              await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                  email: email,
-                                  password: password
-                              );
-                              /*go to Profile_Page page*/
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-
-                            }on FirebaseAuthException catch(e){
-                              Alert(
-                                  context: context,
-                                  title: "Invalid input!" ,
-                                  desc: e.message.toString(),
-                                  buttons: [
-                                    DialogButton(
-                                        child: Text(
-                                          "Sign up",
-                                          style: TextStyle(
-                                              color: Palette.backgroundColor
-                                          ),),
-                                        onPressed: (){
-                                          /*go to sign up page*/
-                                          Navigator.pushNamed(context, '/signup');
-                                        },
-                                        gradient:const LinearGradient(
-                                            colors: [
-                                              Palette.buttonColor,
-                                              Palette.nameColor,
-                                            ]
-                                        )
-                                    ),
-                                    DialogButton(
-                                        child: const Text(
-                                          "Log in",
-                                          style: TextStyle(
-                                              color: Palette.backgroundColor
-                                          ),),
-                                        onPressed: (){
-                                          /*go to sign up page*/
-                                          Navigator.pushNamed(context, '/Profile_Page');
-                                        },
-                                        gradient:const LinearGradient(
-                                            colors: [
-                                              Palette.buttonColor,
-                                              Palette.nameColor,
-                                            ]
-                                        )
-                                    )
-                                  ]
-                              ).show();
-                              print(e);
-                            }
-                            /*deactivate the button*/
-                            setState(() {
-                              isButtonActive= false;
-                            });
-
-                          }
-                        }
+                            ?goProfilePage
                             :null,
                         child: const Text('Log in',
                           style: TextStyle(
@@ -435,4 +385,74 @@ class _LoginState extends State<Login> {
     );
   }
   void togglePasswordVisibility () => setState(() => isHidden = !isHidden);
+
+  void goProfilePage() async {
+    if(_formKey.currentState!.validate()){
+      //showDialog
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context)=> const Center(child: CircularProgressIndicator()),
+      );
+      /*log in using database*/
+      try {
+        await FirebaseAuth.instance
+            .signInWithEmailAndPassword(
+            email: email,
+            password: password
+        );
+        /*go to Profile_Page page*/
+        Navigator.of(context).popUntil((route) => route.isFirst);
+
+      }on FirebaseAuthException catch(e){
+        Alert(
+            context: context,
+            title: "Invalid input!" ,
+            desc: e.message.toString(),
+            buttons: [
+              DialogButton(
+                  child: Text(
+                    "Sign up",
+                    style: TextStyle(
+                        color: Palette.backgroundColor
+                    ),),
+                  onPressed: (){
+                    /*go to sign up page*/
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  gradient:const LinearGradient(
+                      colors: [
+                        Palette.buttonColor,
+                        Palette.nameColor,
+                      ]
+                  )
+              ),
+              DialogButton(
+                  child: const Text(
+                    "Log in",
+                    style: TextStyle(
+                        color: Palette.backgroundColor
+                    ),),
+                  onPressed: (){
+                    /*go to sign up page*/
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  gradient:const LinearGradient(
+                      colors: [
+                        Palette.buttonColor,
+                        Palette.nameColor,
+                      ]
+                  )
+              )
+            ]
+        ).show();
+        print(e);
+      }
+      /*deactivate the button*/
+      setState(() {
+        isButtonActive= false;
+      });
+
+    }
+  }
 }

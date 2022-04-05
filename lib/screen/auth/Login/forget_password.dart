@@ -24,7 +24,7 @@ class _forget_passwordState extends State<forget_password> {
   //for service
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-final auth = FirebaseAuth.instance ; 
+final auth = FirebaseAuth.instance ;
   // text field state
   String email = "";
 
@@ -48,15 +48,12 @@ final auth = FirebaseAuth.instance ;
 
       setState(() {
         isEmailEmpty = !isEmailOkay;
-        isButtonActive = (!isEmailEmpty);
+        isButtonActive = widget.email.toString().isNotEmpty;
+        email = widget.email.toString();
       });
     });
 
 
-      setState(() {
-
-        isButtonActive = (!isEmailEmpty);
-      });
     }
 
   @override

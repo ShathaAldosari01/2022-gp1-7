@@ -34,6 +34,8 @@ class _EditUsernameState extends State<EditUsername> {
   var uid= FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
+  //for key go up
+  final focus = FocusNode();
 
   /* get data method */
   getData() async {
@@ -141,56 +143,10 @@ class _EditUsernameState extends State<EditUsername> {
                 FlatButton(
                   textColor: Palette.link,
                   onPressed: isButtonActive && userData['username'].toString().compareTo(username)!=0
-                      ?()async{
-                      if(_formKey.currentState!.validate()){
-                        /*add to database*/
-                        try {
+                      ?editUsername
+                      :null,
 
-                          final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
-                              .collection('users')
-                              .where('username', isEqualTo: username.toLowerCase()).get();
-                          // .get;
-                          final valid = await snapshot.docs.isEmpty;
-
-                          if (valid) {
-                            // username not exists
-                            var uid =   FirebaseAuth.instance.currentUser!.uid;
-                            print(uid);
-                            await _firestore.collection("users").doc(uid).update({
-                              'username': username.toLowerCase(),
-                            });
-
-                            /*go to sign up page*/
-                            Navigator.pushNamed(context, '/editProfile');
-                          }
-                          else if(username.isEmpty &&
-                              username.toLowerCase().compareTo(userData['username'].toString())==0){
-                            /*go to sign up page*/
-                            Navigator.pushNamed(context, '/editProfile');
-                          }else{
-                            print(snapshot.docs);
-                            Alert(
-                              context: context,
-                              title: "Invalid input!" ,
-                              desc: errMsg,
-                            ).show();
-                            print(errMsg);
-                          }
-
-                        }catch(e){
-                          Alert(
-                            context: context,
-                            title: "Invalid input!" ,
-                            desc: e.toString(),
-
-                          ).show();
-                          print(e);
-                        }
-                      }
-
-                  }:null,
-
-                  child: Text("Save", style: TextStyle(fontSize: 18, color: userData['username'].toString().compareTo(username)!=0?Palette.link:Palette.grey),),
+                  child: Text("Save", style: TextStyle(fontSize: 18, color: isButtonActive && userData['username'].toString().compareTo(username)!=0?Palette.link:Palette.grey),),
                   shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
               ],
@@ -234,6 +190,16 @@ class _EditUsernameState extends State<EditUsername> {
                                 Container(
                                   margin: EdgeInsets.symmetric(vertical: 10),
                                   child: TextFormField(
+
+                                    /*to make the keyboard go up */
+                                    focusNode: focus,
+                                    autofocus:true,
+
+                                    /*go next when submitted*/
+                                    onFieldSubmitted: (value) {
+                                      if (isButtonActive && userData['username'].toString().compareTo(username)!=0)
+                                        editUsername();
+                                    },
 
                                     //function
                                     onChanged: (val){
@@ -317,6 +283,55 @@ class _EditUsernameState extends State<EditUsername> {
         ),
       ),
     );
+  }
+
+  void editUsername()async{
+    if(_formKey.currentState!.validate()){
+      /*add to database*/
+      try {
+
+        final QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .where('username', isEqualTo: username.toLowerCase()).get();
+        // .get;
+        final valid = await snapshot.docs.isEmpty;
+
+        if (valid) {
+          // username not exists
+          var uid =   FirebaseAuth.instance.currentUser!.uid;
+          print(uid);
+          await _firestore.collection("users").doc(uid).update({
+            'username': username.toLowerCase(),
+          });
+
+          /*go to sign up page*/
+          Navigator.pushNamed(context, '/editProfile');
+        }
+        else if(username.isEmpty &&
+            username.toLowerCase().compareTo(userData['username'].toString())==0){
+          /*go to sign up page*/
+          Navigator.pushNamed(context, '/editProfile');
+        }else{
+          print(snapshot.docs);
+          Alert(
+            context: context,
+            title: "Invalid input!" ,
+            desc: errMsg,
+          ).show();
+          print(errMsg);
+        }
+
+      }catch(e){
+        Alert(
+          context: context,
+          title: "Invalid input!" ,
+          desc: e.toString(),
+
+        ).show();
+        print(e);
+      }
+    }
+
   }
 }
 

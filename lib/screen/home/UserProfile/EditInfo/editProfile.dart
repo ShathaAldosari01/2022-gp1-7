@@ -297,18 +297,12 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ],
                 ),
-                Row(
-                  // mainAxisAlignment: M,
+                Column(
                   children: [
-                    Container(
-                      // color: Colors.red,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                     Row(
                         children: [
-                          /*label*/
-                          //name
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                            padding: EdgeInsets.fromLTRB(15, 15, 45, 15),
                             child: Text(
                               "Name",
                               style: TextStyle(
@@ -317,83 +311,86 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ),
 
-                          //username
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                            child: Text(
-                              "Username",
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            ),
-                          ),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                /*value*/
+                                //name
+                                Container(
+                                  child:  TextButton(
+                                    onPressed: (){
+                                      Navigator.of(context).popAndPushNamed('/editName');
+                                    },
+                                            child: _isloaded
+                                                ? Text(
+                                                        (userData['name'].toString().isNotEmpty)
+                                                            ? userData['name']
+                                                            : "Name",
+                                                        style:
+                                                        TextStyle(
+                                                          fontSize: 16,
+                                                          color:(userData['name'].toString().isNotEmpty)
+                                                              ? Palette.textColor
+                                                              : Palette.grey,
 
-                          //Bio
-                          Container(
-                            padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-                            child: Text(
-                              "Bio",
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
+                                                        )
+                                                    )
+                                                :Container(
+                                                  width: 100,
+                                                  child: LinearProgressIndicator(
+                                                    minHeight:15,
+                                                    backgroundColor: Palette.lightgrey,
+                                                    valueColor:
+                                                    AlwaysStoppedAnimation<Color>
+                                                      (Palette.midgrey),
+                                                  ),
+                                                ),
+
+                                  ),
+                                ),
+
+                                /*line*/
+                                Divider(
+                                  height: 4,
+                                ),
+
+
+                              ],
                             ),
-                          ),
+                          )
+
                         ],
-                      ),
                     ),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /*value*/
-                          //name
-                          Container(
-                            child:  TextButton(
-                              onPressed: (){
-                                Navigator.of(context).popAndPushNamed('/editName');
-                              },
-                                      child: _isloaded
-                                          ? Text(
-                                                  (userData['name'].toString().isNotEmpty)
-                                                      ? userData['name']
-                                                      : "Name",
-                                                  style:
-                                                  TextStyle(
-                                                    fontSize: 16,
-                                                    color:(userData['name'].toString().isNotEmpty)
-                                                        ? Palette.textColor
-                                                        : Palette.grey,
 
-                                                  )
-                                              )
-                                          :Container(
-                                            width: 100,
-                                            child: LinearProgressIndicator(
-                                              minHeight:15,
-                                              backgroundColor: Palette.lightgrey,
-                                              valueColor:
-                                              AlwaysStoppedAnimation<Color>
-                                                (Palette.midgrey),
-                                            ),
-                                          ),
 
+                    //username
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          child: Text(
+                            "Username",
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
                           ),
+                        ),
 
-                          /*line*/
-                          Divider(
-                            height: 4,
-                          ),
-
-                          //username
-                          Container(
-                            alignment: Alignment.centerLeft,
-                            child:  TextButton(
-                              onPressed: (){
-                                Navigator.of(context).popAndPushNamed('/editUsername');
-                              },
-                              child:_isloaded
-                                  ? Text(
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /*value*/
+                              //username
+                              Container(
+                                alignment: Alignment.centerLeft,
+                                child:  TextButton(
+                                  onPressed: (){
+                                    Navigator.of(context).popAndPushNamed('/editUsername');
+                                  },
+                                  child:_isloaded
+                                      ? Text(
                                       (userData['username'].toString().isNotEmpty)
                                           ? userData['username']
                                           : "Username",
@@ -405,61 +402,98 @@ class _EditProfileState extends State<EditProfile> {
                                         fontSize: 16,
                                       )
                                   )
-                                  :Container(
-                                    width: 100,
-                                    child: LinearProgressIndicator(
-                                      minHeight:15,
-                                      backgroundColor: Palette.lightgrey,
-                                      valueColor:
-                                      AlwaysStoppedAnimation<Color>
-                                        (Palette.midgrey),
-                                    ),
-                                  ),
+                                      :Container(
+                                        width: 100,
+                                        child: LinearProgressIndicator(
+                                          minHeight:15,
+                                          backgroundColor: Palette.lightgrey,
+                                          valueColor:
+                                          AlwaysStoppedAnimation<Color>
+                                            (Palette.midgrey),
+                                        ),
+                                      ),
 
+                                ),
+                              ),
+
+                              /*line*/
+                              Divider(
+                                height: 4,
+                              ),
+
+
+                            ],
+                          ),
+                        )
+
+                      ],
+                    ),
+
+                    //Bio
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB( 15, 15, 67, 15),
+                          child: Text(
+                            "Bio",
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
                           ),
+                        ),
 
-                          /*line*/
-                          Divider(
-                            height: 4,
-                          ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /*value*/
+                              //bio
+                              Container(
 
-                          //bio
-                          Container(
-
-                            child: TextButton(
-                              onPressed: (){
-                                Navigator.of(context).popAndPushNamed('/editBio');
-                              },
-                              child: _isloaded
-                                  ? Text(
+                                child: TextButton(
+                                  onPressed: (){
+                                    Navigator.of(context).popAndPushNamed('/editBio');
+                                  },
+                                  child: _isloaded
+                                      ? Text(
                                       (userData['bio'].toString().isNotEmpty)
                                           ? userData['bio']
                                           : "Bio",
                                       style:
-                                        TextStyle(
-                                          color:(userData['bio'].toString().isNotEmpty)
-                                                  ? Palette.textColor
-                                                  : Palette.grey,
-                                          fontSize: 16,
-                                        )
-                                    )
-                                  :Container(
-                                      width: 100,
-                                      child: LinearProgressIndicator(
-                                        minHeight:15,
-                                        backgroundColor: Palette.lightgrey,
-                                        valueColor:
-                                        AlwaysStoppedAnimation<Color>
-                                          (Palette.midgrey),
-                                      ),
-                                    ),
+                                      TextStyle(
+                                        color:(userData['bio'].toString().isNotEmpty)
+                                            ? Palette.textColor
+                                            : Palette.grey,
+                                        fontSize: 16,
+                                      )
+                                  )
+                                      :Container(
+                                          width: 100,
+                                          child: LinearProgressIndicator(
+                                            minHeight:15,
+                                            backgroundColor: Palette.lightgrey,
+                                            valueColor:
+                                            AlwaysStoppedAnimation<Color>
+                                              (Palette.midgrey),
+                                          ),
+                                        ),
 
-                            ),
+                                ),
+                              ),
+
+                              /*line*/
+                              Divider(
+                                height: 4,
+                              ),
+
+
+                            ],
                           ),
-                        ],
-                      ),
-                    )
+                        )
+
+                      ],
+                    ),
+
                   ],
                 ),
                 Column(

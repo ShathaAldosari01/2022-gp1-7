@@ -17,11 +17,11 @@ class question5 extends StatefulWidget {
 class _question5State extends State<question5> {
 
   final checkboxes = [
-    SignUpCheckboxes(title: 'Restaurants/cafes.', name: "Restaurants and cafes"),
-    SignUpCheckboxes(title: 'Museums.', name: "Museums"),
-    SignUpCheckboxes(title: 'Shopping malls.', name: "Shopping malls"),
-    SignUpCheckboxes(title: 'Parks.', name: "Parks"),
-    SignUpCheckboxes(title: 'Sports attractions (golf, bowling, tennis,...).', name: "Sports attractions"),
+    SignUpCheckboxes(title: 'Restaurants/cafes', name: "Restaurants and cafes"),
+    SignUpCheckboxes(title: 'Museums', name: "Museums"),
+    SignUpCheckboxes(title: 'Shopping malls', name: "Shopping malls"),
+    SignUpCheckboxes(title: 'Parks', name: "Parks"),
+    SignUpCheckboxes(title: 'Sports attractions (golf, bowling, tennis,...)', name: "Sports attractions"),
   ];
   bool isButtonActive = false;
   //database
@@ -214,6 +214,12 @@ class _question5State extends State<question5> {
                     }
                   }
               );
+
+              /*deactivate the button*/
+              setState(() {
+                isButtonActive= false;
+              });
+
               /*go to profile page*/
               Navigator.of(context).popAndPushNamed('/Profile_Page');
             } :null,

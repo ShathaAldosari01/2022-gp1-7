@@ -15,7 +15,7 @@ class question2 extends StatefulWidget {
 
 
 class _question2State extends State<question2> {
-  static const quest2 = <String> ['Yes.', 'No.'];
+  static const quest2 = <String> ['Yes', 'No'];
   String selectedQuest2 = "";
   bool isButtonActive = false;
   //database
@@ -42,10 +42,10 @@ class _question2State extends State<question2> {
             children =  userData['questions']["children"];
             print(children.toString());
             if(children.toString().compareTo("0")==0){
-              this.selectedQuest2 = "No.";
+              this.selectedQuest2 = "No";
               isButtonActive = true;
             } if(children.toString().compareTo("1")==0){
-              this.selectedQuest2 = "Yes.";
+              this.selectedQuest2 = "Yes";
               isButtonActive = true;
             }
           });
@@ -160,11 +160,17 @@ class _question2State extends State<question2> {
             height: 50.0,
             minWidth: 350,
             child: FlatButton(onPressed: isButtonActive? (){
-              if(this.selectedQuest2.toString().compareTo("No.")==0){
+              if(this.selectedQuest2.toString().compareTo("No")==0){
                 addAnswer("children", 0);
-              }else if(this.selectedQuest2.toString().compareTo("Yes.")==0){
+              }else if(this.selectedQuest2.toString().compareTo("Yes")==0){
                 addAnswer("children", 1);
               }
+
+              /*deactivate the button*/
+              setState(() {
+                isButtonActive= false;
+              });
+
               /*go to question 2 page*/
               Navigator.pushNamed(context, '/gender');
 

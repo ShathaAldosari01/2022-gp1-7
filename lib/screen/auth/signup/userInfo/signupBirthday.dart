@@ -330,6 +330,11 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                             'birthday': birthday,
                           });
 
+                          /*deactivate the button*/
+                          setState(() {
+                            isButtonActive= false;
+                          });
+
                           /*go to sign up page*/
                           Navigator.pushNamed(context, '/signupBirthday');
 

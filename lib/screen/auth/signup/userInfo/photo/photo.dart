@@ -31,6 +31,9 @@ class _PhotoState extends State<Photo> {
   var uid= FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
+  DateTime now  = DateTime.now();
+  DateTime birthday  = DateTime.now();
+  int adult = 1;
 
   /* get data method */
   getData() async {
@@ -45,6 +48,23 @@ class _PhotoState extends State<Photo> {
           //set img path to path
           setState(() {
             path = userData['photoPath'].toString();
+            birthday = userData['birthday'].toDate();
+            int yearDiff = now.year - birthday.year;
+            int monthDiff = now.month - birthday.month;
+            int dayDiff = now.day - birthday.day;
+            if(yearDiff > 18 || yearDiff == 18 && monthDiff >= 0 && dayDiff >= 0)
+              adult =1;
+            else
+              adult = 0;
+          });
+
+          await _firestore.collection("users").doc(uid).update({
+            'isAdult' :adult,
+            if(adult==0)
+            "questions.married" : 0,
+            if(adult==0)
+            "questions.children" : 0
+
           });
 
         }else
@@ -79,7 +99,10 @@ class _PhotoState extends State<Photo> {
 
     try {
       /*go to sign up page*/
-      Navigator.pushNamed(context, '/question1');
+      if(adult==1)
+        Navigator.pushNamed(context, '/question1');
+      else
+        Navigator.pushNamed(context, '/gender');
 
       var uid =   FirebaseAuth.instance.currentUser!.uid;
       print(uid);
@@ -140,7 +163,7 @@ class _PhotoState extends State<Photo> {
                       // color: Colors.red,
                       child:Center(
                         child: Text(
-                          "Add profile photo",
+                          "Add profile photo ",
                           style: TextStyle(
                             fontSize: 30,
                             color: Palette.textColor,
@@ -170,7 +193,7 @@ class _PhotoState extends State<Photo> {
                       children: [
                         /*icon*/
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 20),
+                          margin: EdgeInsets.symmetric(vertical: 120),
                           child: Center(
                             child:path !="no"?
                             CircleAvatar(
@@ -187,8 +210,8 @@ class _PhotoState extends State<Photo> {
                         ),
                         /*end of the cake icon*/
                         Positioned(
-                          bottom: 3,
-                          left: 180,
+                          bottom: 100,
+                          left: 170,
                           child:
                           /*add icon */
                           path =="no"?Container(
@@ -291,10 +314,14 @@ class _PhotoState extends State<Photo> {
                             child: ButtonTheme(
                               height: 50.0,
                               minWidth: 350,
-                              child: FlatButton(onPressed: () async {
+                              child: FlatButton(
+                                onPressed: () {
 
                                 /*go to sign up page*/
-                                Navigator.pushNamed(context, '/question1');
+                                if(adult==1)
+                                  Navigator.pushNamed(context, '/question1');
+                                else
+                                  Navigator.pushNamed(context, '/gender');
                               },
                                 child: Text('Skip',
                                   style: TextStyle(
