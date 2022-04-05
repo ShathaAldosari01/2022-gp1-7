@@ -1,16 +1,25 @@
-# gp1_7_2022
+# gp1_7_2022 / Odyssey 
 
-A new Flutter project.
+Odyssey is a platform for tourism that allows people to get a sense of place, plan their trip, decide where to go, and can keep accessing the app wherever they go all under the same roof, is much more beneficial than going to a place unaware of the poor reviews or not knowing where to start exploring or not keeping track of the places to visit when they wish to visit that city later.
 
-## Getting Started
+For a traveler who faces difficulties finding places/activities to experience, people with similar interests to follow, and feels overwhelmed when planning for a trip, the Odyssey is a social network platform designed for travelers that will help them create lists to plan upcoming trips and discover new places. Odyssey will make sure that users can look at other users’ suggested lists that are similar to them so they might want to try something they're interested in.
 
-This project is a starting point for a Flutter application.
+The purpose of this platform is for travellers to share their adventures so that others who are lost and don't know where to go can get ideas from others and inspiration from them. 
 
-A few resources to get you started if this is your first Flutter project:
+developed using flutter and cloud firebase. 
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Requirements: 
+1- Andriod studio (along with SDK)
+2- Emulator (or real andriod device) 
+3- Flutter
+4- Dart
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+how to launch: 
+1- Press the greenbutton that says "code"
+2- Download .zip file
+3- Unzip the file
+4- open andriod studio 
+5- click on file > open > location of saved Unzipped file > press ok 
+6- Start an android emulator or connect a real android device to the system.
+7- press run 
