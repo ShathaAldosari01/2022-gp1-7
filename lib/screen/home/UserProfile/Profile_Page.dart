@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,11 @@ import 'package:focused_menu/modals.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/Widgets/follow_button.dart';
+import 'package:gp1_7_2022/screen/home/home_page.dart';
+import 'package:gp1_7_2022/screen/home/lists.dart';
+import 'package:gp1_7_2022/screen/home/notification_page.dart';
+import 'package:gp1_7_2022/screen/home/search_page.dart';
+import 'package:gp1_7_2022/screen/home/settings_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 
@@ -198,7 +204,8 @@ class _Profile_pageState extends State<Profile_page> {
         ],
       ),
 
-      body: ListView(
+
+     body: ListView(
         children: [
           Container(
             margin: const EdgeInsets.all(16),
@@ -317,7 +324,8 @@ class _Profile_pageState extends State<Profile_page> {
             ),
           ),
         ],
-      ),
+      )
+      ,
     );
   }
 }

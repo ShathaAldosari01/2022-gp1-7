@@ -221,7 +221,7 @@ class _question5State extends State<question5> {
               });
 
               /*go to profile page*/
-              Navigator.of(context).popAndPushNamed('/Profile_Page');
+              Navigator.of(context).popAndPushNamed('/navigationBar');
             } :null,
               child: Text('Done',
                 style: TextStyle(

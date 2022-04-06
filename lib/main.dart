@@ -25,6 +25,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
+import 'package:gp1_7_2022/screen/home/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navigationBar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 void main() async{
@@ -73,6 +74,7 @@ void main() async{
             /*navigation bar */
             '/navigationBar':(context) => navigationBar(),
 
+
           }
       )
   );
@@ -108,7 +110,7 @@ class _MainPageState extends State<MainPage> {
             var current = FirebaseAuth.instance.currentUser;
             if(current!= null){
               if(current.emailVerified && current.uid != null ){
-                return  Profile_page(uid: uid );
+                return  navigationBar();
               }else{
                 String? x = FirebaseAuth.instance.currentUser!.email;
                 String y= x??" ";

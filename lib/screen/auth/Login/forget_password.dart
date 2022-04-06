@@ -178,6 +178,9 @@ final auth = FirebaseAuth.instance ;
                                 fillColor: Palette.lightgrey,
                                 filled: true,
 
+                                /* email icon */
+                                prefixIcon: Icon(Icons.email, color: Colors.grey),
+
                                 /*hint*/
                                 border: OutlineInputBorder(),
                                 hintText: "Email address",

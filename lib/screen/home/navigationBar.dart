@@ -1,4 +1,5 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
@@ -24,7 +25,7 @@ class _navigationBarState extends State<navigationBar> {
     AddPostPage(),
     lists(),
     NotificationPage(),
-    Profile_page(uid: null,),
+    Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
 
   @override
@@ -41,14 +42,12 @@ class _navigationBarState extends State<navigationBar> {
     return Scaffold(
       extendBody: true,
       backgroundColor: Palette.backgroundColor,
-      appBar: AppBar(
-        backgroundColor: Palette.backgroundColor,
-        foregroundColor: Palette.textColor,
-        elevation: 0,//no shadow
-        automaticallyImplyLeading: false,//no arrow
-      ),
 
-      body: screens[index],
+
+      body: IndexedStack(
+        index: index,
+        children: screens,
+      ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
           iconTheme: IconThemeData(color: Colors.white),
