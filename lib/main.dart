@@ -25,8 +25,8 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
-import 'package:gp1_7_2022/screen/home/home_page.dart';
-import 'package:gp1_7_2022/screen/home/navigationBar.dart';
+import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
+import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();

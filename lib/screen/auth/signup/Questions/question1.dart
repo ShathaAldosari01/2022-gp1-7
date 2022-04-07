@@ -197,7 +197,7 @@ class _question1State extends State<question1> {
                 });
 
                 if(this.selectedQuest1.toString().compareTo("No")==0){
-                  /*go to question 2 page*/
+                  /*go to gender question page*/
                   Navigator.pushNamed(context, '/gender');
                 }else if(this.selectedQuest1.toString().compareTo("Yes")==0){
                   /*go to question 2 page*/

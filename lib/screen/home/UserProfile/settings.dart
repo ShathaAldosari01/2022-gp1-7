@@ -120,7 +120,7 @@ class _settingsState extends State<settings> {
                           Navigator.pushNamed(context, '/gender');
                       },
                       child:Text(
-                        "Edit answers",
+                        "Edit Preferences",
                         style: TextStyle(
                             color: Palette.textColor,
                             fontSize: 18

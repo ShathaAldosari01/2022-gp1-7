@@ -2,9 +2,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../config/palette.dart';
+import '../../../../config/palette.dart';
 
-class lists extends StatelessWidget{
+class HomePage extends StatelessWidget{
   @override
 
   Widget build(BuildContext context) => Scaffold(
@@ -17,7 +17,7 @@ class lists extends StatelessWidget{
     ),
     body: Center(
       child: Text(
-        'Lists',
+        'Home',
         style: TextStyle(fontSize: 30, color: Colors.black),
       ),
     ),

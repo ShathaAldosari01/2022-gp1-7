@@ -220,7 +220,7 @@ class _question5State extends State<question5> {
                 isButtonActive= false;
               });
 
-              /*go to profile page*/
+              /*go to home page page*/
               Navigator.of(context).popAndPushNamed('/navigationBar');
             } :null,
               child: Text('Done',

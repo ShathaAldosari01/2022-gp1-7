@@ -171,7 +171,7 @@ class _question2State extends State<question2> {
                 isButtonActive= false;
               });
 
-              /*go to question 2 page*/
+              /*go to gender question page*/
               Navigator.pushNamed(context, '/gender');
 
             } :null,

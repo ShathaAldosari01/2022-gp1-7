@@ -219,7 +219,7 @@ class _question4State extends State<question4> {
                 isButtonActive= false;
               });
 
-              /*go to question 2 page*/
+              /*go to question 5 page*/
               Navigator.pushNamed(context, '/question5');
             } :null,
               child: Text('Next',
