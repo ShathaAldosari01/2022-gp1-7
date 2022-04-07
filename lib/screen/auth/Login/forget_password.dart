@@ -48,7 +48,7 @@ final auth = FirebaseAuth.instance ;
 
       setState(() {
         isEmailEmpty = !isEmailOkay;
-        isButtonActive = widget.email.toString().isNotEmpty;
+        isButtonActive = true;
         email = widget.email.toString();
       });
     });
@@ -98,7 +98,7 @@ final auth = FirebaseAuth.instance ;
               flex:8,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-              //  mainAxisAlignment:MainAxisAlignment.end ,
+
 
                 children: [
                   Container(
@@ -108,11 +108,10 @@ final auth = FirebaseAuth.instance ;
                       child:Text(
                         "Reset Password",
                         style: TextStyle(
-                       //   fontWeight: FontWeight.w900,
+
                           fontSize: 30,
                           color: Palette.textColor,
-                      //    fontFamily: 'Handlee',
-                        //  letterSpacing: 2,
+
                         ),
 
 
@@ -265,7 +264,8 @@ final auth = FirebaseAuth.instance ;
                                         "OK",
                                         style: TextStyle(
                                             color: Palette.backgroundColor
-                                        ),),
+                                        ),
+                                      ),
                                       onPressed: (){
 
                                         Navigator.pushNamed(context, '/login');
