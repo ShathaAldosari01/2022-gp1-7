@@ -5,10 +5,14 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 /*extra */
-import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
+// import 'package:flutter/services.dart';
+import 'package:flutter/gestures.dart';
 
+/*pages */
+// import 'package:gp1_7_2022/screen/auth/signup/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userInfo/name.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class ConfirmationCode extends StatefulWidget {
@@ -25,7 +29,6 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
   bool canResendEmail = false;
   Timer? timer;
 
-
   @override
   void initState(){
     super.initState();
@@ -35,12 +38,12 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     if(!isEmailVerified){
       sendVerificationEmail();
+    }else{
+      Navigator.pushNamed(context, '/signupBirthday');
     }
 
-
-
     timer= Timer.periodic(
-      Duration(seconds:0),
+      Duration(seconds:3),
           (_) =>cheackEmailVerified(),
     );
   }
@@ -52,19 +55,16 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     super.dispose();
   }
 
-  void setStateIfMounted(f) {
-    if (mounted) setState(f);
-  }
-
   Future cheackEmailVerified() async{
     await FirebaseAuth.instance.currentUser!.reload();
 
-    setStateIfMounted(() {
+    setState(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
 
     if(isEmailVerified){
       timer?.cancel();
+      Navigator.pushNamed(context, '/signupBirthday');
     }
   }
 
@@ -80,7 +80,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
       });
       /*after 5 sec they can */
       await Future.delayed(
-          Duration(
+          const Duration(
               seconds: 5
           )
       );
@@ -90,37 +90,44 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
       });
 
 
-    }catch(e){
+    }catch(e) {
       //error msg
       bool message =
       e.toString().contains("We have blocked");
-       if (!message) {
-         Alert(
-             context: context,
-             title: "Invalid input!",
-             desc: e.toString(),
-             buttons: [
-               DialogButton(
-                   child: const Text(
-                     "Sign up",
-                     style: TextStyle(
-                         color: Palette.backgroundColor
-                     ),
-                   ),
-                   onPressed: () {
-                     /*go to sign up page*/
-                     Navigator.pushNamed(context, '/signup');
-                   },
-                   gradient: const LinearGradient(
-                       colors: [
-                         Palette.buttonColor,
-                         Palette.nameColor,
-                       ]
-                   )
-               ),
-             ]
-         ).show();
-       }
+      if(!message){
+      Alert(
+          context: context,
+          title: "Something went wrong!",
+          desc: e.toString(),
+          buttons: [
+            DialogButton(
+              child: const Text(
+                "Cancel",
+                style: TextStyle(
+                    color: Palette.backgroundColor
+                ),
+              ),
+              onPressed: () {
+                /*go to sign up page*/
+                Navigator.pushNamed(context, '/signup');
+              },
+              gradient: canResendEmail
+                  ? const LinearGradient(
+                  colors: [
+                    Palette.buttonColor,
+                    Palette.nameColor,
+                  ]
+              )
+                  : const LinearGradient(
+                  colors: [
+                    Palette.buttonDisableColor,
+                    Palette.nameDisablColor,
+                  ]
+              ),
+            ),
+          ]
+      ).show();
+    }
       print(e);
     }
   }
@@ -129,19 +136,19 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
   Widget build(BuildContext context) => isEmailVerified
       ?const name()
       :Scaffold(
-        backgroundColor: Palette.backgroundColor,
+    backgroundColor: Palette.backgroundColor,
 
-        appBar: AppBar(
-          backgroundColor: Palette.backgroundColor,
-          foregroundColor: Palette.textColor,
-          elevation: 0,//no shadow
-          automaticallyImplyLeading: false,//no arrow
-        ),
-        //fix overloade error
-        resizeToAvoidBottomInset: false,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+    appBar: AppBar(
+      backgroundColor: Palette.backgroundColor,
+      foregroundColor: Palette.textColor,
+      elevation: 0,//no shadow
+      automaticallyImplyLeading: false,//no arrow
+    ),
+    //fix overloade error
+    resizeToAvoidBottomInset: false,
+    body: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
 
 
         /*first column*/
@@ -170,14 +177,20 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                 Container(
                   padding: const EdgeInsets.symmetric( vertical: 10),
                   child: Center(
-                    child: Text(
-                         'To confirm your email address, tap the the link that we just send you.',
-                            textAlign: TextAlign.center,
+                    child:  RichText(
+                      textAlign: TextAlign.center,
+                      text:  const TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'To confirm your email address, tap the the link that we just send you.',
                             style:  TextStyle(
                               fontSize: 18,
                               color: Palette.grey,
                             ),
                           ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
 
@@ -277,5 +290,3 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     ),
   );
 }
-
-
