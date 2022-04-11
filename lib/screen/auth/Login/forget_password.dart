@@ -24,7 +24,7 @@ class _forget_passwordState extends State<forget_password> {
   //for service
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-final auth = FirebaseAuth.instance ;
+  final auth = FirebaseAuth.instance ;
   // text field state
   String email = "";
 
@@ -41,6 +41,10 @@ final auth = FirebaseAuth.instance ;
     super.initState();
 
     _emailController = TextEditingController(text:widget.email.toString());
+    setState(() {
+      email = widget.email.toString();
+      isButtonActive = widget.email.toString().isNotEmpty;
+    });
 
 
     _emailController.addListener(() {
@@ -48,13 +52,16 @@ final auth = FirebaseAuth.instance ;
 
       setState(() {
         isEmailEmpty = !isEmailOkay;
-        isButtonActive = true;
-        email = widget.email.toString();
+        isButtonActive = (!isEmailEmpty);
       });
     });
 
 
-    }
+    setState(() {
+
+      isButtonActive = (!isEmailEmpty);
+    });
+  }
 
   @override
 
@@ -91,277 +98,276 @@ final auth = FirebaseAuth.instance ;
         //fix overload error
         resizeToAvoidBottomInset: false,
         body:Column(
-          children:[
+            children:[
 
 
-            Expanded(
-              flex:8,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+              Expanded(
+                flex:8,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  //  mainAxisAlignment:MainAxisAlignment.end ,
+
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(20),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      child: const Center(
+                        child:Text(
+                          "Reset Password",
+                          style: TextStyle(
+                            //   fontWeight: FontWeight.w900,
+                            fontSize: 30,
+                            color: Palette.textColor,
+                            //    fontFamily: 'Handlee',
+                            //  letterSpacing: 2,
+                          ),
 
 
-                children: [
-                  Container(
-                    margin: const EdgeInsets.all(20),
-                    padding: const EdgeInsets.symmetric(vertical: 10),
-                    child: const Center(
-                      child:Text(
-                        "Reset Password",
-                        style: TextStyle(
-
-                          fontSize: 30,
-                          color: Palette.textColor,
 
                         ),
+                      ),
+
+                    ),
 
 
 
+                    /*enter email and we'll send an email */
+                    Container(
+                      margin:  const EdgeInsets.symmetric(horizontal: 40),
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+
+                      child:const Center(
+                        child: Text(
+                          "Enter your email and we'll send an email with instructions to reset your password.",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Palette.grey,
+                          ),
+                        ),
                       ),
                     ),
 
-                  ),
 
 
 
-                  /*enter email and we'll send an email */
-                  Container(
-                   margin:  const EdgeInsets.symmetric(horizontal: 40),
-                  padding: const EdgeInsets.symmetric(vertical: 10),
+                    Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
 
-                    child:const Center(
-                      child: Text(
-                        "Enter your email and we'll send an email with instructions to reset your password.",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Palette.grey,
-                        ),
-                      ),
-                    ),
-                  ),
+                            /*email*/
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
+                              child: TextFormField(
+                                //function
+                                onChanged: (val){
+                                  /*change the val of email*/
+                                  setState(() {
+                                    email = val;
+                                  });
+                                },
+                                /*value*/
+                                validator: (val){
+                                  if(val!.isEmpty){
+                                    return "Please enter a valid email.";
+                                  }if(val.length>254){
+                                    return "Enter an email address under 254 characters.";
+                                  }
+                                  return null;
+                                },
+                                /*controller for button enable*/
+                                controller: _emailController,
+                                //design
+                                decoration: const InputDecoration(
 
+                                  /*background color*/
+                                  fillColor: Palette.lightgrey,
+                                  filled: true,
 
-
-
-                  Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-
-                          /*email*/
-                          Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 5),
-                            child: TextFormField(
-                              //function
-                              onChanged: (val){
-                                /*change the val of email*/
-                                setState(() {
-                                  email = val;
-                                });
-                              },
-                              /*value*/
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return "Please enter a valid email.";
-                                }if(val.length>254){
-                                  return "Enter an email address under 254 characters.";
-                                }
-                                return null;
-                              },
-                              /*controller for button enable*/
-                              controller: _emailController,
-                              //design
-                              decoration: const InputDecoration(
-
-                                /*background color*/
-                                fillColor: Palette.lightgrey,
-                                filled: true,
-
-                                /* email icon */
-                                prefixIcon: Icon(Icons.email, color: Colors.grey),
-
-                                /*hint*/
-                                border: OutlineInputBorder(),
-                                hintText: "Email address",
-                                hintStyle: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Palette.grey
-                                ),
-
-                                /*Border*/
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Palette.midgrey,
+                                  /*hint*/
+                                  border: OutlineInputBorder(),
+                                  hintText: "Email address",
+                                  hintStyle: TextStyle(
+                                      fontSize: 18.0,
+                                      color: Palette.grey
                                   ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Palette.midgrey,
-                                    width: 2.0,
+
+                                  /*Border*/
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                      width: 2.0,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                          /*end of email*/
+                            /*end of email*/
 
-                        ],
-                      )
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              flex: 13,
-
-              child:Column(
-
-                children: [
-
-
-                  /*send email button*/
-                  Container(
-                    margin: const EdgeInsets.symmetric( horizontal:40, vertical: 10),
-                    alignment: Alignment.center,
-                    width: double.infinity,
-                    height: 50.0,
-                    /*button colors*/
-                    decoration:  BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                      gradient: isButtonActive
-                          ?const LinearGradient(
-                          colors: [
-                            Palette.buttonColor,
-                            Palette.nameColor,
-                          ]
-                      )
-                          :const LinearGradient(
-                          colors: [
-                            Palette.buttonDisableColor,
-                            Palette.nameDisablColor,
-                          ]
-                      ),
+                          ],
+                        )
                     ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 13,
+
+                child:Column(
+
+                    children: [
 
 
-                    /*button*/
-                    child: ButtonTheme(
-                      height: 50.0,
-                      minWidth: 350,
-                      child: FlatButton(
-                        onPressed:  isButtonActive ? ()  async {
+                      /*send email button*/
+                      Container(
+                        margin: const EdgeInsets.symmetric( horizontal:40, vertical: 10),
+                        alignment: Alignment.center,
+                        width: double.infinity,
+                        height: 50.0,
+                        /*button colors*/
+                        decoration:  BoxDecoration(
+                          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                          gradient: isButtonActive
+                              ?const LinearGradient(
+                              colors: [
+                                Palette.buttonColor,
+                                Palette.nameColor,
+                              ]
+                          )
+                              :const LinearGradient(
+                              colors: [
+                                Palette.buttonDisableColor,
+                                Palette.nameDisablColor,
+                              ]
+                          ),
+                        ),
 
-                          try {
-                            await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
 
-                            Alert(
-                                context: context,
-                                title: "Check your Email" ,
-                                desc: "click the link to reset",
-                                buttons: [
-                                  DialogButton(
-                                      child: Text(
-                                        "OK",
-                                        style: TextStyle(
-                                            color: Palette.backgroundColor
-                                        ),
+                        /*button*/
+                        child: ButtonTheme(
+                          height: 50.0,
+                          minWidth: 350,
+                          child: FlatButton(
+                            onPressed:  isButtonActive ? ()  async {
+
+                              try {
+                                await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+
+
+                                Alert(
+                                    context: context,
+                                    title: "Check your Email" ,
+                                    desc: "click the link to reset",
+                                    buttons: [
+                                      DialogButton(
+                                          child: Text(
+                                            "OK",
+                                            style: TextStyle(
+                                                color: Palette.backgroundColor
+                                            ),),
+                                          onPressed: (){
+
+                                            Navigator.pushNamed(context, '/login');
+                                          },
+                                          gradient:const LinearGradient(
+                                              colors: [
+                                                Palette.buttonColor,
+                                                Palette.nameColor,
+                                              ]
+                                          )
                                       ),
-                                      onPressed: (){
+                                      DialogButton(
+                                          child: const Text(
+                                            "Send Email",
+                                            style: TextStyle(
+                                                color: Palette.backgroundColor
+                                            ),),
+                                          onPressed: () async {
+                                            /*go to sign up page*/
+                                            await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+                                          },
+                                          gradient:const LinearGradient(
+                                              colors: [
+                                                Palette.buttonColor,
+                                                Palette.nameColor,
+                                              ]
+                                          )
+                                      )
+                                    ]
+                                ).show();
+                              }on FirebaseAuthException catch(e){
+                                Alert(
+                                    context: context,
+                                    title: "Invalid input!" ,
+                                    desc: e.message.toString(),
+                                    buttons: [
+                                      DialogButton(
+                                          child: Text(
+                                            "Sign up",
+                                            style: TextStyle(
+                                                color: Palette.backgroundColor
+                                            ),),
+                                          onPressed: (){
+                                            /*go to sign up page*/
+                                            Navigator.pushNamed(context, '/signup');
+                                          },
+                                          gradient:const LinearGradient(
+                                              colors: [
+                                                Palette.buttonColor,
+                                                Palette.nameColor,
+                                              ]
+                                          )
+                                      ),
+                                      DialogButton(
+                                          child: const Text(
+                                            "Log in",
+                                            style: TextStyle(
+                                                color: Palette.backgroundColor
+                                            ),),
+                                          onPressed: (){
+                                            /*go to sign up page*/
+                                            /*go to log in page*/
+                                            Navigator.pushNamed(context, '/login');
+                                          },
+                                          gradient:const LinearGradient(
+                                              colors: [
+                                                Palette.buttonColor,
+                                                Palette.nameColor,
+                                              ]
+                                          )
+                                      )
+                                    ]
+                                ).show();
+                                print(e);
 
-                                        Navigator.pushNamed(context, '/login');
-                                      },
-                                      gradient:const LinearGradient(
-                                          colors: [
-                                            Palette.buttonColor,
-                                            Palette.nameColor,
-                                          ]
-                                      )
-                                  ),
-                                  DialogButton(
-                                      child: const Text(
-                                        "Send Email",
-                                        style: TextStyle(
-                                            color: Palette.backgroundColor
-                                        ),),
-                                      onPressed: () async {
-                                        /*go to sign up page*/
-                                        await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-                                      },
-                                      gradient:const LinearGradient(
-                                          colors: [
-                                            Palette.buttonColor,
-                                            Palette.nameColor,
-                                          ]
-                                      )
-                                  )
-                                ]
-                            ).show();
-                          }on FirebaseAuthException catch(e){
-                            Alert(
-                                context: context,
-                                title: "Invalid input!" ,
-                                desc: e.message.toString(),
-                                buttons: [
-                                  DialogButton(
-                                      child: Text(
-                                        "Sign up",
-                                        style: TextStyle(
-                                            color: Palette.backgroundColor
-                                        ),),
-                                      onPressed: (){
-                                        /*go to sign up page*/
-                                        Navigator.pushNamed(context, '/signup');
-                                      },
-                                      gradient:const LinearGradient(
-                                          colors: [
-                                            Palette.buttonColor,
-                                            Palette.nameColor,
-                                          ]
-                                      )
-                                  ),
-                                  DialogButton(
-                                      child: const Text(
-                                        "Log in",
-                                        style: TextStyle(
-                                            color: Palette.backgroundColor
-                                        ),),
-                                      onPressed: (){
-                                        /*go to log in page*/
-                                        Navigator.pushNamed(context, '/login');
-                                      },
-                                      gradient:const LinearGradient(
-                                          colors: [
-                                            Palette.buttonColor,
-                                            Palette.nameColor,
-                                          ]
-                                      )
-                                  )
-                                ]
-                            ).show();
-                            print(e);
-
-                          }
+                              }
 
 
-                        }
-                        :null,
-                           child: Text ('Send Email',
-                            style: TextStyle(
-                            color: Palette.backgroundColor,
-                            fontSize: 18,
+                            }
+                                :null,
+                            child: Text ('Send Email',
+                              style: TextStyle(
+                                color: Palette.backgroundColor,
+                                fontSize: 18,
+                              ),
                             ),
-                           ),
+                          ),
                         ),
                       ),
-                    ),
 
-                  /*end of log in button */
-     ] ) ,
-    ),
-    ] ),
-
+                      /*end of log in button */
+                    ] ) ,
               ),
-            );
+            ] ),
+
+      ),
+    );
 
 
 
@@ -370,3 +376,4 @@ final auth = FirebaseAuth.instance ;
 
 
 }
+

@@ -25,8 +25,6 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
   bool canResendEmail = false;
   Timer? timer;
 
-  //time to resend
-  int _Conter= 30;
 
   @override
   void initState(){
@@ -40,20 +38,9 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     }
 
 
-    timer= Timer.periodic(
-      Duration(seconds:1),
-          (timer) {
-           setState(() {
-             if(_Conter>0){
-               _Conter--;
-             }else{
-               _Conter = 30;
-             }
-           });
-          });
 
     timer= Timer.periodic(
-      Duration(seconds:3),
+      Duration(seconds:0),
           (_) =>cheackEmailVerified(),
     );
   }
@@ -65,10 +52,14 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     super.dispose();
   }
 
+  void setStateIfMounted(f) {
+    if (mounted) setState(f);
+  }
+
   Future cheackEmailVerified() async{
     await FirebaseAuth.instance.currentUser!.reload();
 
-    setState(() {
+    setStateIfMounted(() {
       isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
     });
 
@@ -86,12 +77,11 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
       /*now he/she can not resend email again*/
       setState(() {
         canResendEmail = false;
-        _Conter = 30;
       });
-      /*after 30 sec they can */
+      /*after 5 sec they can */
       await Future.delayed(
           Duration(
-              seconds: 30
+              seconds: 5
           )
       );
       /*resend okay*/
@@ -181,8 +171,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                   padding: const EdgeInsets.symmetric( vertical: 10),
                   child: Center(
                     child: Text(
-                         canResendEmail?'To confirm your email address, tap the the link that we just send you.'
-                             :'To confirm your email address, tap the the link that we just send you. You can tap the button to resend after $_Conter',
+                         'To confirm your email address, tap the the link that we just send you.',
                             textAlign: TextAlign.center,
                             style:  TextStyle(
                               fontSize: 18,
