@@ -25,60 +25,60 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
+import 'package:gp1_7_2022/screen/home/addPost/rate.dart';
 import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(
-      MaterialApp(
-          initialRoute: "/",
-          routes: {
-            "/": (context) => MainPage(),
+  runApp(MaterialApp(initialRoute: "/", routes: {
+    "/": (context) => MainPage(),
 
-            /*Signup_Login*/
-            '/Signup_Login':(context) => Signup_Login(),
+    /*Signup_Login*/
+    '/Signup_Login': (context) => Signup_Login(),
 
-            /*log in */
-            '/login':(context)=>Login(),
+    /*log in */
+    '/login': (context) => Login(),
 
-            /*sign up*/
-            "/signup": (context)=> Signup(),
+    /*sign up*/
+    "/signup": (context) => Signup(),
 
-            /*user info*/
-            '/signupBirthday':(context) => SignupBirthday(),
-            '/signupUsername':(context) => SignupUsername(),
-            '/name':(context) => name(),
-            '/photo':(context) => Photo(),
+    /*user info*/
+    '/signupBirthday': (context) => SignupBirthday(),
+    '/signupUsername': (context) => SignupUsername(),
+    '/name': (context) => name(),
+    '/photo': (context) => Photo(),
 
-            /*questions*/
-            '/question1':(context) => question1(),
-            '/question2':(context) => question2(),
-            '/question3':(context) => question3(),
-            '/question4':(context) => question4(),
-            '/question5':(context) => question5(),
-            '/gender': (context)=> GenderQuestion(),
+    /*questions*/
+    '/question1': (context) => question1(),
+    '/question2': (context) => question2(),
+    '/question3': (context) => question3(),
+    '/question4': (context) => question4(),
+    '/question5': (context) => question5(),
+    '/gender': (context) => GenderQuestion(),
 
-            /*profile*/
-            '/Profile_Page':(context) => Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
-            '/settings':(context) => settings(),
+    /*profile*/
+    '/Profile_Page': (context) =>
+        Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
+    '/settings': (context) => settings(),
 
-            /*edit profile*/
-            '/editProfile':(context) => EditProfile(uid: FirebaseAuth.instance.currentUser!.uid),
-            '/editName':(context) => EditName(uid: FirebaseAuth.instance.currentUser!.uid),
-            '/editUsername':(context) => EditUsername(uid: FirebaseAuth.instance.currentUser!.uid),
-            '/editBio':(context) => EditBio(uid: FirebaseAuth.instance.currentUser!.uid),
+    /*edit profile*/
+    '/editProfile': (context) =>
+        EditProfile(uid: FirebaseAuth.instance.currentUser!.uid),
+    '/editName': (context) =>
+        EditName(uid: FirebaseAuth.instance.currentUser!.uid),
+    '/editUsername': (context) =>
+        EditUsername(uid: FirebaseAuth.instance.currentUser!.uid),
+    '/editBio': (context) =>
+        EditBio(uid: FirebaseAuth.instance.currentUser!.uid),
 
-
-            /*navigation bar */
-            '/navigationBar':(context) => navigationBar(),
-
-
-          }
-      )
-  );
+    /*navigation bar */
+    '/navigationBar': (context) => navigationBar(),
+  }));
 }
+
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -89,37 +89,33 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   String uid = "";
 
-
-
   @override
   Widget build(BuildContext context) {
-
-    if(FirebaseAuth.instance.currentUser != null){
+    if (FirebaseAuth.instance.currentUser != null) {
       uid = FirebaseAuth.instance.currentUser!.uid;
     }
     return Scaffold(
       body: StreamBuilder<User?>(
-
         stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot){
-          if(snapshot.connectionState==ConnectionState.waiting){
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
-          }else if(snapshot.hasError){
+          } else if (snapshot.hasError) {
             return const Center(child: Text("Something wont wrong!"));
-          }else if(snapshot.hasData){
+          } else if (snapshot.hasData) {
             var current = FirebaseAuth.instance.currentUser;
-            if(current!= null){
-              if(current.emailVerified && current.uid != null ){
-                return  navigationBar();
-              }else{
+            if (current != null) {
+              if (current.emailVerified && current.uid != null) {
+                return navigationBar();
+              } else {
                 String? x = FirebaseAuth.instance.currentUser!.email;
-                String y= x??" ";
-                return  ConfirmationCode(email: y);
+                String y = x ?? " ";
+                return ConfirmationCode(email: y);
               }
-            }else {
+            } else {
               return Signup_Login();
             }
-          }else {
+          } else {
             return Signup_Login();
           }
         },
@@ -127,4 +123,3 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
-

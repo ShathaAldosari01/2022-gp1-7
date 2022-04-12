@@ -20,8 +20,8 @@ class EditName extends StatefulWidget {
 
 class _EditNameState extends State<EditName> {
   //name
-  String name="";
-  late TextEditingController _nameController ;
+  String name = "";
+  late TextEditingController _nameController;
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //button
@@ -29,7 +29,7 @@ class _EditNameState extends State<EditName> {
   //form
   final _formKey = GlobalKey<FormState>();
   //user id
-  var uid= FirebaseAuth.instance.currentUser!.uid;
+  var uid = FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
   //for key go up
@@ -40,58 +40,58 @@ class _EditNameState extends State<EditName> {
     try {
       if (uid != null) {
         //we have uid
-        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
-            uid).get();
-        if(userSnap.data()!=null) {
+        var userSnap =
+            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        if (userSnap.data() != null) {
           //we have user data
           userData = userSnap.data()!;
           setState(() {
-            if(userData['name'].toString().isNotEmpty){
+            if (userData['name'].toString().isNotEmpty) {
               name = userData['name'].toString();
-              _nameController = TextEditingController(text:userData['name'].toString());
-              isButtonActive= true;
-            }else name ="";
+              _nameController =
+                  TextEditingController(text: userData['name'].toString());
+              isButtonActive = true;
+            } else
+              name = "";
           });
 
           _nameController.addListener(() {
-            final isnameNotEmpty = _nameController.text.isNotEmpty ;
+            final isnameNotEmpty = _nameController.text.isNotEmpty;
 
             setState(() {
               isButtonActive = isnameNotEmpty;
             });
           });
-
-        }else
+        } else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
       }
-    }
-    catch(e){
+    } catch (e) {
       Alert(
         context: context,
         title: "Invalid input!",
         desc: e.toString(),
       ).show();
     }
-
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     //getting user info
     getData();
 
     //this to know if the user full the name filed to disabile the button
     _nameController = TextEditingController();
-
   }
+
 //this method > for controler > for naem
   @override
-  void dispose(){
+  void dispose() {
     _nameController.dispose();
 
     super.dispose();
   }
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -103,10 +103,10 @@ class _EditNameState extends State<EditName> {
       //header
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
-        elevation: 0,//no shadow
-        automaticallyImplyLeading: false,//no arrow
+        elevation: 0, //no shadow
+        automaticallyImplyLeading: false, //no arrow
 
-        title:Column(
+        title: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,17 +118,13 @@ class _EditNameState extends State<EditName> {
                   },
                   child: Text(
                     "Cancel",
-                    style: TextStyle(
-                        fontSize: 18
-                    ),
+                    style: TextStyle(fontSize: 18),
                   ),
-                  shape: CircleBorder(
-                      side: BorderSide(
-                          color: Colors.transparent
-                      )
-                  ),
+                  shape:
+                      CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
-                Padding(padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                Padding(
+                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: Text(
                     "Edit Name",
                     style: TextStyle(
@@ -140,10 +136,21 @@ class _EditNameState extends State<EditName> {
                 ),
                 FlatButton(
                   textColor: Palette.link,
-                  onPressed: isButtonActive && userData['name'].toString().compareTo(name)!=0
-                      ? editName:null,
-                  child: Text("Save", style: TextStyle(fontSize: 18, color: isButtonActive && userData['name'].toString().compareTo(name)!=0?Palette.link:Palette.grey),),
-                  shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                  onPressed: isButtonActive &&
+                          userData['name'].toString().compareTo(name) != 0
+                      ? editName
+                      : null,
+                  child: Text(
+                    "Save",
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: isButtonActive &&
+                                userData['name'].toString().compareTo(name) != 0
+                            ? Palette.link
+                            : Palette.grey),
+                  ),
+                  shape:
+                      CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
               ],
             ),
@@ -153,7 +160,6 @@ class _EditNameState extends State<EditName> {
             ),
           ],
         ),
-
       ),
 
       //fix overload error
@@ -162,118 +168,104 @@ class _EditNameState extends State<EditName> {
       //body
       body: Container(
         child: Column(
-
           children: [
-
             /*first column*/
             Expanded(
               child: Container(
-                margin:  EdgeInsets.symmetric(horizontal: 40),
+                margin: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     /*form*/
                     Form(
-                      child: Column(
-                          children:[ Column(
-                            children: [
+                      child: Column(children: [
+                        Column(
+                          children: [
+                            /*name*/
+                            Form(
+                              key: _formKey,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: TextFormField(
+                                  /*to make the keyboard go up */
+                                  focusNode: focus,
+                                  autofocus: true,
 
-                              /*name*/
-                              Form(
-                                key: _formKey,
-                                child:
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  child: TextFormField(
+                                  /*go next when submitted*/
+                                  onFieldSubmitted: (value) {
+                                    if (isButtonActive &&
+                                        userData['name']
+                                                .toString()
+                                                .compareTo(name) !=
+                                            0) editName();
+                                  },
 
-                                    /*to make the keyboard go up */
-                                    focusNode: focus,
-                                    autofocus:true,
+                                  //function
+                                  onChanged: (val) {
+                                    /*change the val of pass*/
+                                    setState(() {
+                                      name = val;
+                                    });
+                                  },
 
-                                    /*go next when submitted*/
-                                    onFieldSubmitted: (value) {
-                                      if ( isButtonActive && userData['name'].toString().compareTo(name)!=0)
-                                        editName();
-                                    },
+                                  /*value*/
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return "name should not be empty";
+                                    }
+                                    if (val.length > 35) {
+                                      return "Create a shorter name under 35 characters.";
+                                    }
+                                    if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "name should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+                                  /*controller for button enable*/
+                                  controller: _nameController,
 
-                                    //function
-                                    onChanged: (val){
-                                      /*change the val of pass*/
-                                      setState(() {
-                                        name = val;
-                                      });
-                                    },
-
-                                    /*value*/
-                                    validator: (val){
-                                      if(val!.isEmpty){
-                                        return "name should not be empty";
-                                      }
-                                      if (val.length > 35) {
-                                        return "Create a shorter name under 35 characters.";
-                                      }
-                                      if((
-                                          val.contains('&')||
-                                              val.contains("#")||
-                                              val.contains("*")||
-                                              val.contains("!")||
-                                              val.contains("%")||
-                                              val.contains("~")||
-                                              val.contains("`")||
-                                              val.contains("@")||
-                                              val.contains("^")||
-                                              val.contains("(")||
-                                              val.contains(")")||
-                                              val.contains("+")||
-                                              val.contains("=")||
-                                              val.contains("{")||
-                                              val.contains("[")||
-                                              val.contains("}")||
-                                              val.contains("]")||
-                                              val.contains("|")||
-                                              val.contains(":")||
-                                              val.contains(";")||
-                                              val.contains("<")||
-                                              val.contains(">")||
-                                              val.contains(",")||
-                                              val.contains("?")||
-                                              val.contains("/")
-                                      )){
-                                        return "name should not contain special characters. only '-', '_' and '.'.";
-                                      }
-                                      return null;
-                                    },
-                                    /*controller for button enable*/
-                                    controller: _nameController,
-
-                                    //design
-                                    decoration: InputDecoration(
-                                      hintText: "Name",
-                                      hintStyle: TextStyle(
-                                          fontSize: 18.0,
-                                          color: Palette.grey
-                                      ),
-
-
-                                    ),
-
+                                  //design
+                                  decoration: InputDecoration(
+                                    hintText: "Name",
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
                                   ),
                                 ),
                               ),
-
-
-
-                            ],
-                          ),]
-                      ),
+                            ),
+                          ],
+                        ),
+                      ]),
                     ),
                     /*/form*/
                   ],
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -281,32 +273,25 @@ class _EditNameState extends State<EditName> {
   }
 
   void editName() async {
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       /*go to sign up page*/
       Navigator.pushNamed(context, '/editProfile');
 
       /*add to database*/
       try {
-
-        var uid =   FirebaseAuth.instance.currentUser!.uid;
+        var uid = FirebaseAuth.instance.currentUser!.uid;
         print(uid);
         await _firestore.collection("users").doc(uid).update({
           'name': name,
         });
-
-
-
-      }catch(e){
+      } catch (e) {
         Alert(
           context: context,
-          title: "Invalid input!" ,
+          title: "Invalid input!",
           desc: e.toString(),
-
         ).show();
         print(e);
       }
     }
-
   }
 }
-

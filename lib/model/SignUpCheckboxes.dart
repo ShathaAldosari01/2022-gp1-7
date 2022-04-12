@@ -9,7 +9,5 @@ class SignUpCheckboxes {
     required this.title,
     required this.name,
     this.value = false,
-
-});
-
+  });
 }

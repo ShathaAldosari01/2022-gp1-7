@@ -10,7 +10,6 @@ import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/add_post_page.dart';
 
-
 class navigationBar extends StatefulWidget {
   @override
   _navigationBarState createState() => _navigationBarState();
@@ -42,8 +41,6 @@ class _navigationBarState extends State<navigationBar> {
     return Scaffold(
       extendBody: true,
       backgroundColor: Palette.backgroundColor,
-
-
       body: IndexedStack(
         index: index,
         children: screens,
@@ -52,7 +49,6 @@ class _navigationBarState extends State<navigationBar> {
         data: Theme.of(context).copyWith(
           iconTheme: IconThemeData(color: Colors.white),
         ),
-
         child: CurvedNavigationBar(
           color: Palette.buttonColor,
           // buttonBackgroundColor: Palette.link,
@@ -68,4 +64,3 @@ class _navigationBarState extends State<navigationBar> {
     );
   }
 }
-
