@@ -19,8 +19,8 @@ class name extends StatefulWidget {
 
 class _nameState extends State<name> {
   //name
-  String name="";
-  late TextEditingController _nameController ;
+  String name = "";
+  late TextEditingController _nameController;
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   //button
@@ -28,7 +28,7 @@ class _nameState extends State<name> {
   //form
   final _formKey = GlobalKey<FormState>();
   //user id
-  var uid= FirebaseAuth.instance.currentUser!.uid;
+  var uid = FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
 
@@ -37,58 +37,58 @@ class _nameState extends State<name> {
     try {
       if (uid != null) {
         //we have uid
-        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
-            uid).get();
-        if(userSnap.data()!=null) {
+        var userSnap =
+            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        if (userSnap.data() != null) {
           //we have user data
           userData = userSnap.data()!;
           setState(() {
-            if(userData['name'].toString().isNotEmpty){
+            if (userData['name'].toString().isNotEmpty) {
               name = userData['name'].toString();
-              _nameController = TextEditingController(text:userData['name'].toString());
-              isButtonActive= true;
-            }else name ="";
+              _nameController =
+                  TextEditingController(text: userData['name'].toString());
+              isButtonActive = true;
+            } else
+              name = "";
           });
 
           _nameController.addListener(() {
-            final isnameNotEmpty = _nameController.text.isNotEmpty ;
+            final isnameNotEmpty = _nameController.text.isNotEmpty;
 
             setState(() {
               isButtonActive = isnameNotEmpty;
             });
           });
-
-        }else
+        } else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
       }
-    }
-    catch(e){
+    } catch (e) {
       Alert(
         context: context,
         title: "Invalid input!",
         desc: e.toString(),
       ).show();
     }
-
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     //getting user info
     getData();
 
     //this to know if the user full the name filed to disabile the button
     _nameController = TextEditingController();
-
   }
+
 //this method > for controler > for naem
   @override
-  void dispose(){
+  void dispose() {
     _nameController.dispose();
 
     super.dispose();
   }
+
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
@@ -100,8 +100,8 @@ class _nameState extends State<name> {
       //header
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
-        elevation: 0,//no shadow
-        automaticallyImplyLeading: false,//no arrow
+        elevation: 0, //no shadow
+        automaticallyImplyLeading: false, //no arrow
       ),
 
       //fix overload error
@@ -110,22 +110,19 @@ class _nameState extends State<name> {
       //body
       body: Container(
         child: Column(
-
           children: [
-
             /*first column*/
             Expanded(
               child: Container(
-                margin:  EdgeInsets.symmetric(horizontal: 40),
+                margin: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     /*enter your name*/
                     Container(
-                      padding: EdgeInsets.symmetric( vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       // color: Colors.red,
-                      child:Center(
+                      child: Center(
                         child: Text(
                           "Enter Your Name",
                           style: TextStyle(
@@ -138,9 +135,9 @@ class _nameState extends State<name> {
 
                     /*add your name so friends can find you */
                     Container(
-                      padding: EdgeInsets.symmetric( vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       // color: Colors.blue,
-                      child:Center(
+                      child: Center(
                         child: Text(
                           "Add your name so friends can find you.",
                           textAlign: TextAlign.center,
@@ -154,162 +151,145 @@ class _nameState extends State<name> {
 
                     /*form*/
                     Form(
-                      child: Column(
-                          children:[ Column(
-                            children: [
+                      child: Column(children: [
+                        Column(
+                          children: [
+                            /*name*/
+                            Form(
+                              key: _formKey,
+                              child: Container(
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: TextFormField(
+                                  /*go next when submitted*/
+                                  onFieldSubmitted: (value) {
+                                    if (isButtonActive) goBirthPage();
+                                  },
 
-                              /*name*/
-                              Form(
-                                key: _formKey,
-                                child:
-                                Container(
-                                  margin: EdgeInsets.symmetric(vertical: 10),
-                                  child: TextFormField(
+                                  //function
+                                  onChanged: (val) {
+                                    /*change the val of pass*/
+                                    setState(() {
+                                      name = val;
+                                    });
+                                  },
 
-                                    /*go next when submitted*/
-                                    onFieldSubmitted: (value) {
-                                      if (isButtonActive)
-                                        goBirthPage();
-                                    },
+                                  /*value*/
+                                  validator: (val) {
+                                    if (val!.isEmpty) {
+                                      return "name should not be empty";
+                                    }
+                                    if (val.length > 35) {
+                                      return "Create a shorter name under 35 characters.";
+                                    }
+                                    if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "name should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+                                  /*controller for button enable*/
+                                  controller: _nameController,
 
-                                    //function
-                                    onChanged: (val){
-                                      /*change the val of pass*/
-                                      setState(() {
-                                        name = val;
-                                      });
-                                    },
+                                  //design
+                                  decoration: InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    filled: true,
 
-                                    /*value*/
-                                    validator: (val){
-                                      if(val!.isEmpty){
-                                        return "name should not be empty";
-                                      }
-                                      if (val.length > 35) {
-                                        return "Create a shorter name under 35 characters.";
-                                      }
-                                      if((
-                                          val.contains('&')||
-                                              val.contains("#")||
-                                              val.contains("*")||
-                                              val.contains("!")||
-                                              val.contains("%")||
-                                              val.contains("~")||
-                                              val.contains("`")||
-                                              val.contains("@")||
-                                              val.contains("^")||
-                                              val.contains("(")||
-                                              val.contains(")")||
-                                              val.contains("+")||
-                                              val.contains("=")||
-                                              val.contains("{")||
-                                              val.contains("[")||
-                                              val.contains("}")||
-                                              val.contains("]")||
-                                              val.contains("|")||
-                                              val.contains(":")||
-                                              val.contains(";")||
-                                              val.contains("<")||
-                                              val.contains(">")||
-                                              val.contains(",")||
-                                              val.contains("?")||
-                                              val.contains("/")
-                                      )){
-                                        return "name should not contain special characters. only '-', '_' and '.'.";
-                                      }
-                                      return null;
-                                    },
-                                    /*controller for button enable*/
-                                    controller: _nameController,
+                                    /*hint*/
+                                    border: OutlineInputBorder(),
+                                    hintText: "Name",
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
-                                    //design
-                                    decoration: InputDecoration(
-
-                                      /*background color*/
-                                      fillColor: Palette.lightgrey,
-                                      filled: true,
-
-                                      /*hint*/
-                                      border: OutlineInputBorder(),
-                                      hintText: "Name",
-                                      hintStyle: TextStyle(
-                                          fontSize: 18.0,
-                                          color: Palette.grey
-                                      ),
-
-                                      /*Border*/
-                                      focusedBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Palette.midgrey,
-                                        ),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderSide: BorderSide(
-                                          color: Palette.midgrey,
-                                          width: 2.0,
-                                        ),
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
                                       ),
                                     ),
-
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
+                            ),
 
-
-
-                              /*next button*/
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 10),
-                                alignment: Alignment.center,
-                                width: double.infinity,
-                                height: 50.0,
-                                /*button colors*/
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                                  gradient: isButtonActive?
-                                  LinearGradient(
-                                      colors: [
+                            /*next button*/
+                            Container(
+                              margin: EdgeInsets.symmetric(vertical: 10),
+                              alignment: Alignment.center,
+                              width: double.infinity,
+                              height: 50.0,
+                              /*button colors*/
+                              decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8.0)),
+                                gradient: isButtonActive
+                                    ? LinearGradient(colors: [
                                         Palette.buttonColor,
                                         Palette.nameColor,
-                                      ]
-                                  )
-                                      : LinearGradient(
-                                      colors: [
+                                      ])
+                                    : LinearGradient(colors: [
                                         Palette.buttonDisableColor,
                                         Palette.nameDisablColor,
-                                      ]
-                                  ),
-                                ),
-                                /*button*/
-                                child: ButtonTheme(
-                                  height: 50.0,
-                                  minWidth: 350,
-                                  child: FlatButton(
-                                    onPressed:isButtonActive
-                                        ? goBirthPage
-                                        :null,
-                                    child: Text('Next',
-                                      style: TextStyle(
-                                        color: Palette.backgroundColor,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 18,
-                                      ),
+                                      ]),
+                              ),
+                              /*button*/
+                              child: ButtonTheme(
+                                height: 50.0,
+                                minWidth: 350,
+                                child: FlatButton(
+                                  onPressed:
+                                      isButtonActive ? goBirthPage : null,
+                                  child: Text(
+                                    'Next',
+                                    style: TextStyle(
+                                      color: Palette.backgroundColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
                                     ),
                                   ),
                                 ),
                               ),
-                              /*end of next button */
-
-                            ],
-                          ),]
-                      ),
+                            ),
+                            /*end of next button */
+                          ],
+                        ),
+                      ]),
                     ),
                     /*/form*/
                   ],
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -317,11 +297,10 @@ class _nameState extends State<name> {
   }
 
   goBirthPage() async {
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       /*add to database*/
       try {
-
-        var uid =   FirebaseAuth.instance.currentUser!.uid;
+        var uid = FirebaseAuth.instance.currentUser!.uid;
         print(uid);
         await _firestore.collection("users").doc(uid).update({
           'name': name,
@@ -329,24 +308,19 @@ class _nameState extends State<name> {
 
         /*deactivate the button*/
         setState(() {
-          isButtonActive= false;
+          isButtonActive = false;
         });
 
         /*go to sign up page*/
         Navigator.pushNamed(context, '/signupBirthday');
-
-      }catch(e){
+      } catch (e) {
         Alert(
           context: context,
-          title: "Invalid input!" ,
+          title: "Invalid input!",
           desc: e.toString(),
-
         ).show();
         print(e);
       }
     }
-
-
   }
 }
-

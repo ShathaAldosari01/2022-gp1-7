@@ -19,7 +19,7 @@ class _Signup_LoginState extends State<Signup_Login> {
       backgroundColor: Palette.backgroundColor,
       //fix overload error
       resizeToAvoidBottomInset: false,
-      body:Container(
+      body: Container(
         alignment: Alignment.center,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -30,15 +30,14 @@ class _Signup_LoginState extends State<Signup_Login> {
               // color: Colors.amber,
               child: Center(
                 child: Image.asset('assets/logoWithName.png',
-                height: 200,
-                  width: 300),
+                    height: 200, width: 300),
               ),
             ),
             /*شعار*/
             Container(
-              margin: EdgeInsets.fromLTRB(0,10,0,30),
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 30),
               child: Center(
-                child:Text(
+                child: Text(
                   "A journey full of adventures",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
@@ -54,29 +53,29 @@ class _Signup_LoginState extends State<Signup_Login> {
 
             /*sign up button*/
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.0,vertical: 10),
+              margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
               alignment: Alignment.center,
               width: double.infinity,
               height: 50.0,
               /*button colors*/
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                gradient: LinearGradient(
-                    colors: [
-                      Palette.buttonColor,
-                      Palette.nameColor,
-                    ]
-                ),
+                gradient: LinearGradient(colors: [
+                  Palette.buttonColor,
+                  Palette.nameColor,
+                ]),
               ),
               /*button*/
               child: ButtonTheme(
                 height: 50.0,
                 minWidth: 350,
-                child: FlatButton(onPressed: (){
-                  /*go to sign up page*/
-                  Navigator.pushNamed(context, '/signup');
-                },
-                  child: Text('Create a new account',
+                child: FlatButton(
+                  onPressed: () {
+                    /*go to sign up page*/
+                    Navigator.pushNamed(context, '/signup');
+                  },
+                  child: Text(
+                    'Create a new account',
                     style: TextStyle(
                       color: Palette.backgroundColor,
                       fontWeight: FontWeight.bold,
@@ -90,18 +89,20 @@ class _Signup_LoginState extends State<Signup_Login> {
 
             /*log in button*/
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 30.0,vertical: 10),
+              margin: EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
               alignment: Alignment.center,
               width: double.infinity,
               height: 50.0,
               /*button*/
               child: ButtonTheme(
                 height: 50.0,
-                child: FlatButton(onPressed: (){
-                  /*go to sign up page*/
-                  Navigator.pushNamed(context, '/login');
-                },
-                  child: Text('Log in',
+                child: FlatButton(
+                  onPressed: () {
+                    /*go to sign up page*/
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  child: Text(
+                    'Log in',
                     style: TextStyle(
                       color: Palette.buttonColor,
                       fontWeight: FontWeight.bold,
@@ -116,13 +117,9 @@ class _Signup_LoginState extends State<Signup_Login> {
             SizedBox(
               height: 30,
             )
-
-
           ],
         ),
       ),
-
     );
   }
 }
-

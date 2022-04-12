@@ -7,7 +7,6 @@ import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/services/auth.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -16,21 +15,18 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-
   //for service
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   // text field state
-  String email = "",
-      password="";
+  String email = "", password = "";
 
   // for show/hide password
   bool isHidden = true;
 
   //for button disable
-  bool isPassEmpty= true,
-      isEmailEmpty = true;
+  bool isPassEmpty = true, isEmailEmpty = true;
   bool isButtonActive = false;
   late TextEditingController _emailController, _passwordController;
 
@@ -40,14 +36,14 @@ class _LoginState extends State<Login> {
   final focus = FocusNode();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
 
     _emailController = TextEditingController();
     _passwordController = TextEditingController();
 
     _emailController.addListener(() {
-      final isEmailOkay = _emailController.text.isNotEmpty ;
+      final isEmailOkay = _emailController.text.isNotEmpty;
 
       setState(() {
         isEmailEmpty = !isEmailOkay;
@@ -55,58 +51,53 @@ class _LoginState extends State<Login> {
       });
     });
     _passwordController.addListener(() {
-      final isPassOkay = _passwordController.text.length>=8 ;
+      final isPassOkay = _passwordController.text.length >= 8;
 // not active bouttem the bouton only if email not empty and pass length>=8 and pass not empty
       setState(() {
         isPassEmpty = !isPassOkay;
         isButtonActive = (!isPassEmpty && !isEmailEmpty);
       });
     });
-
   }
 
   @override
-  void dispose(){
+  void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
 
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return  MaterialApp(
+    return MaterialApp(
       navigatorKey: navigatorKey,
       home: Scaffold(
         backgroundColor: Palette.backgroundColor,
         appBar: AppBar(
           backgroundColor: Palette.backgroundColor,
           foregroundColor: Palette.textColor,
-          elevation: 0,//no shadow
+          elevation: 0, //no shadow
           /*back arrow */
           leading: IconButton(
-            icon: const Icon(
-                Icons.arrow_back, color: Palette.textColor
-            ),
+            icon: const Icon(Icons.arrow_back, color: Palette.textColor),
             onPressed: () => Navigator.pushNamed(context, '/Signup_Login'),
           ),
         ),
         //fix overload error
         resizeToAvoidBottomInset: false,
-        body:Column(
-          children:[
+        body: Column(
+          children: [
             Expanded(
-              flex:8,
+              flex: 8,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment:MainAxisAlignment.end ,
-
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
                     // margin: const EdgeInsets.all(14),
                     child: const Center(
-                      child:Text(
+                      child: Text(
                         "ODYSSEY",
                         style: TextStyle(
                           // fontWeight: FontWeight.w500,
@@ -117,29 +108,29 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-
                   ),
                   Form(
                       key: _formKey,
                       child: Column(
                         children: [
-
                           /*email*/
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 5),
                             child: TextFormField(
                               //function
-                              onChanged: (val){
+                              onChanged: (val) {
                                 /*change the val of email*/
                                 setState(() {
                                   email = val;
                                 });
                               },
                               /*value*/
-                              validator: (val){
-                                if(val!.isEmpty){
+                              validator: (val) {
+                                if (val!.isEmpty) {
                                   return "Please enter a valid email.";
-                                }if(val.length>254){
+                                }
+                                if (val.length > 254) {
                                   return "Enter an email address under 254 characters.";
                                 }
                                 return null;
@@ -148,21 +139,19 @@ class _LoginState extends State<Login> {
                               controller: _emailController,
                               //design
                               decoration: const InputDecoration(
-
                                 /*background color*/
                                 fillColor: Palette.lightgrey,
                                 filled: true,
 
                                 /* email icon */
-                                prefixIcon: Icon(Icons.email, color: Colors.grey),
+                                prefixIcon:
+                                    Icon(Icons.email, color: Colors.grey),
 
                                 /*hint*/
                                 border: OutlineInputBorder(),
                                 hintText: "Email address",
                                 hintStyle: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Palette.grey
-                                ),
+                                    fontSize: 18.0, color: Palette.grey),
 
                                 /*Border*/
                                 focusedBorder: OutlineInputBorder(
@@ -183,25 +172,23 @@ class _LoginState extends State<Login> {
                               onFieldSubmitted: (v) {
                                 FocusScope.of(context).requestFocus(focus);
                               },
-
                             ),
                           ),
                           /*end of email*/
 
                           /*Password*/
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 5),
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 5),
                             child: TextFormField(
-
                               focusNode: focus,
                               textInputAction: TextInputAction.done,
                               onFieldSubmitted: (value) {
-                                if (isButtonActive)
-                                  goProfilePage();
+                                if (isButtonActive) goProfilePage();
                               },
 
                               //function
-                              onChanged: (val){
+                              onChanged: (val) {
                                 /*change the val of pass*/
                                 setState(() {
                                   password = val;
@@ -211,30 +198,31 @@ class _LoginState extends State<Login> {
                               /*controller for button enable*/
                               controller: _passwordController,
                               //design
-                              decoration:  InputDecoration(
-
+                              decoration: InputDecoration(
                                 /*background color*/
                                 fillColor: Palette.lightgrey,
                                 filled: true,
 
                                 /* password icon */
-                                prefixIcon: Icon(Icons.lock, color: Colors.grey),
+                                prefixIcon:
+                                    Icon(Icons.lock, color: Colors.grey),
 
                                 /* show/hide password */
                                 suffixIcon: IconButton(
-                                  icon:
-                                    isHidden ? Icon(Icons.visibility, color: Colors.grey) :  Icon(Icons.visibility_off, color: Colors.grey),
+                                  icon: isHidden
+                                      ? Icon(Icons.visibility,
+                                          color: Colors.grey)
+                                      : Icon(Icons.visibility_off,
+                                          color: Colors.grey),
                                   onPressed: togglePasswordVisibility,
                                 ),
-                                
+
                                 /*hint*/
                                 border: OutlineInputBorder(),
                                 hintText: "Password",
                                 hintStyle: TextStyle(
-                                    fontSize: 18.0,
-                                    color: Palette.grey
-                                ),
-                                
+                                    fontSize: 18.0, color: Palette.grey),
+
                                 /*Border*/
                                 focusedBorder: OutlineInputBorder(
                                   borderSide: BorderSide(
@@ -252,78 +240,70 @@ class _LoginState extends State<Login> {
                             ),
                           ),
                           /*end of password*/
-
-
                         ],
-                      )
-                  ),
+                      )),
                 ],
               ),
             ),
             Expanded(
               flex: 6,
-
-              child:Column(
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
-
                 children: [
-
-                  Align (
+                  Align(
                     alignment: Alignment.topRight,
-                    child:
-                    Container(
+                    child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 30),
-                      child: TextButton( onPressed: (){
-                        /*go to Forgot password page*/
-                        var route =  MaterialPageRoute(
-                            builder: (BuildContext context)=>
-                                forget_password(email: _emailController.text)
-                        );
-                        Navigator.of(context).push(route);
-                      }, child: Text('Forgot password?',
-                        style: TextStyle(
-                          fontSize: 17,
-                          color: Palette.link,
-                          fontWeight: FontWeight.bold,
+                      child: TextButton(
+                        onPressed: () {
+                          /*go to Forgot password page*/
+                          var route = MaterialPageRoute(
+                              builder: (BuildContext context) =>
+                                  forget_password(
+                                      email: _emailController.text));
+                          Navigator.of(context).push(route);
+                        },
+                        child: Text(
+                          'Forgot password?',
+                          style: TextStyle(
+                            fontSize: 17,
+                            color: Palette.link,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      ),
-
                     ),
                   ),
 
                   /*log in button*/
                   Container(
-                    margin: const EdgeInsets.symmetric( horizontal:30, vertical: 10),
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 10),
                     alignment: Alignment.center,
                     width: double.infinity,
                     height: 50.0,
                     /*button colors*/
-                    decoration:  BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                    decoration: BoxDecoration(
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(8.0)),
                       gradient: isButtonActive
-                          ?const LinearGradient(
-                          colors: [
-                            Palette.buttonColor,
-                            Palette.nameColor,
-                          ]
-                      )
-                          :const LinearGradient(
-                          colors: [
-                            Palette.buttonDisableColor,
-                            Palette.nameDisablColor,
-                          ]
-                      ),
+                          ? const LinearGradient(colors: [
+                              Palette.buttonColor,
+                              Palette.nameColor,
+                            ])
+                          : const LinearGradient(colors: [
+                              Palette.buttonDisableColor,
+                              Palette.nameDisablColor,
+                            ]),
                     ),
                     /*button*/
                     child: ButtonTheme(
                       height: 50.0,
                       minWidth: 350,
                       child: FlatButton(
-                        onPressed:isButtonActive
-                            ?goProfilePage
-                            :null,
-                        child: const Text('Log in',
+                        onPressed: isButtonActive ? goProfilePage : null,
+                        child: const Text(
+                          'Log in',
                           style: TextStyle(
                             color: Palette.backgroundColor,
                             fontWeight: FontWeight.bold,
@@ -346,22 +326,21 @@ class _LoginState extends State<Login> {
                       height: 5,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10, horizontal: 25),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children:[
-
+                          children: [
                             const Text(
                               "Don't have an account?",
                               style: TextStyle(
                                 color: Palette.grey,
                               ),
                             ),
-
                             FlatButton(
                               // color: Colors.red,
-                              padding: const EdgeInsets.fromLTRB(0, 0,30, 0),
-                              onPressed: (){
+                              padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                              onPressed: () {
                                 Navigator.pushNamed(context, '/signup');
                               },
                               child: const Text(
@@ -371,88 +350,71 @@ class _LoginState extends State<Login> {
                                 ),
                               ),
                             ),
-
-                          ]
-                      ),
+                          ]),
                     )
                   ],
-
-                )
-            )
+                ))
           ],
         ),
       ),
     );
   }
-  void togglePasswordVisibility () => setState(() => isHidden = !isHidden);
+
+  void togglePasswordVisibility() => setState(() => isHidden = !isHidden);
 
   void goProfilePage() async {
-    if(_formKey.currentState!.validate()){
+    if (_formKey.currentState!.validate()) {
       //showDialog
       showDialog(
         context: context,
         barrierDismissible: false,
-        builder: (context)=> const Center(child: CircularProgressIndicator()),
+        builder: (context) => const Center(child: CircularProgressIndicator()),
       );
       /*log in using database*/
       try {
         await FirebaseAuth.instance
-            .signInWithEmailAndPassword(
-            email: email,
-            password: password
-        );
+            .signInWithEmailAndPassword(email: email, password: password);
         /*go to Profile_Page page*/
         Navigator.of(context).popUntil((route) => route.isFirst);
-
-      }on FirebaseAuthException catch(e){
+      } on FirebaseAuthException catch (e) {
         Alert(
             context: context,
-            title: "Invalid input!" ,
+            title: "Invalid input!",
             desc: e.message.toString(),
             buttons: [
               DialogButton(
                   child: Text(
                     "Sign up",
-                    style: TextStyle(
-                        color: Palette.backgroundColor
-                    ),),
-                  onPressed: (){
+                    style: TextStyle(color: Palette.backgroundColor),
+                  ),
+                  onPressed: () {
                     /*go to sign up page*/
                     Navigator.pushNamed(context, '/signup');
                   },
-                  gradient:const LinearGradient(
-                      colors: [
-                        Palette.buttonColor,
-                        Palette.nameColor,
-                      ]
-                  )
-              ),
+                  gradient: const LinearGradient(colors: [
+                    Palette.buttonColor,
+                    Palette.nameColor,
+                  ])),
               DialogButton(
                   child: const Text(
                     "Log in",
-                    style: TextStyle(
-                        color: Palette.backgroundColor
-                    ),),
-                  onPressed: (){
+                    style: TextStyle(color: Palette.backgroundColor),
+                  ),
+                  onPressed: () {
                     /*go to sign up page*/
                     Navigator.pushNamed(context, '/login');
                   },
-                  gradient:const LinearGradient(
-                      colors: [
-                        Palette.buttonColor,
-                        Palette.nameColor,
-                      ]
-                  )
-              )
-            ]
-        ).show();
+                  gradient: const LinearGradient(colors: [
+                    Palette.buttonColor,
+                    Palette.nameColor,
+                  ]))
+            ]).show();
         print(e);
       }
       /*deactivate the button*/
       setState(() {
-        isButtonActive= false;
+        isButtonActive = false;
       });
-
     }
   }
 }

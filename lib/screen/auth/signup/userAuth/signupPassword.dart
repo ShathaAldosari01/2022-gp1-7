@@ -11,7 +11,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 class signupPassword extends StatefulWidget {
   final String email;
-  const signupPassword({Key? key,  required this.email}) : super(key: key);
+  const signupPassword({Key? key, required this.email}) : super(key: key);
 
   @override
   State<signupPassword> createState() => _signupPasswordState();
@@ -23,16 +23,14 @@ class _signupPasswordState extends State<signupPassword> {
   final _formKey = GlobalKey<FormState>();
 
   // text field state
-  String password = "",
-      repassword = "";
+  String password = "", repassword = "";
 
   // for show/hide password
   bool isHidden1 = true;
   bool isHidden2 = true;
 
   //for button disable
-  bool isPassEmpty = true,
-      isReEmpty = true;
+  bool isPassEmpty = true, isReEmpty = true;
   bool isButtonActive = false;
   late TextEditingController _passwordController, _rePasswordController;
 
@@ -87,9 +85,7 @@ class _signupPasswordState extends State<signupPassword> {
         elevation: 0, //no shadow
         /*back arrow */
         leading: IconButton(
-          icon: const Icon(
-              Icons.arrow_back, color: Palette.textColor
-          ),
+          icon: const Icon(Icons.arrow_back, color: Palette.textColor),
           onPressed: () => Navigator.pushNamed(context, '/signup'),
         ),
       ),
@@ -98,7 +94,6 @@ class _signupPasswordState extends State<signupPassword> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-
           /*first column*/
           Expanded(
             child: Container(
@@ -106,14 +101,13 @@ class _signupPasswordState extends State<signupPassword> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-
                   /*Enter your email*/
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     // color: Colors.red,
                     child: const Center(
                       child: Text(
-                        "Create a password",
+                        "Create A Password",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 30,
@@ -122,7 +116,6 @@ class _signupPasswordState extends State<signupPassword> {
                       ),
                     ),
                   ),
-
                   Container(
                     padding: const EdgeInsets.symmetric(vertical: 10),
                     child: const Center(
@@ -137,18 +130,15 @@ class _signupPasswordState extends State<signupPassword> {
                     ),
                   ),
 
-
                   /*form*/
                   Form(
                     key: _formKey,
                     child: Column(
                       children: [
-
                         /*password*/
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
-
                             //function
                             onChanged: (val) {
                               /*change the val of pass*/
@@ -176,35 +166,33 @@ class _signupPasswordState extends State<signupPassword> {
                               if (!val.contains(RegExp(r'[0-9]'), 0)) {
                                 return "Password should contain number.";
                               }
-                              if (!(
-                                  val.contains('&') ||
-                                      val.contains("#") ||
-                                      val.contains("*") ||
-                                      val.contains("!") ||
-                                      val.contains("%") ||
-                                      val.contains("~") ||
-                                      val.contains("`") ||
-                                      val.contains("@") ||
-                                      val.contains("^") ||
-                                      val.contains("(") ||
-                                      val.contains(")") ||
-                                      val.contains("_") ||
-                                      val.contains("-") ||
-                                      val.contains("+") ||
-                                      val.contains("=") ||
-                                      val.contains("{") ||
-                                      val.contains("[") ||
-                                      val.contains("}") ||
-                                      val.contains("]") ||
-                                      val.contains("|") ||
-                                      val.contains(":") ||
-                                      val.contains(";") ||
-                                      val.contains("<") ||
-                                      val.contains(">") ||
-                                      val.contains(",") ||
-                                      val.contains(".") ||
-                                      val.contains("?")
-                              )) {
+                              if (!(val.contains('&') ||
+                                  val.contains("#") ||
+                                  val.contains("*") ||
+                                  val.contains("!") ||
+                                  val.contains("%") ||
+                                  val.contains("~") ||
+                                  val.contains("`") ||
+                                  val.contains("@") ||
+                                  val.contains("^") ||
+                                  val.contains("(") ||
+                                  val.contains(")") ||
+                                  val.contains("_") ||
+                                  val.contains("-") ||
+                                  val.contains("+") ||
+                                  val.contains("=") ||
+                                  val.contains("{") ||
+                                  val.contains("[") ||
+                                  val.contains("}") ||
+                                  val.contains("]") ||
+                                  val.contains("|") ||
+                                  val.contains(":") ||
+                                  val.contains(";") ||
+                                  val.contains("<") ||
+                                  val.contains(">") ||
+                                  val.contains(",") ||
+                                  val.contains(".") ||
+                                  val.contains("?"))) {
                                 return "Password should contain special characters.";
                               }
                               return null;
@@ -213,7 +201,6 @@ class _signupPasswordState extends State<signupPassword> {
                             controller: _passwordController,
                             //design
                             decoration: InputDecoration(
-
                               /*background color*/
                               fillColor: Palette.lightgrey,
                               filled: true,
@@ -223,11 +210,10 @@ class _signupPasswordState extends State<signupPassword> {
 
                               /* show/hide password */
                               suffixIcon: IconButton(
-                                icon:
-                                isHidden1
+                                icon: isHidden1
                                     ? Icon(Icons.visibility, color: Colors.grey)
-                                    : Icon(
-                                    Icons.visibility_off, color: Colors.grey),
+                                    : Icon(Icons.visibility_off,
+                                        color: Colors.grey),
                                 onPressed: togglePasswordVisibility1,
                               ),
 
@@ -235,9 +221,7 @@ class _signupPasswordState extends State<signupPassword> {
                               border: OutlineInputBorder(),
                               hintText: "Password",
                               hintStyle: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Palette.grey
-                              ),
+                                  fontSize: 18.0, color: Palette.grey),
 
                               /*Border*/
                               focusedBorder: OutlineInputBorder(
@@ -268,12 +252,10 @@ class _signupPasswordState extends State<signupPassword> {
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: TextFormField(
-
                             focusNode: focus,
                             textInputAction: TextInputAction.done,
                             onFieldSubmitted: (value) {
-                              if (isButtonActive)
-                                goConfPage();
+                              if (isButtonActive) goConfPage();
                             },
 
                             //function
@@ -306,35 +288,33 @@ class _signupPasswordState extends State<signupPassword> {
                                 if (!val.contains(RegExp(r'[0-9]'), 0)) {
                                   return "Password should contain number.";
                                 }
-                                if (!(
-                                    val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
-                                        val.contains("!") ||
-                                        val.contains("%") ||
-                                        val.contains("~") ||
-                                        val.contains("`") ||
-                                        val.contains("@") ||
-                                        val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
-                                        val.contains("_") ||
-                                        val.contains("-") ||
-                                        val.contains("+") ||
-                                        val.contains("=") ||
-                                        val.contains("{") ||
-                                        val.contains("[") ||
-                                        val.contains("}") ||
-                                        val.contains("]") ||
-                                        val.contains("|") ||
-                                        val.contains(":") ||
-                                        val.contains(";") ||
-                                        val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains(".") ||
-                                        val.contains("?")
-                                )) {
+                                if (!(val.contains('&') ||
+                                    val.contains("#") ||
+                                    val.contains("*") ||
+                                    val.contains("!") ||
+                                    val.contains("%") ||
+                                    val.contains("~") ||
+                                    val.contains("`") ||
+                                    val.contains("@") ||
+                                    val.contains("^") ||
+                                    val.contains("(") ||
+                                    val.contains(")") ||
+                                    val.contains("_") ||
+                                    val.contains("-") ||
+                                    val.contains("+") ||
+                                    val.contains("=") ||
+                                    val.contains("{") ||
+                                    val.contains("[") ||
+                                    val.contains("}") ||
+                                    val.contains("]") ||
+                                    val.contains("|") ||
+                                    val.contains(":") ||
+                                    val.contains(";") ||
+                                    val.contains("<") ||
+                                    val.contains(">") ||
+                                    val.contains(",") ||
+                                    val.contains(".") ||
+                                    val.contains("?"))) {
                                   return "Password should contain special characters.";
                                 }
                               }
@@ -344,22 +324,19 @@ class _signupPasswordState extends State<signupPassword> {
                             controller: _rePasswordController,
                             //design
                             decoration: InputDecoration(
-
                               /*background color*/
                               fillColor: Palette.lightgrey,
                               filled: true,
-
 
                               /* password icon */
                               prefixIcon: Icon(Icons.lock, color: Colors.grey),
 
                               /* show/hide password */
                               suffixIcon: IconButton(
-                                icon:
-                                isHidden2
+                                icon: isHidden2
                                     ? Icon(Icons.visibility, color: Colors.grey)
-                                    : Icon(
-                                    Icons.visibility_off, color: Colors.grey),
+                                    : Icon(Icons.visibility_off,
+                                        color: Colors.grey),
                                 onPressed: togglePasswordVisibility2,
                               ),
 
@@ -367,9 +344,7 @@ class _signupPasswordState extends State<signupPassword> {
                               border: OutlineInputBorder(),
                               hintText: "Confirm password",
                               hintStyle: TextStyle(
-                                  fontSize: 18.0,
-                                  color: Palette.grey
-                              ),
+                                  fontSize: 18.0, color: Palette.grey),
 
                               /*Border*/
                               focusedBorder: OutlineInputBorder(
@@ -390,7 +365,6 @@ class _signupPasswordState extends State<signupPassword> {
                         ),
                         /*end of password*/
 
-
                         /*next button*/
                         Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -399,31 +373,26 @@ class _signupPasswordState extends State<signupPassword> {
                           height: 50.0,
                           /*button colors*/
                           decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.all(
-                                Radius.circular(8.0)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(8.0)),
                             gradient: isButtonActive
-                                ? const LinearGradient(
-                                colors: [
-                                  Palette.buttonColor,
-                                  Palette.nameColor,
-                                ]
-                            )
-                                : const LinearGradient(
-                                colors: [
-                                  Palette.buttonDisableColor,
-                                  Palette.nameDisablColor,
-                                ]
-                            ),
+                                ? const LinearGradient(colors: [
+                                    Palette.buttonColor,
+                                    Palette.nameColor,
+                                  ])
+                                : const LinearGradient(colors: [
+                                    Palette.buttonDisableColor,
+                                    Palette.nameDisablColor,
+                                  ]),
                           ),
                           /*button*/
                           child: ButtonTheme(
                             height: 50.0,
                             minWidth: 350,
                             child: TextButton(
-                              onPressed: isButtonActive
-                                  ? goConfPage
-                                  : null,
-                              child: const Text('Next',
+                              onPressed: isButtonActive ? goConfPage : null,
+                              child: const Text(
+                                'Next',
                                 style: TextStyle(
                                   color: Palette.backgroundColor,
                                   fontWeight: FontWeight.bold,
@@ -451,38 +420,33 @@ class _signupPasswordState extends State<signupPassword> {
                 height: 5,
               ),
               Container(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 25, horizontal: 25),
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      //Already have an account?
-                      const Text(
-                        "Already have an account? ",
-                        style: TextStyle(
-                          color: Palette.grey,
-                        ),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 25, horizontal: 25),
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  //Already have an account?
+                  const Text(
+                    "Already have an account? ",
+                    style: TextStyle(
+                      color: Palette.grey,
+                    ),
+                  ),
+                  //Log in
+                  InkWell(
+                    child: const Text(
+                      'Log In.',
+                      style: TextStyle(
+                        color: Palette.link,
+                        fontWeight: FontWeight.bold,
                       ),
-                      //Log in
-                      InkWell(
-                        child: const Text(
-                          'Log In.',
-                          style: TextStyle(
-                            color: Palette.link,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        onTap: () => Navigator.pushNamed(context, '/login'),
-                      ),
-
-
-                    ]
-                ),
+                    ),
+                    onTap: () => Navigator.pushNamed(context, '/login'),
+                  ),
+                ]),
               )
             ],
           )
           //end of login?
-
         ],
       ),
     );
@@ -494,14 +458,11 @@ class _signupPasswordState extends State<signupPassword> {
 
   void goConfPage() async {
     if (_formKey.currentState!.validate()) {
-
       /*add to database*/
       try {
         UserCredential cred = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
-            email: widget.email,
-            password: password
-        );
+                email: widget.email, password: password);
         print(cred.user!.uid);
         await _firestore.collection("users").doc(cred.user!.uid).set({
           'email': widget.email,
@@ -539,8 +500,7 @@ class _signupPasswordState extends State<signupPassword> {
         /*go to sign up page*/
         var route = MaterialPageRoute(
             builder: (BuildContext context) =>
-                ConfirmationCode(email: widget.email)
-        );
+                ConfirmationCode(email: widget.email));
 
         /*deactivate the button*/
         setState(() {
@@ -559,41 +519,30 @@ class _signupPasswordState extends State<signupPassword> {
               DialogButton(
                   child: Text(
                     "Sign up",
-                    style: TextStyle(
-                        color: Palette.backgroundColor
-                    ),
+                    style: TextStyle(color: Palette.backgroundColor),
                   ),
                   onPressed: () {
                     /*go to sign up page*/
                     Navigator.pushNamed(context, '/signup');
                   },
-                  gradient: const LinearGradient(
-                      colors: [
-                        Palette.buttonColor,
-                        Palette.nameColor,
-                      ]
-                  )
-              ),
+                  gradient: const LinearGradient(colors: [
+                    Palette.buttonColor,
+                    Palette.nameColor,
+                  ])),
               DialogButton(
                   child: const Text(
                     "Log in",
-                    style: TextStyle(
-                        color: Palette.backgroundColor
-                    ),
+                    style: TextStyle(color: Palette.backgroundColor),
                   ),
                   onPressed: () {
                     /*go to sign up page*/
                     Navigator.pushNamed(context, '/login');
                   },
-                  gradient: const LinearGradient(
-                      colors: [
-                        Palette.buttonColor,
-                        Palette.nameColor,
-                      ]
-                  )
-              )
-            ]
-        ).show();
+                  gradient: const LinearGradient(colors: [
+                    Palette.buttonColor,
+                    Palette.nameColor,
+                  ]))
+            ]).show();
         print(e);
       }
 
@@ -603,5 +552,4 @@ class _signupPasswordState extends State<signupPassword> {
       });
     }
   }
-
 }

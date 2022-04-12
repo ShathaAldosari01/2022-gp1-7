@@ -4,12 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
-import 'package:gp1_7_2022/screen/home/home_page.dart';
-import 'package:gp1_7_2022/screen/home/lists.dart';
-import 'package:gp1_7_2022/screen/home/notification_page.dart';
-import 'package:gp1_7_2022/screen/home/search_page.dart';
-import 'package:gp1_7_2022/screen/home/settings_page.dart';
-
+import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
+import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
+import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
+import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
+import 'package:gp1_7_2022/screen/home/navBar/add_post_page.dart';
 
 class navigationBar extends StatefulWidget {
   @override
@@ -42,8 +41,6 @@ class _navigationBarState extends State<navigationBar> {
     return Scaffold(
       extendBody: true,
       backgroundColor: Palette.backgroundColor,
-
-
       body: IndexedStack(
         index: index,
         children: screens,
@@ -52,7 +49,6 @@ class _navigationBarState extends State<navigationBar> {
         data: Theme.of(context).copyWith(
           iconTheme: IconThemeData(color: Colors.white),
         ),
-
         child: CurvedNavigationBar(
           color: Palette.buttonColor,
           // buttonBackgroundColor: Palette.link,

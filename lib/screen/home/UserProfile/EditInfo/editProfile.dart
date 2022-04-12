@@ -12,7 +12,6 @@ import '../../../auth/signup/userInfo/photo/storageMethods.dart';
 import '../../../auth/signup/userInfo/photo/utils.dart';
 import 'package:flutter/cupertino.dart';
 
-
 class EditProfile extends StatefulWidget {
   final uid;
   const EditProfile({Key? key, this.uid}) : super(key: key);
@@ -31,7 +30,6 @@ class _EditProfileState extends State<EditProfile> {
   /*user data*/
   var userData = {};
 
-
   @override
   void initState() {
     getData();
@@ -43,9 +41,11 @@ class _EditProfileState extends State<EditProfile> {
     try {
       if (widget.uid != null) {
         //we have uid
-        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
-            widget.uid).get();
-        if(userSnap.data()!=null) {
+        var userSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(widget.uid)
+            .get();
+        if (userSnap.data() != null) {
           //we have user data
           userData = userSnap.data()!;
           //stop loading
@@ -53,68 +53,58 @@ class _EditProfileState extends State<EditProfile> {
             path = userData['photoPath'];
             _isloaded = true;
           });
-
-        }else
+        } else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
       }
-    }
-    catch(e){
+    } catch (e) {
       print(e.toString());
     }
-
   }
 
-  void selectImage() async{
-    Uint8List im= await pickImage(ImageSource.gallery);
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
     Navigator.of(context).popAndPushNamed('/editProfile');
     /*update to database*/
     try {
-      var uid =   FirebaseAuth.instance.currentUser!.uid;
+      var uid = FirebaseAuth.instance.currentUser!.uid;
 
-      String p = await StorageMethods().uploadImageToStorage("profilePics", _image!, false);
+      String p = await StorageMethods()
+          .uploadImageToStorage("profilePics", _image!, false);
 
       setState(() {
-        path =p;
+        path = p;
       });
 
       await _firestore.collection("users").doc(uid).update({
         'photoPath': p,
       });
       Navigator.of(context).popAndPushNamed('/editProfile');
-
-
-    }catch(e){
+    } catch (e) {
       print(e.toString());
       Alert(
         context: context,
-        title: "Invalid input!" ,
+        title: "Invalid input!",
         desc: e.toString(),
-
       ).show();
       print(e);
     }
-
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: Palette.backgroundColor,
-
       appBar: AppBar(
         //appBar style
         elevation: 0,
         backgroundColor: Palette.backgroundColor,
-        automaticallyImplyLeading: false,//no arrow
+        automaticallyImplyLeading: false, //no arrow
         //username
         // centerTitle: true,
-        title:Column(
+        title: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -124,8 +114,12 @@ class _EditProfileState extends State<EditProfile> {
                   onPressed: () {
                     Navigator.of(context).popAndPushNamed('/Profile_Page');
                   },
-                  child: Text("Back", style: TextStyle(fontSize: 18),),
-                  shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                  child: Text(
+                    "Back",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  shape:
+                      CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -141,10 +135,14 @@ class _EditProfileState extends State<EditProfile> {
                 FlatButton(
                   textColor: Palette.link,
                   onPressed: () {},
-                  child: Text("", style: TextStyle(fontSize: 18, color: Palette.backgroundColor),),
-                  shape: CircleBorder(side: BorderSide(color: Colors.transparent)),
+                  child: Text(
+                    "",
+                    style:
+                        TextStyle(fontSize: 18, color: Palette.backgroundColor),
+                  ),
+                  shape:
+                      CircleBorder(side: BorderSide(color: Colors.transparent)),
                 ),
-
               ],
             ),
             //line
@@ -153,53 +151,49 @@ class _EditProfileState extends State<EditProfile> {
             ),
           ],
         ),
-
       ),
-
       body: ListView(
         children: [
           Container(
-            margin: EdgeInsets.only(top:5),
+            margin: EdgeInsets.only(top: 5),
             child: Column(
               children: [
                 Column(
                   children: [
                     //user photo
-                    _isloaded?
-                      userData['photoPath']!="no"?
-                      CircleAvatar(
-                          backgroundColor: Palette.grey,
-                          backgroundImage:NetworkImage(path),
-                          radius:45
-                      )
+                    _isloaded
+                        ? userData['photoPath'] != "no"
+                            ? CircleAvatar(
+                                backgroundColor: Palette.grey,
+                                backgroundImage: NetworkImage(path),
+                                radius: 45)
 
-                    //user photo
-                        :CircleAvatar(
-                           backgroundColor: Colors.white ,
-                           radius: 45,
-                           child:  Icon(
-                              Icons.account_circle_sharp,
-                              color: Colors.grey,
-                              size: 90,
-                           ),
-
-                        ): Container(
-                            margin:EdgeInsets.all(27),
+                            //user photo
+                            : CircleAvatar(
+                                backgroundColor: Colors.white,
+                                radius: 45,
+                                child: Icon(
+                                  Icons.account_circle_sharp,
+                                  color: Colors.grey,
+                                  size: 90,
+                                ),
+                              )
+                        : Container(
+                            margin: EdgeInsets.all(27),
                             child: CircularProgressIndicator(
-                                backgroundColor: Palette.lightgrey,
-                                valueColor:
-                                AlwaysStoppedAnimation<Color>
-                                  (Palette.midgrey),
-                              ),
+                              backgroundColor: Palette.lightgrey,
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                  Palette.midgrey),
+                            ),
                           ),
 
                     //end user photo
                     /*change profile photo*/
                     TextButton(
-                      onPressed:(){
+                      onPressed: () {
                         Alert(
                             context: context,
-                            title: "Change profile photo" ,
+                            title: "Change profile photo",
                             buttons: [
                               DialogButton(
                                   child: Text(
@@ -208,18 +202,15 @@ class _EditProfileState extends State<EditProfile> {
                                     style: TextStyle(
                                         color: Palette.backgroundColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18
-                                    ),),
+                                        fontSize: 18),
+                                  ),
                                   onPressed:
-                                    /*select image */
-                                    selectImage,
-                                  gradient:const LinearGradient(
-                                      colors: [
-                                        Palette.buttonColor,
-                                        Palette.nameColor,
-                                      ]
-                                  )
-                              ),
+                                      /*select image */
+                                      selectImage,
+                                  gradient: const LinearGradient(colors: [
+                                    Palette.buttonColor,
+                                    Palette.nameColor,
+                                  ])),
                               DialogButton(
                                   color: Palette.red,
                                   child: Text(
@@ -228,29 +219,31 @@ class _EditProfileState extends State<EditProfile> {
                                     style: TextStyle(
                                         color: Palette.backgroundColor,
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 18
-                                    ),
+                                        fontSize: 18),
                                   ),
-                                  onPressed: (){
+                                  onPressed: () {
                                     Alert(
                                         context: context,
-                                        title: "Are You Sure." ,
+                                        title: "Are You Sure.",
                                         //change me latter
                                         //Your profile, post, video, comments, likes and followers will be permanently deleted.
-                                        desc: "Your profile photo will be permanently deleted.",
+                                        desc:
+                                            "Your profile photo will be permanently deleted.",
                                         buttons: [
                                           DialogButton(
                                             color: Palette.grey,
                                             child: Text(
                                               "Cancel",
                                               style: TextStyle(
-                                                  color: Palette.backgroundColor,
+                                                  color:
+                                                      Palette.backgroundColor,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 18
-                                              ),
+                                                  fontSize: 18),
                                             ),
-                                            onPressed: (){
-                                              Navigator.of(context).popAndPushNamed('/editProfile');
+                                            onPressed: () {
+                                              Navigator.of(context)
+                                                  .popAndPushNamed(
+                                                      '/editProfile');
                                             },
                                           ),
                                           DialogButton(
@@ -258,35 +251,34 @@ class _EditProfileState extends State<EditProfile> {
                                             child: const Text(
                                               "Remove",
                                               style: TextStyle(
-                                                  color: Palette.backgroundColor,
+                                                  color:
+                                                      Palette.backgroundColor,
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 18
-                                              ),
+                                                  fontSize: 18),
                                             ),
                                             onPressed: () async {
-                                              await _firestore.collection("users").doc(FirebaseAuth.instance.currentUser!.uid).update({
+                                              await _firestore
+                                                  .collection("users")
+                                                  .doc(FirebaseAuth.instance
+                                                      .currentUser!.uid)
+                                                  .update({
                                                 'photoPath': 'no',
                                               });
-                                              Navigator.of(context).popAndPushNamed('/editProfile');
+                                              Navigator.of(context)
+                                                  .popAndPushNamed(
+                                                      '/editProfile');
                                             },
-
                                           )
-                                        ]
-                                    ).show();
-                                  }
-                              )
-                            ]
-                        ).show();
-
-                      }
-                      ,child: Text(
-                          'Change profile photo',
+                                        ]).show();
+                                  })
+                            ]).show();
+                      },
+                      child: Text(
+                        'Change profile photo',
                         style: TextStyle(
-                          color: Palette.link,
+                            color: Palette.link,
                             fontSize: 16,
-                            fontWeight: FontWeight.bold
-
-                        ),
+                            fontWeight: FontWeight.bold),
                       ),
                     ),
                     //end of change photo
@@ -299,76 +291,73 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 Column(
                   children: [
-                     Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.fromLTRB(15, 15, 45, 15),
-                            child: Text(
-                              "Name",
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
+                    Row(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.fromLTRB(15, 15, 45, 15),
+                          child: Text(
+                            "Name",
+                            style: TextStyle(
+                              fontSize: 16,
                             ),
                           ),
-
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                /*value*/
-                                //name
-                                Container(
-                                  child:  TextButton(
-                                    onPressed: (){
-                                      Navigator.of(context).popAndPushNamed('/editName');
-                                    },
-                                            child: _isloaded
-                                                ? Text(
-                                                        (userData['name'].toString().isNotEmpty)
-                                                            ? userData['name']
-                                                            : "Name",
-                                                        style:
-                                                        TextStyle(
-                                                          fontSize: 16,
-                                                          color:(userData['name'].toString().isNotEmpty)
-                                                              ? Palette.textColor
-                                                              : Palette.grey,
-
-                                                        )
-                                                    )
-                                                :Container(
-                                                  width: 100,
-                                                  child: LinearProgressIndicator(
-                                                    minHeight:15,
-                                                    backgroundColor: Palette.lightgrey,
-                                                    valueColor:
-                                                    AlwaysStoppedAnimation<Color>
-                                                      (Palette.midgrey),
-                                                  ),
-                                                ),
-
-                                  ),
+                        ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              /*value*/
+                              //name
+                              Container(
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .popAndPushNamed('/editName');
+                                  },
+                                  child: _isloaded
+                                      ? Text(
+                                          (userData['name']
+                                                  .toString()
+                                                  .isNotEmpty)
+                                              ? userData['name']
+                                              : "Name",
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            color: (userData['name']
+                                                    .toString()
+                                                    .isNotEmpty)
+                                                ? Palette.textColor
+                                                : Palette.grey,
+                                          ))
+                                      : Container(
+                                          width: 100,
+                                          child: LinearProgressIndicator(
+                                            minHeight: 15,
+                                            backgroundColor: Palette.lightgrey,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Palette.midgrey),
+                                          ),
+                                        ),
                                 ),
+                              ),
 
-                                /*line*/
-                                Divider(
-                                  height: 4,
-                                ),
-
-
-                              ],
-                            ),
-                          )
-
-                        ],
+                              /*line*/
+                              Divider(
+                                height: 4,
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
                     ),
-
 
                     //username
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 15),
                           child: Text(
                             "Username",
                             style: TextStyle(
@@ -376,7 +365,6 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ),
                         ),
-
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -385,34 +373,36 @@ class _EditProfileState extends State<EditProfile> {
                               //username
                               Container(
                                 alignment: Alignment.centerLeft,
-                                child:  TextButton(
-                                  onPressed: (){
-                                    Navigator.of(context).popAndPushNamed('/editUsername');
+                                child: TextButton(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .popAndPushNamed('/editUsername');
                                   },
-                                  child:_isloaded
+                                  child: _isloaded
                                       ? Text(
-                                      (userData['username'].toString().isNotEmpty)
-                                          ? userData['username']
-                                          : "Username",
-                                      style:
-                                      TextStyle(
-                                        color:(userData['username'].toString().isNotEmpty)
-                                            ? Palette.textColor
-                                            : Palette.grey,
-                                        fontSize: 16,
-                                      )
-                                  )
-                                      :Container(
-                                        width: 100,
-                                        child: LinearProgressIndicator(
-                                          minHeight:15,
-                                          backgroundColor: Palette.lightgrey,
-                                          valueColor:
-                                          AlwaysStoppedAnimation<Color>
-                                            (Palette.midgrey),
+                                          (userData['username']
+                                                  .toString()
+                                                  .isNotEmpty)
+                                              ? userData['username']
+                                              : "Username",
+                                          style: TextStyle(
+                                            color: (userData['username']
+                                                    .toString()
+                                                    .isNotEmpty)
+                                                ? Palette.textColor
+                                                : Palette.grey,
+                                            fontSize: 16,
+                                          ))
+                                      : Container(
+                                          width: 100,
+                                          child: LinearProgressIndicator(
+                                            minHeight: 15,
+                                            backgroundColor: Palette.lightgrey,
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Palette.midgrey),
+                                          ),
                                         ),
-                                      ),
-
                                 ),
                               ),
 
@@ -420,12 +410,9 @@ class _EditProfileState extends State<EditProfile> {
                               Divider(
                                 height: 4,
                               ),
-
-
                             ],
                           ),
                         )
-
                       ],
                     ),
 
@@ -433,7 +420,7 @@ class _EditProfileState extends State<EditProfile> {
                     Row(
                       children: [
                         Container(
-                          padding: EdgeInsets.fromLTRB( 15, 15, 67, 15),
+                          padding: EdgeInsets.fromLTRB(15, 15, 67, 15),
                           child: Text(
                             "Bio",
                             style: TextStyle(
@@ -441,7 +428,6 @@ class _EditProfileState extends State<EditProfile> {
                             ),
                           ),
                         ),
-
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -449,35 +435,36 @@ class _EditProfileState extends State<EditProfile> {
                               /*value*/
                               //bio
                               Container(
-
                                 child: TextButton(
-                                  onPressed: (){
-                                    Navigator.of(context).popAndPushNamed('/editBio');
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .popAndPushNamed('/editBio');
                                   },
                                   child: _isloaded
                                       ? Text(
-                                      (userData['bio'].toString().isNotEmpty)
-                                          ? userData['bio']
-                                          : "Bio",
-                                      style:
-                                      TextStyle(
-                                        color:(userData['bio'].toString().isNotEmpty)
-                                            ? Palette.textColor
-                                            : Palette.grey,
-                                        fontSize: 16,
-                                      )
-                                  )
-                                      :Container(
+                                          (userData['bio']
+                                                  .toString()
+                                                  .isNotEmpty)
+                                              ? userData['bio']
+                                              : "Bio",
+                                          style: TextStyle(
+                                            color: (userData['bio']
+                                                    .toString()
+                                                    .isNotEmpty)
+                                                ? Palette.textColor
+                                                : Palette.grey,
+                                            fontSize: 16,
+                                          ))
+                                      : Container(
                                           width: 100,
                                           child: LinearProgressIndicator(
-                                            minHeight:15,
+                                            minHeight: 15,
                                             backgroundColor: Palette.lightgrey,
                                             valueColor:
-                                            AlwaysStoppedAnimation<Color>
-                                              (Palette.midgrey),
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Palette.midgrey),
                                           ),
                                         ),
-
                                 ),
                               ),
 
@@ -485,25 +472,17 @@ class _EditProfileState extends State<EditProfile> {
                               Divider(
                                 height: 4,
                               ),
-
-
                             ],
                           ),
                         )
-
                       ],
                     ),
-
                   ],
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-
-
-                  ],
+                  children: [],
                 )
-
               ],
             ),
           ),

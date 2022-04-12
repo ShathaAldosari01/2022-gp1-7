@@ -1,8 +1,9 @@
 import 'package:flutter/painting.dart';
 import 'package:flutter/material.dart';
-/*color theam*/
-class Palette{
-  static const Color backgroundColor = Color(0xFFffffff);//0xFF1c1c1c
+
+/*color theme*/
+class Palette {
+  static const Color backgroundColor = Color(0xFFffffff); //0xFF1c1c1c
   static const Color textColor = Color(0xFF000000);
   static const Color buttonColor = Color(0xff1bd3db);
   static const Color buttonDisableColor = Color(0xff8AE6EA);

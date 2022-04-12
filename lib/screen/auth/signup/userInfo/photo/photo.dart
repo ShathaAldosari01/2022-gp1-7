@@ -13,6 +13,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+
 class Photo extends StatefulWidget {
   Photo({Key? key}) : super(key: key);
 
@@ -28,11 +29,11 @@ class _PhotoState extends State<Photo> {
   Uint8List? _image;
   String path = "no";
   //user id
-  var uid= FirebaseAuth.instance.currentUser!.uid;
+  var uid = FirebaseAuth.instance.currentUser!.uid;
   /*user data*/
   var userData = {};
-  DateTime now  = DateTime.now();
-  DateTime birthday  = DateTime.now();
+  DateTime now = DateTime.now();
+  DateTime birthday = DateTime.now();
   int adult = 1;
 
   /* get data method */
@@ -40,9 +41,9 @@ class _PhotoState extends State<Photo> {
     try {
       if (uid != null) {
         //we have uid
-        var userSnap = await FirebaseFirestore.instance.collection('users').doc(
-            uid).get();
-        if(userSnap.data()!=null) {
+        var userSnap =
+            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        if (userSnap.data() != null) {
           //we have user data
           userData = userSnap.data()!;
           //set img path to path
@@ -52,45 +53,39 @@ class _PhotoState extends State<Photo> {
             int yearDiff = now.year - birthday.year;
             int monthDiff = now.month - birthday.month;
             int dayDiff = now.day - birthday.day;
-            if(yearDiff > 18 || yearDiff == 18 && monthDiff >= 0 && dayDiff >= 0)
-              adult =1;
+            if (yearDiff > 18 ||
+                yearDiff == 18 && monthDiff >= 0 && dayDiff >= 0)
+              adult = 1;
             else
               adult = 0;
           });
 
           await _firestore.collection("users").doc(uid).update({
-            'isAdult' :adult,
-            if(adult==0)
-            "questions.married" : 0,
-            if(adult==0)
-            "questions.children" : 0
-
+            'isAdult': adult,
+            if (adult == 0) "questions.married": 0,
+            if (adult == 0) "questions.children": 0
           });
-
-        }else
+        } else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
       }
-    }
-    catch(e){
+    } catch (e) {
       Alert(
         context: context,
         title: "Invalid input!",
         desc: e.toString(),
       ).show();
     }
-
   }
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     //getting user info
     getData();
-
   }
 
-  void selectImage() async{
-    Uint8List im= await pickImage(ImageSource.gallery);
+  void selectImage() async {
+    Uint8List im = await pickImage(ImageSource.gallery);
     setState(() {
       _image = im;
     });
@@ -99,35 +94,30 @@ class _PhotoState extends State<Photo> {
 
     try {
       /*go to sign up page*/
-      if(adult==1)
+      if (adult == 1)
         Navigator.pushNamed(context, '/question1');
       else
         Navigator.pushNamed(context, '/gender');
 
-      var uid =   FirebaseAuth.instance.currentUser!.uid;
+      var uid = FirebaseAuth.instance.currentUser!.uid;
       print(uid);
 
-      String p = await StorageMethods().uploadImageToStorage("profilePics", _image!, false);
+      String p = await StorageMethods()
+          .uploadImageToStorage("profilePics", _image!, false);
       setState(() {
-        path =p;
+        path = p;
       });
       await _firestore.collection("users").doc(uid).update({
         'photoPath': p,
       });
-
-
-    }catch(e){
+    } catch (e) {
       Alert(
         context: context,
-        title: "Invalid input!" ,
+        title: "Invalid input!",
         desc: e.toString(),
-
       ).show();
       print(e);
     }
-
-
-
   }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -139,29 +129,26 @@ class _PhotoState extends State<Photo> {
 
       appBar: AppBar(
         backgroundColor: Palette.backgroundColor,
-        elevation: 0,//no shadow
-        automaticallyImplyLeading: false,//no arrow
+        elevation: 0, //no shadow
+        automaticallyImplyLeading: false, //no arrow
       ),
       //fix overload error
       resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
-
           children: [
-
             /*first column*/
             Expanded(
               child: Container(
-                margin:  EdgeInsets.symmetric(horizontal: 40),
+                margin: EdgeInsets.symmetric(horizontal: 40),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     /*Enter your email*/
                     Container(
-                      padding: EdgeInsets.symmetric( vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       // color: Colors.red,
-                      child:Center(
+                      child: Center(
                         child: Text(
                           "Add profile photo",
                           style: TextStyle(
@@ -174,9 +161,9 @@ class _PhotoState extends State<Photo> {
 
                     /*enter your email so that you */
                     Container(
-                      padding: EdgeInsets.symmetric( vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       // color: Colors.blue,
-                      child:Center(
+                      child: Center(
                         child: Text(
                           "Add a profile photo so your friends know it's you.",
                           textAlign: TextAlign.center,
@@ -188,24 +175,24 @@ class _PhotoState extends State<Photo> {
                       ),
                     ),
 
-                    /*ceke icon */
+                    /*cake icon */
                     Stack(
                       children: [
                         /*icon*/
                         Container(
                           margin: EdgeInsets.symmetric(vertical: 20),
                           child: Center(
-                            child:path !="no"?
-                            CircleAvatar(
-                              radius: 80,
-                              backgroundImage: NetworkImage(path),
-                              backgroundColor: Palette.lightgrey,
-                            )
+                            child: path != "no"
+                                ? CircleAvatar(
+                                    radius: 80,
+                                    backgroundImage: NetworkImage(path),
+                                    backgroundColor: Palette.lightgrey,
+                                  )
                                 : Icon(
-                              Icons.account_circle_sharp,
-                              size: 180,
-                              color: Palette.icongrey,
-                            ),
+                                    Icons.account_circle_sharp,
+                                    size: 180,
+                                    color: Palette.icongrey,
+                                  ),
                           ),
                         ),
                         /*end of the add icon*/
@@ -213,44 +200,44 @@ class _PhotoState extends State<Photo> {
                           bottom: 20,
                           left: 170,
                           child:
-                          /*add icon */
-                          path =="no"?Container(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ShaderMask(
-                                  blendMode: BlendMode.srcATop,
-                                  shaderCallback: (bounds)=>
-                                      LinearGradient(
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomCenter,
-                                          colors: [
-                                            Palette.buttonColor,
-                                            Palette.nameColor,
-                                          ]
-                                      ).createShader(bounds),
-                                  child: Icon(
-                                    Icons.add_circle_outline,
-                                    size: 80,
-                                  ),
-                                ),
-
-                              ],
-                            ),
-                          ):SizedBox(height: 1,),
+                              /*add icon */
+                              path == "no"
+                                  ? Container(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          ShaderMask(
+                                            blendMode: BlendMode.srcATop,
+                                            shaderCallback: (bounds) =>
+                                                LinearGradient(
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                  Palette.buttonColor,
+                                                  Palette.nameColor,
+                                                ]).createShader(bounds),
+                                            child: Icon(
+                                              Icons.add_circle_outline,
+                                              size: 80,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      height: 1,
+                                    ),
                           /*end of the cake icon*/
                         )
                       ],
                     ),
-
-
-
                   ],
                 ),
               ),
             ),
-
 
             /*log out?*/
             Column(
@@ -259,82 +246,80 @@ class _PhotoState extends State<Photo> {
                 /*form*/
                 Form(
                   key: _formKey,
-                  child: Column(
-                      children:[ Column(
-                        children: [
-
-                          /*next button*/
-                          Container(
-                            margin: EdgeInsets.symmetric(vertical: 0, horizontal:40 ),
-                            alignment: Alignment.center,
-                            width: double.infinity,
+                  child: Column(children: [
+                    Column(
+                      children: [
+                        /*next button*/
+                        Container(
+                          margin:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 40),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: 50.0,
+                          /*button colors*/
+                          decoration: BoxDecoration(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
+                            gradient: LinearGradient(colors: [
+                              Palette.buttonColor,
+                              Palette.nameColor,
+                            ]),
+                          ),
+                          /*button*/
+                          child: ButtonTheme(
                             height: 50.0,
-                            /*button colors*/
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                              gradient: LinearGradient(
-                                  colors: [
-                                    Palette.buttonColor,
-                                    Palette.nameColor,
-                                  ]
-                              ),
-                            ),
-                            /*button*/
-                            child: ButtonTheme(
-                              height: 50.0,
-                              minWidth: 350,
-                              child: FlatButton(
-                                onPressed:
-                                /*select image */
-                                selectImage,
-
-                                child: Text('Add a photo',
-                                  style: TextStyle(
-                                    color: Palette.backgroundColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
+                            minWidth: 350,
+                            child: FlatButton(
+                              onPressed:
+                                  /*select image */
+                                  selectImage,
+                              child: Text(
+                                'Add a photo',
+                                style: TextStyle(
+                                  color: Palette.backgroundColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
                                 ),
                               ),
                             ),
                           ),
-                          /*end of next button */
+                        ),
+                        /*end of next button */
 
-                          /*next button*/
-                          Container(
-                            margin: EdgeInsets.fromLTRB(40, 4, 40, 20),
-                            alignment: Alignment.center,
-                            width: double.infinity,
+                        /*next button*/
+                        Container(
+                          margin: EdgeInsets.fromLTRB(40, 4, 40, 20),
+                          alignment: Alignment.center,
+                          width: double.infinity,
+                          height: 50.0,
+
+                          /*button*/
+                          child: ButtonTheme(
                             height: 50.0,
-
-                            /*button*/
-                            child: ButtonTheme(
-                              height: 50.0,
-                              minWidth: 350,
-                              child: FlatButton(
-                                onPressed: () {
-
+                            minWidth: 350,
+                            child: FlatButton(
+                              onPressed: () {
                                 /*go to sign up page*/
-                                if(adult==1)
+                                if (adult == 1)
                                   Navigator.pushNamed(context, '/question1');
                                 else
                                   Navigator.pushNamed(context, '/gender');
                               },
-                                child: Text('Skip',
-                                  style: TextStyle(
-                                    color: Palette.buttonColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
+                              child: Text(
+                                'Skip',
+                                style: TextStyle(
+                                  color: Palette.buttonColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
                                 ),
                               ),
                             ),
                           ),
-                          /*end of next button */
-
-                        ],
-                      ),]
-                  ),
+                        ),
+                        /*end of next button */
+                      ],
+                    ),
+                  ]),
                 ),
                 /*/form*/
               ],
