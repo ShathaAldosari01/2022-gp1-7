@@ -163,7 +163,7 @@ class _PhotoState extends State<Photo> {
                       // color: Colors.red,
                       child:Center(
                         child: Text(
-                          "Add profile photo ",
+                          "Add profile photo",
                           style: TextStyle(
                             fontSize: 30,
                             color: Palette.textColor,
@@ -193,7 +193,7 @@ class _PhotoState extends State<Photo> {
                       children: [
                         /*icon*/
                         Container(
-                          margin: EdgeInsets.symmetric(vertical: 120),
+                          margin: EdgeInsets.symmetric(vertical: 20),
                           child: Center(
                             child:path !="no"?
                             CircleAvatar(
@@ -208,9 +208,9 @@ class _PhotoState extends State<Photo> {
                             ),
                           ),
                         ),
-                        /*end of the cake icon*/
+                        /*end of the add icon*/
                         Positioned(
-                          bottom: 100,
+                          bottom: 20,
                           left: 170,
                           child:
                           /*add icon */
@@ -219,7 +219,6 @@ class _PhotoState extends State<Photo> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // SizedBox(width: double.infinity,),
                                 ShaderMask(
                                   blendMode: BlendMode.srcATop,
                                   shaderCallback: (bounds)=>
@@ -236,9 +235,7 @@ class _PhotoState extends State<Photo> {
                                     size: 80,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: 20,
-                                ),
+
                               ],
                             ),
                           ):SizedBox(height: 1,),

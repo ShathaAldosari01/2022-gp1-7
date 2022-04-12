@@ -15,7 +15,7 @@ class GenderQuestion extends StatefulWidget {
 
 
 class _GenderQuestionState extends State<GenderQuestion> {
-  static const questg = <String> ['Female', 'Male', 'I\'d rather not say'];
+  static const questg = <String> ['Female', 'Male', "I'd rather not to say"];
   String selectedQuestg = "";
   bool isButtonActive = false;
   //database
@@ -52,7 +52,7 @@ class _GenderQuestionState extends State<GenderQuestion> {
               this.selectedQuestg = "Male";
               isButtonActive = true;
             }if(gender.toString().compareTo("2")==0){
-              this.selectedQuestg = "Specify another";
+              this.selectedQuestg = "I'd rather not to say";
               isButtonActive = true;
             }
           });
@@ -189,7 +189,7 @@ class _GenderQuestionState extends State<GenderQuestion> {
                 isButtonActive= false;
               });
               
-              /*go to question 4 page*/
+              /*go to question 2 page*/
               Navigator.pushNamed(context, '/question4');
             } :null,
               child: Text('Next',
