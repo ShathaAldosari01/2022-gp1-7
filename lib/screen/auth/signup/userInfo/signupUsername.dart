@@ -346,12 +346,12 @@ class _SignupUsernameState extends State<SignupUsername> {
             isButtonActive= false;
           });
 
-          /*go to sign up page*/
+
           Navigator.pushNamed(context, '/photo');
         }
         else if(username.isNotEmpty &&
             username.toLowerCase().compareTo(userData['username'].toString())==0){
-          /*go to sign up page*/
+
           Navigator.pushNamed(context, '/photo');
         }else{
           print(snapshot.docs);
