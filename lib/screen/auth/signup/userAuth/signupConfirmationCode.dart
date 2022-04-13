@@ -39,7 +39,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     if (!isEmailVerified) {
       sendVerificationEmail();
     } else {
-      Navigator.pushNamed(context, '/signupBirthday');
+      Navigator.pushNamed(context, '/name.dart');
     }
 
     timer = Timer.periodic(
@@ -64,7 +64,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     if (isEmailVerified) {
       timer?.cancel();
-      Navigator.pushNamed(context, '/signupBirthday');
+      Navigator.pushNamed(context, '/name.dart');
     }
   }
 
