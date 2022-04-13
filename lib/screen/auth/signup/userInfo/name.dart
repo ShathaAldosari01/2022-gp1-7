@@ -181,6 +181,18 @@ class _nameState extends State<name> {
                                     if (val.length > 35) {
                                       return "Create a shorter name under 35 characters.";
                                     }
+                                    /*name should not be only space*/
+                                    int count = 0;
+                                    val.runes.forEach((int rune) {
+                                      var character=new String.fromCharCode(rune);
+                                      if(character.compareTo(" ")!=0){
+                                        count++;
+                                      };
+                                    });
+                                    if(count==0){
+                                      return "The name should not be only space!";
+                                    }
+                                    /*end check space*/
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
@@ -204,6 +216,7 @@ class _nameState extends State<name> {
                                         val.contains("<") ||
                                         val.contains(">") ||
                                         val.contains(",") ||
+                                        val.contains('"') ||
                                         val.contains("?") ||
                                         val.contains("/"))) {
                                       return "name should not contain special characters. only '-', '_' and '.'.";
