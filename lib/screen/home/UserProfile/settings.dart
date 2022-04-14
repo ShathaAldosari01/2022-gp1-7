@@ -162,7 +162,7 @@ class _settingsState extends State<settings> {
                 onPressed: () {
                   Alert(
                       context: context,
-                      title: "Delete is permanent",
+                      title: "Do you want to delete your account?",
                       //change me latter
                       //Your profile, post, video, comments, likes and followers will be permanently deleted.
                       desc: "Your profile will be permanently deleted.",

@@ -193,7 +193,7 @@ class _EditProfileState extends State<EditProfile> {
                       onPressed: () {
                         Alert(
                             context: context,
-                            title: "Change profile photo",
+                            title: "Change profile photo?",
                             buttons: [
                               DialogButton(
                                   child: Text(
