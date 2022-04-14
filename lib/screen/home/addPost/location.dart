@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'Location/current_location_screen.dart';
 import 'Location/search_places_screen.dart';
-import 'Location/simple_map_screen.dart';
+
 
 class Location extends StatefulWidget {
   const Location({Key? key}) : super(key: key);
