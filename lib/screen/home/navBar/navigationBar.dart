@@ -58,7 +58,14 @@ class _navigationBarState extends State<navigationBar> {
           animationDuration: Duration(milliseconds: 300),
           index: index,
           items: items,
-          onTap: (index) => setState(() => this.index = index),
+          onTap: (index) {
+            setState(() {this.index = index;});
+            if(index == 2){
+              Navigator.of(context).popAndPushNamed('/location');
+            }
+          },
+
+
         ),
       ),
     );
