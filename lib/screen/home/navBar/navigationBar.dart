@@ -8,7 +8,8 @@ import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
 import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
-import 'package:gp1_7_2022/screen/home/navBar/add_post_page.dart';
+
+import '../addPost/AddPostPage.dart';
 
 class navigationBar extends StatefulWidget {
   @override
@@ -60,9 +61,9 @@ class _navigationBarState extends State<navigationBar> {
           items: items,
           onTap: (index) {
             setState(() {this.index = index;});
-            if(index == 2){
-              Navigator.of(context).popAndPushNamed('/location');
-            }
+           // if(index == 2){
+            //  Navigator.of(context).popAndPushNamed('/location');
+          //  }
           },
 
 

@@ -13,7 +13,6 @@ import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
 import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
-import 'package:gp1_7_2022/screen/home/navBar/add_post_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Profile_page extends StatefulWidget {
@@ -117,7 +116,7 @@ class _Profile_pageState extends State<Profile_page> {
     } catch (e) {
       Alert(
         context: context,
-        title: "Invalid input!",
+        title: "Invalid input",
         desc: e.toString(),
       ).show();
     }

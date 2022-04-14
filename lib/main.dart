@@ -26,7 +26,7 @@ import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
 import 'package:gp1_7_2022/screen/home/addPost/location.dart';
-import 'package:gp1_7_2022/screen/home/addPost/rate.dart';
+import 'package:gp1_7_2022/screen/home/addPost/AddPostPage.dart';
 import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';

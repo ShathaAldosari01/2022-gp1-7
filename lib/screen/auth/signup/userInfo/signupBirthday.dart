@@ -222,7 +222,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                     setState(() {
                                       isButtonActive = false;
                                     });
-                                    return "You should be at lest 12 years old to sign up.";
+                                    return "You should be at least 12 years old to sign up.";
                                   }
                                   setState(() {
                                     isButtonActive = true;
