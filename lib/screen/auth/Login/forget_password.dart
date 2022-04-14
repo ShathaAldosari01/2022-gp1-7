@@ -40,18 +40,28 @@ class _forget_passwordState extends State<forget_password> {
 
     _emailController = TextEditingController(text: widget.email.toString());
 
+    setState(() {
+      email = widget.email.toString();
+      isButtonActive = widget.email.toString().isNotEmpty;
+    });
+
     _emailController.addListener(() {
       final isEmailOkay = _emailController.text.isNotEmpty;
 
       setState(() {
         isEmailEmpty = !isEmailOkay;
-        isButtonActive = true;
-        email = widget.email.toString();
+        isButtonActive = (!isEmailEmpty);
       });
     });
-  }
 
-  @override
+
+  setState(() {
+
+  isButtonActive = (!isEmailEmpty);
+  });
+}
+
+@override
   @override
   void dispose() {
     _emailController.dispose();

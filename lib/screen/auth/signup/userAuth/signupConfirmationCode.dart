@@ -39,7 +39,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     if(!isEmailVerified){
       sendVerificationEmail();
     }else{
-      Navigator.pushNamed(context, '/name');
+      Navigator.pushNamed(context, '/name.dart');
     }
 
     timer= Timer.periodic(
@@ -64,7 +64,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     if(isEmailVerified){
       timer?.cancel();
-      Navigator.pushNamed(context, '/signupBirthday');
+      Navigator.pushNamed(context, '/name.dart');
     }
   }
 
@@ -92,9 +92,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
 
     }catch(e) {
       //error msg
-      bool message =
-      e.toString().contains("We have blocked");
-      if(!message){
+
       Alert(
           context: context,
           title: "Something went wrong!",
@@ -127,7 +125,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
             ),
           ]
       ).show();
-    }
+
       print(e);
     }
   }
@@ -164,7 +162,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                   // color: Colors.red,
                   child:const Center(
                     child: Text(
-                      "Cheek your email",//${widget.email}
+                      "Check your email",//${widget.email}
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30,
