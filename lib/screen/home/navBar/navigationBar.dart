@@ -12,6 +12,8 @@ import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
 import '../addPost/AddPostPage.dart';
 
 class navigationBar extends StatefulWidget {
+  final int ind;
+  const navigationBar({Key? key, required this.ind}) : super(key: key);
   @override
   _navigationBarState createState() => _navigationBarState();
 }
@@ -27,6 +29,14 @@ class _navigationBarState extends State<navigationBar> {
     NotificationPage(),
     Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
+
+  @override
+  void initState() {
+    setState(() {
+      index = widget.ind;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +71,9 @@ class _navigationBarState extends State<navigationBar> {
           items: items,
           onTap: (index) {
             setState(() {this.index = index;});
-           // if(index == 2){
-            //  Navigator.of(context).popAndPushNamed('/location');
-          //  }
+           if(index == 2){
+             Navigator.of(context).popAndPushNamed('/addPost');
+           }
           },
 
 

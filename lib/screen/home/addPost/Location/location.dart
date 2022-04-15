@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'Location/search_places_screen.dart';
+import 'search_places_screen.dart';
 
 
 class Location extends StatefulWidget {

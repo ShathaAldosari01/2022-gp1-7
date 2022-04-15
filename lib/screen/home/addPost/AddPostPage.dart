@@ -19,22 +19,79 @@ class _AddPostPageState extends State<AddPostPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
         backgroundColor: Palette.backgroundColor,
+
         appBar: AppBar(
+          //appBar style
+          elevation: 0,
           backgroundColor: Palette.backgroundColor,
-          foregroundColor: Palette.textColor,
-          elevation: 0, //no shadow
           automaticallyImplyLeading: false, //no arrow
+          //username
+          // centerTitle: true,
+          title: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FlatButton(
+                    textColor: Palette.textColor,
+                    onPressed: () {
+                      Navigator.of(context).popAndPushNamed('/navigationBar');
+                    },
+                    child: Text(
+                      "Back",
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    shape:
+                    CircleBorder(side: BorderSide(color: Colors.transparent)),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                    child: Text(
+                      "Add Post",
+                      style: TextStyle(
+                        color: Palette.textColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  FlatButton(
+                    textColor: Palette.link,
+                    onPressed: () {},
+                    child: Text(
+                      "",
+                      style:
+                      TextStyle(fontSize: 18, color: Palette.backgroundColor),
+                    ),
+                    shape:
+                    CircleBorder(side: BorderSide(color: Colors.transparent)),
+                  ),
+                ],
+              ),
+              //line
+              Divider(
+                height: 1,
+              ),
+            ],
+          ),
         ),
+
         //fix overload error
         resizeToAvoidBottomInset: false,
+
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                'Rate of your visit: $rating',
-                style: TextStyle(fontSize: 20),
-              ),
+              rating!=0
+                  ?Text(
+                    'Rate of your visit: $rating',
+                    style: TextStyle(fontSize: 20),
+                  )
+                  :Text(
+                    'Rate your visit',
+                    style: TextStyle(fontSize: 20),
+                  ),
               SizedBox(height: 32),
               RatingBar.builder(
                 minRating: 1,

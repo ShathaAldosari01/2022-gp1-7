@@ -25,7 +25,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
-import 'package:gp1_7_2022/screen/home/addPost/location.dart';
+import 'package:gp1_7_2022/screen/home/addPost/Location/location.dart';
 import 'package:gp1_7_2022/screen/home/addPost/AddPostPage.dart';
 import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
@@ -61,8 +61,7 @@ void main() async {
     '/gender': (context) => GenderQuestion(),
 
     /*profile*/
-    '/Profile_Page': (context) =>
-        Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
+    '/Profile_Page':(context) => navigationBar(ind: 5,),
     '/settings': (context) => settings(),
 
     /*edit profile*/
@@ -76,10 +75,12 @@ void main() async {
         EditBio(uid: FirebaseAuth.instance.currentUser!.uid),
 
     /*navigation bar */
-    '/navigationBar': (context) => navigationBar(),
+    '/navigationBar': (context) => navigationBar(ind: 0,),
 
-    /*add location*/
+    /*add post*/
+    '/addPost':(context)=>AddPostPage(),
     '/location':(context)=>Location(),
+
 
   }));
 }
@@ -111,7 +112,7 @@ class _MainPageState extends State<MainPage> {
             var current = FirebaseAuth.instance.currentUser;
             if (current != null) {
               if (current.emailVerified && current.uid != null) {
-                return navigationBar();
+                return navigationBar(ind: 0,);
               } else {
                 String? x = FirebaseAuth.instance.currentUser!.email;
                 String y = x ?? " ";
