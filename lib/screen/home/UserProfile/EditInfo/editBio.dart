@@ -96,7 +96,14 @@ class _EditBioState extends State<EditBio> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () async{
+      Navigator.pushNamed(context, '/editProfile');
+      return true;
+    },
+
+    child: Scaffold(
       key: _scaffoldKey,
       backgroundColor: Palette.backgroundColor,
 
@@ -117,7 +124,7 @@ class _EditBioState extends State<EditBio> {
                     Navigator.of(context).popAndPushNamed('/editProfile');
                   },
                   child: Text(
-                    "Back",
+                    "Cancel",
                     style: TextStyle(fontSize: 18),
                   ),
                   shape:
@@ -265,6 +272,7 @@ class _EditBioState extends State<EditBio> {
           ],
         ),
       ),
+    ),
     );
   }
 

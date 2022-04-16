@@ -39,22 +39,14 @@ class _ContentOfPostState extends State<ContentOfPost> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                FlatButton(
-                  textColor: Palette.textColor,
-                  onPressed: () {
-                    Navigator.of(context).popAndPushNamed('/addPost');
-                  },
-                  child: Text(
-                    "Back",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Palette.textColor),
+                  onPressed: () => Navigator.pushNamed(context, '/addPost'),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: Text(
-                    "Add Content",
+                    "Add Post",
                     style: TextStyle(
                       color: Palette.textColor,
                       fontWeight: FontWeight.bold,
@@ -62,16 +54,10 @@ class _ContentOfPostState extends State<ContentOfPost> {
                     ),
                   ),
                 ),
-                FlatButton(
-                  textColor: Palette.link,
-                  onPressed: () {},
-                  child: Text(
-                    "Done",
-                    style: TextStyle(fontSize: 18, color: Palette.textColor),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Icon(Icons.arrow_back, color: Palette.backgroundColor),
                   ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
-                ),
               ],
             ),
             //line
@@ -82,6 +68,7 @@ class _ContentOfPostState extends State<ContentOfPost> {
         ),
       ),
       body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20),
         //so it can scroll
         child: SingleChildScrollView(
           child: Column(
@@ -117,7 +104,6 @@ class _ContentOfPostState extends State<ContentOfPost> {
                   ? Container(
                   height: 150,
                   width:150,
-                  color: Colors.grey,
                   child: Image.network(path))
                   : Text(""),
               TextButton(
@@ -166,7 +152,6 @@ class _ContentOfPostState extends State<ContentOfPost> {
 
                   height: 150,
                   width:150,
-                  color: Colors.grey,
                   child: Image.network(path1))
                   : Text(""),
               TextButton(

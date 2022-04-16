@@ -16,4 +16,5 @@ class Palette {
   static const Color midgrey = Color(0xffececec);
   static const Color link = Color(0xFF37A7DB);
   static const Color red = Color(0xFFdc143c);
+  static const Color orange = Color(0xFFf5d5c8);
 }

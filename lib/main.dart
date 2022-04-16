@@ -30,6 +30,7 @@ import 'package:gp1_7_2022/screen/home/addPost/Location/location.dart';
 import 'package:gp1_7_2022/screen/home/addPost/AddPostPage.dart';
 import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
+import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 void main() async {
@@ -62,7 +63,7 @@ void main() async {
     '/gender': (context) => GenderQuestion(),
 
     /*profile*/
-    '/Profile_Page':(context) => navigationBar(ind: 5,),
+    '/Profile_Page':(context) => navigationBar(ind: 4,),
     '/settings': (context) => settings(),
 
     /*edit profile*/
@@ -75,8 +76,10 @@ void main() async {
     '/editBio': (context) =>
         EditBio(uid: FirebaseAuth.instance.currentUser!.uid),
 
-    /*navigation bar */
+    /*home page*/
     '/navigationBar': (context) => navigationBar(ind: 0,),
+    '/notification': (context) => NotificationPage(),
+
 
     /*add post*/
     '/addPost':(context)=>AddPostPage(),

@@ -95,36 +95,34 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () async{
+      Navigator.pushNamed(context, '/Profile_Page');
+      return true;
+    },
+
+    child: Scaffold(
       backgroundColor: Palette.backgroundColor,
       appBar: AppBar(
         //appBar style
         elevation: 0,
         backgroundColor: Palette.backgroundColor,
-        automaticallyImplyLeading: false, //no arrow
-        //username
-        // centerTitle: true,
+        automaticallyImplyLeading: false, //no arrow,
+
         title: Column(
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                FlatButton(
-                  textColor: Palette.textColor,
-                  onPressed: () {
-                    Navigator.of(context).popAndPushNamed('/Profile_Page');
-                  },
-                  child: Text(
-                    "Back",
-                    style: TextStyle(fontSize: 18),
-                  ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
+                IconButton(
+                  icon: const Icon(Icons.arrow_back, color: Palette.textColor),
+                  onPressed: () => Navigator.pushNamed(context, '/Profile_Page'),
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
                   child: Text(
-                    "Edit profile",
+                    "Edit Profile",
                     style: TextStyle(
                       color: Palette.textColor,
                       fontWeight: FontWeight.bold,
@@ -132,16 +130,9 @@ class _EditProfileState extends State<EditProfile> {
                     ),
                   ),
                 ),
-                FlatButton(
-                  textColor: Palette.link,
-                  onPressed: () {},
-                  child: Text(
-                    "",
-                    style:
-                        TextStyle(fontSize: 18, color: Palette.backgroundColor),
-                  ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Icon(Icons.arrow_back, color: Palette.backgroundColor),
                 ),
               ],
             ),
@@ -152,6 +143,7 @@ class _EditProfileState extends State<EditProfile> {
           ],
         ),
       ),
+
       body: ListView(
         children: [
           Container(
@@ -488,6 +480,7 @@ class _EditProfileState extends State<EditProfile> {
           ),
         ],
       ),
+    ),
     );
   }
 }

@@ -98,13 +98,13 @@ class _LoginState extends State<Login> {
                     // margin: const EdgeInsets.all(14),
                     child: const Center(
                       child: Text(
-                        "ODYSSEY",
+                        "Odyssey",
                         style: TextStyle(
-                          // fontWeight: FontWeight.w500,
-                          fontSize: 50,
+                           fontWeight: FontWeight.w500,
+                          fontSize: 65,
                           color: Palette.link,
-                          fontFamily: 'Anton',
-                          letterSpacing: 2,
+                          fontFamily: 'Cookie',
+                      //    letterSpacing: 2,
                         ),
                       ),
                     ),

@@ -76,7 +76,14 @@ class _settingsState extends State<settings> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () async{
+      Navigator.pushNamed(context, '/Profile_Page');
+      return true;
+    },
+
+    child: Scaffold(
       backgroundColor: Palette.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
@@ -217,6 +224,7 @@ class _settingsState extends State<settings> {
           ),
         ],
       ),
+    ),
     );
   }
 }

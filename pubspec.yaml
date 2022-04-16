@@ -126,8 +126,14 @@ flutter:
     - family: Anton
       fonts:
         - asset: fonts/Anton-Regular.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+
+    - family: Cookie
+      fonts:
+       - asset: fonts/Cookie-Regular.ttf
+
+    - family: Sofia
+      fonts:
+        - asset: fonts/Sofia-Regular.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

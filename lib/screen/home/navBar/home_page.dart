@@ -12,6 +12,15 @@ class HomePage extends StatelessWidget {
           foregroundColor: Palette.textColor,
           elevation: 0, //no shadow
           automaticallyImplyLeading: false, //no arrow
+
+          actions: [
+            IconButton(
+              icon: Icon(Icons.notifications),
+              onPressed: () {
+                Navigator.of(context).popAndPushNamed('/notification');
+              },
+            )
+          ],
         ),
         body: Center(
           child: Text(

@@ -97,7 +97,15 @@ class _EditUsernameState extends State<EditUsername> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () async{
+      Navigator.pushNamed(context, '/editProfile');
+      return true;
+    },
+
+    child:
+      Scaffold(
       key: _scaffoldKey,
       backgroundColor: Palette.backgroundColor,
 
@@ -274,6 +282,7 @@ class _EditUsernameState extends State<EditUsername> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

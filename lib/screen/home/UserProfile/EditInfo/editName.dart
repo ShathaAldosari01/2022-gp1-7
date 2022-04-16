@@ -80,7 +80,7 @@ class _EditNameState extends State<EditName> {
     //getting user info
     getData();
 
-    //this to know if the user full the name filed to disabile the button
+    //this to know if the user full the name filed to disable the button
     _nameController = TextEditingController();
   }
 
@@ -96,7 +96,15 @@ class _EditNameState extends State<EditName> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return
+      WillPopScope(
+        onWillPop: () async{
+      Navigator.pushNamed(context, '/editProfile');
+      return true;
+    },
+
+    child:
+      Scaffold(
       key: _scaffoldKey,
       backgroundColor: Palette.backgroundColor,
 
@@ -268,6 +276,7 @@ class _EditNameState extends State<EditName> {
             ),
           ],
         ),
+      ),
       ),
     );
   }

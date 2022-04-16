@@ -26,7 +26,6 @@ class _navigationBarState extends State<navigationBar> {
     SearchPage(),
     AddPostPage(),
     lists(),
-    NotificationPage(),
     Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
 
@@ -45,7 +44,6 @@ class _navigationBarState extends State<navigationBar> {
       Icon(Icons.search, size: 30),
       Icon(Icons.add, size: 30),
       Icon(Icons.list, size: 30),
-      Icon(Icons.notifications_none, size: 30),
       Icon(Icons.person, size: 30),
     ];
 

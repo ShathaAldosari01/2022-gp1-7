@@ -99,7 +99,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
         ),
       ),
 
-      //fix over loade error
+      //fix over load error
       resizeToAvoidBottomInset: false,
 
       /*body*/
@@ -189,7 +189,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
 
                                 //function
                                 onChanged: (val) {
-                                  /*change the val of pass*/
+                                  /*change the val of date*/
                                   setState(() {
                                     _dataFormate = val;
                                   });
