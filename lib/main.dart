@@ -25,6 +25,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
+import 'package:gp1_7_2022/screen/home/addPost/ContentOfPost.dart';
 import 'package:gp1_7_2022/screen/home/addPost/Location/location.dart';
 import 'package:gp1_7_2022/screen/home/addPost/AddPostPage.dart';
 import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
@@ -80,7 +81,7 @@ void main() async {
     /*add post*/
     '/addPost':(context)=>AddPostPage(),
     '/location':(context)=>Location(),
-
+    '/ContentOfPost':(context)=>ContentOfPost(),
 
   }));
 }
