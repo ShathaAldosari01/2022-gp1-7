@@ -1,27 +1,30 @@
-# gp1_7_2022 / Odyssey 
+# Odyssey 
+<p align="center">
+   <img src="https://user-images.githubusercontent.com/90134745/163654812-64817572-94cc-42eb-bd33-7a7464f41c96.png" alt="Odyssey logo" height="200" width="200">
+</p>
 
-<h1>Introduction</h1>
+# ✈️ About Odyssey
 For a traveler who faces difficulties finding places/activities to experience, people with similar interests to follow, and feels overwhelmed when planning for a trip, the Odyssey is a social network platform designed for travelers that will help them create lists to plan upcoming trips and discover new places all under the same roof. Odyssey will make sure that users can look at other users’ suggested lists that are similar to them so they might want to try something they're interested in.
 
+The purpose of this application is for travelers to share their adventures so that others who are lost on where to go can get inspiration from them. 
 
-The purpose of this platform is for travelers to share their adventures so that others who are lost on where to go can get ideas from others and inspiration from them. 
-
-<h1>Technology Used</h1>
+# 👩‍💻 Technology Used
 - Flutter framework (Dart programming language)
-- Cloud firebase
+- Cloud Firebase
 
-<h1>Requirements</h1> 
-- Andriod studio (along with SDK)
-- Emulator (or real andriod device) 
-- Flutter
-- Dart
+# ✔️ Requirements To Launch The Application
+- Android Studio with SDK
+- Flutter framework
+- Dart programming language
+- Phone emulator or an android phone 
 
 
-<h1>Launch Instructions</h1> 
-- Press the green button that says "code"
-- Download .zip file
-- Unzip the file
-- Open Andriod Studio 
-- Click on file > open > location of saved Unzipped file > press ok 
-- Start an android emulator or connect a real android device to the system
-- Run the application
+# 📝 Launch Instructions
+- Open ``gp1_7_2022`` repository on github
+- Click on the ``Code`` button
+- Download **.zip** file
+- **Unzip** the file
+- Open **Android Studio**
+- Click on ``File`` > ``Open`` > ``Location`` of saved unzipped file > click on ``Ok``
+- Start an **Android Emulator** or connect an **android phone** to the system
+- **Run** the application
