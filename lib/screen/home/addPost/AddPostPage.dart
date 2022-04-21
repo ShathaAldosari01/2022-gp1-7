@@ -535,7 +535,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       /*date of visit*/
                       RichText(
                         text: TextSpan(
-                            text: 'Pick date of visit',
+                            text: 'Date of visit',
                             style: TextStyle(
                               color: Palette.textColor,
                               fontWeight: FontWeight.w500,
@@ -2949,10 +2949,10 @@ class _AddPostPageState extends State<AddPostPage> {
                     onPressed:
                     isButtonActive[0] && isButtonActive[1] ? () {
 
-                      Navigator.pushNamed(context, '/ContentOfPost');
+                      Navigator.pushNamed(context, '/navigationBar');
                     } : null,
                     child: Text(
-                      'Next',
+                      'Done',
                       style: TextStyle(
                         color: Palette.backgroundColor,
                         fontWeight: FontWeight.bold,
@@ -3029,7 +3029,26 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'coverPath': p,
+        'postID': {
+          'images': {
+            'cover': p,
+            'image1': "no",
+            'image2': "no",
+            'image3': "no",
+            'image4': "no",
+            'image5': "no",
+            'image6': "no",
+            'image7': "no",
+            'image8': "no",
+            'image9': "no",
+            'image10': "no",
+            'image11': "no",
+            'image12': "no",
+            'image13': "no",
+            'image14': "no",
+            'image15': "no",
+          },
+        },
       });
 
 
@@ -3067,7 +3086,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path1': p,
+        'postID.images.image1': p,
       });
 
     }catch(e){
@@ -3103,7 +3122,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path2': p,
+        'postID.images.image2': p,
       });
     }catch(e){
       print(e.toString());
@@ -3139,7 +3158,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path3': p,
+        'postID.images.image3': p,
       });
     }catch(e){
       print(e.toString());
@@ -3175,7 +3194,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path4': p,
+        'postID.images.image4': p,
       });
     }catch(e){
       print(e.toString());
@@ -3211,7 +3230,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path5': p,
+        'postID.images.image5': p,
       });
     }catch(e){
       print(e.toString());
@@ -3246,7 +3265,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path6': p,
+        'postID.images.image6': p,
       });
     }catch(e){
       print(e.toString());
@@ -3282,7 +3301,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path7': p,
+        'postID.images.image7': p,
       });
     }catch(e){
       print(e.toString());
@@ -3318,7 +3337,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path8': p,
+        'postID.images.image8': p,
       });
     }catch(e){
       print(e.toString());
@@ -3354,7 +3373,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path9': p,
+        'postID.images.image9': p,
       });
     }catch(e){
       print(e.toString());
@@ -3390,7 +3409,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path10': p,
+        'postID.images.image10': p,
       });
     }catch(e){
       print(e.toString());
@@ -3426,7 +3445,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path11': p,
+        'postID.images.image11': p,
       });
     }catch(e){
       print(e.toString());
@@ -3461,7 +3480,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path12': p,
+        'postID.images.image12': p,
       });
     }catch(e){
       print(e.toString());
@@ -3496,7 +3515,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path13': p,
+        'postID.images.image13': p,
       });
     }catch(e){
       print(e.toString());
@@ -3531,7 +3550,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path14': p,
+        'postID.images.image14': p,
       });
     }catch(e){
       print(e.toString());
@@ -3568,7 +3587,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
-        'Path15': p,
+        'postID.images.image15': p,
       });
     }catch(e){
       print(e.toString());
