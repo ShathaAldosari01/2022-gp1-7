@@ -10,6 +10,7 @@ import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
 
 import '../addPost/AddPostPage.dart';
+import 'empty.dart';
 
 class navigationBar extends StatefulWidget {
   final int ind;
@@ -24,7 +25,7 @@ class _navigationBarState extends State<navigationBar> {
   final screens = [
     HomePage(),
     SearchPage(),
-    AddPostPage(),
+    Empty(),
     lists(),
     Profile_page(uid: FirebaseAuth.instance.currentUser!.uid),
   ];
