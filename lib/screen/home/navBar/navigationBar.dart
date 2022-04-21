@@ -70,7 +70,8 @@ class _navigationBarState extends State<navigationBar> {
           onTap: (index) {
             setState(() {this.index = index;});
            if(index == 2){
-             Navigator.of(context).popAndPushNamed('/addPost');
+              Navigator.of(context).popAndPushNamed('/addPost');
+
            }
           },
 

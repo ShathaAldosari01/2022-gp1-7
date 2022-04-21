@@ -33,6 +33,8 @@ import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
 import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import 'screen/home/addPost/Location/country_search.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
@@ -85,6 +87,8 @@ void main() async {
     '/addPost':(context)=>AddPostPage(),
     '/location':(context)=>Location(),
     '/ContentOfPost':(context)=>ContentOfPost(),
+    '/countrySearch':(context)=>CountrySearch(title: "Country",),
+
 
   }));
 }

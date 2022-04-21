@@ -1,3 +1,4 @@
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,12 +16,49 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import '../../auth/signup/userInfo/photo/storageMethods.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 
+
+// country
+import 'package:gp1_7_2022/model/country_model.dart';
+import 'package:searchfield/searchfield.dart';
+
+// API
+import 'package:flutter_google_places/flutter_google_places.dart';
+import 'package:google_maps_webservice/places.dart';
+
+
+
 class AddPostPage extends StatefulWidget {
   @override
   _AddPostPageState createState() => _AddPostPageState();
 }
+//API key
+const kGoogleApiKey = 'AIzaSyCckhVmNilRBCInrm087ZQr0WxR1u3AbhU';
 
 class _AddPostPageState extends State<AddPostPage> {
+  //API
+  final Mode _mode = Mode.overlay;
+
+  //country
+  @override
+  void dispose() {
+    _searchController.dispose();
+    focus.dispose();
+    super.dispose();
+  }
+
+  final _searchController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    countries = data.map((e) => Country.fromMap(e)).toList();
+  }
+
+  final focus = FocusNode();
+  List<Country> countries = [];
+  Country _selectedCountry = Country.init();
+  //end country
+
   /*data base */
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   /* date */
@@ -182,6 +220,176 @@ class _AddPostPageState extends State<AddPostPage> {
               SizedBox(
                 height: 20,
               ),
+
+                /*country */
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  /*left*/
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        /*icon*/
+                        CircleAvatar(
+                          radius: 13,
+                          backgroundColor: Palette.grey,
+                          child:Text("C",
+                              style:TextStyle(
+                                color:Palette.backgroundColor,
+                                 fontWeight:FontWeight.bold  ,
+                              )
+                          )
+                        ),
+                        /*end of icon */
+
+                        /*divider*/
+                        Container(
+                          color: Colors.grey,
+                          width: 3,
+                          height: 95,
+
+                        )
+                        /*end of divider */
+
+                      ],
+                    ),
+                  ),
+                  /*end left */
+
+                  /*right*/
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+
+                      /*counrty text*/
+                     Text('Counrty',
+                       style: TextStyle(
+                           fontSize: 20,
+                           fontWeight: FontWeight.w500
+                       )
+                     ),
+                      /*end of county text*/
+
+                      SizedBox(height: 16),
+
+                      /*county*/
+                      Container(
+                        width: 150,
+                        child: Column(
+                            children: [
+                              SearchField(
+                                focusNode: focus,
+                                suggestions: countries
+                                    .map((country) =>
+                                    SearchFieldListItem(country.name, item: country))
+                                    .toList(),
+                                suggestionState: Suggestion.expand,
+                                controller: _searchController,
+                                hint: 'Search by country name',
+                                maxSuggestionsInViewPort: 4,
+                                itemHeight: 45,
+                                inputType: TextInputType.text,
+                                onSuggestionTap: (SearchFieldListItem<Country> x) {
+                                  setState(() {
+                                    _selectedCountry = x.item!;
+                                  });
+                                  focus.unfocus();
+                                },
+                              ),
+
+                            ],
+                          ),
+                      ),
+                      /*end of county */
+
+
+                    ],
+                  )
+                  /*end right*/
+
+                ],
+              ),
+              /*end of county*/
+
+
+
+              /*rating */
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  /*left*/
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                    child: Column(
+                      children: [
+                        /*icon*/
+                        CircleAvatar(
+                          radius: 13,
+                          backgroundColor: Palette.grey,
+                          child: Icon(
+                            Icons.location_on_sharp,
+                            color: Palette.backgroundColor,
+                            size: 20,
+                          ),
+                        ),
+                        /*end of icon */
+
+                        /*divider*/
+                        Container(
+                          color: Colors.grey,
+                          width: 3,
+                          height: 74,
+
+                        )
+                        /*end of divider */
+
+                      ],
+                    ),
+                  ),
+                  /*end left */
+
+                  /*right*/
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      /* Location title*/
+                     Text("Location",
+                         style:TextStyle(
+                             fontSize: 20,
+                             fontWeight: FontWeight.w500,
+                         ),
+                     ),
+                      /*end of Location text*/
+
+                      SizedBox(height: 16),
+
+                      /*Location */
+                      Container(
+                        child: ElevatedButton(
+                            onPressed: _handlePressButton,
+                            child: const Text("Choose place")
+                        ),
+                      )
+                      /*end of Location */
+
+
+                    ],
+                  )
+                  /*end right*/
+
+                ],
+              ),
+              /*end of Location*/
+
+
+
+
+
 
               /*rating */
               Row(
@@ -2766,6 +2974,21 @@ class _AddPostPageState extends State<AddPostPage> {
 
   /*functions*/
 
+  /*for Location*/
+  Future<void> _handlePressButton() async {
+    Prediction? p = await PlacesAutocomplete.show(
+        context: context,
+        apiKey: kGoogleApiKey,
+        mode: _mode,
+        language: 'en',
+        strictbounds: false,
+        types: [""],
+        components: [_selectedCountry.code.isEmpty?Component(Component.country,"usa"):Component(Component.country,_selectedCountry.code)]
+    );
+  }
+  /*End Location*/
+
+
   /*for date*/
   Widget buildDatePicker() => SizedBox(
     height: 180,
@@ -3329,6 +3552,7 @@ class _AddPostPageState extends State<AddPostPage> {
       _image15 = im;
     });
 
+
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
@@ -3356,3 +3580,46 @@ class _AddPostPageState extends State<AddPostPage> {
   }
 /* end of image15*/
 }
+//country
+
+class CountryDetail extends StatefulWidget {
+  final Country? country;
+
+  CountryDetail({Key? key, required this.country}) : super(key: key);
+  @override
+  _CountryDetailState createState() => _CountryDetailState();
+}
+
+class _CountryDetailState extends State<CountryDetail> {
+  Widget dataWidget(String key, int value) {
+    return Container(
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery
+              .of(context)
+              .size
+              .width * 0.15),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text('$key:'),
+          SizedBox(
+            width: 16,
+          ),
+          Flexible(
+            child: Text(
+              '$value',
+              style: TextStyle(fontSize: 30),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text("");
+  }
+}
+//end of country
