@@ -2985,6 +2985,10 @@ class _AddPostPageState extends State<AddPostPage> {
         types: [""],
         components: [_selectedCountry.code.isEmpty?Component(Component.country,"usa"):Component(Component.country,_selectedCountry.code)]
     );
+    // print(p?.placeId);
+    // print(p?.description);
+    // print(p?.types);
+    // print("NOOO");
   }
   /*End Location*/
 
