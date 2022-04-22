@@ -197,16 +197,52 @@ class _settingsState extends State<settings> {
                                 fontSize: 18),
                           ),
                           onPressed: () async {
-                            //delete user
-                            current!.delete();
-                            await FirebaseAuth.instance.signOut();
-                            //delete user info in the database
-                            var delete = await FirebaseFirestore.instance
-                                .collection('users')
-                                .doc(uid)
-                                .delete();
-                            //go to sign up log in page
-                            await Navigator.pushNamed(context, '/');
+                            bool step1 = true ;
+                            bool step2 = false ;
+                            bool step3 = false ;
+                            bool step4 = false ;
+                            while(true){
+
+                              if(step1){
+                                //delete user info in the database
+                                  var delete = await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(uid)
+                                      .delete();
+                                  step1 = false;
+                                  step2 = true;
+                              }
+
+                              if(step2){
+                                //delete user
+                                current!.delete();
+                                step2 = false ;
+                                step3 = true;
+                              }
+
+                              if(step3){
+                                await FirebaseAuth.instance.signOut();
+                                step3 = false;
+                                step4 = true ;
+
+                              }
+
+                              if(step4){
+                                //go to sign up log in page
+                                await Navigator.pushNamed(context, '/');
+                                step4 = false ;
+                              }
+
+                              if(!step1 && !step2 && !step3 && !step4 ) {
+                                break;
+                              }
+
+                            }
+
+
+
+
+
                           },
                         )
                       ]).show();
