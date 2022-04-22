@@ -44,6 +44,9 @@ class _AddPostPageState extends State<AddPostPage> {
     _searchController.dispose();
     focus.dispose();
     super.dispose();
+    //for disable button
+    titleControl.dispose();
+
   }
 
   final _searchController = TextEditingController();
@@ -52,6 +55,157 @@ class _AddPostPageState extends State<AddPostPage> {
   void initState() {
     super.initState();
     countries = data.map((e) => Country.fromMap(e)).toList();
+    //for disable done button
+    //title
+    titleControl = TextEditingController();
+    titleControl.addListener(() {
+      final isActiveTitle = titleControl.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[2]=isActiveTitle ;
+      });
+    });
+    //end of title
+    //body1
+    body1Control = TextEditingController();
+    body1Control.addListener(() {
+      final isActiveBody1 = body1Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[3]=isActiveBody1 ;
+      });
+    });
+    //end of body1
+
+    //body2
+    body2Control = TextEditingController();
+    body2Control.addListener(() {
+      final isActiveBody2 = body2Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[4]=isActiveBody2 ;
+      });
+    });
+    //end of body2
+
+    //body3
+    body3Control = TextEditingController();
+    body3Control.addListener(() {
+      final isActiveBody3 = body3Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[5]=isActiveBody3 ;
+      });
+    });
+    //end of body3
+
+    //body4
+    body4Control = TextEditingController();
+    body4Control.addListener(() {
+      final isActiveBody4 = body4Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[6]=isActiveBody4 ;
+      });
+    });
+    //end of body4
+
+    //body5
+    body5Control = TextEditingController();
+    body5Control.addListener(() {
+      final isActiveBody5 = body5Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[7]=isActiveBody5 ;
+      });
+    });
+    //end of body5
+
+    //body6
+    body6Control = TextEditingController();
+    body6Control.addListener(() {
+      final isActiveBody6 = body6Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[8]=isActiveBody6 ;
+      });
+    });
+    //end of body6
+
+    //body7
+    body7Control = TextEditingController();
+    body7Control.addListener(() {
+      final isActiveBody7 = body7Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[9]=isActiveBody7 ;
+      });
+    });
+    //end of body7
+
+    //body8
+    body8Control = TextEditingController();
+    body8Control.addListener(() {
+      final isActiveBody8 = body8Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[10]=isActiveBody8 ;
+      });
+    });
+    //end of body8
+
+    //body9
+    body9Control = TextEditingController();
+    body9Control.addListener(() {
+      final isActiveBody9 = body9Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[11]=isActiveBody9 ;
+      });
+    });
+    //end of body9
+
+    //body10
+    body10Control = TextEditingController();
+    body10Control.addListener(() {
+      final isActiveBody10 = body10Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[12]=isActiveBody10 ;
+      });
+    });
+    //end of body10
+
+    //body11
+    body11Control = TextEditingController();
+    body11Control.addListener(() {
+      final isActiveBody11 = body11Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[13]=isActiveBody11 ;
+      });
+    });
+    //end of body11
+
+    //body12
+    body12Control = TextEditingController();
+    body12Control.addListener(() {
+      final isActiveBody12 = body12Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[14]=isActiveBody12 ;
+      });
+    });
+    //end of body12
+
+    //body13
+    body13Control = TextEditingController();
+    body13Control.addListener(() {
+      final isActiveBody13 = body13Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[15]=isActiveBody13 ;
+      });
+    });
+    //end of body13
+
+    //body14
+    body14Control = TextEditingController();
+    body14Control.addListener(() {
+      final isActiveBody14 = body14Control.text.isNotEmpty ;
+      setState(() {
+        this.isButtonActive[16]=isActiveBody14 ;
+      });
+    });
+    //end of body14
+
+
   }
 
   final focus = FocusNode();
@@ -69,7 +223,7 @@ class _AddPostPageState extends State<AddPostPage> {
   /* visit */
   String visit = "";
   /* button active*/
-  List<bool> isButtonActive = [true, false, true,true, true, true,true, true, true,true, true, true,true, true,  true,true, true];
+  List<bool> isButtonActive = [true, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false];
   // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,
 
   /* images */
@@ -143,6 +297,25 @@ class _AddPostPageState extends State<AddPostPage> {
   double devHight13 = 145;
   double devHight14 = 145;
   double devHight15 = 145;
+
+  //for disable for done button
+  late TextEditingController titleControl ;
+  late TextEditingController body1Control ;
+  late TextEditingController body2Control ;
+  late TextEditingController body3Control ;
+  late TextEditingController body4Control ;
+  late TextEditingController body5Control ;
+  late TextEditingController body6Control ;
+  late TextEditingController body7Control ;
+  late TextEditingController body8Control ;
+  late TextEditingController body9Control ;
+  late TextEditingController body10Control ;
+  late TextEditingController body11Control ;
+  late TextEditingController body12Control ;
+  late TextEditingController body13Control ;
+  late TextEditingController body14Control ;
+
+
 
   @override
   Widget build(BuildContext context) =>
@@ -669,6 +842,9 @@ class _AddPostPageState extends State<AddPostPage> {
                           Container(
                             width: 235,
                             child: TextFormField(
+                              //for disable for the done button
+                              controller: titleControl,
+
                               decoration: const InputDecoration(
                                 /*background color*/
                                 fillColor: Palette.lightgrey,
@@ -808,6 +984,8 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body1Control ,
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -947,6 +1125,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body2Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -1086,6 +1267,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body3Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in testified
@@ -1225,6 +1409,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body4Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -1364,6 +1551,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body5Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -1503,6 +1693,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body6Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -1642,6 +1835,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body7Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -1781,6 +1977,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body8Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -1920,6 +2119,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body9Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -2059,6 +2261,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body10Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -2198,6 +2403,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body11Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -2337,6 +2545,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body12Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -2476,6 +2687,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body13Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -2608,13 +2822,16 @@ class _AddPostPageState extends State<AddPostPage> {
                         ),
 
 
-                        /* body 1 */
+                        /* body 14 */
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(
                               width: 235,
                               child: TextFormField(
+                                //for disable button
+                                controller: body14Control,
+
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -2874,22 +3091,24 @@ class _AddPostPageState extends State<AddPostPage> {
 
                       /*add page button*/
                       TextButton(
+                        // List<bool> isButtonActive = [true, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false];
+                        // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,
                         onPressed:
                         (counter ==0 && isButtonActive[2])
                             ||(counter ==1 && isButtonActive[3])
-                            ||(counter ==2 && isButtonActive[4])
-                            ||(counter ==3 && isButtonActive[5])
-                            ||(counter ==4 && isButtonActive[6])
-                            ||(counter ==5 && isButtonActive[7])
-                            ||(counter ==6 && isButtonActive[8])
-                            ||(counter ==7 && isButtonActive[9])
-                            ||(counter ==8 && isButtonActive[10])
-                            ||(counter ==9 && isButtonActive[11])
-                            ||(counter ==10 && isButtonActive[12])
-                            ||(counter ==11 && isButtonActive[13])
-                            ||(counter ==12 && isButtonActive[14])
-                            ||(counter ==13 && isButtonActive[15])
-                            ||(counter ==14 && isButtonActive[16])
+                            ||(counter ==2 && (isButtonActive[4] || path2 != 'no'))
+                            ||(counter ==3 && (isButtonActive[5] || path3 != 'no'))
+                            ||(counter ==4 && (isButtonActive[6] || path4 != 'no'))
+                            ||(counter ==5 && (isButtonActive[7] || path5 != 'no'))
+                            ||(counter ==6 && (isButtonActive[8] || path6 != 'no'))
+                            ||(counter ==7 && (isButtonActive[9] || path7 != 'no'))
+                            ||(counter ==8 && (isButtonActive[10] || path8 != 'no'))
+                            ||(counter ==9 && (isButtonActive[11] || path9 != 'no'))
+                            ||(counter ==10 && (isButtonActive[12] || path10 != 'no'))
+                            ||(counter ==11 && (isButtonActive[13] || path11 != 'no'))
+                            ||(counter ==12 && (isButtonActive[14] || path12 != 'no'))
+                            ||(counter ==13 && (isButtonActive[15] || path13 != 'no'))
+                            ||(counter ==14 && (isButtonActive[16] || path14 != 'no'))
                             ?
                             (){
                           setState(() {
@@ -2905,7 +3124,24 @@ class _AddPostPageState extends State<AddPostPage> {
                         Text(
                           counter == 0?"Add Your First Page":"Add Another Page",
                           style: TextStyle(
-                              color: Palette.link,
+                              color:
+                              (counter ==0 && isButtonActive[2])
+                                  ||(counter ==1 && isButtonActive[3])
+                                  ||(counter ==2 && (isButtonActive[4] || path2 != 'no'))
+                                  ||(counter ==3 && (isButtonActive[5] || path3 != 'no'))
+                                  ||(counter ==4 && (isButtonActive[6] || path4 != 'no'))
+                                  ||(counter ==5 && (isButtonActive[7] || path5 != 'no'))
+                                  ||(counter ==6 && (isButtonActive[8] || path6 != 'no'))
+                                  ||(counter ==7 && (isButtonActive[9] || path7 != 'no'))
+                                  ||(counter ==8 && (isButtonActive[10] || path8 != 'no'))
+                                  ||(counter ==9 && (isButtonActive[11] || path9 != 'no'))
+                                  ||(counter ==10 && (isButtonActive[12] || path10 != 'no'))
+                                  ||(counter ==11 && (isButtonActive[13] || path11 != 'no'))
+                                  ||(counter ==12 && (isButtonActive[14] || path12 != 'no'))
+                                  ||(counter ==13 && (isButtonActive[15] || path13 != 'no'))
+                                  ||(counter ==14 && (isButtonActive[16] || path14 != 'no'))
+                                  ?
+                              Palette.link: Palette.darkGray,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
@@ -2931,7 +3167,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 /* button colors */
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  gradient: isButtonActive[0] && isButtonActive[1]
+                  gradient:   isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] &&  isButtonActive[4]
                       ? LinearGradient(colors: [
                     Palette.buttonColor,
                     Palette.nameColor,
@@ -2947,9 +3183,13 @@ class _AddPostPageState extends State<AddPostPage> {
                   minWidth: 350,
                   child: FlatButton(
                     onPressed:
-                    isButtonActive[0] && isButtonActive[1] ? () {
-
-                      Navigator.pushNamed(context, '/navigationBar');
+                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] &&  isButtonActive[4]? () {
+                      setState(() {
+                        for(int i=0 ; i < isButtonActive.length ; i++)
+                        isButtonActive[i] = false;
+                        titleControl.clear();
+                      });
+                        Navigator.pushNamed(context, '/navigationBar');
                     } : null,
                     child: Text(
                       'Done',
