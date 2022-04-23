@@ -37,8 +37,11 @@ dependencies:
   google_maps_flutter: ^2.1.1
   geolocator: ^8.0.1
   modal_bottom_sheet: ^2.0.1
- #country
+  #country
   searchfield: ^0.6.4
+  #Serch places
+  google_place: ^0.4.7
+  flutter_dotenv: ^5.0.2
 
 
 

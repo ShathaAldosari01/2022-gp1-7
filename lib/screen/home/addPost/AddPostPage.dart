@@ -54,8 +54,6 @@ class _AddPostPageState extends State<AddPostPage> {
   @override
   void initState() {
     super.initState();
-    print(_selectedCountry.code.toString());
-    print("noo");
     countries = data.map((e) => Country.fromMap(e)).toList();
     //for disable done button
     //title
@@ -3281,9 +3279,9 @@ class _AddPostPageState extends State<AddPostPage> {
         components: [_selectedCountry.code.isEmpty?Component(Component.country,"SA"):Component(Component.country,_selectedCountry.code)]
     );
      //(p?.placeId.);
-      print(p?.description);
-     print(p?.types);
-    print("NOOO");
+    //   print(p?.description);
+    //  print(p?.types);
+    // print("NOOO");
   }
   /*End Location*/
 
