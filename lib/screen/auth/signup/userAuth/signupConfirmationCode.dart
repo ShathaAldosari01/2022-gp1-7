@@ -68,7 +68,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
     }
   }
 
-  Future sendVerificationEmail() async{
+  Future sendVerificationEmail() async {
     try {
       /*send verify email*/
       final user = FirebaseAuth.instance.currentUser!;
@@ -86,49 +86,50 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
       );
       /*resend okay*/
       setState(() {
-        canResendEmail= true;
+        canResendEmail = true;
       });
-
-
-    }catch(e) {
+    } catch (e) {
       //error msg
-
-      Alert(
-          context: context,
-          title: "Something went wrong!",
-          desc: e.toString(),
-          buttons: [
-            DialogButton(
-              child: const Text(
-                "Cancel",
-                style: TextStyle(
-                    color: Palette.backgroundColor
+      if (e.toString().contains("blocked")) {
+        print("block");
+      }
+      else {
+        Alert(
+            context: context,
+            title: "Something went wrong!",
+            desc: e.toString(),
+            buttons: [
+              DialogButton(
+                child: const Text(
+                  "Cancel",
+                  style: TextStyle(
+                      color: Palette.backgroundColor
+                  ),
+                ),
+                onPressed: () {
+                  /*go to sign up page*/
+                  Navigator.pushNamed(context, '/signup');
+                },
+                gradient: canResendEmail
+                    ? const LinearGradient(
+                    colors: [
+                      Palette.buttonColor,
+                      Palette.nameColor,
+                    ]
+                )
+                    : const LinearGradient(
+                    colors: [
+                      Palette.buttonDisableColor,
+                      Palette.nameDisablColor,
+                    ]
                 ),
               ),
-              onPressed: () {
-                /*go to sign up page*/
-                Navigator.pushNamed(context, '/signup');
-              },
-              gradient: canResendEmail
-                  ? const LinearGradient(
-                  colors: [
-                    Palette.buttonColor,
-                    Palette.nameColor,
-                  ]
-              )
-                  : const LinearGradient(
-                  colors: [
-                    Palette.buttonDisableColor,
-                    Palette.nameDisablColor,
-                  ]
-              ),
-            ),
-          ]
-      ).show();
-
-      print(e);
+            ]
+        ).show();
+      }
+        print(e);
+      }
     }
-  }
 
   @override
   Widget build(BuildContext context) => isEmailVerified

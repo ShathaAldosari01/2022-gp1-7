@@ -276,7 +276,7 @@ class _AddPostPageState extends State<AddPostPage> {
   Uint8List? _image15;
 
   /* visibility */
-  List<bool> vis = [false, false,false,false,false,false,false,false,false,false,false,false,false,false, false];
+  List<bool> vis = [true, false,false,false,false,false,false,false,false,false,false,false,false,false, false];
   int  counter = 0;// cont the pages
   int maxImgs = 15;
 
@@ -3094,8 +3094,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         // List<bool> isButtonActive = [true, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false];
                         // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,
                         onPressed:
-                        (counter ==0 && isButtonActive[2])
-                            ||(counter ==1 && isButtonActive[3])
+                        (counter ==0 && isButtonActive[2] && isButtonActive[3])
                             ||(counter ==2 && (isButtonActive[4] || path2 != 'no'))
                             ||(counter ==3 && (isButtonActive[5] || path3 != 'no'))
                             ||(counter ==4 && (isButtonActive[6] || path4 != 'no'))
@@ -3112,6 +3111,9 @@ class _AddPostPageState extends State<AddPostPage> {
                             ?
                             (){
                           setState(() {
+                            if(counter==0){
+                              counter++;
+                            }
                             vis[counter]=true;
                             counter++;
                           });
@@ -3122,11 +3124,10 @@ class _AddPostPageState extends State<AddPostPage> {
                         child:
 
                         Text(
-                          counter == 0?"Add Your First Page":"Add Another Page",
+                          "Add Another Page",
                           style: TextStyle(
                               color:
-                              (counter ==0 && isButtonActive[2])
-                                  ||(counter ==1 && isButtonActive[3])
+                              (counter ==0 && isButtonActive[2] && isButtonActive[3])
                                   ||(counter ==2 && (isButtonActive[4] || path2 != 'no'))
                                   ||(counter ==3 && (isButtonActive[5] || path3 != 'no'))
                                   ||(counter ==4 && (isButtonActive[6] || path4 != 'no'))
