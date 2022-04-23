@@ -54,6 +54,8 @@ class _AddPostPageState extends State<AddPostPage> {
   @override
   void initState() {
     super.initState();
+    print(_selectedCountry.code.toString());
+    print("noo");
     countries = data.map((e) => Country.fromMap(e)).toList();
     //for disable done button
     //title
@@ -450,7 +452,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                       /*county*/
                       Container(
-                        width: 150,
+                        width: 235,
                         child: Column(
                             children: [
                               SearchField(
@@ -471,6 +473,28 @@ class _AddPostPageState extends State<AddPostPage> {
                                   });
                                   focus.unfocus();
                                 },
+                                searchInputDecoration:  const InputDecoration(
+                                  /*background color*/
+                                  fillColor: Palette.lightgrey,
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                  filled: true,
+                                  border: OutlineInputBorder(),
+                                  hintText: "Search by country name",
+                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                  /*Border*/
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                    ),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                      width: 2.0,
+                                    ),
+                                  ),
+                                ),
                               ),
 
                             ],
@@ -489,7 +513,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
 
 
-              /*rating */
+              /*Location */
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -515,8 +539,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         Container(
                           color: Colors.grey,
                           width: 3,
-                          height: 74,
-
+                          height: 90,
                         )
                         /*end of divider */
 
@@ -542,15 +565,46 @@ class _AddPostPageState extends State<AddPostPage> {
                       SizedBox(height: 16),
 
                       /*Location */
+                      /* next button */
                       Container(
-                        child: ElevatedButton(
-                            onPressed: _handlePressButton,
-                            child: const Text("Choose place")
+                        width:150,
+                        alignment: Alignment.center,
+                        height: 50.0,
+                        /* button colors */
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          gradient:  _selectedCountry.code.toString().isNotEmpty
+                              ? LinearGradient(colors: [
+                            Palette.buttonColor,
+                            Palette.nameColor,
+                          ])
+                              : LinearGradient(colors: [
+                            Palette.buttonDisableColor,
+                            Palette.nameDisablColor,
+                          ]),
                         ),
-                      )
+                        /* button */
+                        child: ButtonTheme(
+                          height: 50.0,
+                          minWidth: 350,
+                          child: FlatButton(
+                            onPressed:
+                            _selectedCountry.code.toString().isNotEmpty
+                                ? _handlePressButton
+                                :null,
+                            child: Text(
+                              'Choose Place',
+                              style: TextStyle(
+                                color: Palette.backgroundColor,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      /* end of location button  */
                       /*end of Location */
-
-
                     ],
                   )
                   /*end right*/
@@ -3224,12 +3278,12 @@ class _AddPostPageState extends State<AddPostPage> {
         language: 'en',
         strictbounds: false,
         types: [""],
-        components: [_selectedCountry.code.isEmpty?Component(Component.country,"usa"):Component(Component.country,_selectedCountry.code)]
+        components: [_selectedCountry.code.isEmpty?Component(Component.country,"SA"):Component(Component.country,_selectedCountry.code)]
     );
-    // print(p?.placeId);
-    // print(p?.description);
-    // print(p?.types);
-    // print("NOOO");
+     //(p?.placeId.);
+      print(p?.description);
+     print(p?.types);
+    print("NOOO");
   }
   /*End Location*/
 
