@@ -8,7 +8,10 @@
  * Modified By: Mahesh Jamdade
  * -----
  * Copyright 2021 - 2021 None
- * Nourah ALfulaij Add cpde
+ * Add code name by Nourah ALfulaij
+ * reference for code name for each country.
+ * https://www.iso.org
+ * https://countrycode.org
  */
 
 class Country {
@@ -133,6 +136,7 @@ List<Map<String, Object>> data = [
     'density': 1265,
     'land Area': 130170
   },
+
   {
     'country': 'Barbados',
     'code':'BB',
@@ -140,6 +144,7 @@ List<Map<String, Object>> data = [
     'density': 668,
     'land Area': 430
   },
+
   {
     'country': 'Belarus',
     'code':'BY',
@@ -147,6 +152,7 @@ List<Map<String, Object>> data = [
     'density': 47,
     'land Area': 202910
   },
+
   {
     'country': 'Belgium',
     'code':'BE',
@@ -154,6 +160,7 @@ List<Map<String, Object>> data = [
     'density': 383,
     'land Area': 30280
   },
+
   {
     'country': 'Belize',
     'code':'BZ',
@@ -161,6 +168,7 @@ List<Map<String, Object>> data = [
     'density': 17,
     'land Area': 22810
   },
+
   {
     'country': 'Benin',
     'code':'BJ',
@@ -168,6 +176,7 @@ List<Map<String, Object>> data = [
     'density': 108,
     'land Area': 112760
   },
+
   {
     'country': 'Bhutan',
     'code':'BT',
@@ -175,6 +184,7 @@ List<Map<String, Object>> data = [
     'density': 20,
     'land Area': 38117
   },
+
   {
     'country': 'Bolivia',
     'code':'BO',
@@ -182,6 +192,7 @@ List<Map<String, Object>> data = [
     'density': 11,
     'land Area': 1083300
   },
+
   {
     'country': 'Bosnia and Herzegovina',
     'code':'BA',
@@ -189,6 +200,7 @@ List<Map<String, Object>> data = [
     'density': 64,
     'land Area': 51000
   },
+
   {
     'country': 'Botswana',
     'code':'BW',
@@ -196,6 +208,7 @@ List<Map<String, Object>> data = [
     'density': 4,
     'land Area': 566730
   },
+
   {
     'country': 'Brazil',
     'code':'BR',
@@ -203,6 +216,7 @@ List<Map<String, Object>> data = [
     'density': 25,
     'land Area': 8358140
   },
+
   {'country': 'Brunei',
     'code':'BN',
     'population': 437479,
@@ -216,6 +230,7 @@ List<Map<String, Object>> data = [
     'density': 64,
     'land Area': 108560
   },
+
   {
     'country': 'Burkina Faso',
     'code':'BF',
@@ -223,6 +238,7 @@ List<Map<String, Object>> data = [
     'density': 76,
     'land Area': 273600
   },
+
   {
     'country': 'Burundi',
     'code':'BI',
@@ -230,6 +246,7 @@ List<Map<String, Object>> data = [
     'density': 463,
     'land Area': 25680
   },
+
   {
     'country': 'Côte d\'Ivoire',
     'code':'CI',
@@ -237,6 +254,7 @@ List<Map<String, Object>> data = [
     'density': 83,
     'land Area': 318000
   },
+
   {
     'country': 'Cabo Verde',
     'code':'CV',
@@ -244,6 +262,7 @@ List<Map<String, Object>> data = [
     'density': 138,
     'land Area': 4030
   },
+
   {
     'country': 'Cambodia',
     'code':'KH',
@@ -251,6 +270,7 @@ List<Map<String, Object>> data = [
     'density': 95,
     'land Area': 176520
   },
+
   {
     'country': 'Cameroon',
     'code':'CM',
@@ -258,6 +278,7 @@ List<Map<String, Object>> data = [
     'density': 56,
     'land Area': 472710
   },
+
   {
     'country': 'Canada',
     'code':'CA',
@@ -265,6 +286,7 @@ List<Map<String, Object>> data = [
     'density': 4,
     'land Area': 9093510
   },
+
   {
     'country': 'Central African Republic',
     'code':'CF',
@@ -272,6 +294,7 @@ List<Map<String, Object>> data = [
     'density': 8,
     'land Area': 622980
   },
+
   {
     'country': 'Chad',
     'code':'TD',
@@ -279,6 +302,7 @@ List<Map<String, Object>> data = [
     'density': 13,
     'land Area': 1259200
   },
+
   {
     'country': 'Chile',
     'code':'CL',
@@ -286,6 +310,7 @@ List<Map<String, Object>> data = [
     'density': 26,
     'land Area': 743532
   },
+
   {
     'country': 'China',
     'code':'CN',
@@ -293,6 +318,7 @@ List<Map<String, Object>> data = [
     'density': 153,
     'land Area': 9388211
   },
+
   {
     'country': 'Colombia',
     'code':'CO',
@@ -300,6 +326,7 @@ List<Map<String, Object>> data = [
     'density': 46,
     'land Area': 1109500
   },
+
   {
     'country': 'Comoros',
     'code':'KM',
@@ -307,6 +334,7 @@ List<Map<String, Object>> data = [
     'density': 467,
     'land Area': 1861
   },
+
   {
     'country': 'Congo (Congo-Brazzaville)',
     'code':'CG',
@@ -314,6 +342,7 @@ List<Map<String, Object>> data = [
     'density': 16,
     'land Area': 341500
   },
+
   {
     'country': 'Costa Rica',
     'code':'CR',
@@ -321,6 +350,7 @@ List<Map<String, Object>> data = [
     'density': 100,
     'land Area': 51060
   },
+
   {
     'country': 'Croatia',
     'code':'HR',
@@ -328,6 +358,7 @@ List<Map<String, Object>> data = [
     'density': 73,
     'land Area': 55960
   },
+
   {
     'country': 'Cuba',
     'code':'CU',
@@ -335,6 +366,7 @@ List<Map<String, Object>> data = [
     'density': 106,
     'land Area': 106440
   },
+
   {
     'country': 'Cyprus',
     'code':'CY',
@@ -342,6 +374,7 @@ List<Map<String, Object>> data = [
     'density': 131,
     'land Area': 9240
   },
+
   {
     'country': 'Czechia (Czech Republic)',
     'code':'CZ',
@@ -349,6 +382,7 @@ List<Map<String, Object>> data = [
     'density': 139,
     'land Area': 77240
   },
+
   {
     'country': 'Democratic Republic of the Congo',
     'code':'CD',

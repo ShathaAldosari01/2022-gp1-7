@@ -208,6 +208,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
   }
 
+  /*attributes*/
   final focus = FocusNode();
   List<Country> countries = [];
   Country _selectedCountry = Country.init();
@@ -318,6 +319,15 @@ class _AddPostPageState extends State<AddPostPage> {
   /*title size*/
   double titleSize= 18;
 
+  //Location
+  bool isLocationEmpty = true;
+  String locationId="";
+  String locationName = "";
+  String locationAdress = "";
+  List<String> locationType = [];
+
+
+
 
 
   @override
@@ -424,7 +434,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         Container(
                           color: Colors.grey,
                           width: 3,
-                          height: 95,
+                          height: 81,
 
                         )
                         /*end of divider */
@@ -449,7 +459,7 @@ class _AddPostPageState extends State<AddPostPage> {
                      ),
                       /*end of county text*/
 
-                      SizedBox(height: 16),
+                      SizedBox(height: 12),
 
                       /*county*/
                       Container(
@@ -540,7 +550,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         Container(
                           color: Colors.grey,
                           width: 3,
-                          height: 90,
+                          height:isLocationEmpty? 77:200,
                         )
                         /*end of divider */
 
@@ -563,10 +573,84 @@ class _AddPostPageState extends State<AddPostPage> {
                      ),
                       /*end of Location text*/
 
-                      SizedBox(height: 16),
+                      !isLocationEmpty
+                          ? SizedBox(height: 12)
+                          :SizedBox(),
 
                       /*Location */
-                      /* next button */
+                      /*location info*/
+                      locationName.isNotEmpty?
+                      Container(
+                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        color: Palette.midgrey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            /*Name*/
+                            locationName.isNotEmpty?
+                            Container(
+                                child: RichText(
+                                  textAlign: TextAlign.left,
+                                  text: TextSpan(
+                                      text: "Name : ",
+                                      style: TextStyle(
+                                        color: Palette.textColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: "$locationName",
+                                            style: TextStyle(
+                                              color: Palette.textColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal ,
+                                            )
+                                        ),
+                                      ]
+                                  ),
+                                )
+                            ) :SizedBox(),
+                            /* End of Name */
+
+                            !isLocationEmpty
+                                ? SizedBox(height: 8)
+                                :SizedBox(),
+
+                            /*Address*/
+                            locationAdress.isNotEmpty?
+                            Container(
+                                width: 260,
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: "Address : ",
+                                      style: TextStyle(
+                                        color: Palette.textColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                      ),
+                                      children: <TextSpan>[
+                                        TextSpan(
+                                            text: "$locationAdress",
+                                            style: TextStyle(
+                                              color: Palette.textColor,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.normal ,
+                                            )
+                                        ),
+                                      ]
+                                  ),
+                                )
+                            ) :SizedBox(),
+                            /* End of Address */
+                          ],
+                        ),
+                      ):SizedBox(),
+
+
+                      SizedBox(height: 12),
+
+                      /* Location button */
                       Container(
                         width:150,
                         alignment: Alignment.center,
@@ -594,7 +678,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                 ? _handlePressButton
                                 :null,
                             child: Text(
-                              'Choose Place',
+                              isLocationEmpty
+                                  ?'Choose Place'
+                              :'Change Place',
                               style: TextStyle(
                                 color: Palette.backgroundColor,
                                 fontWeight: FontWeight.bold,
@@ -605,6 +691,11 @@ class _AddPostPageState extends State<AddPostPage> {
                         ),
                       ),
                       /* end of location button  */
+
+
+                      SizedBox(height: 20),
+
+
                       /*end of Location */
                     ],
                   )
@@ -3272,6 +3363,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
   /*for Location*/
   Future<void> _handlePressButton() async {
+    //Search places box
     Prediction? place = await PlacesAutocomplete.show(
         context: context,
         apiKey: kGoogleApiKey,
@@ -3281,11 +3373,18 @@ class _AddPostPageState extends State<AddPostPage> {
         types: [""],
         components: [_selectedCountry.code.isEmpty?Component(Component.country,"SA"):Component(Component.country,_selectedCountry.code)]
     );
-     //(place?.placeId.);
-    //   print(place?.description);
-    //  print(place?.types);
-    // print("NOOO");
+    //End Search places box
+
+    //save place information
+    if(place!=null)
+     setState(() {
+       isLocationEmpty = false;
+       locationAdress = place?.description??"";
+       locationName = locationAdress.substring(0,place?.description?.indexOf(','))??"";
+     });
+     print(locationName);
   }
+
   /*End Location*/
 
 

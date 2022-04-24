@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/genderQuestion.dart';
@@ -12,28 +11,22 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editBio.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editName.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editUsername.dart';
-import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
 import 'package:firebase_core/firebase_core.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup_login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 import 'package:gp1_7_2022/screen/auth/Login/login.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupConfirmationCode.dart';
-import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupPassword.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
-import 'package:gp1_7_2022/screen/auth/Login/forget_password.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
 import 'package:gp1_7_2022/screen/home/addPost/ContentOfPost.dart';
-import 'package:gp1_7_2022/screen/home/addPost/Location/location.dart';
 import 'package:gp1_7_2022/screen/home/addPost/AddPostPage.dart';
-import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
 import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
 
-import 'screen/home/addPost/Location/country_search.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -88,9 +81,7 @@ void main() async {
 
     /*add post*/
     '/addPost':(context)=>AddPostPage(),
-    '/location':(context)=>Location(),
     '/ContentOfPost':(context)=>ContentOfPost(),
-    '/countrySearch':(context)=>CountrySearch(title: "Country",),
 
 
   }));
