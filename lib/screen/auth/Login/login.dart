@@ -71,6 +71,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       home: Scaffold(
         backgroundColor: Palette.backgroundColor,

@@ -38,7 +38,10 @@ import 'screen/home/addPost/Location/country_search.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MaterialApp(initialRoute: "/", routes: {
+  runApp(MaterialApp(
+    /*remove degage*/
+      debugShowCheckedModeBanner: false,
+      initialRoute: "/", routes: {
     "/": (context) => MainPage(),
 
     /*Signup_Login*/

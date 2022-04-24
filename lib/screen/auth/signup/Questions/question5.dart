@@ -119,7 +119,7 @@ class _question5State extends State<question5> {
           /*back arrow */
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Palette.textColor),
-            onPressed: () => Navigator.pushNamed(context, '/question4'),
+            onPressed: () => Navigator.pop(context),
           ),
         ),
         body: Column(

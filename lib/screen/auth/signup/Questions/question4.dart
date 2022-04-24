@@ -187,11 +187,6 @@ class _question4State extends State<question4> {
                             }
                           });
 
-                          /*deactivate the button*/
-                          setState(() {
-                            isButtonActive = false;
-                          });
-
                           /*go to question 5 page*/
                           Navigator.pushNamed(context, '/question5');
                         }

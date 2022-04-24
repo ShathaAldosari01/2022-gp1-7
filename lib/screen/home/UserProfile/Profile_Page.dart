@@ -161,14 +161,56 @@ class _Profile_pageState extends State<Profile_page> {
 
             //list
             menuItems: [
+              /*Log out*/
               FocusedMenuItem(
                   title: const Text("Log out"),
                   trailingIcon: const Icon(Icons.logout),
                   onPressed: () {
-                    /*go to sign up page*/
-                    Navigator.pushNamed(context, '/');
-                    return FirebaseAuth.instance.signOut();
+                    /*conform msg*/
+                    Alert(
+                        context: context,
+                        /*text*/
+                        title: "Are you want to log out",
+                        buttons: [
+                          /*cancel button*/
+                          DialogButton(
+                            color: Palette.darkGray,
+                            child: Text(
+                              "Cancel",
+                              style: TextStyle(
+                                  color: Palette.backgroundColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          /*end of cancel button*/
+
+                          /*Log out*/
+                          DialogButton(
+                            color: Palette.red,
+                            child: const Text(
+                              "Log out",
+                              style: TextStyle(
+                                  color: Palette.backgroundColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18),
+                            ),
+                            onPressed: ()  async {
+                              /*go to sign up page*/
+                              Navigator.pushNamed(context, '/');
+                              return FirebaseAuth.instance.signOut();
+                            },
+                          )
+                          /*log out*/
+                        ]).show();
+                    /*end of conform msg*/
                   }),
+              /*end of Log out*/
+
+              /*Settings*/
               FocusedMenuItem(
                 title: const Text("Settings"),
                 trailingIcon: const Icon(Icons.settings),
@@ -176,6 +218,9 @@ class _Profile_pageState extends State<Profile_page> {
                   Navigator.of(context).popAndPushNamed('/settings');
                 },
               ),
+              /*end of Settings*/
+
+              /*Edit Profile*/
               FocusedMenuItem(
                 title: const Text("Edit Profile"),
                 trailingIcon: const Icon(Icons.edit),
@@ -183,6 +228,7 @@ class _Profile_pageState extends State<Profile_page> {
                   Navigator.of(context).popAndPushNamed('/editProfile');
                 },
               ),
+              /*end of Edit Profile*/
             ],
 
             openWithTap: true,
@@ -202,7 +248,6 @@ class _Profile_pageState extends State<Profile_page> {
       body: ListView(
         children: [
           Container(
-            margin: const EdgeInsets.all(16),
             alignment: Alignment.center,
             child: Column(
               children: [
@@ -237,8 +282,8 @@ class _Profile_pageState extends State<Profile_page> {
                   alignment: Alignment.center,
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: _isloaded
-                      ? Text(
-                          userData['name'],
+                      ? Text("@"+
+                          userData['username'],
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,

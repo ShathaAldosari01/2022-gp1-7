@@ -315,6 +315,9 @@ class _AddPostPageState extends State<AddPostPage> {
   late TextEditingController body13Control ;
   late TextEditingController body14Control ;
 
+  /*title size*/
+  double titleSize= 18;
+
 
 
   @override
@@ -437,10 +440,10 @@ class _AddPostPageState extends State<AddPostPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
 
-                      /*counrty text*/
-                     Text('Counrty',
+                      /*county text*/
+                     Text('County',
                        style: TextStyle(
-                           fontSize: 20,
+                           fontSize: titleSize,
                            fontWeight: FontWeight.w500
                        )
                      ),
@@ -554,7 +557,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       /* Location title*/
                      Text("Location",
                          style:TextStyle(
-                             fontSize: 20,
+                             fontSize: titleSize,
                              fontWeight: FontWeight.w500,
                          ),
                      ),
@@ -666,7 +669,7 @@ class _AddPostPageState extends State<AddPostPage> {
                               color: Palette.textColor,
                               fontWeight:
                               FontWeight.w500,
-                              fontSize: 20,
+                              fontSize: titleSize,
                             ),
                             children: <TextSpan>[
                               TextSpan(
@@ -682,7 +685,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           : Text(
                         'Rate your visit',
                         style: TextStyle(
-                            fontSize: 20,
+                            fontSize: titleSize,
                             fontWeight: FontWeight.w500
                         ),
                       ),
@@ -742,7 +745,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         Container(
                           color: Colors.grey,
                           width: 3,
-                          height: 90,
+                          height: 95,
 
                         )
                         /*end of divider */
@@ -764,7 +767,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             style: TextStyle(
                               color: Palette.textColor,
                               fontWeight: FontWeight.w500,
-                              fontSize: 20,
+                              fontSize: titleSize,
                             ),
                             children: <TextSpan>[
                             ]),
@@ -878,7 +881,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         style: TextStyle(
                           color: Palette.textColor,
                           fontWeight: FontWeight.w500,
-                          fontSize: 20,
+                          fontSize: titleSize,
                         ),
                       ),
                       /* end of title */
@@ -1019,7 +1022,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -1160,7 +1163,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -1302,7 +1305,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -1444,7 +1447,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -1586,7 +1589,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -1728,7 +1731,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -1870,7 +1873,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2012,7 +2015,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2154,7 +2157,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2296,7 +2299,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2438,7 +2441,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2580,7 +2583,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2722,7 +2725,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2864,7 +2867,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -2998,7 +3001,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                             color: Palette.textColor,
                             fontWeight: FontWeight.w500,
-                            fontSize: 20,
+                            fontSize: titleSize,
                           ),
                         ),
                         /* end of page title */
@@ -3220,7 +3223,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 /* button colors */
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  gradient:   isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] &&  isButtonActive[4]
+                  gradient:   isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3]
                       ? LinearGradient(colors: [
                     Palette.buttonColor,
                     Palette.nameColor,
@@ -3236,7 +3239,7 @@ class _AddPostPageState extends State<AddPostPage> {
                   minWidth: 350,
                   child: FlatButton(
                     onPressed:
-                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] &&  isButtonActive[4]? () {
+                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] ? () {
                       setState(() {
                         for(int i=0 ; i < isButtonActive.length ; i++)
                         isButtonActive[i] = false;
@@ -3269,7 +3272,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
   /*for Location*/
   Future<void> _handlePressButton() async {
-    Prediction? p = await PlacesAutocomplete.show(
+    Prediction? place = await PlacesAutocomplete.show(
         context: context,
         apiKey: kGoogleApiKey,
         mode: _mode,
@@ -3278,9 +3281,9 @@ class _AddPostPageState extends State<AddPostPage> {
         types: [""],
         components: [_selectedCountry.code.isEmpty?Component(Component.country,"SA"):Component(Component.country,_selectedCountry.code)]
     );
-     //(p?.placeId.);
-    //   print(p?.description);
-    //  print(p?.types);
+     //(place?.placeId.);
+    //   print(place?.description);
+    //  print(place?.types);
     // print("NOOO");
   }
   /*End Location*/
