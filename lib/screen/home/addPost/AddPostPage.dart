@@ -330,7 +330,7 @@ class _AddPostPageState extends State<AddPostPage> {
   String locationType = "";
   List<int> numbers = [0];
   List<Color> typeTextColor = [Palette.textColor, Palette.backgroundColor];
-  List<Color> typeBackgroundColor = [Palette.midgrey, Palette.buttonColor];
+  List<Color> typeBackgroundColor = [Palette.midgrey, Palette.buttonColor, Palette.nameColor,];
   List<Color> typeBorderColor = [Palette.grey, Palette.buttonDisableColor];
 
 
@@ -785,7 +785,10 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                     // to make corner rounded
                                     decoration: BoxDecoration(
-                                      color: typeBackgroundColor[numbers[i]],
+                                        gradient: LinearGradient(colors: [
+                                          typeBackgroundColor[numbers[i]],
+                                          typeBackgroundColor[numbers[i]*2],
+                                        ]),
                                         border: Border.all(
                                           color: typeBorderColor[numbers[i]],
                                         ),
@@ -3378,7 +3381,6 @@ class _AddPostPageState extends State<AddPostPage> {
                         ),
                         /*end of divider */
 
-
                       ],
                     ),
                   ),
@@ -3485,13 +3487,23 @@ class _AddPostPageState extends State<AddPostPage> {
                   minWidth: 350,
                   child: FlatButton(
                     onPressed:
-                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] && isButtonActive[17]? () {
+                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] && isButtonActive[17]
+                        ? () {
+                      /*save post to database*/
+
+                      /*end of save post*/
+
+                      /*disable button and clear text field */
                       setState(() {
-                        for(int i=0 ; i < isButtonActive.length ; i++)
-                        isButtonActive[i] = false;
+                        for(int i=0 ; i < isButtonActive.length ; i++){
+                          isButtonActive[i] = false;
+                        }
                         titleControl.clear();
                       });
-                        Navigator.pushNamed(context, '/navigationBar');
+                      /*end of disable button and clear text field */
+
+                      /*go home */
+                      Navigator.pushNamed(context, '/navigationBar');
                     } : null,
                     child: Text(
                       'Done',

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 /*services */
-
+import 'package:gp1_7_2022/screen/services/auth.dart';
 /*pages */
 import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupConfirmationCode.dart';
 /*colors */
@@ -460,41 +460,11 @@ class _signupPasswordState extends State<signupPassword> {
     if (_formKey.currentState!.validate()) {
       /*add to database*/
       try {
-        UserCredential cred = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(
-                email: widget.email, password: password);
-        print(cred.user!.uid);
-        await _firestore.collection("users").doc(cred.user!.uid).set({
-          'email': widget.email,
-          'uid': cred.user!.uid,
-          "username": '',
-          'birthday': '',
-          'name': '',
-          'bio': '',
-          'photoPath': 'no',
-          'questions': {
-            'married': -1,
-            'children': -1,
-            'gender': -1, // 0:F, 1:M, 2:Other, -1: unknown
-            'countries': {
-              "Middle eastern": 0,
-              "Asian": 0,
-              "European": 0,
-              "American": 0,
-              "African": 0,
-            },
-            'places': {
-              "Restaurants and cafes": 0,
-              "Museums": 0,
-              "Shopping malls": 0,
-              "Parks": 0,
-              "Sports attractions": 0,
-            },
-          },
-          'followers': [],
-          'following': [],
-        });
-
+        /* signup user using our authmethodds*/
+        String res = await AuthService().signupUser(
+            email: widget.email,
+            password: _passwordController.text,
+        );
         /*go to Profile_Page page*/
         Navigator.of(context).popUntil((route) => route.isFirst);
         /*go to sign up page*/

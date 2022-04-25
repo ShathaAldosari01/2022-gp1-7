@@ -51,8 +51,8 @@ class _LoginState extends State<Login> {
       });
     });
     _passwordController.addListener(() {
-      final isPassOkay = _passwordController.text.length >= 8;
-// not active bouttem the bouton only if email not empty and pass length>=8 and pass not empty
+      final isPassOkay = _passwordController.text.length >= 6;
+// not active button the button only if email not empty and pass length>=8 and pass not empty
       setState(() {
         isPassEmpty = !isPassOkay;
         isButtonActive = (!isPassEmpty && !isEmailEmpty);
