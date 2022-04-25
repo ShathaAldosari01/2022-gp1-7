@@ -205,6 +205,13 @@ class _AddPostPageState extends State<AddPostPage> {
     });
     //end of body14
 
+    //body15
+    body15Control = TextEditingController();
+    body15Control.addListener(() {
+
+    });
+    //end of body15
+
 
   }
 
@@ -278,6 +285,10 @@ class _AddPostPageState extends State<AddPostPage> {
 
   /* visibility */
   List<bool> vis = [true, false,false,false,false,false,false,false,false,false,false,false,false,false, false];
+
+  /* For x icon visibility */
+  List<bool> visIcon = [true, false,false,false,false,false,false,false,false,false,false,false,false,false];
+
   int  counter = 0;// cont the pages
   int maxImgs = 15;
 
@@ -318,6 +329,7 @@ class _AddPostPageState extends State<AddPostPage> {
   late TextEditingController body12Control ;
   late TextEditingController body13Control ;
   late TextEditingController body14Control ;
+  late TextEditingController body15Control ;
 
   /*title size*/
   double titleSize= 18;
@@ -1201,11 +1213,36 @@ class _AddPostPageState extends State<AddPostPage> {
 
                       /*cover image*/
                       path != "no"
-                          ? Container(
-                          alignment: Alignment.centerLeft,
-                          height: 150,
-                          width:250,
-                          child: Image.network(path))
+                          ? Stack(
+                            children: [
+                              Container(
+                              alignment: Alignment.centerLeft,
+                              height: 150,
+                              width:250,
+                              child: Image.network(path)),
+
+                              //Delete image
+                              IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path = 'no';
+                                      devHight = 121;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.add_circle,
+                                    color: Palette.red,
+                                    size: 25,
+                                  )
+                              ),
+                              //end delete image
+                            ],
+                          )
                           : Text(""),
                       /*end of cover img*/
 
@@ -1351,7 +1388,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             child: Image.network(path1))
                             : Text(""),
                         /*end of cover img*/
-
                       ],
                     )
                     /*end right*/
@@ -1405,17 +1441,53 @@ class _AddPostPageState extends State<AddPostPage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          children: [
+                            /*page title */
+                                Text(
+                                "Page 2",
+                                style: TextStyle(
+                                  color: Palette.textColor,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: titleSize,
+                                ),
+                              ),
+                            /* end of page title */
 
-                        /*page title */
-                        Text(
-                          "Page 2",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[0],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[1]=false;
+                                      counter--;
+                                      counter--;
+                                      //remove the image
+                                      path2='no';
+                                      devHight2 = 145;
+                                    });
+                                    //clear the text
+                                    body2Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -1549,15 +1621,53 @@ class _AddPostPageState extends State<AddPostPage> {
                       children: [
 
                         /*page title */
-                        Text(
-                          "Page 3",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 3",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            // end of page title
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[1],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[2]=false;
+                                      counter--;
+                                      //remove the image
+                                      path3='no';
+                                      devHight3 = 145;
+                                      visIcon[0]=true;
+                                    });
+                                    //clear the text
+                                    body3Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -1690,16 +1800,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 4",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 4",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[2],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[3]=false;
+                                      counter--;
+                                      //remove the image
+                                      path4='no';
+                                      devHight4 = 145;
+                                      visIcon[1]=true;
+                                    });
+                                    //clear the text
+                                    body4Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -1832,16 +1980,53 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 5",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 5",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[3],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[4]=false;
+                                      counter--;
+                                      //remove the image
+                                      path5='no';
+                                      devHight5 = 145;
+                                      visIcon[2]=true;
+                                    });
+                                    //clear the text
+                                    body5Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
 
                         SizedBox(
                           height: 16,
@@ -1974,16 +2159,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 6",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 6",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[4],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[5]=false;
+                                      counter--;
+                                      //remove the image
+                                      path6='no';
+                                      devHight6 = 145;
+                                      visIcon[3]=true;
+                                    });
+                                    //clear the text
+                                    body6Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -2116,16 +2339,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 7",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 7",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[5],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[6]=false;
+                                      counter--;
+                                      //remove the image
+                                      path7='no';
+                                      devHight7 = 145;
+                                      visIcon[4]=true;
+                                    });
+                                    //clear the text
+                                    body7Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -2258,16 +2519,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 8",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 8",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[6],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[7]=false;
+                                      counter--;
+                                      //remove the image
+                                      path8='no';
+                                      devHight8 = 145;
+                                      visIcon[5]=true;
+                                    });
+                                    //clear the text
+                                    body8Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -2400,16 +2699,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 9",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 9",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[7],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[8]=false;
+                                      counter--;
+                                      //remove the image
+                                      path9='no';
+                                      devHight9 = 145;
+                                      visIcon[6]=true;
+                                    });
+                                    //clear the text
+                                    body9Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -2542,16 +2879,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 10",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 10",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[8],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[9]=false;
+                                      counter--;
+                                      //remove the image
+                                      path10='no';
+                                      devHight10 = 145;
+                                      visIcon[7]=true;
+                                    });
+                                    //clear the text
+                                    body10Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -2684,16 +3059,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 11",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 11",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[9],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[10]=false;
+                                      counter--;
+                                      //remove the image
+                                      path11='no';
+                                      devHight11 = 145;
+                                      visIcon[8]=true;
+                                    });
+                                    //clear the text
+                                    body11Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -2826,16 +3239,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 12",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 12",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[10],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[11]=false;
+                                      counter--;
+                                      //remove the image
+                                      path12='no';
+                                      devHight12 = 145;
+                                      visIcon[9]=true;
+                                    });
+                                    //clear the text
+                                    body12Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -2968,16 +3419,53 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 13",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 13",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[11],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[12]=false;
+                                      counter--;
+                                      //remove the image
+                                      path13='no';
+                                      devHight13 = 145;
+                                      visIcon[10]=true;
+                                    });
+                                    //clear the text
+                                    body13Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
 
                         SizedBox(
                           height: 16,
@@ -3110,16 +3598,53 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 14",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 14",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[12],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[13]=false;
+                                      counter--;
+                                      //remove the image
+                                      path14='no';
+                                      devHight14 = 145;
+                                      visIcon[11]=true;
+                                    });
+                                    //clear the text
+                                    body14Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
 
                         SizedBox(
                           height: 16,
@@ -3244,16 +3769,54 @@ class _AddPostPageState extends State<AddPostPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
 
-                        /*page title */
-                        Text(
-                          "Page 15",
-                          style: TextStyle(
-                            color: Palette.textColor,
-                            fontWeight: FontWeight.w500,
-                            fontSize: titleSize,
-                          ),
+
+                        Row(
+                          children: [
+                            /*page title */
+                            Text(
+                              "Page 15",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
+                              ),
+                            ),
+                            /* end of page title */
+
+                            SizedBox(width: 193,),
+
+                            //Delete page
+                            Visibility(
+                              visible: visIcon[13],
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a page
+                                    setState(() {
+                                      vis[14]=false;
+                                      counter--;
+                                      //remove the image
+                                      path15='no';
+                                      devHight15 = 145;
+                                      visIcon[12]=true;
+                                    });
+                                    //clear the text
+                                    body15Control.clear();
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.darkGray,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete page
+                          ],
                         ),
-                        /* end of page title */
+
 
                         SizedBox(
                           height: 16,
@@ -3267,6 +3830,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Container(
                               width: 235,
                               child: TextFormField(
+                                controller: body15Control,
                                 //for multi line
                                 minLines: 1,
                                 maxLines: 5,  // allow user to enter 10 line in textfield
@@ -3413,12 +3977,68 @@ class _AddPostPageState extends State<AddPostPage> {
                             ||(counter ==14 && (isButtonActive[16] || path14 != 'no'))
                             ?
                             (){
+
                           setState(() {
                             if(counter==0){
                               counter++;
                             }
                             vis[counter]=true;
                             counter++;
+                            if(counter==2){
+                              visIcon[0]=true;
+                            }
+                            else if (counter==3){
+                              visIcon[0]=false;
+                              visIcon[1]=true;
+                            }
+                            else if (counter==4){
+                              visIcon[1]=false;
+                              visIcon[2]=true;
+                            }
+                            else if (counter==5){
+                              visIcon[2]=false;
+                              visIcon[3]=true;
+                            }
+                            else if (counter==6){
+                              visIcon[3]=false;
+                              visIcon[4]=true;
+                            }
+                            else if (counter==7){
+                              visIcon[4]=false;
+                              visIcon[5]=true;
+                            }
+                            else if (counter==8){
+                              visIcon[5]=false;
+                              visIcon[6]=true;
+                            }
+                            else if (counter==9){
+                              visIcon[6]=false;
+                              visIcon[7]=true;
+                            }
+                            else if (counter==10){
+                              visIcon[7]=false;
+                              visIcon[8]=true;
+                            }
+                            else if (counter==11){
+                              visIcon[8]=false;
+                              visIcon[9]=true;
+                            }
+                            else if (counter==12){
+                              visIcon[9]=false;
+                              visIcon[10]=true;
+                            }
+                            else if (counter==13){
+                              visIcon[10]=false;
+                              visIcon[11]=true;
+                            }
+                            else if (counter==14){
+                              visIcon[11]=false;
+                              visIcon[12]=true;
+                            }
+                            else if (counter==15){
+                              visIcon[12]=false;
+                              visIcon[13]=true;
+                            }
                           });
                         }
                             :(){
