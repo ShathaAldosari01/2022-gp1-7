@@ -224,8 +224,8 @@ class _AddPostPageState extends State<AddPostPage> {
   /* visit */
   String visit = "";
   /* button active*/
-  List<bool> isButtonActive = [true, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false];
-  // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,
+  List<bool> isButtonActive = [false, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false,false];
+  // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,category
 
   /* images */
   String path = "no";
@@ -299,6 +299,9 @@ class _AddPostPageState extends State<AddPostPage> {
   double devHight14 = 145;
   double devHight15 = 145;
 
+  //for the type
+  double devHightType = 90;
+
   //for disable for done button
   late TextEditingController titleControl ;
   late TextEditingController body1Control ;
@@ -320,11 +323,16 @@ class _AddPostPageState extends State<AddPostPage> {
   double titleSize= 18;
 
   //Location
-  bool isLocationEmpty = true;
   String locationId="";
   String locationName = "";
   String locationAdress = "";
-  List<String> locationType = [];
+  List<String> locationTypes = [];
+  String locationType = "";
+  List<int> numbers = [0];
+  List<Color> typeTextColor = [Palette.textColor, Palette.backgroundColor];
+  List<Color> typeBackgroundColor = [Palette.midgrey, Palette.buttonColor];
+  List<Color> typeBorderColor = [Palette.grey, Palette.buttonDisableColor];
+
 
 
 
@@ -550,7 +558,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         Container(
                           color: Colors.grey,
                           width: 3,
-                          height:isLocationEmpty? 77:200,
+                          height:!isButtonActive[0]? 77:200,
                         )
                         /*end of divider */
 
@@ -573,7 +581,7 @@ class _AddPostPageState extends State<AddPostPage> {
                      ),
                       /*end of Location text*/
 
-                      !isLocationEmpty
+                      isButtonActive[0]
                           ? SizedBox(height: 12)
                           :SizedBox(),
 
@@ -613,7 +621,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ) :SizedBox(),
                             /* End of Name */
 
-                            !isLocationEmpty
+                            isButtonActive[0]
                                 ? SizedBox(height: 8)
                                 :SizedBox(),
 
@@ -678,7 +686,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                 ? _handlePressButton
                                 :null,
                             child: Text(
-                              isLocationEmpty
+                              !isButtonActive[0]
                                   ?'Choose Place'
                               :'Change Place',
                               style: TextStyle(
@@ -704,6 +712,153 @@ class _AddPostPageState extends State<AddPostPage> {
                 ],
               ),
               /*end of Location*/
+
+
+
+              /*type*/
+              Visibility(
+                visible: isButtonActive[0]&&locationName.isNotEmpty,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    /*left*/
+                    Container(
+                      margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                      child: Column(
+                        children: [
+                          /*icon*/
+                          CircleAvatar(
+                              radius: 13,
+                              backgroundColor: Palette.grey,
+                              child: Icon(
+                                Icons.all_inbox_rounded ,
+                                color:Colors.white
+                              ),
+                          ),
+                          /*end of icon */
+
+                          /*divider*/
+                          Container(
+                            color: Colors.grey,
+                            width: 3,
+                            height: devHightType,
+                          )
+                          /*end of divider */
+
+                        ],
+                      ),
+                    ),
+                    /*end left */
+
+                    /*right*/
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+
+                        /*Category title */
+                        Text(
+                          "Category ",
+                          style: TextStyle(
+                            color: Palette.textColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: titleSize,
+                          ),
+                        ),
+                        /* end of Category title */
+
+                        SizedBox(
+                          height: 16,
+                        ),
+
+
+                        /* Category */
+                        Container(
+                          width: 250,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                for ( var i =0;i< locationTypes.length; i++)
+                                  Container(
+                                    margin: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+                                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+
+                                    // to make corner rounded
+                                    decoration: BoxDecoration(
+                                      color: typeBackgroundColor[numbers[i]],
+                                        border: Border.all(
+                                          color: typeBorderColor[numbers[i]],
+                                        ),
+                                        borderRadius: BorderRadius.all(Radius.circular(20))
+                                    ),
+                                    // End of corner rounded
+
+                                    child: TextButton(
+                                      style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero,
+                                          minimumSize: Size(50, 30),
+                                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                          alignment: Alignment.center),
+                                      child: Text(
+                                        locationTypes[i],
+                                        style: TextStyle(
+                                          color: typeTextColor[numbers[i]],
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      onPressed: (){
+                                        //save type
+                                        locationType = locationTypes[i];
+                                        print(locationType);
+                                        //change style
+                                        //1A) reverse the colors
+                                        int num = numbers[i];
+
+                                        //2) remove from all
+                                        setState(() {
+                                          for(int j=0; j<numbers.length; j++){
+                                            if(numbers[j]==1){
+                                              numbers[j]=0;
+                                            }
+                                          }
+                                        });
+
+                                        //1B) reverse the colors
+                                        if(num==0)
+                                        setState(() {
+                                            numbers[i] = 1;
+                                        });
+                                        bool flag = false;
+                                         for(int j=0; j<numbers.length; j++){
+                                           if(numbers[j]==1){
+                                             flag=true;
+                                           }
+                                         }
+                                         setState(() {
+                                           isButtonActive[17]= flag;
+                                         });
+
+                                      },
+                                    ),
+                                  )
+                              ],
+                            )
+                        ),
+                        /*end of Category*/
+
+                        SizedBox(
+                          height: 16,
+                        ),
+
+
+                      ],
+                    )
+                    /*end right*/
+
+                  ],
+                ),
+              ),
+              /*end of Category*/
 
 
 
@@ -3314,7 +3469,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 /* button colors */
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  gradient:   isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3]
+                  gradient:   isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] && isButtonActive[17]
                       ? LinearGradient(colors: [
                     Palette.buttonColor,
                     Palette.nameColor,
@@ -3330,7 +3485,7 @@ class _AddPostPageState extends State<AddPostPage> {
                   minWidth: 350,
                   child: FlatButton(
                     onPressed:
-                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] ? () {
+                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] && isButtonActive[17]? () {
                       setState(() {
                         for(int i=0 ; i < isButtonActive.length ; i++)
                         isButtonActive[i] = false;
@@ -3361,6 +3516,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
   /*functions*/
 
+
   /*for Location*/
   Future<void> _handlePressButton() async {
     //Search places box
@@ -3378,11 +3534,20 @@ class _AddPostPageState extends State<AddPostPage> {
     //save place information
     if(place!=null)
      setState(() {
-       isLocationEmpty = false;
+       devHightType = 90;
+       isButtonActive[0] = true;
        locationAdress = place?.description??"";
        locationName = locationAdress.substring(0,place?.description?.indexOf(','))??"";
+       locationTypes= place?.types??[];
+       locationTypes.removeAt(locationTypes.indexOf("establishment"));
+       locationTypes.removeAt(locationTypes.indexOf("point_of_interest"));
+
+       for(int i=1; i< locationTypes.length; i++){
+         devHightType+=47;
+         numbers.add(0);
+       }
      });
-     print(locationName);
+     print(locationTypes);
   }
 
   /*End Location*/

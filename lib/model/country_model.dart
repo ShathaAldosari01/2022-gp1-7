@@ -39,6 +39,13 @@ class Country {
 
 List<Map<String, Object>> data = [
   {
+    'country': 'Saudi Arabia',
+    'code':'SA',
+    'population': 34813871,
+    'density': 16,
+    'land Area': 2149690
+  },
+  {
     'country': 'Afghanistan',
     'code':'AF',
     'population': 38928346,
@@ -1109,13 +1116,6 @@ List<Map<String, Object>> data = [
     'population': 219159,
     'density': 228,
     'land Area': 960
-  },
-  {
-    'country': 'Saudi Arabia',
-    'code':'SA',
-    'population': 34813871,
-    'density': 16,
-    'land Area': 2149690
   },
   {
     'country': 'Senegal',
