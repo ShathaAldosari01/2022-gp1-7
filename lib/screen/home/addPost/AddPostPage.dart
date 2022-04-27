@@ -64,7 +64,7 @@ class _AddPostPageState extends State<AddPostPage> {
     //title
     titleControl = TextEditingController();
     titleControl.addListener(() {
-      final isActiveTitle = titleControl.text.isNotEmpty ;
+      final isActiveTitle = titleControl.text.isNotEmpty;
       setState(() {
         this.isButtonActive[2]=isActiveTitle ;
       });
@@ -341,6 +341,24 @@ class _AddPostPageState extends State<AddPostPage> {
   //for the type
   double devHightType = 90;
 
+  //form
+  final _formKey = GlobalKey<FormState>();
+  final _formKey1 = GlobalKey<FormState>();
+  final _formKey2= GlobalKey<FormState>();
+  final _formKey3 = GlobalKey<FormState>();
+  final _formKey4 = GlobalKey<FormState>();
+  final _formKey5 = GlobalKey<FormState>();
+  final _formKey6 = GlobalKey<FormState>();
+  final _formKey7 = GlobalKey<FormState>();
+  final _formKey8 = GlobalKey<FormState>();
+  final _formKey9 = GlobalKey<FormState>();
+  final _formKey10 = GlobalKey<FormState>();
+  final _formKey11 = GlobalKey<FormState>();
+  final _formKey12 = GlobalKey<FormState>();
+  final _formKey13 = GlobalKey<FormState>();
+  final _formKey14 = GlobalKey<FormState>();
+  final _formKey15 = GlobalKey<FormState>();
+
   //for disable for done button
   late TextEditingController titleControl ;
   late TextEditingController body1Control ;
@@ -358,6 +376,23 @@ class _AddPostPageState extends State<AddPostPage> {
   late TextEditingController body13Control ;
   late TextEditingController body14Control ;
   late TextEditingController body15Control ;
+
+  String title = "";
+  String body1 = "";
+  String body2 = "";
+  String body3 = "";
+  String body4 = "";
+  String body5 = "";
+  String body6 = "";
+  String body7 = "";
+  String body8 = "";
+  String body9 = "";
+  String body10 = "";
+  String body11 = "";
+  String body12 = "";
+  String body13 = "";
+  String body14 = "";
+  String body15 = "";
 
   /*title size*/
   double titleSize= 18;
@@ -1001,6 +1036,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         onRatingUpdate: (rating) => setState(() {
                           this.rating = rating.toInt();
                           isButtonActive[1] = true;
+                          print(isButtonActive);
                         }),
                       ),
                       /*end of rating */
@@ -1191,33 +1227,80 @@ class _AddPostPageState extends State<AddPostPage> {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            width: 235,
-                            child: TextFormField(
-                              //for disable for the done button
-                              controller: titleControl,
+                          Form(
+                            key: _formKey,
+                            child: Container(
+                              width: 235,
+                              child: TextFormField(
+                                //for disable for the done button
+                                controller: titleControl,
 
-                              decoration: const InputDecoration(
-                                /*background color*/
-                                fillColor: Palette.lightgrey,
-                                filled: true,
-                                contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                onChanged: (val) {
+                                  /*change the val of title*/
+                                  setState(() {
+                                    title = val;
+                                  });
+                                },
 
-                                /*hint*/
-                                border: OutlineInputBorder(),
-                                hintText: "Title Of Post",
-                                hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey, height: 2.0,),
+                                /*validation*/
+                                validator: (val){
+                                  if (val!.isEmpty) {
+                                    return "Title should not be empty";
+                                  }
+                                  if (val.length >= 30) {
+                                    return "Create a shorter title under 31 characters.";
+                                  }if ((val.contains('&') ||
+                                      val.contains("#") ||
+                                      val.contains("*") ||
+                                      val.contains("!") ||
+                                      val.contains("%") ||
+                                      val.contains("~") ||
+                                      val.contains("`") ||
+                                      val.contains("@") ||
+                                      val.contains("^") ||
+                                      val.contains("(") ||
+                                      val.contains(")") ||
+                                      val.contains("+") ||
+                                      val.contains("=") ||
+                                      val.contains("{") ||
+                                      val.contains("[") ||
+                                      val.contains("}") ||
+                                      val.contains("]") ||
+                                      val.contains("|") ||
+                                      val.contains(":") ||
+                                      val.contains(";") ||
+                                      val.contains("<") ||
+                                      val.contains(">") ||
+                                      val.contains(",") ||
+                                      val.contains("?") ||
+                                      val.contains("/"))) {
+                                    return "Title should not contain special characters. only '-', '_' and '.'.";
+                                  }
+                                  return null;
+                                },
 
-                                /*Border*/
-                                focusedBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Palette.midgrey,
+                                decoration: const InputDecoration(
+                                  /*background color*/
+                                  fillColor: Palette.lightgrey,
+                                  filled: true,
+                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+
+                                  /*hint*/
+                                  border: OutlineInputBorder(),
+                                  hintText: "Title Of Post",
+                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey, height: 2.0,),
+
+                                  /*Border*/
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                    ),
                                   ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                    color: Palette.midgrey,
-                                    width: 2.0,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: BorderSide(
+                                      color: Palette.midgrey,
+                                      width: 2.0,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -1413,34 +1496,84 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body1Control ,
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of First Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                            Form(
+                              key: _formKey1,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  //for disable button
+                                  controller: body1Control ,
+
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body1 = val;
+                                    });
+                                  },
+
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isEmpty) {
+                                      return "Body should not be empty";
+                                    }
+                                    if (val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return ""
+                                          "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of First Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -1670,35 +1803,80 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body2Control,
+                            Form(
+                              key: _formKey2,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body2Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Second Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body2 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if (val!.isNotEmpty &&
+                                        (val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Second Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -1930,35 +2108,80 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body3Control,
+                            Form(
+                              key:_formKey3,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in testified
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Thread Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body3 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for disable button
+                                  controller: body3Control,
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in testified
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Thread Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -2190,35 +2413,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body4Control,
+                            Form(
+                              key:_formKey4,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body4Control,
+                                 
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body4 = val;
+                                    });
+                                  },
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of forth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+                                  
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of forth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -2449,35 +2716,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body5Control,
+                            Form(
+                              key:_formKey5,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body5Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Fifth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body5 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Fifth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -2709,35 +3020,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body6Control,
+                            Form(
+                              key:_formKey6,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body6Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of sixth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body6 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of sixth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -2969,35 +3324,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body7Control,
+                            Form(
+                              key:_formKey7,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body7Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Seventh Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body7 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Seventh Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -3229,35 +3628,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body8Control,
+                            Form(
+                              key:_formKey8,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body8Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of eight Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body8 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of eight Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -3489,35 +3932,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body9Control,
+                            Form(
+                              key:_formKey9,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body9Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Ninth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body9 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Ninth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -3749,35 +4236,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body10Control,
+                            Form(
+                              key:_formKey10,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body10Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Tenth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body10 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Tenth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -4009,35 +4540,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body11Control,
+                            Form(
+                              key:_formKey11,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body11Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Eleventh Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body11 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Eleventh Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -4269,35 +4844,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body12Control,
+                            Form(
+                              key:_formKey12,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body12Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of twelfth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body12 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of twelfth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -4528,35 +5147,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body13Control,
+                            Form(
+                              key:_formKey13,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body13Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Thirteenth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body13 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Thirteenth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -4787,35 +5450,79 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                //for disable button
-                                controller: body14Control,
+                            Form(
+                              key:_formKey14,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  //for disable button
+                                  controller: body14Control,
 
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Fourteenth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body14 = val;
+                                    });
+                                  },
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Fourteenth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -5039,33 +5746,78 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              width: 235,
-                              child: TextFormField(
-                                controller: body15Control,
-                                //for multi line
-                                minLines: 1,
-                                maxLines: 5,  // allow user to enter 10 line in textfield
-                                keyboardType: TextInputType.multiline,
-                                decoration: const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Body Of Fifteenth Page",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                            Form(
+                              key:_formKey15,
+                              child: Container(
+                                width: 235,
+                                child: TextFormField(
+                                  controller: body15Control,
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
+                                  onChanged: (val) {
+                                    /*change the val of title*/
+                                    setState(() {
+                                      body15 = val;
+                                    });
+                                  },
+
+                                  /*validation*/
+                                  validator: (val){
+                                    if (val!.isNotEmpty && val.length >= 280) {
+                                      return "Create a shorter body under 281 characters.";
+                                    }if ((val.contains('&') ||
+                                        val.contains("#") ||
+                                        val.contains("*") ||
+                                        val.contains("!") ||
+                                        val.contains("%") ||
+                                        val.contains("~") ||
+                                        val.contains("`") ||
+                                        val.contains("@") ||
+                                        val.contains("^") ||
+                                        val.contains("(") ||
+                                        val.contains(")") ||
+                                        val.contains("+") ||
+                                        val.contains("=") ||
+                                        val.contains("{") ||
+                                        val.contains("[") ||
+                                        val.contains("}") ||
+                                        val.contains("]") ||
+                                        val.contains("|") ||
+                                        val.contains(":") ||
+                                        val.contains(";") ||
+                                        val.contains("<") ||
+                                        val.contains(">") ||
+                                        val.contains(",") ||
+                                        val.contains("?") ||
+                                        val.contains("/"))) {
+                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                    }
+                                    return null;
+                                  },
+
+                                  //for multi line
+                                  minLines: 1,
+                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  keyboardType: TextInputType.multiline,
+                                  decoration: const InputDecoration(
+                                    /*background color*/
+                                    fillColor: Palette.lightgrey,
+                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    filled: true,
+                                    border: OutlineInputBorder(),
+                                    hintText: "Body Of Fifteenth Page",
+                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+
+                                    /*Border*/
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                      ),
                                     ),
-                                  ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                        color: Palette.midgrey,
+                                        width: 2.0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -5397,8 +6149,42 @@ class _AddPostPageState extends State<AddPostPage> {
                   minWidth: 350,
                   child: FlatButton(
                     onPressed:
-                    isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] && isButtonActive[17]
+                    isButtonActive[0] && isButtonActive[1] && isButtonActive[2] && isButtonActive[3] && isButtonActive[17]
                         ? () {
+                      /*make sure of the validation*/
+                      if(!_formKey.currentState!.validate()){
+                        return;
+                      }if(!_formKey1.currentState!.validate()){
+                        return;
+                      }if(counter==2 && !_formKey2.currentState!.validate()){
+                        return;
+                      }if(counter==3 && !_formKey3.currentState!.validate()){
+                        return;
+                      }if(counter==4 && !_formKey4.currentState!.validate()){
+                        return;
+                      }if(counter==5 && !_formKey5.currentState!.validate()){
+                        return;
+                      }if(counter==6 && !_formKey6.currentState!.validate()){
+                        return;
+                      }if(counter==7 && !_formKey7.currentState!.validate()){
+                        return;
+                      }if(counter==8 && !_formKey8.currentState!.validate()){
+                        return;
+                      }if(counter==9 && !_formKey9.currentState!.validate()){
+                        return;
+                      }if(counter==10 && !_formKey10.currentState!.validate()){
+                        return;
+                      }if(counter==11 && !_formKey11.currentState!.validate()){
+                        return;
+                      }if(counter==12 && !_formKey12.currentState!.validate()){
+                        return;
+                      }if(counter==13 && !_formKey13.currentState!.validate()){
+                        return;
+                      }if(counter==14 && !_formKey14.currentState!.validate()){
+                        return;
+                      }if(counter==15 && !_formKey15.currentState!.validate()){
+                        return;
+                      }
                       /*save post to database*/
 
                       /*end of save post*/
