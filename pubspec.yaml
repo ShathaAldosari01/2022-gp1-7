@@ -42,6 +42,8 @@ dependencies:
   #Serch places
   google_place: ^0.4.7
   flutter_dotenv: ^5.0.2
+  #img
+  image_size_getter: ^2.1.0
 
 
 

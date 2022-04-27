@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +26,9 @@ import 'package:searchfield/searchfield.dart';
 // API
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_webservice/places.dart';
+
+//img
+import 'package:image/image.dart' as IMG;
 
 
 
@@ -208,9 +213,16 @@ class _AddPostPageState extends State<AddPostPage> {
     //body15
     body15Control = TextEditingController();
     body15Control.addListener(() {
-
     });
     //end of body15
+
+    //screen width
+    Future.delayed(Duration.zero, () {
+      setState(() {
+        width = MediaQuery.of(context).size.width;
+        hight = MediaQuery.of(context).size.height;
+      });
+    });
 
 
   }
@@ -237,51 +249,67 @@ class _AddPostPageState extends State<AddPostPage> {
   /* images */
   String path = "no";
   Uint8List? _Coverimage;
+  List<int> sizeImge = [];
 
   String path1 = "no";
   Uint8List? _image1;
+  List<int> sizeImge1 = [];
 
   String path2 = "no";
   Uint8List? _image2;
+  List<int> sizeImge2 = [];
 
   String path3 = "no";
   Uint8List? _image3;
+  List<int> sizeImge3 = [];
 
   String path4 = "no";
   Uint8List? _image4;
+  List<int> sizeImge4 = [];
 
   String path5 = "no";
   Uint8List? _image5;
+  List<int> sizeImge5 = [];
 
   String path6 = "no";
   Uint8List? _image6;
+  List<int> sizeImge6 = [];
 
   String path7 = "no";
   Uint8List? _image7;
+  List<int> sizeImge7 = [];
 
   String path8 = "no";
   Uint8List? _image8;
+  List<int> sizeImge8 = [];
 
   String path9 = "no";
   Uint8List? _image9;
+  List<int> sizeImge9 = [];
 
   String path10 = "no";
   Uint8List? _image10;
+  List<int> sizeImge10 = [];
 
   String path11 = "no";
   Uint8List? _image11;
+  List<int> sizeImge11 = [];
 
   String path12 = "no";
   Uint8List? _image12;
+  List<int> sizeImge12 = [];
 
   String path13 = "no";
   Uint8List? _image13;
+  List<int> sizeImge13 = [];
 
   String path14 = "no";
   Uint8List? _image14;
+  List<int> sizeImge14 = [];
 
   String path15 = "no";
   Uint8List? _image15;
+  List<int> sizeImge15 = [];
 
   /* visibility */
   List<bool> vis = [true, false,false,false,false,false,false,false,false,false,false,false,false,false, false];
@@ -293,7 +321,7 @@ class _AddPostPageState extends State<AddPostPage> {
   int maxImgs = 15;
 
   /*hight*/
-  int devHight = 121;
+  double devHight = 121;
   double devHight1 = 145;
   double devHight2 = 145;
   double devHight3 = 145;
@@ -345,6 +373,13 @@ class _AddPostPageState extends State<AddPostPage> {
   List<Color> typeBackgroundColor = [Palette.midgrey, Palette.buttonColor, Palette.nameColor,];
   List<Color> typeBorderColor = [Palette.grey, Palette.buttonDisableColor];
 
+  /*screen width*/
+  double width = 370;
+  double hight = 700;
+
+  /*image looks*/
+  List<BoxFit> ImgsLook = [BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover,BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover,];
+  List<bool> checkImgs = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
 
 
 
@@ -369,6 +404,7 @@ class _AddPostPageState extends State<AddPostPage> {
         automaticallyImplyLeading: false, //no arrow,
 
         title: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1101,35 +1137,35 @@ class _AddPostPageState extends State<AddPostPage> {
                 children: [
 
                   /*left*/
-                  Container(
-                    margin: EdgeInsets.fromLTRB(0, 0, 10, 0),
-                    child: Column(
-                      children: [
-                        /*icon*/
-                        CircleAvatar(
-                          radius: 13,
-                          backgroundColor: Palette.grey,
-                          child: Icon(
-                            Icons.title,
-                            color: Palette.backgroundColor,
-                            size: 20,
-                          ),
+                  Column(
+                    children: [
+                      /*icon*/
+                      CircleAvatar(
+                        radius: 13,
+                        backgroundColor: Palette.grey,
+                        child: Icon(
+                          Icons.title,
+                          color: Palette.backgroundColor,
+                          size: 20,
                         ),
-                        /*end of icon */
+                      ),
+                      /*end of icon */
 
-                        /*divider*/
-                        Container(
-                          color: Colors.grey,
-                          width: 3,
-                          height: devHight.toDouble(),
+                      /*divider*/
+                      Container(
+                        color: Colors.grey,
+                        width: 3,
+                        height: devHight.toDouble(),
+                      )
+                      /*end of divider */
 
-                        )
-                        /*end of divider */
-
-                      ],
-                    ),
+                    ],
                   ),
                   /*end left */
+
+                  SizedBox(
+                    width: 10,
+                  ),
 
                   /*right*/
                   Column(
@@ -1208,43 +1244,98 @@ class _AddPostPageState extends State<AddPostPage> {
                       /*end of title*/
 
                       SizedBox(
-                        height: 16,
+                        height: 4,
                       ),
 
                       /*cover image*/
-                      path != "no"
+                      _Coverimage != null
                           ? Stack(
+                            alignment : AlignmentDirectional.topEnd,
                             children: [
                               Container(
-                              alignment: Alignment.centerLeft,
-                              height: 150,
-                              width:250,
-                              child: Image.network(path)),
+                                margin: EdgeInsets.fromLTRB(0,10,10,0),
+                                color: Palette.midgrey,
+                                alignment: Alignment.centerLeft,
+                                width: width-90,
+                                // height: hight*((width-90)/width),
+                                child:  checkImgs[0]?
+                                Image(
+                                  image: MemoryImage(_Coverimage!),
+                                  width: width-90,
+                                  height: hight*((width-90)/width),
+                                  fit: ImgsLook[0],
+                                ):
+                                Image(
+                                  image: MemoryImage(_Coverimage!),
+                                  width: width-90,
+                                ),
+                              ),
 
                               //Delete image
-                              IconButton(
-                                //Remove the margin
-                                  padding: EdgeInsets.zero,
-                                  constraints: BoxConstraints(),
-                                  //End of remove margin
-                                  onPressed: (){
-                                    //remove a image
-                                    setState(() {
-                                      path = 'no';
-                                      devHight = 121;
-                                    });
-                                  },
-                                  icon: Icon(
-                                    Icons.add_circle,
-                                    color: Palette.red,
-                                    size: 25,
-                                  )
+                              CircleAvatar(
+                                backgroundColor: Palette.red,
+                                radius: 15,
+                                child: IconButton(
+                                  //Remove the margin
+                                    padding: EdgeInsets.zero,
+                                    constraints: BoxConstraints(),
+                                    //End of remove margin
+                                    onPressed: (){
+                                      //remove a image
+                                      setState(() {
+                                        print(_Coverimage);
+                                        path = 'no';
+                                        _Coverimage = null;
+                                        devHight = 121;
+                                        checkImgs[0]= true;
+                                      });
+                                    },
+                                    icon: Icon(
+                                      Icons.clear,
+                                      color: Palette.backgroundColor,
+                                      size: 25,
+                                    )
+                                ),
                               ),
                               //end delete image
                             ],
                           )
-                          : Text(""),
+                          : SizedBox(),
                       /*end of cover img*/
+
+                      /*cover img look*/
+                      _Coverimage != null ?
+                      Container(
+                        color: Palette.lightgrey,
+                        width: width-90,
+                        child: CheckboxListTile(
+                          //text
+                          title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[0],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[0]= !checkImgs[0];
+                              });
+                              if(checkImgs[0]){
+                                setState(() {
+                                  devHight = 159 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight = sizeImge[1].toDouble()+159;
+                                });
+                              }
+                            },
+                            //style
+                          controlAffinity: ListTileControlAffinity.leading,
+                          activeColor: Palette.buttonColor,
+                          // checkColor: Palette.buttonColor,
+                        ),
+                      ) :
+                      SizedBox(),
+                      /*end of cover img look*/
 
                       SizedBox(height: 20),
 
@@ -1376,18 +1467,97 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path1 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path1))
-                            : Text(""),
+                        _image1 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[1]?
+                              Image(
+                                image: MemoryImage(_image1!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[1],
+                              ):
+                              Image(
+                                image: MemoryImage(_image1!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path1 = 'no';
+                                      _image1 = null;
+                                      devHight1 = 121;
+                                      checkImgs[1]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
                         /*end of cover img*/
+
+                        /*cover img look*/
+                        _image1 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[1],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[1]= !checkImgs[1];
+                              });
+                              if(checkImgs[1]){
+                                setState(() {
+                                  devHight1 = 159 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight1 = sizeImge1[1].toDouble()+159;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
+                        /*end of cover img look*/
+
                       ],
                     )
                     /*end right*/
@@ -1472,7 +1642,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path2='no';
+                                      _image2 = null;
                                       devHight2 = 145;
+                                      checkImgs[2]= true;
                                     });
                                     //clear the text
                                     body2Control.clear();
@@ -1553,18 +1725,96 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path2 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path2))
-                            : Text(""),
+                        _image2 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[2]?
+                              Image(
+                                image: MemoryImage(_image2!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[2],
+                              ):
+                              Image(
+                                image: MemoryImage(_image2!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path2 = 'no';
+                                      _image2 = null;
+                                      devHight2 = 121;
+                                      checkImgs[2]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
                         /*end of cover img*/
+
+                        /*cover img look*/
+                        _image2 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[2],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[2]= !checkImgs[2];
+                              });
+                              if(checkImgs[2]){
+                                setState(() {
+                                  devHight2 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight2 = sizeImge2[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
+                        /*end of cover img look*/
 
                       ],
                     )
@@ -1651,8 +1901,10 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path3='no';
+                                      _image3 = null;
                                       devHight3 = 145;
                                       visIcon[0]=true;
+                                      checkImgs[3]= true;
                                     });
                                     //clear the text
                                     body3Control.clear();
@@ -1733,18 +1985,96 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path3 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path3))
-                            : Text(""),
+                        _image3 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[3]?
+                              Image(
+                                image: MemoryImage(_image3!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[3],
+                              ):
+                              Image(
+                                image: MemoryImage(_image3!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path3 = 'no';
+                                      _image3 = null;
+                                      devHight3 = 121;
+                                      checkImgs[3]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
                         /*end of cover img*/
+
+                        /*cover img look*/
+                        _image3 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[3],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[3] = !checkImgs[3];
+                              });
+                              if(checkImgs[3]){
+                                setState(() {
+                                  devHight3 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight3 = sizeImge3[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
+                        /*end of cover img look*/
 
                       ],
                     )
@@ -1831,7 +2161,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path4='no';
+                                      _image4 = null;
                                       devHight4 = 145;
+                                      checkImgs[4]= true;
                                       visIcon[1]=true;
                                     });
                                     //clear the text
@@ -1913,18 +2245,96 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path4 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path4))
-                            : Text(""),
+                        _image4 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[4]?
+                              Image(
+                                image: MemoryImage(_image4!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[4],
+                              ):
+                              Image(
+                                image: MemoryImage(_image4!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path4 = 'no';
+                                      _image4 = null;
+                                      devHight4 = 121;
+                                      checkImgs[4]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
                         /*end of cover img*/
+
+                        /*cover img look*/
+                        _image4 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[4],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[4] = !checkImgs[4];
+                              });
+                              if(checkImgs[4]){
+                                setState(() {
+                                  devHight4 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight4 = sizeImge4[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
+                        /*end of cover img look*/
 
                       ],
                     )
@@ -2011,7 +2421,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path5='no';
+                                      _image5 = null;
                                       devHight5 = 145;
+                                      checkImgs[5]= true;
                                       visIcon[2]=true;
                                     });
                                     //clear the text
@@ -2092,18 +2504,96 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path5 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path5))
-                            : Text(""),
-                        /*end of img 5*/
+                        _image5 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[5]?
+                              Image(
+                                image: MemoryImage(_image5!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[5],
+                              ):
+                              Image(
+                                image: MemoryImage(_image5!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path5 = 'no';
+                                      _image5 = null;
+                                      devHight5 = 121;
+                                      checkImgs[5]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image5 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[5],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[5]= !checkImgs[5];
+                              });
+                              if(checkImgs[5]){
+                                setState(() {
+                                  devHight5 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight5 = sizeImge5[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
+                        /*end of cover img look*/
 
                       ],
                     )
@@ -2190,7 +2680,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path6='no';
+                                      _image6 = null;
                                       devHight6 = 145;
+                                      checkImgs[6]= true;
                                       visIcon[3]=true;
                                     });
                                     //clear the text
@@ -2272,18 +2764,96 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path6 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path6))
-                            : Text(""),
-                        /*end of img 6*/
+                        _image6 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[6]?
+                              Image(
+                                image: MemoryImage(_image6!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[6],
+                              ):
+                              Image(
+                                image: MemoryImage(_image6!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path6 = 'no';
+                                      _image6 = null;
+                                      devHight6 = 121;
+                                      checkImgs[6] = true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image6 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[6],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[6]= !checkImgs[6];
+                              });
+                              if(checkImgs[6]){
+                                setState(() {
+                                  devHight6 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight6 = sizeImge6[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
+                        /*end of cover img look*/
 
                       ],
                     )
@@ -2370,7 +2940,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path7='no';
+                                      _image7 = null;
                                       devHight7 = 145;
+                                      checkImgs[7]= true;
                                       visIcon[4]=true;
                                     });
                                     //clear the text
@@ -2452,18 +3024,96 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path7 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path7))
-                            : Text(""),
-                        /*end of  img 7*/
+                        _image7 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[7]?
+                              Image(
+                                image: MemoryImage(_image7!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[7],
+                              ):
+                              Image(
+                                image: MemoryImage(_image7!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path7 = 'no';
+                                      _image7 = null;
+                                      devHight7 = 121;
+                                      checkImgs[7]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image7 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[7],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[7]= !checkImgs[7];
+                              });
+                              if(checkImgs[7]){
+                                setState(() {
+                                  devHight7 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight7 = sizeImge7[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
+                        /*end of cover img look*/
 
                       ],
                     )
@@ -2550,7 +3200,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path8='no';
+                                      _image8 = null;
                                       devHight8 = 145;
+                                      checkImgs[8]= true;
                                       visIcon[5]=true;
                                     });
                                     //clear the text
@@ -2632,17 +3284,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /* image 8*/
-                        path8 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path8))
-                            : Text(""),
+                        _image8 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[8]?
+                              Image(
+                                image: MemoryImage(_image8!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[8],
+                              ):
+                              Image(
+                                image: MemoryImage(_image8!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path8 = 'no';
+                                      _image8 = null;
+                                      devHight8 = 121;
+                                      checkImgs[8]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image8 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[8],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[8]= !checkImgs[8];
+                              });
+                              if(checkImgs[8]){
+                                setState(() {
+                                  devHight8 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight8 = sizeImge8[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of  img 8*/
 
                       ],
@@ -2730,7 +3460,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path9='no';
+                                      _image9 = null;
                                       devHight9 = 145;
+                                      checkImgs[9]= true;
                                       visIcon[6]=true;
                                     });
                                     //clear the text
@@ -2812,17 +3544,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /* image 9*/
-                        path9 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path9))
-                            : Text(""),
+                        _image9 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[9]?
+                              Image(
+                                image: MemoryImage(_image9!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[9],
+                              ):
+                              Image(
+                                image: MemoryImage(_image9!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path9 = 'no';
+                                      _image9 = null;
+                                      devHight9 = 121;
+                                      checkImgs[9]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image9 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[9],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[9]= !checkImgs[9];
+                              });
+                              if(checkImgs[9]){
+                                setState(() {
+                                  devHight9 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight9 = sizeImge9[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of img 9*/
 
                       ],
@@ -2910,7 +3720,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path10='no';
+                                      _image10 = null;
                                       devHight10 = 145;
+                                      checkImgs[10]= true;
                                       visIcon[7]=true;
                                     });
                                     //clear the text
@@ -2992,17 +3804,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /* image 10*/
-                        path10 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path10))
-                            : Text(""),
+                        _image10 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[10]?
+                              Image(
+                                image: MemoryImage(_image10!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[10],
+                              ):
+                              Image(
+                                image: MemoryImage(_image10!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path10 = 'no';
+                                      _image10 = null;
+                                      devHight10 = 121;
+                                      checkImgs[11]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image10 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[10],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[10]= !checkImgs[10];
+                              });
+                              if(checkImgs[10]){
+                                setState(() {
+                                  devHight10 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight10 = sizeImge10[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of  img 10*/
 
                       ],
@@ -3090,7 +3980,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path11='no';
+                                      _image11 = null;
                                       devHight11 = 145;
+                                      checkImgs[11]= true;
                                       visIcon[8]=true;
                                     });
                                     //clear the text
@@ -3172,17 +4064,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /* image  11*/
-                        path11 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path11))
-                            : Text(""),
+                        _image11 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[11]?
+                              Image(
+                                image: MemoryImage(_image11!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[11],
+                              ):
+                              Image(
+                                image: MemoryImage(_image11!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path11 = 'no';
+                                      _image11 = null;
+                                      devHight11 = 121;
+                                      checkImgs[11]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image11 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[11],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[11]= !checkImgs[11];
+                              });
+                              if(checkImgs[11]){
+                                setState(() {
+                                  devHight11 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight11 = sizeImge11[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of img 11*/
 
                       ],
@@ -3270,7 +4240,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path12='no';
+                                      _image12 = null;
                                       devHight12 = 145;
+                                      checkImgs[12]= true;
                                       visIcon[9]=true;
                                     });
                                     //clear the text
@@ -3352,17 +4324,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /* image 12*/
-                        path12 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path12))
-                            : Text(""),
+                        _image12 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[12]?
+                              Image(
+                                image: MemoryImage(_image12!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[12],
+                              ):
+                              Image(
+                                image: MemoryImage(_image12!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path12 = 'no';
+                                      _image12 = null;
+                                      devHight12 = 121;
+                                      checkImgs[12]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image12 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[12],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[12]= !checkImgs[12];
+                              });
+                              if(checkImgs[12]){
+                                setState(() {
+                                  devHight12 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight12 = sizeImge12[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of img 12*/
 
                       ],
@@ -3450,7 +4500,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path13='no';
+                                      _image13 = null;
                                       devHight13 = 145;
+                                      checkImgs[13]= true;
                                       visIcon[10]=true;
                                     });
                                     //clear the text
@@ -3531,17 +4583,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /* image 13*/
-                        path13 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path13))
-                            : Text(""),
+                        _image13 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[13]?
+                              Image(
+                                image: MemoryImage(_image13!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[13],
+                              ):
+                              Image(
+                                image: MemoryImage(_image13!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path13 = 'no';
+                                      _image13 = null;
+                                      devHight13 = 121;
+                                      checkImgs[13]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image13 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[13],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[13]= !checkImgs[13];
+                              });
+                              if(checkImgs[13]){
+                                setState(() {
+                                  devHight13 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight13 = sizeImge13[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of img 13*/
 
                       ],
@@ -3629,7 +4759,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path14='no';
+                                      _image14 = null;
                                       devHight14 = 145;
+                                      checkImgs[14]= true;
                                       visIcon[11]=true;
                                     });
                                     //clear the text
@@ -3710,17 +4842,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /*cover image*/
-                        path14 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path14))
-                            : Text(""),
+                        _image14 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[14]?
+                              Image(
+                                image: MemoryImage(_image14!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[14],
+                              ):
+                              Image(
+                                image: MemoryImage(_image14!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path14 = 'no';
+                                      _image14 = null;
+                                      devHight14 = 121;
+                                      checkImgs[14]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image14 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[14],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[14]= !checkImgs[14];
+                              });
+                              if(checkImgs[14]){
+                                setState(() {
+                                  devHight14 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight14 = sizeImge14[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of img 14*/
 
                       ],
@@ -3800,7 +5010,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       //remove the image
                                       path15='no';
+                                      _image15 = null;
                                       devHight15 = 145;
+                                      checkImgs[15]= true;
                                       visIcon[12]=true;
                                     });
                                     //clear the text
@@ -3880,17 +5092,95 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*end of title*/
 
                         SizedBox(
-                          height: 16,
+                          height: 4,
                         ),
 
                         /* image 15*/
-                        path15 != "no"
-                            ? Container(
-                            alignment: Alignment.centerLeft,
-                            height: 150,
-                            width:250,
-                            child: Image.network(path15))
-                            : Text(""),
+                        _image15 != null
+                            ? Stack(
+                          alignment : AlignmentDirectional.topEnd,
+                          children: [
+                            Container(
+                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              color: Palette.midgrey,
+                              alignment: Alignment.centerLeft,
+                              width: width-90,
+                              child:  checkImgs[15]?
+                              Image(
+                                image: MemoryImage(_image15!),
+                                width: width-90,
+                                height: hight*((width-90)/width),
+                                fit: ImgsLook[15],
+                              ):
+                              Image(
+                                image: MemoryImage(_image15!),
+                                width: width-90,
+                              ),
+                            ),
+
+                            //Delete image
+                            CircleAvatar(
+                              backgroundColor: Palette.red,
+                              radius: 15,
+                              child: IconButton(
+                                //Remove the margin
+                                  padding: EdgeInsets.zero,
+                                  constraints: BoxConstraints(),
+                                  //End of remove margin
+                                  onPressed: (){
+                                    //remove a image
+                                    setState(() {
+                                      path15 = 'no';
+                                      _image15 = null;
+                                      devHight15 = 121;
+                                      checkImgs[15]= true;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    Icons.clear,
+                                    color: Palette.backgroundColor,
+                                    size: 25,
+                                  )
+                              ),
+                            ),
+                            //end delete image
+                          ],
+                        )
+                            : SizedBox(),
+                        /*end of cover img*/
+
+                        /*cover img look*/
+                        _image15 != null ?
+                        Container(
+                          color: Palette.lightgrey,
+                          width: width-90,
+                          child: CheckboxListTile(
+                            //text
+                            title: Text("Cover the entire page"),
+                            //value
+                            value: checkImgs[15],
+                            //action
+                            onChanged: (bool? value){
+                              setState(() {
+                                checkImgs[15]= !checkImgs[15];
+                              });
+                              if(checkImgs[15]){
+                                setState(() {
+                                  devHight15 = 183 + (hight*((width-90)/width));
+                                });
+                              }else{
+                                setState(() {
+                                  devHight15 = sizeImge15[1].toDouble() + 183;
+                                });
+                              }
+                            },
+                            //style
+                            controlAffinity: ListTileControlAffinity.leading,
+                            activeColor: Palette.buttonColor,
+                            // checkColor: Palette.buttonColor,
+                          ),
+                        ) :
+                        SizedBox(),
                         /*end of img 15*/
 
                       ],
@@ -3962,19 +5252,19 @@ class _AddPostPageState extends State<AddPostPage> {
                         // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,
                         onPressed:
                         (counter ==0 && isButtonActive[2] && isButtonActive[3])
-                            ||(counter ==2 && (isButtonActive[4] || path2 != 'no'))
-                            ||(counter ==3 && (isButtonActive[5] || path3 != 'no'))
-                            ||(counter ==4 && (isButtonActive[6] || path4 != 'no'))
-                            ||(counter ==5 && (isButtonActive[7] || path5 != 'no'))
-                            ||(counter ==6 && (isButtonActive[8] || path6 != 'no'))
-                            ||(counter ==7 && (isButtonActive[9] || path7 != 'no'))
-                            ||(counter ==8 && (isButtonActive[10] || path8 != 'no'))
-                            ||(counter ==9 && (isButtonActive[11] || path9 != 'no'))
-                            ||(counter ==10 && (isButtonActive[12] || path10 != 'no'))
-                            ||(counter ==11 && (isButtonActive[13] || path11 != 'no'))
-                            ||(counter ==12 && (isButtonActive[14] || path12 != 'no'))
-                            ||(counter ==13 && (isButtonActive[15] || path13 != 'no'))
-                            ||(counter ==14 && (isButtonActive[16] || path14 != 'no'))
+                            ||(counter ==2 && (isButtonActive[4] || path2 != 'no' || _image2 != null))
+                            ||(counter ==3 && (isButtonActive[5] || path3 != 'no' || _image3 != null))
+                            ||(counter ==4 && (isButtonActive[6] || path4 != 'no' || _image4 != null))
+                            ||(counter ==5 && (isButtonActive[7] || path5 != 'no' || _image5 != null))
+                            ||(counter ==6 && (isButtonActive[8] || path6 != 'no' || _image6 != null))
+                            ||(counter ==7 && (isButtonActive[9] || path7 != 'no' || _image7 != null))
+                            ||(counter ==8 && (isButtonActive[10] || path8 != 'no' || _image8 != null))
+                            ||(counter ==9 && (isButtonActive[11] || path9 != 'no' || _image9 != null))
+                            ||(counter ==10 && (isButtonActive[12] || path10 != 'no' || _image10 != null))
+                            ||(counter ==11 && (isButtonActive[13] || path11 != 'no' || _image11 != null))
+                            ||(counter ==12 && (isButtonActive[14] || path12 != 'no' || _image12 != null))
+                            ||(counter ==13 && (isButtonActive[15] || path13 != 'no' || _image13 != null))
+                            ||(counter ==14 && (isButtonActive[16] || path14 != 'no' || _image14 != null))
                             ?
                             (){
 
@@ -4051,19 +5341,19 @@ class _AddPostPageState extends State<AddPostPage> {
                           style: TextStyle(
                               color:
                               (counter ==0 && isButtonActive[2] && isButtonActive[3])
-                                  ||(counter ==2 && (isButtonActive[4] || path2 != 'no'))
-                                  ||(counter ==3 && (isButtonActive[5] || path3 != 'no'))
-                                  ||(counter ==4 && (isButtonActive[6] || path4 != 'no'))
-                                  ||(counter ==5 && (isButtonActive[7] || path5 != 'no'))
-                                  ||(counter ==6 && (isButtonActive[8] || path6 != 'no'))
-                                  ||(counter ==7 && (isButtonActive[9] || path7 != 'no'))
-                                  ||(counter ==8 && (isButtonActive[10] || path8 != 'no'))
-                                  ||(counter ==9 && (isButtonActive[11] || path9 != 'no'))
-                                  ||(counter ==10 && (isButtonActive[12] || path10 != 'no'))
-                                  ||(counter ==11 && (isButtonActive[13] || path11 != 'no'))
-                                  ||(counter ==12 && (isButtonActive[14] || path12 != 'no'))
-                                  ||(counter ==13 && (isButtonActive[15] || path13 != 'no'))
-                                  ||(counter ==14 && (isButtonActive[16] || path14 != 'no'))
+                                  ||(counter ==2 && (isButtonActive[4] || path2 != 'no' || _image2 != null))
+                                  ||(counter ==3 && (isButtonActive[5] || path3 != 'no' || _image3 != null))
+                                  ||(counter ==4 && (isButtonActive[6] || path4 != 'no' || _image4 != null))
+                                  ||(counter ==5 && (isButtonActive[7] || path5 != 'no' || _image5 != null))
+                                  ||(counter ==6 && (isButtonActive[8] || path6 != 'no' || _image6 != null))
+                                  ||(counter ==7 && (isButtonActive[9] || path7 != 'no' || _image7 != null))
+                                  ||(counter ==8 && (isButtonActive[10] || path8 != 'no' || _image8 != null))
+                                  ||(counter ==9 && (isButtonActive[11] || path9 != 'no' || _image9 != null))
+                                  ||(counter ==10 && (isButtonActive[12] || path10 != 'no' || _image10 != null))
+                                  ||(counter ==11 && (isButtonActive[13] || path11 != 'no' || _image11 != null))
+                                  ||(counter ==12 && (isButtonActive[14] || path12 != 'no' || _image12 != null))
+                                  ||(counter ==13 && (isButtonActive[15] || path13 != 'no' || _image13 != null))
+                                  ||(counter ==14 && (isButtonActive[16] || path14 != 'no' || _image14 != null))
                                   ?
                               Palette.link: Palette.darkGray,
                               fontSize: 18,
@@ -4148,6 +5438,13 @@ class _AddPostPageState extends State<AddPostPage> {
 
   /*functions*/
 
+  List<int> imageSize(Uint8List data) {
+    Uint8List resizedData = data;
+    IMG.Image img = IMG.decodeImage(data)!;
+    List<int> size = [ img.width,  img.height];
+    return size;
+  }
+
 
   /*for Location*/
   Future<void> _handlePressButton() async {
@@ -4206,8 +5503,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectCoverImage() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _Coverimage = im;
+      sizeImge = size;
+      devHight = 159 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4217,7 +5518,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path =p;
-        devHight +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4263,8 +5563,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage1() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image1 = im;
+      sizeImge1 = size;
+      devHight1 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4274,7 +5578,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path1 =p;
-        devHight1 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4299,8 +5602,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage2() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image2 = im;
+      sizeImge2 = size;
+      devHight2 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4310,7 +5617,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path2 =p;
-        devHight2 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4335,8 +5641,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage3() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image3 = im;
+      sizeImge3 = size;
+      devHight3 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4346,7 +5656,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path3 =p;
-        devHight3 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4371,8 +5680,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage4() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image4 = im;
+      sizeImge4 = size;
+      devHight4 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4382,7 +5695,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path4 =p;
-        devHight4 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4407,8 +5719,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage5() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image5 = im;
+      sizeImge5 = size;
+      devHight5 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4418,7 +5734,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path5 =p;
-        devHight5 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4442,8 +5757,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage6() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image6 = im;
+      sizeImge6 = size;
+      devHight6 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4453,7 +5772,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path6 =p;
-        devHight6 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4478,8 +5796,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage7() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image7 = im;
+      sizeImge7 = size;
+      devHight7 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4489,7 +5811,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path7 =p;
-        devHight7 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4514,8 +5835,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage8() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image8 = im;
+      sizeImge8 = size;
+      devHight8 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4525,7 +5850,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path8 =p;
-        devHight8 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4550,8 +5874,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage9() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image9 = im;
+      sizeImge9 = size;
+      devHight9 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4561,7 +5889,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path9 =p;
-        devHight9 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4586,8 +5913,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage10() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image10 = im;
+      sizeImge10 = size;
+      devHight10 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4597,7 +5928,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path10 =p;
-        devHight10 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4622,8 +5952,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage11() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image11 = im;
+      sizeImge11 = size;
+      devHight11 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4633,7 +5967,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path11 =p;
-        devHight11 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4657,8 +5990,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage12() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image12 = im;
+      sizeImge12 = size;
+      devHight12 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4668,7 +6005,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path12 =p;
-        devHight12 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4692,8 +6028,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage13() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image13 = im;
+      sizeImge13 = size;
+      devHight13 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4703,7 +6043,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path13 =p;
-        devHight13 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4727,8 +6066,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage14() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image14 = im;
+      sizeImge14 = size;
+      devHight14 = 183 + (hight*((width-90)/width));
     });
 
     /*update to database*/
@@ -4738,7 +6081,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path14 =p;
-        devHight14 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
@@ -4763,8 +6105,12 @@ class _AddPostPageState extends State<AddPostPage> {
   void selectImage15() async {
 
     Uint8List im= await pickImage(ImageSource.gallery);
+    List<int> size = imageSize(im);
+    size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
       _image15 = im;
+      sizeImge15 = size;
+      devHight15 = 183 + (hight*((width-90)/width));
     });
 
 
@@ -4775,7 +6121,6 @@ class _AddPostPageState extends State<AddPostPage> {
 
       setState(() {
         path15 =p;
-        devHight15 +=134;
       });
       //to do: post id
       await _firestore.collection("posts").doc(uid).set({
