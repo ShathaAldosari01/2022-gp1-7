@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../config/palette.dart';
+import 'ImageDisplayer.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -22,11 +23,17 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
-        body: Center(
-          child: Text(
-            'Home',
-            style: TextStyle(fontSize: 30, color: Colors.black),
-          ),
+        body: PageView.builder(
+         // itemCount: ,
+          controller: PageController(initialPage: 0 , viewportFraction: 1),
+          scrollDirection: Axis.vertical,
+          itemBuilder: (context, index) {
+            return Stack(
+              children: [
+             ImageDisplayer(path:"https://firebasestorage.googleapis.com/v0/b/odyssey-f8a9d.appspot.com/o/profilePics%2FYUsRp7aY2AZkyuvvmrxIblhxY402?alt=media&token=b57db267-795d-46bf-ac78-171efd43c288")
+              ],
+            );
+          },
         ),
       );
 }

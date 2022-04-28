@@ -9,7 +9,7 @@ import 'package:focused_menu/modals.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:gp1_7_2022/Widgets/follow_button.dart';
-import 'package:gp1_7_2022/screen/home/navBar/home_page.dart';
+import 'package:gp1_7_2022/screen/home/TimeLine/home_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
 import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
