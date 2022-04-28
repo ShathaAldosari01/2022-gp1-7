@@ -567,6 +567,28 @@ class _AddPostPageState extends State<AddPostPage> {
     true
   ];
 
+//Bool for loading the change path after posting
+  List<bool> loading = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+
+  //for loading image when posting
+  bool isLoaded = false ;
 
   @override
   Widget build(BuildContext context) {
@@ -580,7 +602,15 @@ class _AddPostPageState extends State<AddPostPage> {
       return true;
     },
 
-    child: Scaffold(
+    child:
+        isLoaded?  Container(
+          color: Palette.backgroundColor,
+          child: const Center(
+
+          child: CircularProgressIndicator(),
+    ),
+        ):
+    Scaffold(
       backgroundColor: Palette.backgroundColor,
 
       appBar: AppBar(
@@ -6444,6 +6474,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         isButtonActive[2] && isButtonActive[3] &&
                         isButtonActive[17]
                         ? () async {
+
                       /*make sure of the validation*/
                       if (!_formKey.currentState!.validate()) {
                         return;
@@ -6499,82 +6530,28 @@ class _AddPostPageState extends State<AddPostPage> {
                           !_formKey15.currentState!.validate()) {
                         return;
                       }
-                      /*print info*/
-                      // print(locationId);
-                      // print(locationName);
-                      // print(locationAdress);
-                      // print(country);
-                      // print(city);
-                      // print(locationType);
-                      // print(locationTypes);
-                      //
-                      // print(DateTime.now());
-                      // print(dateTime);
-                      //
-                      // print(FirebaseAuth.instance.currentUser!.uid);
-                      // print(rating);
-                      //
-                      // print(title);
-                      // print(body1);
-                      // print(counter);
 
-                      /*Data preprocessing*/
-                      var uid = FirebaseAuth.instance.currentUser!.uid;
-                      var userData = {};
-                      var userSnap = await FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(uid)
-                          .get();
-                      if (userSnap.data() != null)
-                        userData = userSnap.data()!;
-
-
-                      /*save post to database*/
-                      addPostToDatabase(
-                        /*user info*/
-                        uid,
-                        userData['username'],
-                        "",
-
-                        /*place type*/
-                        country,
-                        city,
-                        locationTypes,
-                        locationType,
-                        locationId,
-
-                        /*place info*/
-                        postId,
-                        locationName,
-                        locationAdress,
-                        rating.toDouble(),
-
-                        /*visibility*/
-                        "public",
-
-                        /*date*/
-                        dateTime,
-
-                        /*content*/
-                        title,
-                        [body1, body2, body3, body4, body5, body6, body7, body8, body9, body10, body11, body12, body13, body14, body15],
-                        [path, path1, path2, path3, path4, path5, path6, path7,
-                          path8, path9, path10, path11, path12, path13, path14, path15],
-                        checkImgs,
-                      );
-                      /*end of save post*/
-
-                      /*disable button and clear text field */
                       setState(() {
-                        for (int i = 0; i < isButtonActive.length; i++) {
-                          isButtonActive[i] = false;
-                        }
-                        titleControl.clear();
+                        isLoaded = true;
                       });
-                      /*end of disable button and clear text field */
-
-                      /*go home */
-                      Navigator.pushNamed(context, '/navigationBar');
+                      bool isDone = true;
+                      while(true) {
+                        await Future.delayed(const Duration(seconds: 1), () {
+                          print("wait1");
+                          for (int i = 0; i < loading.length; i++) {
+                            if (loading[i]) {
+                              isDone = false;
+                              print("hi");
+                            }
+                          }
+                        });
+                        if (isDone) {
+                          print("submit?");
+                          submitPost();
+                          break;
+                        }
+                        isDone = true;
+                      }
                     } : null,
                     child: Text(
                       'Done',
@@ -6599,6 +6576,67 @@ class _AddPostPageState extends State<AddPostPage> {
 }
 
   /*functions*/
+
+  submitPost() async{
+
+    /*Data preprocessing*/
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    var userData = {};
+    var userSnap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(uid)
+        .get();
+    if (userSnap.data() != null)
+      userData = userSnap.data()!;
+
+
+    /*save post to database*/
+    addPostToDatabase(
+      /*user info*/
+      uid,
+      userData['username'],
+      "",
+
+      /*place type*/
+      country,
+      city,
+      locationTypes,
+      locationType,
+      locationId,
+
+      /*place info*/
+      postId,
+      locationName,
+      locationAdress,
+      rating.toDouble(),
+
+      /*visibility*/
+      "public",
+
+      /*date*/
+      dateTime,
+
+      /*content*/
+      title,
+      [body1, body2, body3, body4, body5, body6, body7, body8, body9, body10, body11, body12, body13, body14, body15],
+      [path, path1, path2, path3, path4, path5, path6, path7,
+        path8, path9, path10, path11, path12, path13, path14, path15],
+      checkImgs,
+    );
+    /*end of save post*/
+
+    /*disable button and clear text field */
+    setState(() {
+      for (int i = 0; i < isButtonActive.length; i++) {
+        isButtonActive[i] = false;
+      }
+      titleControl.clear();
+    });
+    /*end of disable button and clear text field */
+
+    /*go home */
+    Navigator.pushNamed(context, '/navigationBar');
+  }
 
   List<int> imageSize(Uint8List data) {
     Uint8List resizedData = data;
@@ -6682,6 +6720,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[0]=true;
       _Coverimage = im;
       sizeImge = size;
       devHight = 159 + (hight*((width-90)/width));
@@ -6690,10 +6729,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/CoverImages", _Coverimage!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/CoverImages", _Coverimage!, true);
 
       setState(() {
         path =p;
+        loading[0]=false;
       });
 
 
@@ -6719,6 +6759,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[1]=true;
       _image1 = im;
       sizeImge1 = size;
       devHight1 = 183 + (hight*((width-90)/width));
@@ -6727,10 +6768,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image1",_image1!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image1",_image1!, true);
 
       setState(() {
         path1 =p;
+        loading[1]=false;
       });
 
     }catch(e){
@@ -6754,6 +6796,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[2]=true;
       _image2 = im;
       sizeImge2 = size;
       devHight2 = 183 + (hight*((width-90)/width));
@@ -6762,10 +6805,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image2",_image2!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image2",_image2!, true);
 
       setState(() {
         path2 =p;
+        loading[2]=false;
       });
 
     }catch(e){
@@ -6790,6 +6834,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[3]=true;
       _image3 = im;
       sizeImge3 = size;
       devHight3 = 183 + (hight*((width-90)/width));
@@ -6798,10 +6843,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image3",_image3!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image3",_image3!, true);
 
       setState(() {
         path3 =p;
+        loading[3]=false;
       });
 
     }catch(e){
@@ -6826,6 +6872,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[4]=true;
       _image4 = im;
       sizeImge4 = size;
       devHight4 = 183 + (hight*((width-90)/width));
@@ -6834,10 +6881,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image4",_image4!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image4",_image4!, true);
 
       setState(() {
         path4 =p;
+        loading[4]=false;
       });
 
     }catch(e){
@@ -6862,6 +6910,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[5]=true;
       _image5 = im;
       sizeImge5 = size;
       devHight5 = 183 + (hight*((width-90)/width));
@@ -6870,10 +6919,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image5",_image5!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image5",_image5!, true);
 
       setState(() {
         path5 =p;
+        loading[5]=false;
       });
 
     }catch(e){
@@ -6897,6 +6947,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[6]=true;
       _image6 = im;
       sizeImge6 = size;
       devHight6 = 183 + (hight*((width-90)/width));
@@ -6905,10 +6956,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image6",_image6!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image6",_image6!, true);
 
       setState(() {
         path6 =p;
+        loading[6]=false;
       });
 
     }catch(e){
@@ -6933,6 +6985,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[7]=true;
       _image7 = im;
       sizeImge7 = size;
       devHight7 = 183 + (hight*((width-90)/width));
@@ -6941,10 +6994,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image7",_image7!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image7",_image7!, true);
 
       setState(() {
         path7 =p;
+        loading[7]=false;
       });
 
     }catch(e){
@@ -6969,6 +7023,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[8]=true;
       _image8 = im;
       sizeImge8 = size;
       devHight8 = 183 + (hight*((width-90)/width));
@@ -6977,10 +7032,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image8",_image8!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image8",_image8!, true);
 
       setState(() {
         path8 =p;
+        loading[8]=false;
       });
 
     }catch(e){
@@ -7005,6 +7061,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[9]=true;
       _image9 = im;
       sizeImge9 = size;
       devHight9 = 183 + (hight*((width-90)/width));
@@ -7013,10 +7070,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image9",_image9!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image9",_image9!, true);
 
       setState(() {
         path9 =p;
+        loading[9]=false;
       });
 
     }catch(e){
@@ -7041,6 +7099,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[10]=true;
       _image10 = im;
       sizeImge10 = size;
       devHight10 = 183 + (hight*((width-90)/width));
@@ -7049,10 +7108,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image10",_image10!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image10",_image10!, true);
 
       setState(() {
         path10 =p;
+        loading[10]=false;
       });
 
     }catch(e){
@@ -7077,6 +7137,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[11]=true;
       _image11 = im;
       sizeImge11 = size;
       devHight11 = 183 + (hight*((width-90)/width));
@@ -7085,10 +7146,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image11",_image11!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image11",_image11!, true);
 
       setState(() {
         path11 =p;
+        loading[11]=false;
       });
 
     }catch(e){
@@ -7112,6 +7174,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[12]=true;
       _image12 = im;
       sizeImge12 = size;
       devHight12 = 183 + (hight*((width-90)/width));
@@ -7120,10 +7183,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image12",_image12!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image12",_image12!, true);
 
       setState(() {
         path12 =p;
+        loading[12]=false;
       });
 
     }catch(e){
@@ -7147,6 +7211,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[13]=true;
       _image13 = im;
       sizeImge13 = size;
       devHight13 = 183 + (hight*((width-90)/width));
@@ -7155,10 +7220,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image13",_image13!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image13",_image13!, true);
 
       setState(() {
         path13 =p;
+        loading[13]=false;
       });
 
     }catch(e){
@@ -7182,6 +7248,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[14]=true;
       _image14 = im;
       sizeImge14 = size;
       devHight14 = 183 + (hight*((width-90)/width));
@@ -7190,10 +7257,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image14",_image14!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image14",_image14!, true);
 
       setState(() {
         path14 =p;
+        loading[14]=false;
       });
 
     }catch(e){
@@ -7218,6 +7286,7 @@ class _AddPostPageState extends State<AddPostPage> {
     List<int> size = imageSize(im);
     size[1]= (((width-90)/ size[0]) * size[1]).toInt();
     setState(() {
+      loading[15]=true;
       _image15 = im;
       sizeImge15 = size;
       devHight15 = 183 + (hight*((width-90)/width));
@@ -7227,10 +7296,11 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image15",_image15!, true);
+      String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image15",_image15!, true);
 
       setState(() {
         path15 =p;
+        loading[15]=false;
       });
 
     }catch(e){
