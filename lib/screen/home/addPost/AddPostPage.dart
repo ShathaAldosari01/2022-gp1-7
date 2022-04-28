@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:gp1_7_2022/screen/home/addPost/utils.dart';
+import 'package:gp1_7_2022/screen/services/firestore_methods.dart';
 import 'package:intl/intl.dart';
 
 import 'dart:typed_data';
@@ -14,7 +15,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:uuid/uuid.dart';
 
+import '../../../providers/user_provider.dart';
 import '../../auth/signup/userInfo/photo/storageMethods.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 
@@ -30,6 +33,9 @@ import 'package:google_maps_webservice/places.dart';
 //img
 import 'package:image/image.dart' as IMG;
 
+//database
+import 'package:provider/provider.dart';
+
 
 
 class AddPostPage extends StatefulWidget {
@@ -40,6 +46,53 @@ class AddPostPage extends StatefulWidget {
 const kGoogleApiKey = 'AIzaSyCckhVmNilRBCInrm087ZQr0WxR1u3AbhU';
 
 class _AddPostPageState extends State<AddPostPage> {
+
+
+  void addPostToDatabase(
+      /*user info*/
+      String uid,
+      String username,
+      String photoPath,
+
+      /*place type*/
+      String country,
+      String city,
+      List<String> categories,
+      String type,
+      String locationId,
+
+      /*place info*/
+      String postId,
+      String name,
+      String address,
+      double rating,
+
+      /*visibility*/
+      String visibility,
+
+      /*date*/
+      DateTime dateVisit,
+
+      /*content*/
+      String title,
+      List<String> bodies,
+      List<String> imgsPath,
+      List<bool> isCoverPage,
+
+      )async{
+    try{
+      String res = await FireStoreMethods().uploadPost(uid, username, photoPath, country, city, categories, type, locationId, postId, name, address, rating, visibility, dateVisit, title, bodies, imgsPath, isCoverPage);
+      if(res== "success"){
+        showSnackBar(context, "Posted!");
+      }else{
+        showSnackBar(context, res);
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+
   //API
   final Mode _mode = Mode.overlay;
 
@@ -51,7 +104,6 @@ class _AddPostPageState extends State<AddPostPage> {
     super.dispose();
     //for disable button
     titleControl.dispose();
-
   }
 
   final _searchController = TextEditingController();
@@ -66,16 +118,16 @@ class _AddPostPageState extends State<AddPostPage> {
     titleControl.addListener(() {
       final isActiveTitle = titleControl.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[2]=isActiveTitle ;
+        this.isButtonActive[2] = isActiveTitle;
       });
     });
     //end of title
     //body1
     body1Control = TextEditingController();
     body1Control.addListener(() {
-      final isActiveBody1 = body1Control.text.isNotEmpty ;
+      final isActiveBody1 = body1Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[3]=isActiveBody1 ;
+        this.isButtonActive[3] = isActiveBody1;
       });
     });
     //end of body1
@@ -83,9 +135,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body2
     body2Control = TextEditingController();
     body2Control.addListener(() {
-      final isActiveBody2 = body2Control.text.isNotEmpty ;
+      final isActiveBody2 = body2Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[4]=isActiveBody2 ;
+        this.isButtonActive[4] = isActiveBody2;
       });
     });
     //end of body2
@@ -93,9 +145,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body3
     body3Control = TextEditingController();
     body3Control.addListener(() {
-      final isActiveBody3 = body3Control.text.isNotEmpty ;
+      final isActiveBody3 = body3Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[5]=isActiveBody3 ;
+        this.isButtonActive[5] = isActiveBody3;
       });
     });
     //end of body3
@@ -103,9 +155,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body4
     body4Control = TextEditingController();
     body4Control.addListener(() {
-      final isActiveBody4 = body4Control.text.isNotEmpty ;
+      final isActiveBody4 = body4Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[6]=isActiveBody4 ;
+        this.isButtonActive[6] = isActiveBody4;
       });
     });
     //end of body4
@@ -113,9 +165,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body5
     body5Control = TextEditingController();
     body5Control.addListener(() {
-      final isActiveBody5 = body5Control.text.isNotEmpty ;
+      final isActiveBody5 = body5Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[7]=isActiveBody5 ;
+        this.isButtonActive[7] = isActiveBody5;
       });
     });
     //end of body5
@@ -123,9 +175,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body6
     body6Control = TextEditingController();
     body6Control.addListener(() {
-      final isActiveBody6 = body6Control.text.isNotEmpty ;
+      final isActiveBody6 = body6Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[8]=isActiveBody6 ;
+        this.isButtonActive[8] = isActiveBody6;
       });
     });
     //end of body6
@@ -133,9 +185,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body7
     body7Control = TextEditingController();
     body7Control.addListener(() {
-      final isActiveBody7 = body7Control.text.isNotEmpty ;
+      final isActiveBody7 = body7Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[9]=isActiveBody7 ;
+        this.isButtonActive[9] = isActiveBody7;
       });
     });
     //end of body7
@@ -143,9 +195,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body8
     body8Control = TextEditingController();
     body8Control.addListener(() {
-      final isActiveBody8 = body8Control.text.isNotEmpty ;
+      final isActiveBody8 = body8Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[10]=isActiveBody8 ;
+        this.isButtonActive[10] = isActiveBody8;
       });
     });
     //end of body8
@@ -153,9 +205,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body9
     body9Control = TextEditingController();
     body9Control.addListener(() {
-      final isActiveBody9 = body9Control.text.isNotEmpty ;
+      final isActiveBody9 = body9Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[11]=isActiveBody9 ;
+        this.isButtonActive[11] = isActiveBody9;
       });
     });
     //end of body9
@@ -163,9 +215,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body10
     body10Control = TextEditingController();
     body10Control.addListener(() {
-      final isActiveBody10 = body10Control.text.isNotEmpty ;
+      final isActiveBody10 = body10Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[12]=isActiveBody10 ;
+        this.isButtonActive[12] = isActiveBody10;
       });
     });
     //end of body10
@@ -173,9 +225,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body11
     body11Control = TextEditingController();
     body11Control.addListener(() {
-      final isActiveBody11 = body11Control.text.isNotEmpty ;
+      final isActiveBody11 = body11Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[13]=isActiveBody11 ;
+        this.isButtonActive[13] = isActiveBody11;
       });
     });
     //end of body11
@@ -183,9 +235,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body12
     body12Control = TextEditingController();
     body12Control.addListener(() {
-      final isActiveBody12 = body12Control.text.isNotEmpty ;
+      final isActiveBody12 = body12Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[14]=isActiveBody12 ;
+        this.isButtonActive[14] = isActiveBody12;
       });
     });
     //end of body12
@@ -193,9 +245,9 @@ class _AddPostPageState extends State<AddPostPage> {
     //body13
     body13Control = TextEditingController();
     body13Control.addListener(() {
-      final isActiveBody13 = body13Control.text.isNotEmpty ;
+      final isActiveBody13 = body13Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[15]=isActiveBody13 ;
+        this.isButtonActive[15] = isActiveBody13;
       });
     });
     //end of body13
@@ -203,47 +255,77 @@ class _AddPostPageState extends State<AddPostPage> {
     //body14
     body14Control = TextEditingController();
     body14Control.addListener(() {
-      final isActiveBody14 = body14Control.text.isNotEmpty ;
+      final isActiveBody14 = body14Control.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[16]=isActiveBody14 ;
+        this.isButtonActive[16] = isActiveBody14;
       });
     });
     //end of body14
 
     //body15
     body15Control = TextEditingController();
-    body15Control.addListener(() {
-    });
+    body15Control.addListener(() {});
     //end of body15
 
     //screen width
     Future.delayed(Duration.zero, () {
       setState(() {
-        width = MediaQuery.of(context).size.width;
-        hight = MediaQuery.of(context).size.height;
+        width = MediaQuery
+            .of(context)
+            .size
+            .width;
+        hight = MediaQuery
+            .of(context)
+            .size
+            .height;
       });
     });
-
-
   }
 
   /*attributes*/
   final focus = FocusNode();
   List<Country> countries = [];
   Country _selectedCountry = Country.init();
-  //end country
+  String country = "";
+  String city = "";
+
+  String postId = const Uuid().v1();
 
   /*data base */
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   /* date */
   DateTime dateTime = DateTime.now();
   var dayfromnow = DateTime.now().add(new Duration(hours: 1));
+
   /* rating */
   int rating = 0;
+
   /* visit */
   String visit = "";
+
   /* button active*/
-  List<bool> isButtonActive = [false, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false,false];
+  List<bool> isButtonActive = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
+
   // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,category
 
   /* images */
@@ -312,12 +394,43 @@ class _AddPostPageState extends State<AddPostPage> {
   List<int> sizeImge15 = [];
 
   /* visibility */
-  List<bool> vis = [true, false,false,false,false,false,false,false,false,false,false,false,false,false, false];
+  List<bool> vis = [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
   /* For x icon visibility */
-  List<bool> visIcon = [true, false,false,false,false,false,false,false,false,false,false,false,false,false];
+  List<bool> visIcon = [
+    true,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
-  int  counter = 0;// cont the pages
+  int counter = 0; // cont the pages
   int maxImgs = 15;
 
   /*hight*/
@@ -344,7 +457,7 @@ class _AddPostPageState extends State<AddPostPage> {
   //form
   final _formKey = GlobalKey<FormState>();
   final _formKey1 = GlobalKey<FormState>();
-  final _formKey2= GlobalKey<FormState>();
+  final _formKey2 = GlobalKey<FormState>();
   final _formKey3 = GlobalKey<FormState>();
   final _formKey4 = GlobalKey<FormState>();
   final _formKey5 = GlobalKey<FormState>();
@@ -360,22 +473,22 @@ class _AddPostPageState extends State<AddPostPage> {
   final _formKey15 = GlobalKey<FormState>();
 
   //for disable for done button
-  late TextEditingController titleControl ;
-  late TextEditingController body1Control ;
-  late TextEditingController body2Control ;
-  late TextEditingController body3Control ;
-  late TextEditingController body4Control ;
-  late TextEditingController body5Control ;
-  late TextEditingController body6Control ;
-  late TextEditingController body7Control ;
-  late TextEditingController body8Control ;
-  late TextEditingController body9Control ;
-  late TextEditingController body10Control ;
-  late TextEditingController body11Control ;
-  late TextEditingController body12Control ;
-  late TextEditingController body13Control ;
-  late TextEditingController body14Control ;
-  late TextEditingController body15Control ;
+  late TextEditingController titleControl;
+  late TextEditingController body1Control;
+  late TextEditingController body2Control;
+  late TextEditingController body3Control;
+  late TextEditingController body4Control;
+  late TextEditingController body5Control;
+  late TextEditingController body6Control;
+  late TextEditingController body7Control;
+  late TextEditingController body8Control;
+  late TextEditingController body9Control;
+  late TextEditingController body10Control;
+  late TextEditingController body11Control;
+  late TextEditingController body12Control;
+  late TextEditingController body13Control;
+  late TextEditingController body14Control;
+  late TextEditingController body15Control;
 
   String title = "";
   String body1 = "";
@@ -395,17 +508,21 @@ class _AddPostPageState extends State<AddPostPage> {
   String body15 = "";
 
   /*title size*/
-  double titleSize= 18;
+  double titleSize = 18;
 
   //Location
-  String locationId="";
+  String locationId = "";
   String locationName = "";
   String locationAdress = "";
   List<String> locationTypes = [];
   String locationType = "";
   List<int> numbers = [0];
   List<Color> typeTextColor = [Palette.textColor, Palette.backgroundColor];
-  List<Color> typeBackgroundColor = [Palette.midgrey, Palette.buttonColor, Palette.nameColor,];
+  List<Color> typeBackgroundColor = [
+    Palette.midgrey,
+    Palette.buttonColor,
+    Palette.nameColor,
+  ];
   List<Color> typeBorderColor = [Palette.grey, Palette.buttonDisableColor];
 
   /*screen width*/
@@ -413,18 +530,52 @@ class _AddPostPageState extends State<AddPostPage> {
   double hight = 700;
 
   /*image looks*/
-  List<BoxFit> ImgsLook = [BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover,BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover, BoxFit.cover,];
-  List<bool> checkImgs = [true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true];
-
-
-
+  List<BoxFit> ImgsLook = [
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+    BoxFit.cover,
+  ];
+  List<bool> checkImgs = [
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true,
+    true
+  ];
 
 
   @override
-  Widget build(BuildContext context) =>
-      /* back button on devise */
-  WillPopScope(
-    onWillPop: () async{
+  Widget build(BuildContext context) {
+    /*user*/
+    // final UserProvider userProvider = Provider.of<UserProvider>(context);
+
+    /* back button on devise */
+  return WillPopScope(
+    onWillPop: () async {
       Navigator.pushNamed(context, '/navigationBar');
       return true;
     },
@@ -448,7 +599,8 @@ class _AddPostPageState extends State<AddPostPage> {
                 /* make own arrow*/
                 IconButton(
                   icon: const Icon(Icons.arrow_back, color: Palette.textColor),
-                  onPressed: () => Navigator.pushNamed(context, '/navigationBar'),
+                  onPressed: () =>
+                      Navigator.pushNamed(context, '/navigationBar'),
                 ),
 
                 /*title (Add Post)*/
@@ -482,7 +634,6 @@ class _AddPostPageState extends State<AddPostPage> {
       ),
 
 
-
       //fix overload error
       resizeToAvoidBottomInset: false,
 
@@ -498,7 +649,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 height: 20,
               ),
 
-                /*country */
+              /*country */
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -510,14 +661,14 @@ class _AddPostPageState extends State<AddPostPage> {
                       children: [
                         /*icon*/
                         CircleAvatar(
-                          radius: 13,
-                          backgroundColor: Palette.grey,
-                          child:Text("C",
-                              style:TextStyle(
-                                color:Palette.backgroundColor,
-                                 fontWeight:FontWeight.bold  ,
-                              )
-                          )
+                            radius: 13,
+                            backgroundColor: Palette.grey,
+                            child: Text("C",
+                                style: TextStyle(
+                                  color: Palette.backgroundColor,
+                                  fontWeight: FontWeight.bold,
+                                )
+                            )
                         ),
                         /*end of icon */
 
@@ -542,12 +693,12 @@ class _AddPostPageState extends State<AddPostPage> {
                     children: [
 
                       /*county text*/
-                     Text('County',
-                       style: TextStyle(
-                           fontSize: titleSize,
-                           fontWeight: FontWeight.w500
-                       )
-                     ),
+                      Text('County',
+                          style: TextStyle(
+                              fontSize: titleSize,
+                              fontWeight: FontWeight.w500
+                          )
+                      ),
                       /*end of county text*/
 
                       SizedBox(height: 12),
@@ -556,51 +707,56 @@ class _AddPostPageState extends State<AddPostPage> {
                       Container(
                         width: 235,
                         child: Column(
-                            children: [
-                              SearchField(
-                                focusNode: focus,
-                                suggestions: countries
-                                    .map((country) =>
-                                    SearchFieldListItem(country.name, item: country))
-                                    .toList(),
-                                suggestionState: Suggestion.expand,
-                                controller: _searchController,
-                                hint: 'Search by country name',
-                                maxSuggestionsInViewPort: 4,
-                                itemHeight: 45,
-                                inputType: TextInputType.text,
-                                onSuggestionTap: (SearchFieldListItem<Country> x) {
-                                  setState(() {
-                                    _selectedCountry = x.item!;
-                                  });
-                                  focus.unfocus();
-                                },
-                                searchInputDecoration:  const InputDecoration(
-                                  /*background color*/
-                                  fillColor: Palette.lightgrey,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
-                                  filled: true,
-                                  border: OutlineInputBorder(),
-                                  hintText: "Search by country name",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                          children: [
+                            SearchField(
+                              focusNode: focus,
+                              suggestions: countries
+                                  .map((country) =>
+                                  SearchFieldListItem(
+                                      country.name, item: country))
+                                  .toList(),
+                              suggestionState: Suggestion.expand,
+                              controller: _searchController,
+                              hint: 'Search by country name',
+                              maxSuggestionsInViewPort: 4,
+                              itemHeight: 45,
+                              inputType: TextInputType.text,
+                              onSuggestionTap: (
+                                  SearchFieldListItem<Country> x) {
+                                setState(() {
+                                  _selectedCountry = x.item!;
+                                  country = _selectedCountry.name;
+                                });
+                                focus.unfocus();
+                              },
+                              searchInputDecoration: const InputDecoration(
+                                /*background color*/
+                                fillColor: Palette.lightgrey,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 1.0, horizontal: 10),
+                                filled: true,
+                                border: OutlineInputBorder(),
+                                hintText: "Search by country name",
+                                hintStyle: TextStyle(
+                                    fontSize: 18.0, color: Palette.grey),
 
-                                  /*Border*/
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                    ),
+                                /*Border*/
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Palette.midgrey,
                                   ),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                      color: Palette.midgrey,
-                                      width: 2.0,
-                                    ),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Palette.midgrey,
+                                    width: 2.0,
                                   ),
                                 ),
                               ),
+                            ),
 
-                            ],
-                          ),
+                          ],
+                        ),
                       ),
                       /*end of county */
 
@@ -612,7 +768,6 @@ class _AddPostPageState extends State<AddPostPage> {
                 ],
               ),
               /*end of county*/
-
 
 
               /*Location */
@@ -641,7 +796,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         Container(
                           color: Colors.grey,
                           width: 3,
-                          height:!isButtonActive[0]? 77:200,
+                          height: !isButtonActive[0] ? 77 : 200,
                         )
                         /*end of divider */
 
@@ -656,30 +811,32 @@ class _AddPostPageState extends State<AddPostPage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       /* Location title*/
-                     Text("Location",
-                         style:TextStyle(
-                             fontSize: titleSize,
-                             fontWeight: FontWeight.w500,
-                         ),
-                     ),
+                      Text("Location",
+                        style: TextStyle(
+                          fontSize: titleSize,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
                       /*end of Location text*/
 
                       isButtonActive[0]
                           ? SizedBox(height: 12)
-                          :SizedBox(),
+                          : SizedBox(),
 
                       /*Location */
                       /*location info*/
-                      locationName.isNotEmpty?
+                      locationName.isNotEmpty ?
                       Container(
-                       padding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 10),
                         color: Palette.midgrey,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             /*Name*/
-                            locationName.isNotEmpty?
+                            locationName.isNotEmpty ?
                             Container(
+                                width: 260,
                                 child: RichText(
                                   textAlign: TextAlign.left,
                                   text: TextSpan(
@@ -695,21 +852,21 @@ class _AddPostPageState extends State<AddPostPage> {
                                             style: TextStyle(
                                               color: Palette.textColor,
                                               fontSize: 16,
-                                              fontWeight: FontWeight.normal ,
+                                              fontWeight: FontWeight.normal,
                                             )
                                         ),
                                       ]
                                   ),
                                 )
-                            ) :SizedBox(),
+                            ) : SizedBox(),
                             /* End of Name */
 
                             isButtonActive[0]
                                 ? SizedBox(height: 8)
-                                :SizedBox(),
+                                : SizedBox(),
 
                             /*Address*/
-                            locationAdress.isNotEmpty?
+                            locationAdress.isNotEmpty ?
                             Container(
                                 width: 260,
                                 child: RichText(
@@ -726,30 +883,32 @@ class _AddPostPageState extends State<AddPostPage> {
                                             style: TextStyle(
                                               color: Palette.textColor,
                                               fontSize: 16,
-                                              fontWeight: FontWeight.normal ,
+                                              fontWeight: FontWeight.normal,
                                             )
                                         ),
                                       ]
                                   ),
                                 )
-                            ) :SizedBox(),
+                            ) : SizedBox(),
                             /* End of Address */
                           ],
                         ),
-                      ):SizedBox(),
+                      ) : SizedBox(),
 
 
                       SizedBox(height: 12),
 
                       /* Location button */
                       Container(
-                        width:150,
+                        width: 150,
                         alignment: Alignment.center,
                         height: 50.0,
                         /* button colors */
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                          gradient:  _selectedCountry.code.toString().isNotEmpty
+                          gradient: _selectedCountry.code
+                              .toString()
+                              .isNotEmpty
                               ? LinearGradient(colors: [
                             Palette.buttonColor,
                             Palette.nameColor,
@@ -765,13 +924,15 @@ class _AddPostPageState extends State<AddPostPage> {
                           minWidth: 350,
                           child: FlatButton(
                             onPressed:
-                            _selectedCountry.code.toString().isNotEmpty
+                            _selectedCountry.code
+                                .toString()
+                                .isNotEmpty
                                 ? _handlePressButton
-                                :null,
+                                : null,
                             child: Text(
                               !isButtonActive[0]
-                                  ?'Choose Place'
-                              :'Change Place',
+                                  ? 'Choose Place'
+                                  : 'Change Place',
                               style: TextStyle(
                                 color: Palette.backgroundColor,
                                 fontWeight: FontWeight.bold,
@@ -797,10 +958,9 @@ class _AddPostPageState extends State<AddPostPage> {
               /*end of Location*/
 
 
-
               /*type*/
               Visibility(
-                visible: isButtonActive[0]&&locationName.isNotEmpty,
+                visible: isButtonActive[0] && locationName.isNotEmpty,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -812,12 +972,12 @@ class _AddPostPageState extends State<AddPostPage> {
                         children: [
                           /*icon*/
                           CircleAvatar(
-                              radius: 13,
-                              backgroundColor: Palette.grey,
-                              child: Icon(
-                                Icons.all_inbox_rounded ,
-                                color:Colors.white
-                              ),
+                            radius: 13,
+                            backgroundColor: Palette.grey,
+                            child: Icon(
+                                Icons.all_inbox_rounded,
+                                color: Colors.white
+                            ),
                           ),
                           /*end of icon */
 
@@ -857,25 +1017,28 @@ class _AddPostPageState extends State<AddPostPage> {
 
                         /* Category */
                         Container(
-                          width: 250,
+                            width: 250,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                for ( var i =0;i< locationTypes.length; i++)
+                                for ( var i = 0; i < locationTypes.length; i++)
                                   Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
-                                    padding: EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 5),
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 6, vertical: 5),
 
                                     // to make corner rounded
                                     decoration: BoxDecoration(
                                         gradient: LinearGradient(colors: [
                                           typeBackgroundColor[numbers[i]],
-                                          typeBackgroundColor[numbers[i]*2],
+                                          typeBackgroundColor[numbers[i] * 2],
                                         ]),
                                         border: Border.all(
                                           color: typeBorderColor[numbers[i]],
                                         ),
-                                        borderRadius: BorderRadius.all(Radius.circular(20))
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(20))
                                     ),
                                     // End of corner rounded
 
@@ -883,7 +1046,8 @@ class _AddPostPageState extends State<AddPostPage> {
                                       style: TextButton.styleFrom(
                                           padding: EdgeInsets.zero,
                                           minimumSize: Size(50, 30),
-                                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                          tapTargetSize: MaterialTapTargetSize
+                                              .shrinkWrap,
                                           alignment: Alignment.center),
                                       child: Text(
                                         locationTypes[i],
@@ -892,7 +1056,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           fontSize: 16,
                                         ),
                                       ),
-                                      onPressed: (){
+                                      onPressed: () {
                                         //save type
                                         locationType = locationTypes[i];
                                         print(locationType);
@@ -902,28 +1066,29 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                         //2) remove from all
                                         setState(() {
-                                          for(int j=0; j<numbers.length; j++){
-                                            if(numbers[j]==1){
-                                              numbers[j]=0;
+                                          for (int j = 0; j <
+                                              numbers.length; j++) {
+                                            if (numbers[j] == 1) {
+                                              numbers[j] = 0;
                                             }
                                           }
                                         });
 
                                         //1B) reverse the colors
-                                        if(num==0)
-                                        setState(() {
+                                        if (num == 0)
+                                          setState(() {
                                             numbers[i] = 1;
-                                        });
+                                          });
                                         bool flag = false;
-                                         for(int j=0; j<numbers.length; j++){
-                                           if(numbers[j]==1){
-                                             flag=true;
-                                           }
-                                         }
-                                         setState(() {
-                                           isButtonActive[17]= flag;
-                                         });
-
+                                        for (int j = 0; j <
+                                            numbers.length; j++) {
+                                          if (numbers[j] == 1) {
+                                            flag = true;
+                                          }
+                                        }
+                                        setState(() {
+                                          isButtonActive[17] = flag;
+                                        });
                                       },
                                     ),
                                   )
@@ -945,10 +1110,6 @@ class _AddPostPageState extends State<AddPostPage> {
                 ),
               ),
               /*end of Category*/
-
-
-
-
 
 
               /*rating */
@@ -1033,11 +1194,12 @@ class _AddPostPageState extends State<AddPostPage> {
                         itemBuilder: (context, _) =>
                             Icon(Icons.star, color: Palette.buttonColor),
                         updateOnDrag: true,
-                        onRatingUpdate: (rating) => setState(() {
-                          this.rating = rating.toInt();
-                          isButtonActive[1] = true;
-                          print(isButtonActive);
-                        }),
+                        onRatingUpdate: (rating) =>
+                            setState(() {
+                              this.rating = rating.toInt();
+                              isButtonActive[1] = true;
+                              print(isButtonActive);
+                            }),
                       ),
                       /*end of rating */
 
@@ -1049,7 +1211,6 @@ class _AddPostPageState extends State<AddPostPage> {
                 ],
               ),
               /*end of rating*/
-
 
 
               /*date */
@@ -1113,11 +1274,12 @@ class _AddPostPageState extends State<AddPostPage> {
                       Container(
                         width: 235,
                         child: TextFormField(
-                          onTap:  () {
+                          onTap: () {
                             Utils.showSheet(context, child: buildDatePicker(),
                                 onClicked: () {
                                   setState(() {
-                                    visit = DateFormat.yMMMMd('en_US').format(dateTime);
+                                    visit = DateFormat.yMMMMd('en_US').format(
+                                        dateTime);
                                   });
                                   Navigator.pop(context);
                                 });
@@ -1131,11 +1293,13 @@ class _AddPostPageState extends State<AddPostPage> {
                             /*background color*/
                             fillColor: Palette.lightgrey,
                             filled: true,
-                            contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                            contentPadding: const EdgeInsets.symmetric(
+                                vertical: 1.0, horizontal: 10),
 
                             /*hint*/
                             border: OutlineInputBorder(),
-                            hintText: visit.isNotEmpty? "$visit" :DateFormat.yMMMMd('en_US').format(dateTime),
+                            hintText: visit.isNotEmpty ? "$visit" : DateFormat
+                                .yMMMMd('en_US').format(dateTime),
                             hintStyle: TextStyle(
                                 fontSize: 18.0, color: Palette.grey),
 
@@ -1164,7 +1328,6 @@ class _AddPostPageState extends State<AddPostPage> {
                 ],
               ),
               /*end of date*/
-
 
 
               /*title */
@@ -1243,13 +1406,14 @@ class _AddPostPageState extends State<AddPostPage> {
                                 },
 
                                 /*validation*/
-                                validator: (val){
+                                validator: (val) {
                                   if (val!.isEmpty) {
                                     return "Title should not be empty";
                                   }
                                   if (val.length >= 30) {
                                     return "Create a shorter title under 31 characters.";
-                                  }if ((val.contains('&') ||
+                                  }
+                                  if ((val.contains('&') ||
                                       val.contains("#") ||
                                       val.contains("*") ||
                                       val.contains("!") ||
@@ -1283,12 +1447,15 @@ class _AddPostPageState extends State<AddPostPage> {
                                   /*background color*/
                                   fillColor: Palette.lightgrey,
                                   filled: true,
-                                  contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      vertical: 1.0, horizontal: 10),
 
                                   /*hint*/
                                   border: OutlineInputBorder(),
                                   hintText: "Title Of Post",
-                                  hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey, height: 2.0,),
+                                  hintStyle: TextStyle(fontSize: 18.0,
+                                    color: Palette.grey,
+                                    height: 2.0,),
 
                                   /*Border*/
                                   focusedBorder: OutlineInputBorder(
@@ -1333,56 +1500,56 @@ class _AddPostPageState extends State<AddPostPage> {
                       /*cover image*/
                       _Coverimage != null
                           ? Stack(
-                            alignment : AlignmentDirectional.topEnd,
-                            children: [
-                              Container(
-                                margin: EdgeInsets.fromLTRB(0,10,10,0),
-                                color: Palette.midgrey,
-                                alignment: Alignment.centerLeft,
-                                width: width-90,
-                                // height: hight*((width-90)/width),
-                                child:  checkImgs[0]?
-                                Image(
-                                  image: MemoryImage(_Coverimage!),
-                                  width: width-90,
-                                  height: hight*((width-90)/width),
-                                  fit: ImgsLook[0],
-                                ):
-                                Image(
-                                  image: MemoryImage(_Coverimage!),
-                                  width: width-90,
-                                ),
-                              ),
+                        alignment: AlignmentDirectional.topEnd,
+                        children: [
+                          Container(
+                            margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
+                            color: Palette.midgrey,
+                            alignment: Alignment.centerLeft,
+                            width: width - 90,
+                            // height: hight*((width-90)/width),
+                            child: checkImgs[0] ?
+                            Image(
+                              image: MemoryImage(_Coverimage!),
+                              width: width - 90,
+                              height: hight * ((width - 90) / width),
+                              fit: ImgsLook[0],
+                            ) :
+                            Image(
+                              image: MemoryImage(_Coverimage!),
+                              width: width - 90,
+                            ),
+                          ),
 
-                              //Delete image
-                              CircleAvatar(
-                                backgroundColor: Palette.red,
-                                radius: 15,
-                                child: IconButton(
-                                  //Remove the margin
-                                    padding: EdgeInsets.zero,
-                                    constraints: BoxConstraints(),
-                                    //End of remove margin
-                                    onPressed: (){
-                                      //remove a image
-                                      setState(() {
-                                        print(_Coverimage);
-                                        path = 'no';
-                                        _Coverimage = null;
-                                        devHight = 121;
-                                        checkImgs[0]= true;
-                                      });
-                                    },
-                                    icon: Icon(
-                                      Icons.clear,
-                                      color: Palette.backgroundColor,
-                                      size: 25,
-                                    )
-                                ),
-                              ),
-                              //end delete image
-                            ],
-                          )
+                          //Delete image
+                          CircleAvatar(
+                            backgroundColor: Palette.red,
+                            radius: 15,
+                            child: IconButton(
+                              //Remove the margin
+                                padding: EdgeInsets.zero,
+                                constraints: BoxConstraints(),
+                                //End of remove margin
+                                onPressed: () {
+                                  //remove a image
+                                  setState(() {
+                                    print(_Coverimage);
+                                    path = 'no';
+                                    _Coverimage = null;
+                                    devHight = 121;
+                                    checkImgs[0] = true;
+                                  });
+                                },
+                                icon: Icon(
+                                  Icons.clear,
+                                  color: Palette.backgroundColor,
+                                  size: 25,
+                                )
+                            ),
+                          ),
+                          //end delete image
+                        ],
+                      )
                           : SizedBox(),
                       /*end of cover img*/
 
@@ -1390,28 +1557,29 @@ class _AddPostPageState extends State<AddPostPage> {
                       _Coverimage != null ?
                       Container(
                         color: Palette.lightgrey,
-                        width: width-90,
+                        width: width - 90,
                         child: CheckboxListTile(
                           //text
                           title: Text("Cover the entire page"),
-                            //value
-                            value: checkImgs[0],
-                            //action
-                            onChanged: (bool? value){
+                          //value
+                          value: checkImgs[0],
+                          //action
+                          onChanged: (bool? value) {
+                            setState(() {
+                              checkImgs[0] = !checkImgs[0];
+                            });
+                            if (checkImgs[0]) {
                               setState(() {
-                                checkImgs[0]= !checkImgs[0];
+                                devHight =
+                                    159 + (hight * ((width - 90) / width));
                               });
-                              if(checkImgs[0]){
-                                setState(() {
-                                  devHight = 159 + (hight*((width-90)/width));
-                                });
-                              }else{
-                                setState(() {
-                                  devHight = sizeImge[1].toDouble()+159;
-                                });
-                              }
-                            },
-                            //style
+                            } else {
+                              setState(() {
+                                devHight = sizeImge[1].toDouble() + 159;
+                              });
+                            }
+                          },
+                          //style
                           controlAffinity: ListTileControlAffinity.leading,
                           activeColor: Palette.buttonColor,
                           // checkColor: Palette.buttonColor,
@@ -1429,7 +1597,6 @@ class _AddPostPageState extends State<AddPostPage> {
                 ],
               ),
               /*end of title*/
-
 
 
               /*body 1 */
@@ -1503,7 +1670,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                 child: TextFormField(
 
                                   //for disable button
-                                  controller: body1Control ,
+                                  controller: body1Control,
 
                                   onChanged: (val) {
                                     /*change the val of title*/
@@ -1513,13 +1680,14 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isEmpty) {
                                       return "Body should not be empty";
                                     }
                                     if (val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -1552,16 +1720,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of First Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -1606,23 +1777,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image1 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[1]?
+                              width: width - 90,
+                              child: checkImgs[1] ?
                               Image(
                                 image: MemoryImage(_image1!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[1],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image1!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -1635,13 +1806,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path1 = 'no';
                                       _image1 = null;
                                       devHight1 = 121;
-                                      checkImgs[1]= true;
+                                      checkImgs[1] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -1661,24 +1832,25 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image1 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[1],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[1]= !checkImgs[1];
+                                checkImgs[1] = !checkImgs[1];
                               });
-                              if(checkImgs[1]){
+                              if (checkImgs[1]) {
                                 setState(() {
-                                  devHight1 = 159 + (hight*((width-90)/width));
+                                  devHight1 =
+                                      159 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
-                                  devHight1 = sizeImge1[1].toDouble()+159;
+                                  devHight1 = sizeImge1[1].toDouble() + 159;
                                 });
                               }
                             },
@@ -1717,7 +1889,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           CircleAvatar(
                               radius: 13,
                               backgroundColor: Palette.grey,
-                              child:Text(
+                              child: Text(
                                 '2',
                                 style: TextStyle(
                                   color: Palette.backgroundColor,
@@ -1747,14 +1919,14 @@ class _AddPostPageState extends State<AddPostPage> {
                         Row(
                           children: [
                             /*page title */
-                                Text(
-                                "Page 2",
-                                style: TextStyle(
-                                  color: Palette.textColor,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: titleSize,
-                                ),
+                            Text(
+                              "Page 2",
+                              style: TextStyle(
+                                color: Palette.textColor,
+                                fontWeight: FontWeight.w500,
+                                fontSize: titleSize,
                               ),
+                            ),
                             /* end of page title */
 
                             SizedBox(width: 193,),
@@ -1767,17 +1939,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[1]=false;
+                                      vis[1] = false;
                                       counter--;
                                       counter--;
                                       //remove the image
-                                      path2='no';
+                                      path2 = 'no';
                                       _image2 = null;
                                       devHight2 = 145;
-                                      checkImgs[2]= true;
+                                      checkImgs[2] = true;
                                     });
                                     //clear the text
                                     body2Control.clear();
@@ -1819,35 +1991,36 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if (val!.isNotEmpty &&
+                                    }
+                                    if (val!.isNotEmpty &&
                                         (val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
-                                        val.contains("!") ||
-                                        val.contains("%") ||
-                                        val.contains("~") ||
-                                        val.contains("`") ||
-                                        val.contains("@") ||
-                                        val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
-                                        val.contains("+") ||
-                                        val.contains("=") ||
-                                        val.contains("{") ||
-                                        val.contains("[") ||
-                                        val.contains("}") ||
-                                        val.contains("]") ||
-                                        val.contains("|") ||
-                                        val.contains(":") ||
-                                        val.contains(";") ||
-                                        val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
+                                            val.contains("#") ||
+                                            val.contains("*") ||
+                                            val.contains("!") ||
+                                            val.contains("%") ||
+                                            val.contains("~") ||
+                                            val.contains("`") ||
+                                            val.contains("@") ||
+                                            val.contains("^") ||
+                                            val.contains("(") ||
+                                            val.contains(")") ||
+                                            val.contains("+") ||
+                                            val.contains("=") ||
+                                            val.contains("{") ||
+                                            val.contains("[") ||
+                                            val.contains("}") ||
+                                            val.contains("]") ||
+                                            val.contains("|") ||
+                                            val.contains(":") ||
+                                            val.contains(";") ||
+                                            val.contains("<") ||
+                                            val.contains(">") ||
+                                            val.contains(",") ||
+                                            val.contains("?") ||
+                                            val.contains("/"))) {
                                       return "Body should not contain special characters. only '-', '_' and '.'.";
                                     }
                                     return null;
@@ -1855,16 +2028,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Second Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -1909,23 +2085,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image2 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[2]?
+                              width: width - 90,
+                              child: checkImgs[2] ?
                               Image(
                                 image: MemoryImage(_image2!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[2],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image2!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -1938,13 +2114,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path2 = 'no';
                                       _image2 = null;
                                       devHight2 = 121;
-                                      checkImgs[2]= true;
+                                      checkImgs[2] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -1964,22 +2140,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image2 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[2],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[2]= !checkImgs[2];
+                                checkImgs[2] = !checkImgs[2];
                               });
-                              if(checkImgs[2]){
+                              if (checkImgs[2]) {
                                 setState(() {
-                                  devHight2 = 183 + (hight*((width-90)/width));
+                                  devHight2 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight2 = sizeImge2[1].toDouble() + 183;
                                 });
@@ -2072,17 +2249,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[2]=false;
+                                      vis[2] = false;
                                       counter--;
                                       //remove the image
-                                      path3='no';
+                                      path3 = 'no';
                                       _image3 = null;
                                       devHight3 = 145;
-                                      visIcon[0]=true;
-                                      checkImgs[3]= true;
+                                      visIcon[0] = true;
+                                      checkImgs[3] = true;
                                     });
                                     //clear the text
                                     body3Control.clear();
@@ -2109,7 +2286,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey3,
+                              key: _formKey3,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -2122,10 +2299,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -2160,16 +2338,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in testified
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in testified
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Thread Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -2214,23 +2395,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image3 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[3]?
+                              width: width - 90,
+                              child: checkImgs[3] ?
                               Image(
                                 image: MemoryImage(_image3!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[3],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image3!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -2243,13 +2424,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path3 = 'no';
                                       _image3 = null;
                                       devHight3 = 121;
-                                      checkImgs[3]= true;
+                                      checkImgs[3] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -2269,22 +2450,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image3 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[3],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
                                 checkImgs[3] = !checkImgs[3];
                               });
-                              if(checkImgs[3]){
+                              if (checkImgs[3]) {
                                 setState(() {
-                                  devHight3 = 183 + (hight*((width-90)/width));
+                                  devHight3 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight3 = sizeImge3[1].toDouble() + 183;
                                 });
@@ -2377,17 +2559,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[3]=false;
+                                      vis[3] = false;
                                       counter--;
                                       //remove the image
-                                      path4='no';
+                                      path4 = 'no';
                                       _image4 = null;
                                       devHight4 = 145;
-                                      checkImgs[4]= true;
-                                      visIcon[1]=true;
+                                      checkImgs[4] = true;
+                                      visIcon[1] = true;
                                     });
                                     //clear the text
                                     body4Control.clear();
@@ -2414,13 +2596,13 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey4,
+                              key: _formKey4,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body4Control,
-                                 
+
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
@@ -2429,10 +2611,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -2461,19 +2644,22 @@ class _AddPostPageState extends State<AddPostPage> {
                                     }
                                     return null;
                                   },
-                                  
+
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of forth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -2518,23 +2704,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image4 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[4]?
+                              width: width - 90,
+                              child: checkImgs[4] ?
                               Image(
                                 image: MemoryImage(_image4!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[4],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image4!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -2547,13 +2733,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path4 = 'no';
                                       _image4 = null;
                                       devHight4 = 121;
-                                      checkImgs[4]= true;
+                                      checkImgs[4] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -2573,22 +2759,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image4 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[4],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
                                 checkImgs[4] = !checkImgs[4];
                               });
-                              if(checkImgs[4]){
+                              if (checkImgs[4]) {
                                 setState(() {
-                                  devHight4 = 183 + (hight*((width-90)/width));
+                                  devHight4 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight4 = sizeImge4[1].toDouble() + 183;
                                 });
@@ -2681,17 +2868,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[4]=false;
+                                      vis[4] = false;
                                       counter--;
                                       //remove the image
-                                      path5='no';
+                                      path5 = 'no';
                                       _image5 = null;
                                       devHight5 = 145;
-                                      checkImgs[5]= true;
-                                      visIcon[2]=true;
+                                      checkImgs[5] = true;
+                                      visIcon[2] = true;
                                     });
                                     //clear the text
                                     body5Control.clear();
@@ -2717,7 +2904,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey5,
+                              key: _formKey5,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -2732,10 +2919,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -2767,16 +2955,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Fifth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -2821,23 +3012,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image5 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[5]?
+                              width: width - 90,
+                              child: checkImgs[5] ?
                               Image(
                                 image: MemoryImage(_image5!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[5],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image5!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -2850,13 +3041,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path5 = 'no';
                                       _image5 = null;
                                       devHight5 = 121;
-                                      checkImgs[5]= true;
+                                      checkImgs[5] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -2876,22 +3067,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image5 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[5],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[5]= !checkImgs[5];
+                                checkImgs[5] = !checkImgs[5];
                               });
-                              if(checkImgs[5]){
+                              if (checkImgs[5]) {
                                 setState(() {
-                                  devHight5 = 183 + (hight*((width-90)/width));
+                                  devHight5 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight5 = sizeImge5[1].toDouble() + 183;
                                 });
@@ -2984,17 +3176,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[5]=false;
+                                      vis[5] = false;
                                       counter--;
                                       //remove the image
-                                      path6='no';
+                                      path6 = 'no';
                                       _image6 = null;
                                       devHight6 = 145;
-                                      checkImgs[6]= true;
-                                      visIcon[3]=true;
+                                      checkImgs[6] = true;
+                                      visIcon[3] = true;
                                     });
                                     //clear the text
                                     body6Control.clear();
@@ -3021,7 +3213,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey6,
+                              key: _formKey6,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -3036,10 +3228,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -3071,16 +3264,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of sixth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -3125,23 +3321,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image6 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[6]?
+                              width: width - 90,
+                              child: checkImgs[6] ?
                               Image(
                                 image: MemoryImage(_image6!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[6],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image6!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -3154,7 +3350,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path6 = 'no';
@@ -3180,22 +3376,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image6 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[6],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[6]= !checkImgs[6];
+                                checkImgs[6] = !checkImgs[6];
                               });
-                              if(checkImgs[6]){
+                              if (checkImgs[6]) {
                                 setState(() {
-                                  devHight6 = 183 + (hight*((width-90)/width));
+                                  devHight6 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight6 = sizeImge6[1].toDouble() + 183;
                                 });
@@ -3236,7 +3433,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           CircleAvatar(
                               radius: 13,
                               backgroundColor: Palette.grey,
-                              child:Text(
+                              child: Text(
                                 '7',
                                 style: TextStyle(
                                   color: Palette.backgroundColor,
@@ -3288,17 +3485,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[6]=false;
+                                      vis[6] = false;
                                       counter--;
                                       //remove the image
-                                      path7='no';
+                                      path7 = 'no';
                                       _image7 = null;
                                       devHight7 = 145;
-                                      checkImgs[7]= true;
-                                      visIcon[4]=true;
+                                      checkImgs[7] = true;
+                                      visIcon[4] = true;
                                     });
                                     //clear the text
                                     body7Control.clear();
@@ -3325,7 +3522,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey7,
+                              key: _formKey7,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -3340,10 +3537,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -3375,16 +3573,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Seventh Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -3429,23 +3630,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image7 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[7]?
+                              width: width - 90,
+                              child: checkImgs[7] ?
                               Image(
                                 image: MemoryImage(_image7!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[7],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image7!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -3458,13 +3659,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path7 = 'no';
                                       _image7 = null;
                                       devHight7 = 121;
-                                      checkImgs[7]= true;
+                                      checkImgs[7] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -3484,22 +3685,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image7 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[7],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[7]= !checkImgs[7];
+                                checkImgs[7] = !checkImgs[7];
                               });
-                              if(checkImgs[7]){
+                              if (checkImgs[7]) {
                                 setState(() {
-                                  devHight7 = 183 + (hight*((width-90)/width));
+                                  devHight7 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight7 = sizeImge7[1].toDouble() + 183;
                                 });
@@ -3592,17 +3794,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[7]=false;
+                                      vis[7] = false;
                                       counter--;
                                       //remove the image
-                                      path8='no';
+                                      path8 = 'no';
                                       _image8 = null;
                                       devHight8 = 145;
-                                      checkImgs[8]= true;
-                                      visIcon[5]=true;
+                                      checkImgs[8] = true;
+                                      visIcon[5] = true;
                                     });
                                     //clear the text
                                     body8Control.clear();
@@ -3629,7 +3831,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey8,
+                              key: _formKey8,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -3644,10 +3846,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -3679,16 +3882,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of eight Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -3733,23 +3939,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /* image 8*/
                         _image8 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[8]?
+                              width: width - 90,
+                              child: checkImgs[8] ?
                               Image(
                                 image: MemoryImage(_image8!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[8],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image8!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -3762,13 +3968,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path8 = 'no';
                                       _image8 = null;
                                       devHight8 = 121;
-                                      checkImgs[8]= true;
+                                      checkImgs[8] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -3788,22 +3994,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image8 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[8],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[8]= !checkImgs[8];
+                                checkImgs[8] = !checkImgs[8];
                               });
-                              if(checkImgs[8]){
+                              if (checkImgs[8]) {
                                 setState(() {
-                                  devHight8 = 183 + (hight*((width-90)/width));
+                                  devHight8 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight8 = sizeImge8[1].toDouble() + 183;
                                 });
@@ -3896,17 +4103,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[8]=false;
+                                      vis[8] = false;
                                       counter--;
                                       //remove the image
-                                      path9='no';
+                                      path9 = 'no';
                                       _image9 = null;
                                       devHight9 = 145;
-                                      checkImgs[9]= true;
-                                      visIcon[6]=true;
+                                      checkImgs[9] = true;
+                                      visIcon[6] = true;
                                     });
                                     //clear the text
                                     body9Control.clear();
@@ -3933,7 +4140,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey9,
+                              key: _formKey9,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -3948,10 +4155,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -3983,16 +4191,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Ninth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -4037,23 +4248,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /* image 9*/
                         _image9 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[9]?
+                              width: width - 90,
+                              child: checkImgs[9] ?
                               Image(
                                 image: MemoryImage(_image9!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[9],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image9!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -4066,13 +4277,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path9 = 'no';
                                       _image9 = null;
                                       devHight9 = 121;
-                                      checkImgs[9]= true;
+                                      checkImgs[9] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -4092,22 +4303,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image9 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[9],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[9]= !checkImgs[9];
+                                checkImgs[9] = !checkImgs[9];
                               });
-                              if(checkImgs[9]){
+                              if (checkImgs[9]) {
                                 setState(() {
-                                  devHight9 = 183 + (hight*((width-90)/width));
+                                  devHight9 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight9 = sizeImge9[1].toDouble() + 183;
                                 });
@@ -4200,17 +4412,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[9]=false;
+                                      vis[9] = false;
                                       counter--;
                                       //remove the image
-                                      path10='no';
+                                      path10 = 'no';
                                       _image10 = null;
                                       devHight10 = 145;
-                                      checkImgs[10]= true;
-                                      visIcon[7]=true;
+                                      checkImgs[10] = true;
+                                      visIcon[7] = true;
                                     });
                                     //clear the text
                                     body10Control.clear();
@@ -4237,7 +4449,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey10,
+                              key: _formKey10,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -4252,10 +4464,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -4287,16 +4500,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Tenth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -4341,23 +4557,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /* image 10*/
                         _image10 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[10]?
+                              width: width - 90,
+                              child: checkImgs[10] ?
                               Image(
                                 image: MemoryImage(_image10!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[10],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image10!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -4370,13 +4586,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path10 = 'no';
                                       _image10 = null;
                                       devHight10 = 121;
-                                      checkImgs[11]= true;
+                                      checkImgs[11] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -4396,22 +4612,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image10 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[10],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[10]= !checkImgs[10];
+                                checkImgs[10] = !checkImgs[10];
                               });
-                              if(checkImgs[10]){
+                              if (checkImgs[10]) {
                                 setState(() {
-                                  devHight10 = 183 + (hight*((width-90)/width));
+                                  devHight10 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight10 = sizeImge10[1].toDouble() + 183;
                                 });
@@ -4504,17 +4721,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[10]=false;
+                                      vis[10] = false;
                                       counter--;
                                       //remove the image
-                                      path11='no';
+                                      path11 = 'no';
                                       _image11 = null;
                                       devHight11 = 145;
-                                      checkImgs[11]= true;
-                                      visIcon[8]=true;
+                                      checkImgs[11] = true;
+                                      visIcon[8] = true;
                                     });
                                     //clear the text
                                     body11Control.clear();
@@ -4541,7 +4758,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey11,
+                              key: _formKey11,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -4556,10 +4773,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -4591,16 +4809,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Eleventh Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -4645,23 +4866,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /* image  11*/
                         _image11 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[11]?
+                              width: width - 90,
+                              child: checkImgs[11] ?
                               Image(
                                 image: MemoryImage(_image11!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[11],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image11!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -4674,13 +4895,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path11 = 'no';
                                       _image11 = null;
                                       devHight11 = 121;
-                                      checkImgs[11]= true;
+                                      checkImgs[11] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -4700,22 +4921,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image11 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[11],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[11]= !checkImgs[11];
+                                checkImgs[11] = !checkImgs[11];
                               });
-                              if(checkImgs[11]){
+                              if (checkImgs[11]) {
                                 setState(() {
-                                  devHight11 = 183 + (hight*((width-90)/width));
+                                  devHight11 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight11 = sizeImge11[1].toDouble() + 183;
                                 });
@@ -4756,7 +4978,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           CircleAvatar(
                               radius: 13,
                               backgroundColor: Palette.grey,
-                              child:Text(
+                              child: Text(
                                 '12',
                                 style: TextStyle(
                                   color: Palette.backgroundColor,
@@ -4808,17 +5030,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[11]=false;
+                                      vis[11] = false;
                                       counter--;
                                       //remove the image
-                                      path12='no';
+                                      path12 = 'no';
                                       _image12 = null;
                                       devHight12 = 145;
-                                      checkImgs[12]= true;
-                                      visIcon[9]=true;
+                                      checkImgs[12] = true;
+                                      visIcon[9] = true;
                                     });
                                     //clear the text
                                     body12Control.clear();
@@ -4845,7 +5067,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey12,
+                              key: _formKey12,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -4860,10 +5082,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -4895,16 +5118,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of twelfth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -4949,23 +5175,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /* image 12*/
                         _image12 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[12]?
+                              width: width - 90,
+                              child: checkImgs[12] ?
                               Image(
                                 image: MemoryImage(_image12!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[12],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image12!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -4978,13 +5204,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path12 = 'no';
                                       _image12 = null;
                                       devHight12 = 121;
-                                      checkImgs[12]= true;
+                                      checkImgs[12] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -5004,22 +5230,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image12 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[12],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[12]= !checkImgs[12];
+                                checkImgs[12] = !checkImgs[12];
                               });
-                              if(checkImgs[12]){
+                              if (checkImgs[12]) {
                                 setState(() {
-                                  devHight12 = 183 + (hight*((width-90)/width));
+                                  devHight12 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight12 = sizeImge12[1].toDouble() + 183;
                                 });
@@ -5112,17 +5339,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[12]=false;
+                                      vis[12] = false;
                                       counter--;
                                       //remove the image
-                                      path13='no';
+                                      path13 = 'no';
                                       _image13 = null;
                                       devHight13 = 145;
-                                      checkImgs[13]= true;
-                                      visIcon[10]=true;
+                                      checkImgs[13] = true;
+                                      visIcon[10] = true;
                                     });
                                     //clear the text
                                     body13Control.clear();
@@ -5148,7 +5375,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey13,
+                              key: _formKey13,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -5163,10 +5390,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -5198,16 +5426,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Thirteenth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -5252,23 +5483,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /* image 13*/
                         _image13 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[13]?
+                              width: width - 90,
+                              child: checkImgs[13] ?
                               Image(
                                 image: MemoryImage(_image13!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[13],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image13!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -5281,13 +5512,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path13 = 'no';
                                       _image13 = null;
                                       devHight13 = 121;
-                                      checkImgs[13]= true;
+                                      checkImgs[13] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -5307,22 +5538,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image13 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[13],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[13]= !checkImgs[13];
+                                checkImgs[13] = !checkImgs[13];
                               });
-                              if(checkImgs[13]){
+                              if (checkImgs[13]) {
                                 setState(() {
-                                  devHight13 = 183 + (hight*((width-90)/width));
+                                  devHight13 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight13 = sizeImge13[1].toDouble() + 183;
                                 });
@@ -5415,17 +5647,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[13]=false;
+                                      vis[13] = false;
                                       counter--;
                                       //remove the image
-                                      path14='no';
+                                      path14 = 'no';
                                       _image14 = null;
                                       devHight14 = 145;
-                                      checkImgs[14]= true;
-                                      visIcon[11]=true;
+                                      checkImgs[14] = true;
+                                      visIcon[11] = true;
                                     });
                                     //clear the text
                                     body14Control.clear();
@@ -5451,7 +5683,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey14,
+                              key: _formKey14,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -5466,10 +5698,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -5501,16 +5734,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Fourteenth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -5555,23 +5791,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /*cover image*/
                         _image14 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[14]?
+                              width: width - 90,
+                              child: checkImgs[14] ?
                               Image(
                                 image: MemoryImage(_image14!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[14],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image14!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -5584,13 +5820,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path14 = 'no';
                                       _image14 = null;
                                       devHight14 = 121;
-                                      checkImgs[14]= true;
+                                      checkImgs[14] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -5610,22 +5846,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image14 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[14],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[14]= !checkImgs[14];
+                                checkImgs[14] = !checkImgs[14];
                               });
-                              if(checkImgs[14]){
+                              if (checkImgs[14]) {
                                 setState(() {
-                                  devHight14 = 183 + (hight*((width-90)/width));
+                                  devHight14 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight14 = sizeImge14[1].toDouble() + 183;
                                 });
@@ -5710,17 +5947,17 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a page
                                     setState(() {
-                                      vis[14]=false;
+                                      vis[14] = false;
                                       counter--;
                                       //remove the image
-                                      path15='no';
+                                      path15 = 'no';
                                       _image15 = null;
                                       devHight15 = 145;
-                                      checkImgs[15]= true;
-                                      visIcon[12]=true;
+                                      checkImgs[15] = true;
+                                      visIcon[12] = true;
                                     });
                                     //clear the text
                                     body15Control.clear();
@@ -5747,7 +5984,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Form(
-                              key:_formKey15,
+                              key: _formKey15,
                               child: Container(
                                 width: 235,
                                 child: TextFormField(
@@ -5761,10 +5998,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                   },
 
                                   /*validation*/
-                                  validator: (val){
+                                  validator: (val) {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
-                                    }if ((val.contains('&') ||
+                                    }
+                                    if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("!") ||
@@ -5796,16 +6034,19 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                   //for multi line
                                   minLines: 1,
-                                  maxLines: 5,  // allow user to enter 10 line in textfield
+                                  maxLines: 5,
+                                  // allow user to enter 10 line in textfield
                                   keyboardType: TextInputType.multiline,
                                   decoration: const InputDecoration(
                                     /*background color*/
                                     fillColor: Palette.lightgrey,
-                                    contentPadding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 10),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        vertical: 1.0, horizontal: 10),
                                     filled: true,
                                     border: OutlineInputBorder(),
                                     hintText: "Body Of Fifteenth Page",
-                                    hintStyle: TextStyle(fontSize: 18.0, color: Palette.grey),
+                                    hintStyle: TextStyle(
+                                        fontSize: 18.0, color: Palette.grey),
 
                                     /*Border*/
                                     focusedBorder: OutlineInputBorder(
@@ -5850,23 +6091,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         /* image 15*/
                         _image15 != null
                             ? Stack(
-                          alignment : AlignmentDirectional.topEnd,
+                          alignment: AlignmentDirectional.topEnd,
                           children: [
                             Container(
-                              margin: EdgeInsets.fromLTRB(0,10,10,0),
+                              margin: EdgeInsets.fromLTRB(0, 10, 10, 0),
                               color: Palette.midgrey,
                               alignment: Alignment.centerLeft,
-                              width: width-90,
-                              child:  checkImgs[15]?
+                              width: width - 90,
+                              child: checkImgs[15] ?
                               Image(
                                 image: MemoryImage(_image15!),
-                                width: width-90,
-                                height: hight*((width-90)/width),
+                                width: width - 90,
+                                height: hight * ((width - 90) / width),
                                 fit: ImgsLook[15],
-                              ):
+                              ) :
                               Image(
                                 image: MemoryImage(_image15!),
-                                width: width-90,
+                                width: width - 90,
                               ),
                             ),
 
@@ -5879,13 +6120,13 @@ class _AddPostPageState extends State<AddPostPage> {
                                   padding: EdgeInsets.zero,
                                   constraints: BoxConstraints(),
                                   //End of remove margin
-                                  onPressed: (){
+                                  onPressed: () {
                                     //remove a image
                                     setState(() {
                                       path15 = 'no';
                                       _image15 = null;
                                       devHight15 = 121;
-                                      checkImgs[15]= true;
+                                      checkImgs[15] = true;
                                     });
                                   },
                                   icon: Icon(
@@ -5905,22 +6146,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         _image15 != null ?
                         Container(
                           color: Palette.lightgrey,
-                          width: width-90,
+                          width: width - 90,
                           child: CheckboxListTile(
                             //text
                             title: Text("Cover the entire page"),
                             //value
                             value: checkImgs[15],
                             //action
-                            onChanged: (bool? value){
+                            onChanged: (bool? value) {
                               setState(() {
-                                checkImgs[15]= !checkImgs[15];
+                                checkImgs[15] = !checkImgs[15];
                               });
-                              if(checkImgs[15]){
+                              if (checkImgs[15]) {
                                 setState(() {
-                                  devHight15 = 183 + (hight*((width-90)/width));
+                                  devHight15 =
+                                      183 + (hight * ((width - 90) / width));
                                 });
-                              }else{
+                              } else {
                                 setState(() {
                                   devHight15 = sizeImge15[1].toDouble() + 183;
                                 });
@@ -5945,10 +6187,9 @@ class _AddPostPageState extends State<AddPostPage> {
               /*end of body 15*/
 
 
-
               /*add page*/
-              counter !=15
-                  ?Row(
+              counter != 15
+                  ? Row(
                 children: [
 
                   /*left*/
@@ -6003,87 +6244,109 @@ class _AddPostPageState extends State<AddPostPage> {
                         // List<bool> isButtonActive = [true, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false];
                         // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,
                         onPressed:
-                        (counter ==0 && isButtonActive[2] && isButtonActive[3])
-                            ||(counter ==2 && (isButtonActive[4] || path2 != 'no' || _image2 != null))
-                            ||(counter ==3 && (isButtonActive[5] || path3 != 'no' || _image3 != null))
-                            ||(counter ==4 && (isButtonActive[6] || path4 != 'no' || _image4 != null))
-                            ||(counter ==5 && (isButtonActive[7] || path5 != 'no' || _image5 != null))
-                            ||(counter ==6 && (isButtonActive[8] || path6 != 'no' || _image6 != null))
-                            ||(counter ==7 && (isButtonActive[9] || path7 != 'no' || _image7 != null))
-                            ||(counter ==8 && (isButtonActive[10] || path8 != 'no' || _image8 != null))
-                            ||(counter ==9 && (isButtonActive[11] || path9 != 'no' || _image9 != null))
-                            ||(counter ==10 && (isButtonActive[12] || path10 != 'no' || _image10 != null))
-                            ||(counter ==11 && (isButtonActive[13] || path11 != 'no' || _image11 != null))
-                            ||(counter ==12 && (isButtonActive[14] || path12 != 'no' || _image12 != null))
-                            ||(counter ==13 && (isButtonActive[15] || path13 != 'no' || _image13 != null))
-                            ||(counter ==14 && (isButtonActive[16] || path14 != 'no' || _image14 != null))
+                        (counter == 0 && isButtonActive[2] && isButtonActive[3])
+                            || (counter == 2 &&
+                            (isButtonActive[4] || path2 != 'no' ||
+                                _image2 != null))
+                            || (counter == 3 &&
+                            (isButtonActive[5] || path3 != 'no' ||
+                                _image3 != null))
+                            || (counter == 4 &&
+                            (isButtonActive[6] || path4 != 'no' ||
+                                _image4 != null))
+                            || (counter == 5 &&
+                            (isButtonActive[7] || path5 != 'no' ||
+                                _image5 != null))
+                            || (counter == 6 &&
+                            (isButtonActive[8] || path6 != 'no' ||
+                                _image6 != null))
+                            || (counter == 7 &&
+                            (isButtonActive[9] || path7 != 'no' ||
+                                _image7 != null))
+                            || (counter == 8 &&
+                            (isButtonActive[10] || path8 != 'no' ||
+                                _image8 != null))
+                            || (counter == 9 &&
+                            (isButtonActive[11] || path9 != 'no' ||
+                                _image9 != null))
+                            || (counter == 10 &&
+                            (isButtonActive[12] || path10 != 'no' ||
+                                _image10 != null))
+                            || (counter == 11 &&
+                            (isButtonActive[13] || path11 != 'no' ||
+                                _image11 != null))
+                            || (counter == 12 && (isButtonActive[14] ||
+                            path12 != 'no' || _image12 != null))
+                            || (counter == 13 && (isButtonActive[15] ||
+                            path13 != 'no' || _image13 != null))
+                            || (counter == 14 && (isButtonActive[16] ||
+                            path14 != 'no' || _image14 != null))
                             ?
-                            (){
-
+                            () {
                           setState(() {
-                            if(counter==0){
+                            if (counter == 0) {
                               counter++;
                             }
-                            vis[counter]=true;
+                            vis[counter] = true;
                             counter++;
-                            if(counter==2){
-                              visIcon[0]=true;
+                            if (counter == 2) {
+                              visIcon[0] = true;
                             }
-                            else if (counter==3){
-                              visIcon[0]=false;
-                              visIcon[1]=true;
+                            else if (counter == 3) {
+                              visIcon[0] = false;
+                              visIcon[1] = true;
                             }
-                            else if (counter==4){
-                              visIcon[1]=false;
-                              visIcon[2]=true;
+                            else if (counter == 4) {
+                              visIcon[1] = false;
+                              visIcon[2] = true;
                             }
-                            else if (counter==5){
-                              visIcon[2]=false;
-                              visIcon[3]=true;
+                            else if (counter == 5) {
+                              visIcon[2] = false;
+                              visIcon[3] = true;
                             }
-                            else if (counter==6){
-                              visIcon[3]=false;
-                              visIcon[4]=true;
+                            else if (counter == 6) {
+                              visIcon[3] = false;
+                              visIcon[4] = true;
                             }
-                            else if (counter==7){
-                              visIcon[4]=false;
-                              visIcon[5]=true;
+                            else if (counter == 7) {
+                              visIcon[4] = false;
+                              visIcon[5] = true;
                             }
-                            else if (counter==8){
-                              visIcon[5]=false;
-                              visIcon[6]=true;
+                            else if (counter == 8) {
+                              visIcon[5] = false;
+                              visIcon[6] = true;
                             }
-                            else if (counter==9){
-                              visIcon[6]=false;
-                              visIcon[7]=true;
+                            else if (counter == 9) {
+                              visIcon[6] = false;
+                              visIcon[7] = true;
                             }
-                            else if (counter==10){
-                              visIcon[7]=false;
-                              visIcon[8]=true;
+                            else if (counter == 10) {
+                              visIcon[7] = false;
+                              visIcon[8] = true;
                             }
-                            else if (counter==11){
-                              visIcon[8]=false;
-                              visIcon[9]=true;
+                            else if (counter == 11) {
+                              visIcon[8] = false;
+                              visIcon[9] = true;
                             }
-                            else if (counter==12){
-                              visIcon[9]=false;
-                              visIcon[10]=true;
+                            else if (counter == 12) {
+                              visIcon[9] = false;
+                              visIcon[10] = true;
                             }
-                            else if (counter==13){
-                              visIcon[10]=false;
-                              visIcon[11]=true;
+                            else if (counter == 13) {
+                              visIcon[10] = false;
+                              visIcon[11] = true;
                             }
-                            else if (counter==14){
-                              visIcon[11]=false;
-                              visIcon[12]=true;
+                            else if (counter == 14) {
+                              visIcon[11] = false;
+                              visIcon[12] = true;
                             }
-                            else if (counter==15){
-                              visIcon[12]=false;
-                              visIcon[13]=true;
+                            else if (counter == 15) {
+                              visIcon[12] = false;
+                              visIcon[13] = true;
                             }
                           });
                         }
-                            :(){
+                            : () {
                           //show msg need to full the title first
                         },
                         child:
@@ -6092,22 +6355,49 @@ class _AddPostPageState extends State<AddPostPage> {
                           "Add Another Page",
                           style: TextStyle(
                               color:
-                              (counter ==0 && isButtonActive[2] && isButtonActive[3])
-                                  ||(counter ==2 && (isButtonActive[4] || path2 != 'no' || _image2 != null))
-                                  ||(counter ==3 && (isButtonActive[5] || path3 != 'no' || _image3 != null))
-                                  ||(counter ==4 && (isButtonActive[6] || path4 != 'no' || _image4 != null))
-                                  ||(counter ==5 && (isButtonActive[7] || path5 != 'no' || _image5 != null))
-                                  ||(counter ==6 && (isButtonActive[8] || path6 != 'no' || _image6 != null))
-                                  ||(counter ==7 && (isButtonActive[9] || path7 != 'no' || _image7 != null))
-                                  ||(counter ==8 && (isButtonActive[10] || path8 != 'no' || _image8 != null))
-                                  ||(counter ==9 && (isButtonActive[11] || path9 != 'no' || _image9 != null))
-                                  ||(counter ==10 && (isButtonActive[12] || path10 != 'no' || _image10 != null))
-                                  ||(counter ==11 && (isButtonActive[13] || path11 != 'no' || _image11 != null))
-                                  ||(counter ==12 && (isButtonActive[14] || path12 != 'no' || _image12 != null))
-                                  ||(counter ==13 && (isButtonActive[15] || path13 != 'no' || _image13 != null))
-                                  ||(counter ==14 && (isButtonActive[16] || path14 != 'no' || _image14 != null))
+                              (counter == 0 && isButtonActive[2] &&
+                                  isButtonActive[3])
+                                  || (counter == 2 &&
+                                  (isButtonActive[4] || path2 != 'no' ||
+                                      _image2 != null))
+                                  || (counter == 3 &&
+                                  (isButtonActive[5] || path3 != 'no' ||
+                                      _image3 != null))
+                                  || (counter == 4 &&
+                                  (isButtonActive[6] || path4 != 'no' ||
+                                      _image4 != null))
+                                  || (counter == 5 &&
+                                  (isButtonActive[7] || path5 != 'no' ||
+                                      _image5 != null))
+                                  || (counter == 6 &&
+                                  (isButtonActive[8] || path6 != 'no' ||
+                                      _image6 != null))
+                                  || (counter == 7 &&
+                                  (isButtonActive[9] || path7 != 'no' ||
+                                      _image7 != null))
+                                  || (counter == 8 &&
+                                  (isButtonActive[10] || path8 != 'no' ||
+                                      _image8 != null))
+                                  || (counter == 9 &&
+                                  (isButtonActive[11] || path9 != 'no' ||
+                                      _image9 != null))
+                                  || (counter == 10 &&
+                                  (isButtonActive[12] || path10 != 'no' ||
+                                      _image10 != null))
+                                  || (counter == 11 &&
+                                  (isButtonActive[13] || path11 != 'no' ||
+                                      _image11 != null))
+                                  || (counter == 12 &&
+                                  (isButtonActive[14] || path12 != 'no' ||
+                                      _image12 != null))
+                                  || (counter == 13 &&
+                                  (isButtonActive[15] || path13 != 'no' ||
+                                      _image13 != null))
+                                  || (counter == 14 &&
+                                  (isButtonActive[16] || path14 != 'no' ||
+                                      _image14 != null))
                                   ?
-                              Palette.link: Palette.darkGray,
+                              Palette.link : Palette.darkGray,
                               fontSize: 18,
                               fontWeight: FontWeight.bold),
                         ),
@@ -6119,9 +6409,8 @@ class _AddPostPageState extends State<AddPostPage> {
                   /*end right*/
 
                 ],
-              ):Text(""),
+              ) : Text(""),
               /*end of add page*/
-
 
 
               /* next button */
@@ -6133,7 +6422,9 @@ class _AddPostPageState extends State<AddPostPage> {
                 /* button colors */
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                  gradient:   isButtonActive[0] && isButtonActive[1] &&  isButtonActive[2] &&  isButtonActive[3] && isButtonActive[17]
+                  gradient: isButtonActive[0] && isButtonActive[1] &&
+                      isButtonActive[2] && isButtonActive[3] &&
+                      isButtonActive[17]
                       ? LinearGradient(colors: [
                     Palette.buttonColor,
                     Palette.nameColor,
@@ -6149,49 +6440,133 @@ class _AddPostPageState extends State<AddPostPage> {
                   minWidth: 350,
                   child: FlatButton(
                     onPressed:
-                    isButtonActive[0] && isButtonActive[1] && isButtonActive[2] && isButtonActive[3] && isButtonActive[17]
-                        ? () {
+                    isButtonActive[0] && isButtonActive[1] &&
+                        isButtonActive[2] && isButtonActive[3] &&
+                        isButtonActive[17]
+                        ? () async {
                       /*make sure of the validation*/
-                      if(!_formKey.currentState!.validate()){
-                        return;
-                      }if(!_formKey1.currentState!.validate()){
-                        return;
-                      }if(counter==2 && !_formKey2.currentState!.validate()){
-                        return;
-                      }if(counter==3 && !_formKey3.currentState!.validate()){
-                        return;
-                      }if(counter==4 && !_formKey4.currentState!.validate()){
-                        return;
-                      }if(counter==5 && !_formKey5.currentState!.validate()){
-                        return;
-                      }if(counter==6 && !_formKey6.currentState!.validate()){
-                        return;
-                      }if(counter==7 && !_formKey7.currentState!.validate()){
-                        return;
-                      }if(counter==8 && !_formKey8.currentState!.validate()){
-                        return;
-                      }if(counter==9 && !_formKey9.currentState!.validate()){
-                        return;
-                      }if(counter==10 && !_formKey10.currentState!.validate()){
-                        return;
-                      }if(counter==11 && !_formKey11.currentState!.validate()){
-                        return;
-                      }if(counter==12 && !_formKey12.currentState!.validate()){
-                        return;
-                      }if(counter==13 && !_formKey13.currentState!.validate()){
-                        return;
-                      }if(counter==14 && !_formKey14.currentState!.validate()){
-                        return;
-                      }if(counter==15 && !_formKey15.currentState!.validate()){
+                      if (!_formKey.currentState!.validate()) {
                         return;
                       }
-                      /*save post to database*/
+                      if (!_formKey1.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 2 && !_formKey2.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 3 && !_formKey3.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 4 && !_formKey4.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 5 && !_formKey5.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 6 && !_formKey6.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 7 && !_formKey7.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 8 && !_formKey8.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 9 && !_formKey9.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 10 &&
+                          !_formKey10.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 11 &&
+                          !_formKey11.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 12 &&
+                          !_formKey12.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 13 &&
+                          !_formKey13.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 14 &&
+                          !_formKey14.currentState!.validate()) {
+                        return;
+                      }
+                      if (counter == 15 &&
+                          !_formKey15.currentState!.validate()) {
+                        return;
+                      }
+                      /*print info*/
+                      // print(locationId);
+                      // print(locationName);
+                      // print(locationAdress);
+                      // print(country);
+                      // print(city);
+                      // print(locationType);
+                      // print(locationTypes);
+                      //
+                      // print(DateTime.now());
+                      // print(dateTime);
+                      //
+                      // print(FirebaseAuth.instance.currentUser!.uid);
+                      // print(rating);
+                      //
+                      // print(title);
+                      // print(body1);
+                      // print(counter);
 
+                      /*Data preprocessing*/
+                      var uid = FirebaseAuth.instance.currentUser!.uid;
+                      var userData = {};
+                      var userSnap = await FirebaseFirestore.instance
+                          .collection('users')
+                          .doc(uid)
+                          .get();
+                      if (userSnap.data() != null)
+                        userData = userSnap.data()!;
+
+
+                      /*save post to database*/
+                      addPostToDatabase(
+                        /*user info*/
+                        uid,
+                        userData['username'],
+                        "",
+
+                        /*place type*/
+                        country,
+                        city,
+                        locationTypes,
+                        locationType,
+                        locationId,
+
+                        /*place info*/
+                        postId,
+                        locationName,
+                        locationAdress,
+                        rating.toDouble(),
+
+                        /*visibility*/
+                        "public",
+
+                        /*date*/
+                        dateTime,
+
+                        /*content*/
+                        title,
+                        [body1, body2, body3, body4, body5, body6, body7, body8, body9, body10, body11, body12, body13, body14, body15],
+                        [path, path1, path2, path3, path4, path5, path6, path7,
+                          path8, path9, path10, path11, path12, path13, path14, path15],
+                        checkImgs,
+                      );
                       /*end of save post*/
 
                       /*disable button and clear text field */
                       setState(() {
-                        for(int i=0 ; i < isButtonActive.length ; i++){
+                        for (int i = 0; i < isButtonActive.length; i++) {
                           isButtonActive[i] = false;
                         }
                         titleControl.clear();
@@ -6221,6 +6596,7 @@ class _AddPostPageState extends State<AddPostPage> {
       ),
     ),
   );
+}
 
   /*functions*/
 
@@ -6252,17 +6628,31 @@ class _AddPostPageState extends State<AddPostPage> {
        devHightType = 90;
        isButtonActive[0] = true;
        locationAdress = place?.description??"";
-       locationName = locationAdress.substring(0,place?.description?.indexOf(','))??"";
+       int index = place?.description?.indexOf(',')??0;
+       locationName = locationAdress.substring(0,index)??"";
+       int index2 = place?.description?.indexOf(',',index+1)??0,
+       index3 = place?.description?.indexOf(country,index+1)??0;
+       city = locationAdress.substring(0,index3-1)??"";
+       int index4 = city.lastIndexOf(","),
+       index5 = city.lastIndexOf("،");
+       if (index5> index4)
+         index4 = index5;
+       city = city.substring(index4+2);
        locationTypes= place?.types??[];
-       locationTypes.removeAt(locationTypes.indexOf("establishment"));
+       if (locationTypes.indexOf("establishment")!=-1)
+         locationTypes.removeAt(locationTypes.indexOf("establishment"));
+       if (locationTypes.indexOf("point_of_interest")!=-1)
        locationTypes.removeAt(locationTypes.indexOf("point_of_interest"));
+
+       locationId = place.placeId??"";
 
        for(int i=1; i< locationTypes.length; i++){
          devHightType+=47;
          numbers.add(0);
        }
      });
-     print(locationTypes);
+    print(city);
+    print(locationAdress);
   }
 
   /*End Location*/
@@ -6300,33 +6690,10 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("CoverImages", _Coverimage!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/CoverImages", _Coverimage!, true);
 
       setState(() {
         path =p;
-      });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID': {
-          'images': {
-            'cover': p,
-            'image1': "no",
-            'image2': "no",
-            'image3': "no",
-            'image4': "no",
-            'image5': "no",
-            'image6': "no",
-            'image7': "no",
-            'image8': "no",
-            'image9': "no",
-            'image10': "no",
-            'image11': "no",
-            'image12': "no",
-            'image13': "no",
-            'image14': "no",
-            'image15': "no",
-          },
-        },
       });
 
 
@@ -6360,14 +6727,10 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image1",_image1!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image1",_image1!, true);
 
       setState(() {
         path1 =p;
-      });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image1': p,
       });
 
     }catch(e){
@@ -6399,15 +6762,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image2",_image2!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image2",_image2!, true);
 
       setState(() {
         path2 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image2': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6438,15 +6798,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image3",_image3!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image3",_image3!, true);
 
       setState(() {
         path3 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image3': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6477,15 +6834,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image4",_image4!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image4",_image4!, true);
 
       setState(() {
         path4 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image4': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6516,15 +6870,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image5",_image5!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image5",_image5!, true);
 
       setState(() {
         path5 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image5': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6554,15 +6905,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image6",_image6!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image6",_image6!, true);
 
       setState(() {
         path6 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image6': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6593,15 +6941,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image7",_image7!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image7",_image7!, true);
 
       setState(() {
         path7 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image7': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6632,15 +6977,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image8",_image8!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image8",_image8!, true);
 
       setState(() {
         path8 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image8': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6671,15 +7013,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image9",_image9!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image9",_image9!, true);
 
       setState(() {
         path9 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image9': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6710,15 +7049,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image10",_image10!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image10",_image10!, true);
 
       setState(() {
         path10 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image10': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6749,15 +7085,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image11",_image11!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image11",_image11!, true);
 
       setState(() {
         path11 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image11': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6787,15 +7120,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image12",_image12!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image12",_image12!, true);
 
       setState(() {
         path12 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image12': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6825,15 +7155,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image13",_image13!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image13",_image13!, true);
 
       setState(() {
         path13 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image13': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6863,15 +7190,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image14",_image14!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image14",_image14!, true);
 
       setState(() {
         path14 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image14': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(
@@ -6903,15 +7227,12 @@ class _AddPostPageState extends State<AddPostPage> {
     /*update to database*/
     try {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
-      String p = await StorageMethods().uploadImageToStorage("image15",_image15!, false);
+      String p = await StorageMethods().uploadImageToStorage("post/"+uid+"/"+postId+"/image15",_image15!, true);
 
       setState(() {
         path15 =p;
       });
-      //to do: post id
-      await _firestore.collection("posts").doc(uid).set({
-        'postID.images.image15': p,
-      });
+
     }catch(e){
       print(e.toString());
       Alert(

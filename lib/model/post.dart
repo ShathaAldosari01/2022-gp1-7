@@ -9,8 +9,9 @@ class Post {
   /*place type*/
   final String country;
   final String city;
-  final String categories;
+  final List<String> categories;
   final String type;
+  final String locationId;
 
   /*place info*/
   final String postId;
@@ -46,6 +47,7 @@ class Post {
         required this.city,
         required this.categories,
         required this.type,
+        required this.locationId,
 
         /*place info*/
         required this.postId,
@@ -84,6 +86,7 @@ class Post {
       city: snapshot["city"],
       categories: snapshot["categories"],
       type: snapshot["type"],
+      locationId: snapshot["locationId"],
 
       /*place info*/
       postId: snapshot["postId"],
@@ -120,6 +123,7 @@ class Post {
     "city": city,
     "categories": categories,
     "type": type,
+    "locationId": locationId,
 
     /*place info*/
     "postId": postId,

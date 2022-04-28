@@ -45,6 +45,11 @@ dependencies:
   #img
   image_size_getter: ^2.1.0
 
+  #database:
+  provider: ^6.0.2
+  # for post id
+  uuid: ^3.0.6
+
 
 
 
