@@ -1440,8 +1440,8 @@ class _AddPostPageState extends State<AddPostPage> {
                                   if (val!.isEmpty) {
                                     return "Title should not be empty";
                                   }
-                                  if (val.length >= 30) {
-                                    return "Create a shorter title under 31 characters.";
+                                  if (val.length >= 35) {
+                                    return "Create a shorter title under 36 characters.";
                                   }
                                   if ((val.contains('&') ||
                                       val.contains("#") ||
@@ -6595,7 +6595,7 @@ class _AddPostPageState extends State<AddPostPage> {
       /*user info*/
       uid,
       userData['username'],
-      "",
+      userData['photoPath'],
 
       /*place type*/
       country,

@@ -11,6 +11,13 @@ class ImageDisplayer extends StatefulWidget {
 class _ImageDisplayerState extends State<ImageDisplayer> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    final size = MediaQuery.of(context).size;
+
+    return Container(
+      width: size.width,
+      height: size.height,
+      decoration: const BoxDecoration(color: Colors.black),
+      child: Image.network(widget.path),
+    );
   }
 }
