@@ -35,6 +35,7 @@ class FireStoreMethods {
       List<String> bodies,
       List<String> imgsPath,
       List<bool> isCoverPage,
+      int counter,
 
       ) async{
     String res = "some error occurred";
@@ -71,6 +72,7 @@ class FireStoreMethods {
         bodies: bodies,
         imgsPath: imgsPath,
         isCoverPage: isCoverPage,
+        counter: counter,
 
         /*likes*/
         likes: [],

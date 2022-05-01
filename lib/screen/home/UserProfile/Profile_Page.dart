@@ -112,13 +112,10 @@ class _Profile_pageState extends State<Profile_page> {
           }
         } else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
-      }
+      }else
+        Navigator.of(context).popAndPushNamed('/navigationBar');
     } catch (e) {
-      Alert(
-        context: context,
-        title: "Invalid input",
-        desc: e.toString(),
-      ).show();
+      Navigator.of(context).popAndPushNamed('/Signup_Login');
     }
   }
 

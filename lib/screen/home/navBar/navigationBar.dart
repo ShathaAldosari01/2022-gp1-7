@@ -41,11 +41,11 @@ class _navigationBarState extends State<navigationBar> {
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[
-      Icon(Icons.home, size: 30),
-      Icon(Icons.search, size: 30),
-      Icon(Icons.add, size: 30),
-      Icon(Icons.list, size: 30),
-      Icon(Icons.person, size: 30),
+      Icon(Icons.home, size: 30, color: index==0?Palette.buttonColor:Palette.backgroundColor),
+      Icon(Icons.search, size: 30, color: index==1?Palette.buttonColor:Palette.backgroundColor),
+      Icon(Icons.add, size: 30, color: index==2?Palette.buttonColor:Palette.backgroundColor),
+      Icon(Icons.list, size: 30, color: index==3?Palette.buttonColor:Palette.backgroundColor),
+      Icon(Icons.person, size: 30, color: index==4?Palette.buttonColor:Palette.backgroundColor),
     ];
 
     return Scaffold(
@@ -57,11 +57,10 @@ class _navigationBarState extends State<navigationBar> {
       ),
       bottomNavigationBar: Theme(
         data: Theme.of(context).copyWith(
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(),
         ),
         child: CurvedNavigationBar(
-          color: Palette.buttonColor,
-          // buttonBackgroundColor: Palette.link,
+          color: index==0?Palette.textColor:Palette.textColor,
           backgroundColor: Colors.transparent,
           height: 60,
           animationCurve: Curves.easeInOut,

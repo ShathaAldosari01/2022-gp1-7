@@ -78,10 +78,11 @@ class _AddPostPageState extends State<AddPostPage> {
       List<String> bodies,
       List<String> imgsPath,
       List<bool> isCoverPage,
+      int counter,
 
       )async{
     try{
-      String res = await FireStoreMethods().uploadPost(uid, username, photoPath, country, city, categories, type, locationId, postId, name, address, rating, visibility, dateVisit, title, bodies, imgsPath, isCoverPage);
+      String res = await FireStoreMethods().uploadPost(uid, username, photoPath, country, city, categories, type, locationId, postId, name, address, rating, visibility, dateVisit, title, bodies, imgsPath, isCoverPage, counter);
       if(res== "success"){
         showSnackBar(context, "Posted!");
       }else{
@@ -329,67 +330,53 @@ class _AddPostPageState extends State<AddPostPage> {
   // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,category
 
   /* images */
-  String path = "no";
+
+  List<String> paths = ["no", "no", "no", "no", "no", "no", "no", "no", "no", "no", "no", "no", "no", "no", "no", "no"];
   Uint8List? _Coverimage;
   List<int> sizeImge = [];
 
-  String path1 = "no";
   Uint8List? _image1;
   List<int> sizeImge1 = [];
 
-  String path2 = "no";
   Uint8List? _image2;
   List<int> sizeImge2 = [];
 
-  String path3 = "no";
   Uint8List? _image3;
   List<int> sizeImge3 = [];
 
-  String path4 = "no";
   Uint8List? _image4;
   List<int> sizeImge4 = [];
 
-  String path5 = "no";
   Uint8List? _image5;
   List<int> sizeImge5 = [];
 
-  String path6 = "no";
   Uint8List? _image6;
   List<int> sizeImge6 = [];
 
-  String path7 = "no";
   Uint8List? _image7;
   List<int> sizeImge7 = [];
 
-  String path8 = "no";
   Uint8List? _image8;
   List<int> sizeImge8 = [];
 
-  String path9 = "no";
   Uint8List? _image9;
   List<int> sizeImge9 = [];
 
-  String path10 = "no";
   Uint8List? _image10;
   List<int> sizeImge10 = [];
 
-  String path11 = "no";
   Uint8List? _image11;
   List<int> sizeImge11 = [];
 
-  String path12 = "no";
   Uint8List? _image12;
   List<int> sizeImge12 = [];
 
-  String path13 = "no";
   Uint8List? _image13;
   List<int> sizeImge13 = [];
 
-  String path14 = "no";
   Uint8List? _image14;
   List<int> sizeImge14 = [];
 
-  String path15 = "no";
   Uint8List? _image15;
   List<int> sizeImge15 = [];
 
@@ -491,21 +478,7 @@ class _AddPostPageState extends State<AddPostPage> {
   late TextEditingController body15Control;
 
   String title = "";
-  String body1 = "";
-  String body2 = "";
-  String body3 = "";
-  String body4 = "";
-  String body5 = "";
-  String body6 = "";
-  String body7 = "";
-  String body8 = "";
-  String body9 = "";
-  String body10 = "";
-  String body11 = "";
-  String body12 = "";
-  String body13 = "";
-  String body14 = "";
-  String body15 = "";
+  List<String> bodies = ["", "", "", "", "", "", "", "", "", "", "", "", "", "", ""];
 
   /*title size*/
   double titleSize = 18;
@@ -1564,7 +1537,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   //remove a image
                                   setState(() {
                                     print(_Coverimage);
-                                    path = 'no';
+                                    paths[0] = 'no';
                                     _Coverimage = null;
                                     devHight = 121;
                                     checkImgs[0] = true;
@@ -1705,7 +1678,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body1 = val;
+                                      bodies[0] = val;
                                     });
                                   },
 
@@ -1839,7 +1812,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path1 = 'no';
+                                      paths[1] = 'no';
                                       _image1 = null;
                                       devHight1 = 121;
                                       checkImgs[1] = true;
@@ -1976,7 +1949,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       counter--;
                                       counter--;
                                       //remove the image
-                                      path2 = 'no';
+                                      paths[2] = 'no';
                                       _image2 = null;
                                       devHight2 = 145;
                                       checkImgs[2] = true;
@@ -2016,7 +1989,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body2 = val;
+                                      bodies[1] = val;
                                     });
                                   },
 
@@ -2147,7 +2120,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path2 = 'no';
+                                      paths[2] = 'no';
                                       _image2 = null;
                                       devHight2 = 121;
                                       checkImgs[2] = true;
@@ -2285,7 +2258,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[2] = false;
                                       counter--;
                                       //remove the image
-                                      path3 = 'no';
+                                      paths[3] = 'no';
                                       _image3 = null;
                                       devHight3 = 145;
                                       visIcon[0] = true;
@@ -2324,7 +2297,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body3 = val;
+                                      bodies[2] = val;
                                     });
                                   },
 
@@ -2457,7 +2430,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path3 = 'no';
+                                      paths[3] = 'no';
                                       _image3 = null;
                                       devHight3 = 121;
                                       checkImgs[3] = true;
@@ -2595,7 +2568,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[3] = false;
                                       counter--;
                                       //remove the image
-                                      path4 = 'no';
+                                      paths[4] = 'no';
                                       _image4 = null;
                                       devHight4 = 145;
                                       checkImgs[4] = true;
@@ -2636,7 +2609,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body4 = val;
+                                      bodies[3] = val;
                                     });
                                   },
 
@@ -2766,7 +2739,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path4 = 'no';
+                                      paths[4] = 'no';
                                       _image4 = null;
                                       devHight4 = 121;
                                       checkImgs[4] = true;
@@ -2904,7 +2877,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[4] = false;
                                       counter--;
                                       //remove the image
-                                      path5 = 'no';
+                                      paths[5] = 'no';
                                       _image5 = null;
                                       devHight5 = 145;
                                       checkImgs[5] = true;
@@ -2944,7 +2917,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body5 = val;
+                                      bodies[4] = val;
                                     });
                                   },
 
@@ -3074,7 +3047,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path5 = 'no';
+                                      paths[5] = 'no';
                                       _image5 = null;
                                       devHight5 = 121;
                                       checkImgs[5] = true;
@@ -3212,7 +3185,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[5] = false;
                                       counter--;
                                       //remove the image
-                                      path6 = 'no';
+                                      paths[6] = 'no';
                                       _image6 = null;
                                       devHight6 = 145;
                                       checkImgs[6] = true;
@@ -3253,7 +3226,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body6 = val;
+                                      bodies[5] = val;
                                     });
                                   },
 
@@ -3383,7 +3356,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path6 = 'no';
+                                      paths[6] = 'no';
                                       _image6 = null;
                                       devHight6 = 121;
                                       checkImgs[6] = true;
@@ -3521,7 +3494,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[6] = false;
                                       counter--;
                                       //remove the image
-                                      path7 = 'no';
+                                      paths[7] = 'no';
                                       _image7 = null;
                                       devHight7 = 145;
                                       checkImgs[7] = true;
@@ -3562,7 +3535,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body7 = val;
+                                      bodies[6] = val;
                                     });
                                   },
 
@@ -3692,7 +3665,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path7 = 'no';
+                                      paths[7] = 'no';
                                       _image7 = null;
                                       devHight7 = 121;
                                       checkImgs[7] = true;
@@ -3830,7 +3803,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[7] = false;
                                       counter--;
                                       //remove the image
-                                      path8 = 'no';
+                                      paths[8] = 'no';
                                       _image8 = null;
                                       devHight8 = 145;
                                       checkImgs[8] = true;
@@ -3871,7 +3844,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body8 = val;
+                                      bodies[7] = val;
                                     });
                                   },
 
@@ -4001,7 +3974,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path8 = 'no';
+                                      paths[8] = 'no';
                                       _image8 = null;
                                       devHight8 = 121;
                                       checkImgs[8] = true;
@@ -4139,7 +4112,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[8] = false;
                                       counter--;
                                       //remove the image
-                                      path9 = 'no';
+                                      paths[9] = 'no';
                                       _image9 = null;
                                       devHight9 = 145;
                                       checkImgs[9] = true;
@@ -4180,7 +4153,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body9 = val;
+                                      bodies[8] = val;
                                     });
                                   },
 
@@ -4310,7 +4283,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path9 = 'no';
+                                      paths[9] = 'no';
                                       _image9 = null;
                                       devHight9 = 121;
                                       checkImgs[9] = true;
@@ -4448,7 +4421,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[9] = false;
                                       counter--;
                                       //remove the image
-                                      path10 = 'no';
+                                      paths[10] = 'no';
                                       _image10 = null;
                                       devHight10 = 145;
                                       checkImgs[10] = true;
@@ -4489,7 +4462,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body10 = val;
+                                      bodies[9] = val;
                                     });
                                   },
 
@@ -4619,7 +4592,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path10 = 'no';
+                                      paths[10] = 'no';
                                       _image10 = null;
                                       devHight10 = 121;
                                       checkImgs[11] = true;
@@ -4757,7 +4730,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[10] = false;
                                       counter--;
                                       //remove the image
-                                      path11 = 'no';
+                                      paths[11] = 'no';
                                       _image11 = null;
                                       devHight11 = 145;
                                       checkImgs[11] = true;
@@ -4798,7 +4771,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body11 = val;
+                                      bodies[10] = val;
                                     });
                                   },
 
@@ -4928,7 +4901,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path11 = 'no';
+                                      paths[11] = 'no';
                                       _image11 = null;
                                       devHight11 = 121;
                                       checkImgs[11] = true;
@@ -5066,7 +5039,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[11] = false;
                                       counter--;
                                       //remove the image
-                                      path12 = 'no';
+                                      paths[12] = 'no';
                                       _image12 = null;
                                       devHight12 = 145;
                                       checkImgs[12] = true;
@@ -5107,7 +5080,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body12 = val;
+                                      bodies[11] = val;
                                     });
                                   },
 
@@ -5237,7 +5210,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path12 = 'no';
+                                      paths[12] = 'no';
                                       _image12 = null;
                                       devHight12 = 121;
                                       checkImgs[12] = true;
@@ -5375,7 +5348,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[12] = false;
                                       counter--;
                                       //remove the image
-                                      path13 = 'no';
+                                      paths[13] = 'no';
                                       _image13 = null;
                                       devHight13 = 145;
                                       checkImgs[13] = true;
@@ -5415,7 +5388,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body13 = val;
+                                      bodies[12] = val;
                                     });
                                   },
 
@@ -5545,7 +5518,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path13 = 'no';
+                                      paths[13] = 'no';
                                       _image13 = null;
                                       devHight13 = 121;
                                       checkImgs[13] = true;
@@ -5683,7 +5656,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[13] = false;
                                       counter--;
                                       //remove the image
-                                      path14 = 'no';
+                                      paths[14] = 'no';
                                       _image14 = null;
                                       devHight14 = 145;
                                       checkImgs[14] = true;
@@ -5723,7 +5696,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body14 = val;
+                                      bodies[13] = val;
                                     });
                                   },
 
@@ -5853,7 +5826,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path14 = 'no';
+                                      paths[14] = 'no';
                                       _image14 = null;
                                       devHight14 = 121;
                                       checkImgs[14] = true;
@@ -5983,7 +5956,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       vis[14] = false;
                                       counter--;
                                       //remove the image
-                                      path15 = 'no';
+                                      paths[15] = 'no';
                                       _image15 = null;
                                       devHight15 = 145;
                                       checkImgs[15] = true;
@@ -6023,7 +5996,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onChanged: (val) {
                                     /*change the val of title*/
                                     setState(() {
-                                      body15 = val;
+                                      bodies[14] = val;
                                     });
                                   },
 
@@ -6153,7 +6126,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   onPressed: () {
                                     //remove a image
                                     setState(() {
-                                      path15 = 'no';
+                                      paths[15] = 'no';
                                       _image15 = null;
                                       devHight15 = 121;
                                       checkImgs[15] = true;
@@ -6276,41 +6249,41 @@ class _AddPostPageState extends State<AddPostPage> {
                         onPressed:
                         (counter == 0 && isButtonActive[2] && isButtonActive[3])
                             || (counter == 2 &&
-                            (isButtonActive[4] || path2 != 'no' ||
+                            (isButtonActive[4] || paths[2]!= 'no' ||
                                 _image2 != null))
                             || (counter == 3 &&
-                            (isButtonActive[5] || path3 != 'no' ||
+                            (isButtonActive[5] || paths[3] != 'no' ||
                                 _image3 != null))
                             || (counter == 4 &&
-                            (isButtonActive[6] || path4 != 'no' ||
+                            (isButtonActive[6] || paths[4] != 'no' ||
                                 _image4 != null))
                             || (counter == 5 &&
-                            (isButtonActive[7] || path5 != 'no' ||
+                            (isButtonActive[7] || paths[5] != 'no' ||
                                 _image5 != null))
                             || (counter == 6 &&
-                            (isButtonActive[8] || path6 != 'no' ||
+                            (isButtonActive[8] || paths[6] != 'no' ||
                                 _image6 != null))
                             || (counter == 7 &&
-                            (isButtonActive[9] || path7 != 'no' ||
+                            (isButtonActive[9] || paths[7] != 'no' ||
                                 _image7 != null))
                             || (counter == 8 &&
-                            (isButtonActive[10] || path8 != 'no' ||
+                            (isButtonActive[10] || paths[8] != 'no' ||
                                 _image8 != null))
                             || (counter == 9 &&
-                            (isButtonActive[11] || path9 != 'no' ||
+                            (isButtonActive[11] || paths[9] != 'no' ||
                                 _image9 != null))
                             || (counter == 10 &&
-                            (isButtonActive[12] || path10 != 'no' ||
+                            (isButtonActive[12] || paths[10] != 'no' ||
                                 _image10 != null))
                             || (counter == 11 &&
-                            (isButtonActive[13] || path11 != 'no' ||
+                            (isButtonActive[13] || paths[11] != 'no' ||
                                 _image11 != null))
                             || (counter == 12 && (isButtonActive[14] ||
-                            path12 != 'no' || _image12 != null))
+                            paths[12] != 'no' || _image12 != null))
                             || (counter == 13 && (isButtonActive[15] ||
-                            path13 != 'no' || _image13 != null))
+                            paths[13] != 'no' || _image13 != null))
                             || (counter == 14 && (isButtonActive[16] ||
-                            path14 != 'no' || _image14 != null))
+                            paths[14] != 'no' || _image14 != null))
                             ?
                             () {
                           setState(() {
@@ -6388,43 +6361,43 @@ class _AddPostPageState extends State<AddPostPage> {
                               (counter == 0 && isButtonActive[2] &&
                                   isButtonActive[3])
                                   || (counter == 2 &&
-                                  (isButtonActive[4] || path2 != 'no' ||
+                                  (isButtonActive[4] || paths[2] != 'no' ||
                                       _image2 != null))
                                   || (counter == 3 &&
-                                  (isButtonActive[5] || path3 != 'no' ||
+                                  (isButtonActive[5] || paths[3] != 'no' ||
                                       _image3 != null))
                                   || (counter == 4 &&
-                                  (isButtonActive[6] || path4 != 'no' ||
+                                  (isButtonActive[6] || paths[4] != 'no' ||
                                       _image4 != null))
                                   || (counter == 5 &&
-                                  (isButtonActive[7] || path5 != 'no' ||
+                                  (isButtonActive[7] || paths[5] != 'no' ||
                                       _image5 != null))
                                   || (counter == 6 &&
-                                  (isButtonActive[8] || path6 != 'no' ||
+                                  (isButtonActive[8] || paths[6] != 'no' ||
                                       _image6 != null))
                                   || (counter == 7 &&
-                                  (isButtonActive[9] || path7 != 'no' ||
+                                  (isButtonActive[9] || paths[7] != 'no' ||
                                       _image7 != null))
                                   || (counter == 8 &&
-                                  (isButtonActive[10] || path8 != 'no' ||
+                                  (isButtonActive[10] || paths[8] != 'no' ||
                                       _image8 != null))
                                   || (counter == 9 &&
-                                  (isButtonActive[11] || path9 != 'no' ||
+                                  (isButtonActive[11] || paths[9] != 'no' ||
                                       _image9 != null))
                                   || (counter == 10 &&
-                                  (isButtonActive[12] || path10 != 'no' ||
+                                  (isButtonActive[12] || paths[10] != 'no' ||
                                       _image10 != null))
                                   || (counter == 11 &&
-                                  (isButtonActive[13] || path11 != 'no' ||
+                                  (isButtonActive[13] || paths[11] != 'no' ||
                                       _image11 != null))
                                   || (counter == 12 &&
-                                  (isButtonActive[14] || path12 != 'no' ||
+                                  (isButtonActive[14] || paths[12] != 'no' ||
                                       _image12 != null))
                                   || (counter == 13 &&
-                                  (isButtonActive[15] || path13 != 'no' ||
+                                  (isButtonActive[15] || paths[13] != 'no' ||
                                       _image13 != null))
                                   || (counter == 14 &&
-                                  (isButtonActive[16] || path14 != 'no' ||
+                                  (isButtonActive[16] || paths[14] != 'no' ||
                                       _image14 != null))
                                   ?
                               Palette.link : Palette.darkGray,
@@ -6589,6 +6562,11 @@ class _AddPostPageState extends State<AddPostPage> {
     if (userSnap.data() != null)
       userData = userSnap.data()!;
 
+    if (bodies[counter-1].isEmpty && paths[counter]=='no')
+      counter--;
+
+    if(counter==0)
+      counter++;
 
     /*save post to database*/
     addPostToDatabase(
@@ -6618,10 +6596,10 @@ class _AddPostPageState extends State<AddPostPage> {
 
       /*content*/
       title,
-      [body1, body2, body3, body4, body5, body6, body7, body8, body9, body10, body11, body12, body13, body14, body15],
-      [path, path1, path2, path3, path4, path5, path6, path7,
-        path8, path9, path10, path11, path12, path13, path14, path15],
+      bodies,
+      paths,
       checkImgs,
+      counter,
     );
     /*end of save post*/
 
@@ -6732,7 +6710,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/CoverImages", _Coverimage!, true);
 
       setState(() {
-        path =p;
+        paths[0] =p;
         loading[0]=false;
       });
 
@@ -6771,7 +6749,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image1",_image1!, true);
 
       setState(() {
-        path1 =p;
+        paths[1] =p;
         loading[1]=false;
       });
 
@@ -6808,7 +6786,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image2",_image2!, true);
 
       setState(() {
-        path2 =p;
+        paths[2] =p;
         loading[2]=false;
       });
 
@@ -6846,7 +6824,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image3",_image3!, true);
 
       setState(() {
-        path3 =p;
+        paths[3] =p;
         loading[3]=false;
       });
 
@@ -6884,7 +6862,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image4",_image4!, true);
 
       setState(() {
-        path4 =p;
+        paths[4] =p;
         loading[4]=false;
       });
 
@@ -6922,7 +6900,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image5",_image5!, true);
 
       setState(() {
-        path5 =p;
+        paths[5] =p;
         loading[5]=false;
       });
 
@@ -6959,7 +6937,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image6",_image6!, true);
 
       setState(() {
-        path6 =p;
+        paths[6] =p;
         loading[6]=false;
       });
 
@@ -6997,7 +6975,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image7",_image7!, true);
 
       setState(() {
-        path7 =p;
+        paths[7] =p;
         loading[7]=false;
       });
 
@@ -7035,7 +7013,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image8",_image8!, true);
 
       setState(() {
-        path8 =p;
+        paths[8] =p;
         loading[8]=false;
       });
 
@@ -7073,7 +7051,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image9",_image9!, true);
 
       setState(() {
-        path9 =p;
+        paths[9] =p;
         loading[9]=false;
       });
 
@@ -7111,7 +7089,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image10",_image10!, true);
 
       setState(() {
-        path10 =p;
+        paths[10] =p;
         loading[10]=false;
       });
 
@@ -7149,7 +7127,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image11",_image11!, true);
 
       setState(() {
-        path11 =p;
+        paths[11] =p;
         loading[11]=false;
       });
 
@@ -7186,7 +7164,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image12",_image12!, true);
 
       setState(() {
-        path12 =p;
+        paths[12] =p;
         loading[12]=false;
       });
 
@@ -7223,7 +7201,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image13",_image13!, true);
 
       setState(() {
-        path13 =p;
+        paths[13] =p;
         loading[13]=false;
       });
 
@@ -7260,7 +7238,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image14",_image14!, true);
 
       setState(() {
-        path14 =p;
+        paths[14] =p;
         loading[14]=false;
       });
 
@@ -7299,7 +7277,7 @@ class _AddPostPageState extends State<AddPostPage> {
       String p = await StorageMethods().uploadImageToStorage("posts/"+uid+"/"+postId+"/image15",_image15!, true);
 
       setState(() {
-        path15 =p;
+        paths[15] =p;
         loading[15]=false;
       });
 

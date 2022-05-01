@@ -31,6 +31,7 @@ class Post {
   final List<String> bodies;
   final List<String> imgsPath;
   final List<bool> isCoverPage;
+  final int counter;
 
   /*likes*/
   final likes;
@@ -67,6 +68,7 @@ class Post {
         required this.bodies,
         required this.imgsPath,
         required this.isCoverPage,
+        required this.counter,
 
         /*likes*/
         required this.likes,
@@ -106,6 +108,7 @@ class Post {
       bodies: snapshot["bodies"],
       imgsPath: snapshot["imgsPath"],
       isCoverPage: snapshot["isCoverPage"],
+      counter: snapshot['counter'],
 
       /*likes*/
       likes: snapshot["likes"],
@@ -143,6 +146,7 @@ class Post {
     "bodies": bodies,
     "imgsPath": imgsPath,
     "isCoverPage": isCoverPage,
+    "counter": counter,
 
     /*likes*/
     "likes": likes,

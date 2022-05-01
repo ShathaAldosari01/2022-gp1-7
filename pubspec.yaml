@@ -49,6 +49,8 @@ dependencies:
   provider: ^6.0.2
   # for post id
   uuid: ^3.0.6
+  # for open google map
+  url_launcher: ^6.1.0
 
 
 
