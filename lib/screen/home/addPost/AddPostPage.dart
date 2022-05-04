@@ -579,9 +579,8 @@ class _AddPostPageState extends State<AddPostPage> {
         isLoaded?  Container(
           color: Palette.backgroundColor,
           child: const Center(
-
-          child: CircularProgressIndicator(),
-    ),
+           child: CircularProgressIndicator(),
+          ),
         ):
     Scaffold(
       backgroundColor: Palette.backgroundColor,
@@ -963,7 +962,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
               /*type*/
               Visibility(
-                visible: isButtonActive[0] && locationName.isNotEmpty,
+                visible: isButtonActive[0] && locationTypes.length !=0,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -6562,11 +6561,11 @@ class _AddPostPageState extends State<AddPostPage> {
     if (userSnap.data() != null)
       userData = userSnap.data()!;
 
-    if (bodies[counter-1].isEmpty && paths[counter]=='no')
-      counter--;
-
     if(counter==0)
       counter++;
+
+    if (bodies[counter-1].isEmpty && paths[counter]=='no')
+      counter--;
 
     /*save post to database*/
     addPostToDatabase(
@@ -6639,36 +6638,56 @@ class _AddPostPageState extends State<AddPostPage> {
     //End Search places box
 
     //save place information
-    if(place!=null)
-     setState(() {
-       devHightType = 90;
-       isButtonActive[0] = true;
-       locationAdress = place?.description??"";
-       int index = place?.description?.indexOf(',')??0;
-       locationName = locationAdress.substring(0,index)??"";
-       int index2 = place?.description?.indexOf(',',index+1)??0,
-       index3 = place?.description?.indexOf(country,index+1)??0;
-       city = locationAdress.substring(0,index3-1)??"";
-       int index4 = city.lastIndexOf(","),
-       index5 = city.lastIndexOf("،");
-       if (index5> index4)
-         index4 = index5;
-       city = city.substring(index4+2);
-       locationTypes= place?.types??[];
-       if (locationTypes.indexOf("establishment")!=-1)
-         locationTypes.removeAt(locationTypes.indexOf("establishment"));
-       if (locationTypes.indexOf("point_of_interest")!=-1)
-       locationTypes.removeAt(locationTypes.indexOf("point_of_interest"));
+    if(place!=null) {
+      /*design*/
+      setState(() {
+        devHightType = 90;
+        isButtonActive[0] = true;
+      });
+      setState(() {
+        locationAdress = place?.description ?? " ";
+        int index = locationAdress.indexOf(',') ?? 0,//1
+            index2 = locationAdress.indexOf('-') ?? 0;
+        if(index ==-1)
+          index = index2;
+        else if(index2!= -1 && index2 < index)
+          index = index2;
+        if(index!=-1) {
+          locationName = locationAdress.substring(0, index);
+          int index3 = locationAdress.indexOf(country, index + 1) ?? 0;
+          if(index3 != -1)
+            city =  index ==index2?locationAdress.substring(0, index3 - 2) ?? "":locationAdress.substring(0, index3 - 1) ?? "";
+          print(city);
+        }
+        int index4 = city.lastIndexOf(","),
+            index7 = city.lastIndexOf("-"),
+            index5 = city.lastIndexOf("،");
+        if (index5 > index4)
+          index4 = index5;
+        if(index7 > index4)
+          index4 = index7;
+        if(index4 != -1)
+          city = city.substring(index4 + 2);
+      });
+      setState(() {
+        locationTypes = place?.types ?? [];
+        if (locationTypes.indexOf("establishment") != -1)
+          locationTypes.removeAt(locationTypes.indexOf("establishment"));
+        if (locationTypes.indexOf("point_of_interest") != -1)
+          locationTypes.removeAt(locationTypes.indexOf("point_of_interest"));
 
-       locationId = place.placeId??"";
-
-       for(int i=1; i< locationTypes.length; i++){
-         devHightType+=47;
-         numbers.add(0);
-       }
-     });
+        for (int i = 1; i < locationTypes.length; i++) {
+          devHightType += 47;
+          numbers.add(0);
+        }
+      });
+      setState(() {
+        locationId = place.placeId ?? "";
+      });
+    }
     print(city);
     print(locationAdress);
+    print(locationName);
   }
 
   /*End Location*/

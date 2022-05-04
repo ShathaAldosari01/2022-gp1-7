@@ -1,18 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
-/*pages */
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
-import 'package:gp1_7_2022/Widgets/follow_button.dart';
-import 'package:gp1_7_2022/screen/home/TimeLine/home_page.dart';
-import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
-import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
-import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 class Profile_page extends StatefulWidget {
@@ -25,6 +17,10 @@ class Profile_page extends StatefulWidget {
 
 class _Profile_pageState extends State<Profile_page> {
   bool _isloaded = false;
+  int postLen = 0;
+  int followers = 0;
+  int following = 0;
+  bool isFollowing = false;
   var padding = 0.8;
   var userData = {};
   @override
@@ -41,6 +37,21 @@ class _Profile_pageState extends State<Profile_page> {
             .collection('users')
             .doc(widget.uid)
             .get();
+        /*get user post*/
+        var postSnap = await FirebaseFirestore.instance
+            .collection("posts")
+            .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+            .get();
+
+        postLen = postSnap.docs.length;
+        userData = userSnap.data()!;
+        followers = userSnap.data()!['followers'].length;
+        following = userSnap.data()!['following'].length;
+        isFollowing = userSnap
+            .data()!['followers']
+            .contains(FirebaseAuth.instance.currentUser!.uid);
+        setState(() {});
+        /*end*/
         if (userSnap.data() != null) {
           userData = userSnap.data()!;
           setState(() {
@@ -108,7 +119,8 @@ class _Profile_pageState extends State<Profile_page> {
                       .toString()
                       .compareTo("0") ==
                   0)) {
-            //  Navigator.of(context).popAndPushNamed('/question5');
+
+
           }
         } else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
@@ -132,7 +144,7 @@ class _Profile_pageState extends State<Profile_page> {
         //username
         title: _isloaded
             ? Text(
-                userData['username'],
+                userData['name'],
                 style: TextStyle(
                   color: Colors.black,
                   fontWeight: FontWeight.bold,
@@ -242,6 +254,10 @@ class _Profile_pageState extends State<Profile_page> {
           ),
         ],
       ),
+
+      //fix overload error
+      resizeToAvoidBottomInset: false,
+
       body: ListView(
         children: [
           Container(
@@ -330,17 +346,57 @@ class _Profile_pageState extends State<Profile_page> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(flex: 10, child: buildStatColumn(0, "Posts")),
+                      Expanded(flex: 10, child: buildStatColumn(postLen, "Posts")),
                       Expanded(
-                          flex: 10, child: buildStatColumn(0, "Followers")),
+                          flex: 10, child: buildStatColumn(followers, "Followers")),
                       Expanded(
-                          flex: 10, child: buildStatColumn(0, "Following")),
+                          flex: 10, child: buildStatColumn(following, "Following")),
                     ],
                   ),
                 ),
+
+
               ],
             ),
           ),
+          const Divider(),
+          FutureBuilder(
+            future: FirebaseFirestore.instance
+                .collection('posts')
+                .where('uid', isEqualTo: widget.uid)
+                .get(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return GridView.builder(
+                shrinkWrap: true,
+                itemCount: (snapshot.data! as dynamic).docs.length,
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 1.5,
+                  childAspectRatio: 1,
+                ),
+                itemBuilder: (context, index) {
+                  DocumentSnapshot snap =
+                  (snapshot.data! as dynamic).docs[index];
+
+                  return Container(
+                    child: snap['imgsPath'][0]!= "no"?
+                    Image(
+                      image: NetworkImage(snap['imgsPath'][0]),
+                      fit: BoxFit.cover,
+                    ):Text('hi'),
+                  );
+                },
+              );
+            },
+          )
         ],
       ),
     );
