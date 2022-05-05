@@ -87,7 +87,7 @@ class HomePage extends StatelessWidget {
       ),
 
       body:  StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).snapshots(),
+        stream: FirebaseFirestore.instance.collection('posts').where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid).orderBy("datePublished", descending: true).snapshots(),
         builder: (context,
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -96,7 +96,7 @@ class HomePage extends StatelessWidget {
              );
           }
         return PageView.builder( //to make the page scroll
-          itemCount: snapshot.data!.docs.length,
+          itemCount: snapshot.data?.docs.length ?? 0,
           controller: PageController(initialPage: 0, viewportFraction: 1),
           scrollDirection: Axis.vertical, //to scroll vertically
           itemBuilder: (context, index) {
