@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Post {
   /*user info*/
   final String uid;
-  final String username;
-  final String photoPath;
 
   /*place type*/
   final String country;
@@ -40,8 +38,6 @@ class Post {
       {
         /*user info*/
         required this.uid,
-        required this.username,
-        required this.photoPath,
 
         /*place type*/
         required this.country,
@@ -80,8 +76,6 @@ class Post {
     return Post(
       /*user info*/
       uid: snapshot["uid"],
-      username: snapshot["username"],
-      photoPath: snapshot["photoPath"],
 
       /*place type*/
       country: snapshot["country"],
@@ -118,8 +112,6 @@ class Post {
   Map<String, dynamic> toJson() => {
     /*user info*/
     "uid": uid,
-    "username": username,
-    "photoPath": photoPath,
 
     /*place type*/
     "country": country,

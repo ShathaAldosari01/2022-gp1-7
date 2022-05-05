@@ -8,8 +8,6 @@ class FireStoreMethods {
   Future<String> uploadPost(
       /*user info*/
       String uid,
-      String username,
-      String photoPath,
 
       /*place type*/
       String country,
@@ -44,8 +42,6 @@ class FireStoreMethods {
       Post post = Post(
         /*user info*/
         uid: uid,
-        username: username,
-        photoPath: photoPath,
 
         /*place type*/
         country: country,

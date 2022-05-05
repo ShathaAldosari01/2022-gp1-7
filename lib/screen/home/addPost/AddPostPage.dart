@@ -51,8 +51,6 @@ class _AddPostPageState extends State<AddPostPage> {
   void addPostToDatabase(
       /*user info*/
       String uid,
-      String username,
-      String photoPath,
 
       /*place type*/
       String country,
@@ -82,7 +80,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
       )async{
     try{
-      String res = await FireStoreMethods().uploadPost(uid, username, photoPath, country, city, categories, type, locationId, postId, name, address, rating, visibility, dateVisit, title, bodies, imgsPath, isCoverPage, counter);
+      String res = await FireStoreMethods().uploadPost(uid, country, city, categories, type, locationId, postId, name, address, rating, visibility, dateVisit, title, bodies, imgsPath, isCoverPage, counter);
       if(res== "success"){
         showSnackBar(context, "Posted!");
       }else{
@@ -6571,8 +6569,6 @@ class _AddPostPageState extends State<AddPostPage> {
     addPostToDatabase(
       /*user info*/
       uid,
-      userData['username'],
-      userData['photoPath'],
 
       /*place type*/
       country,

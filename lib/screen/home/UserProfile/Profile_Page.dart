@@ -7,6 +7,8 @@ import 'package:focused_menu/modals.dart';
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
+import '../../auth/signup/userInfo/photo/utils.dart';
+
 class Profile_page extends StatefulWidget {
   final uid;
   const Profile_page({Key? key, required this.uid}) : super(key: key);
@@ -127,7 +129,7 @@ class _Profile_pageState extends State<Profile_page> {
       }else
         Navigator.of(context).popAndPushNamed('/navigationBar');
     } catch (e) {
-      Navigator.of(context).popAndPushNamed('/Signup_Login');
+      showSnackBar(context, e.toString());
     }
   }
 
@@ -141,7 +143,7 @@ class _Profile_pageState extends State<Profile_page> {
         backgroundColor: Palette.backgroundColor,
         automaticallyImplyLeading: false, //no arrow
         centerTitle: true,
-        //username
+        //name
         title: _isloaded
             ? Text(
                 userData['name'],

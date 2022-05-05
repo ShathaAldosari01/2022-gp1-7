@@ -8,13 +8,25 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../config/palette.dart';
+import '../../auth/signup/userInfo/photo/utils.dart';
 import 'ImageDisplayer.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   //to open link
   late Future<void> _launched;
+
   String phoneNumber ="";
+
   String _launchUrl="https://www.google.com";
+
+  var userData = {};
+
+  var _isuserloaded= false;
 
   Future<void> _launchInBrowser(String url) async{
     if(await canLaunch(url)){
@@ -25,6 +37,34 @@ class HomePage extends StatelessWidget {
       );
     }else{
       throw 'Could not launch $url';
+    }
+  }
+
+  /* get data method */
+  getData(puid) async {
+    setState(() {
+      _isuserloaded = false;
+    });
+    try {
+      if (puid != null) {
+        var userSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(puid)
+            .get();
+
+        userData = userSnap.data()!;
+
+        setState(() {});
+        /*end*/
+        if (userSnap.data() != null) {
+          userData = userSnap.data()!;
+          setState(() {
+            _isuserloaded = true;
+          });
+        }
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
     }
   }
 
@@ -57,7 +97,6 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +145,7 @@ class HomePage extends StatelessWidget {
                   controller: PageController(initialPage: 0, viewportFraction: 1),
                   scrollDirection: Axis.horizontal, //to scroll horizontally
                   itemBuilder: (context, indexIn) {
+                    getData(snapshot.data!.docs[index].data()['uid']);
                   return indexIn==0?
                       Stack(
                           children: [
@@ -222,7 +262,7 @@ class HomePage extends StatelessWidget {
                                                           height:7,
                                                         ),
                                                         /*profile img*/
-                                                        buildProfile(snapshot.data!.docs[index].data()['photoPath'].toString()),
+                                                        buildProfile(userData['photoPath'].toString()),
                                                         Column(
                                                           children: [
                                                             /*like*/
@@ -542,7 +582,7 @@ class HomePage extends StatelessWidget {
 
                                                       /*username*/
                                                       Text(
-                                                        "@"+snapshot.data!.docs[index].data()['username'].toString(),
+                                                        "@"+userData['username'].toString(),
                                                         style: TextStyle(
                                                           fontSize: 16,
                                                           color: Palette.backgroundColor,
