@@ -3,11 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
+import '../../auth/signup/userInfo/photo/utils.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-
-import '../../auth/signup/userInfo/photo/utils.dart';
 
 class Profile_page extends StatefulWidget {
   final uid;
@@ -40,8 +39,10 @@ class _Profile_pageState extends State<Profile_page> {
             .doc(widget.uid)
             .get();
         /*get user post*/
+
         var postSnap = await FirebaseFirestore.instance
             .collection("posts")
+            .orderBy("datePublished", descending: false)
             .where('uid', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
             .get();
 
@@ -66,60 +67,60 @@ class _Profile_pageState extends State<Profile_page> {
           } else if (userData['username'].toString().isEmpty) {
             Navigator.of(context).popAndPushNamed('/signupUsername');
           } else if (userData['questions']["married"]
-                  .toString()
-                  .compareTo("-1") ==
+              .toString()
+              .compareTo("-1") ==
               0) {
             Navigator.of(context).popAndPushNamed('/question1');
           } else if (userData['questions']["children"]
-                  .toString()
-                  .compareTo("-1") ==
+              .toString()
+              .compareTo("-1") ==
               0) {
             Navigator.of(context).popAndPushNamed('/question2');
           } else if (userData['questions']["gender"]
-                  .toString()
-                  .compareTo("-1") ==
+              .toString()
+              .compareTo("-1") ==
               0) {
             Navigator.of(context).popAndPushNamed('/gender');
           } else if ((userData['questions']["countries"]["Middle eastern"]
-                      .toString()
-                      .compareTo("0") ==
-                  0) &&
+              .toString()
+              .compareTo("0") ==
+              0) &&
               (userData['questions']["countries"]["Asian"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0) &&
               (userData['questions']["countries"]["European"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0) &&
               (userData['questions']["countries"]["American"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0) &&
               (userData['questions']["countries"]["African"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0)) {
             Navigator.of(context).popAndPushNamed('/question4');
           } else if ((userData['questions']["places"]["Restaurants and cafes"]
-                      .toString()
-                      .compareTo("0") ==
-                  0) &&
+              .toString()
+              .compareTo("0") ==
+              0) &&
               (userData['questions']["places"]["Museums"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0) &&
               (userData['questions']["places"]["Shopping malls"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0) &&
               (userData['questions']["places"]["Parks"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0) &&
               (userData['questions']["places"]["Sports attractions"]
-                      .toString()
-                      .compareTo("0") ==
+                  .toString()
+                  .compareTo("0") ==
                   0)) {
 
 
@@ -143,24 +144,24 @@ class _Profile_pageState extends State<Profile_page> {
         backgroundColor: Palette.backgroundColor,
         automaticallyImplyLeading: false, //no arrow
         centerTitle: true,
-        //name
+        //username
         title: _isloaded
             ? Text(
-                userData['name'],
-                style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24,
-                ),
-              )
+          userData['name'],
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 24,
+          ),
+        )
             : Container(
-                width: 100,
-                child: LinearProgressIndicator(
-                  minHeight: 15,
-                  backgroundColor: Palette.lightgrey,
-                  valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                ),
-              ),
+          width: 100,
+          child: LinearProgressIndicator(
+            minHeight: 15,
+            backgroundColor: Palette.lightgrey,
+            valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
+          ),
+        ),
 
         //setting icon
         actions: [
@@ -268,29 +269,29 @@ class _Profile_pageState extends State<Profile_page> {
               children: [
                 _isloaded
                     ? userData['photoPath'] != "no"
-                        ? CircleAvatar(
-                            backgroundColor: Palette.grey,
-                            backgroundImage:
-                                NetworkImage(userData['photoPath']),
-                            radius: 45)
-                        //user photo
-                        : CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 45,
-                            child: Icon(
-                              Icons.account_circle_sharp,
-                              color: Colors.grey,
-                              size: 90,
-                            ),
-                          )
+                    ? CircleAvatar(
+                    backgroundColor: Palette.grey,
+                    backgroundImage:
+                    NetworkImage(userData['photoPath']),
+                    radius: 45)
+                //user photo
+                    : CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 45,
+                  child: Icon(
+                    Icons.account_circle_sharp,
+                    color: Colors.grey,
+                    size: 90,
+                  ),
+                )
                     : Container(
-                        margin: EdgeInsets.all(32),
-                        child: CircularProgressIndicator(
-                          backgroundColor: Palette.lightgrey,
-                          valueColor:
-                              AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                        ),
-                      ),
+                  margin: EdgeInsets.all(32),
+                  child: CircularProgressIndicator(
+                    backgroundColor: Palette.lightgrey,
+                    valueColor:
+                    AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                  ),
+                ),
 
                 //username
                 Container(
@@ -298,22 +299,22 @@ class _Profile_pageState extends State<Profile_page> {
                   padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                   child: _isloaded
                       ? Text("@"+
-                          userData['username'],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18,
-                          ),
-                        )
+                      userData['username'],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  )
                       : Container(
-                          width: 100,
-                          child: LinearProgressIndicator(
-                            minHeight: 15,
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                          ),
-                        ),
+                    width: 100,
+                    child: LinearProgressIndicator(
+                      minHeight: 15,
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                 ),
                 //end of username
 
@@ -323,23 +324,23 @@ class _Profile_pageState extends State<Profile_page> {
                   padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
                   child: _isloaded
                       ? userData['bio'].toString().isNotEmpty
-                          ? Text(
-                              userData['bio'],
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 16,
-                              ),
-                            )
-                          : SizedBox()
+                      ? Text(
+                    userData['bio'],
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                  )
+                      : SizedBox()
                       : Container(
-                          width: 100,
-                          child: LinearProgressIndicator(
-                            minHeight: 15,
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                          ),
-                        ),
+                    width: 100,
+                    child: LinearProgressIndicator(
+                      minHeight: 15,
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                 ),
                 //end of bio
 
@@ -365,8 +366,10 @@ class _Profile_pageState extends State<Profile_page> {
           FutureBuilder(
             future: FirebaseFirestore.instance
                 .collection('posts')
+                .orderBy("datePublished", descending: true)
                 .where('uid', isEqualTo: widget.uid)
                 .get(),
+
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(

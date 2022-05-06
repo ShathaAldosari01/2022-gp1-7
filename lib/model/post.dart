@@ -4,6 +4,7 @@ class Post {
   /*user info*/
   final String uid;
 
+
   /*place type*/
   final String country;
   final String city;
@@ -38,6 +39,7 @@ class Post {
       {
         /*user info*/
         required this.uid,
+
 
         /*place type*/
         required this.country,
@@ -77,6 +79,7 @@ class Post {
       /*user info*/
       uid: snapshot["uid"],
 
+
       /*place type*/
       country: snapshot["country"],
       city: snapshot["city"],
@@ -112,6 +115,7 @@ class Post {
   Map<String, dynamic> toJson() => {
     /*user info*/
     "uid": uid,
+
 
     /*place type*/
     "country": country,

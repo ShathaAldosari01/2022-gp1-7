@@ -9,6 +9,7 @@ class FireStoreMethods {
       /*user info*/
       String uid,
 
+
       /*place type*/
       String country,
       String city,
@@ -43,6 +44,7 @@ class FireStoreMethods {
         /*user info*/
         uid: uid,
 
+
         /*place type*/
         country: country,
         city: city,
@@ -75,10 +77,22 @@ class FireStoreMethods {
       );
 
       _firestore.collection("posts").doc(postId).set(
-          post.toJson(),
-        );
+        post.toJson(),
+      );
       res = "success";
     }catch(err){
+      res = err.toString();
+    }
+    return res;
+  }
+
+  // Delete Post
+  Future<String> deletePost(String postId) async {
+    String res = "Some error occurred";
+    try {
+      await _firestore.collection('posts').doc(postId).delete();
+      res = 'success';
+    } catch (err) {
       res = err.toString();
     }
     return res;
