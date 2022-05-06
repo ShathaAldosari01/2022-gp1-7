@@ -11,25 +11,24 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/palette.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 import '../../services/firestore_methods.dart';
+import '../TimeLine/ImageDisplayer.dart';
 import '../UserProfile/Profile_Page.dart';
-import 'ImageDisplayer.dart';
 
-class HomePage extends StatefulWidget {
+class UserPost extends StatefulWidget {
+  final uid;
+  final index;
+  const UserPost({Key? key, required this.uid, required this.index}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  _UserPostState createState() => _UserPostState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _UserPostState extends State<UserPost> {
 
-  //to open link
-  var uid = FirebaseAuth.instance.currentUser!.uid;
   late Future<void> _launched;
-  var userData = [];
   var theUserData ={};
   bool _isTheUserLoaded = false;
   String phoneNumber ="";
-  List<bool> _isloaded = [];
   String _launchUrl="https://www.google.com";
 
   @override
@@ -41,49 +40,26 @@ class _HomePageState extends State<HomePage> {
   /* get data method */
   getTheData() async {
     try {
-      if ( uid!= null) {
+      if ( widget.uid!= null) {
         var userSnap = await FirebaseFirestore.instance
             .collection('users')
-            .doc(uid)
+            .doc(widget.uid)
             .get();
 
         /*end*/
         if (userSnap.data() != null) {
           theUserData = userSnap.data()!;
-          theUserData['following'].add(uid);
           setState(() {
             _isTheUserLoaded = true;
           });
 
-        } else
-          Navigator.of(context).popAndPushNamed('/Signup_Login');
+        }
       }
     } catch (e) {
       showSnackBar(context, e.toString());
     }
   }
 
-  /* get data method */
-  getData(puid,index) async {
-    try {
-      if (puid != null) {
-        var userSnap = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(puid)
-            .get();
-
-        if (userSnap.data() != null) {
-          userData[index] = (userSnap.data()!);
-          setState(() {
-            _isloaded[index] = true;
-          });
-          print("done");
-        }
-      }
-    } catch (e) {
-     print(e.toString());
-    }
-  }
 
   deletePost(String postId) async {
     try {
@@ -115,34 +91,34 @@ class _HomePageState extends State<HomePage> {
       height: 50,
       child: Stack(
           children: [
-             profilePhoto != "no"?
+            profilePhoto != "no"?
             Positioned(
               child: Container(
-                width: 40,
-                height: 40,
-                padding: const EdgeInsets.all(1),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                  child:ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child:
-                  Image(
-                    image: NetworkImage(profilePhoto),
-                    fit: BoxFit.cover,
+                  width: 40,
+                  height: 40,
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                )
-                ),
-              ): CircleAvatar(
-                backgroundColor: Colors.white.withOpacity(0.8),
-                radius: 25,
-                child: Icon(
-                  Icons.account_circle_sharp,
-                  color: Colors.grey,
-                  size: 50,
-                ),
-              )
+                  child:ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child:
+                    Image(
+                      image: NetworkImage(profilePhoto),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+              ),
+            ): CircleAvatar(
+              backgroundColor: Colors.white.withOpacity(0.8),
+              radius: 25,
+              child: Icon(
+                Icons.account_circle_sharp,
+                color: Colors.grey,
+                size: 50,
+              ),
+            )
           ]
       ),
     );
@@ -152,7 +128,6 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
-
     return Scaffold(
       extendBodyBehindAppBar:true,
       backgroundColor: Palette.backgroundColor,
@@ -161,9 +136,9 @@ class _HomePageState extends State<HomePage> {
         foregroundColor: Palette.textColor,
         elevation: 0,
         //no shadow
-        automaticallyImplyLeading: false,
-        //no arrow
-
+        iconTheme: IconThemeData(
+          color: Palette.backgroundColor, //change your color here
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.notifications, color: Palette.backgroundColor,),
@@ -184,7 +159,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ):
       StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', whereIn: theUserData['following']).snapshots(),
+          stream: FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', isEqualTo:widget.uid).snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
 
@@ -194,22 +169,11 @@ class _HomePageState extends State<HomePage> {
               );
             }
 
-            int len = snapshot.data?.docs.length??0;
-            for(int i = 0 ; i < len ; i++){
-              _isloaded.add(false);
-              userData.add('');
-            }
-            for(int i = 0 ; i < len ; i++){
-              if(!_isloaded[i]) {
-                getData(snapshot.data!.docs[i].data()['uid'], i);
-              }
-            }
-
             if (snapshot.data == null) {
               return Center(
                 child: Container(
                   child: Text(
-                    "No posts yet!",
+                    "User have no posts yet!",
                     style: TextStyle(
                       color: Palette.textColor,
                       fontSize: 20,
@@ -221,7 +185,7 @@ class _HomePageState extends State<HomePage> {
             }
             else return PageView.builder( //to make the page scroll
               itemCount: snapshot.data?.docs.length??0,
-              controller: PageController(initialPage: 0, viewportFraction: 1),
+              controller: PageController(initialPage: widget.index, viewportFraction: 1),
               scrollDirection: Axis.vertical, //to scroll vertically
               itemBuilder: (context, index) {
                 return PageView.builder( //to make the page scroll
@@ -281,32 +245,22 @@ class _HomePageState extends State<HomePage> {
                                                 SizedBox(height: 5),
 
                                                 /*username*/
-                                                _isloaded[index]?
                                                 InkWell(
                                                   onTap: (){
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) => Profile_page(uid: userData[index]['uid'].toString()),
+                                                        builder: (context) => Profile_page(uid: theUserData['uid'].toString()),
                                                       ),
                                                     );
                                                   },
                                                   child: Text(
-                                                    "@"+userData[index]['username'].toString(),
+                                                    "@"+theUserData['username'].toString(),
                                                     style: TextStyle(
                                                       fontSize: 16,
                                                       color: Palette.backgroundColor,
                                                       fontWeight:FontWeight.bold,
                                                     ),
-                                                  ),
-                                                )
-                                              : Container(
-                                                  width: 100,
-                                                  child: LinearProgressIndicator(
-                                                    minHeight: 15,
-                                                    backgroundColor: Colors.black.withOpacity(0.3),
-                                                    valueColor:
-                                                    AlwaysStoppedAnimation<Color>(Palette.midgrey),
                                                   ),
                                                 ),
                                                 /*end of username*/
@@ -365,15 +319,7 @@ class _HomePageState extends State<HomePage> {
                                                       height:7,
                                                     ),
                                                     /*profile img*/
-                                                    _isloaded[index]?
-                                                    buildProfile(userData[index]['photoPath'].toString()) : Container(
-                                                      margin: EdgeInsets.all(32),
-                                                      child: CircularProgressIndicator(
-                                                        backgroundColor: Palette.lightgrey,
-                                                        valueColor:
-                                                        AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                                                      ),
-                                                    ),
+                                                    buildProfile(theUserData['photoPath'].toString()) ,
                                                     Column(
                                                       children: [
                                                         /*like*/
@@ -700,12 +646,12 @@ class _HomePageState extends State<HomePage> {
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                          builder: (context) => Profile_page(uid: userData[index]['uid'].toString()),
+                                                          builder: (context) => Profile_page(uid: theUserData['uid'].toString()),
                                                         ),
                                                       );
                                                     },
                                                     child: Text(
-                                                      "@"+userData[index]['username'].toString(),
+                                                      "@"+theUserData['username'].toString(),
                                                       style: TextStyle(
                                                         fontSize: 16,
                                                         color: Palette.backgroundColor,
@@ -754,7 +700,7 @@ class _HomePageState extends State<HomePage> {
                                                       height: 7,
                                                     ),
                                                     /*profile img*/
-                                                    buildProfile(userData[index]['photoPath'].toString()),
+                                                    buildProfile(theUserData['photoPath'].toString()),
                                                     Column(
                                                       children: [
                                                         /*like*/
@@ -915,21 +861,21 @@ class _HomePageState extends State<HomePage> {
 
   void onMore(String postId, puid) {
     showModalBottomSheet(context: context, builder: (context){
-     return Container(
-       color: Color(0xFF737373),
-       height: 180/3,
-       child: Container(
-         child: onMorePressed(postId, puid),
-         decoration: BoxDecoration(
-           color: Palette.backgroundColor,
-           borderRadius: BorderRadius.only(
-             topLeft: const Radius.circular(10),
-             topRight: const Radius.circular(10),
+      return Container(
+        color: Color(0xFF737373),
+        height: 180/3,
+        child: Container(
+          child: onMorePressed(postId, puid),
+          decoration: BoxDecoration(
+            color: Palette.backgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: const Radius.circular(10),
 
-           ),
-         ),
-       ),
-     );
+            ),
+          ),
+        ),
+      );
 
 
     });
@@ -937,62 +883,62 @@ class _HomePageState extends State<HomePage> {
 
   Column onMorePressed(String postId, puid) {
     return Column(
-     children:  [
-       ListTile(
-         leading: (FirebaseAuth.instance.currentUser!.uid== puid)?
-         Icon(Icons.delete):
-         Icon(Icons.flag),
-         title: (FirebaseAuth.instance.currentUser!.uid== puid)?
-         Text("Delete Post"):
-         Text("Report Post"),
-         onTap: () {
-           Navigator.pop(context);
-           print("delete");
-           if(FirebaseAuth.instance.currentUser!.uid== puid){
-             Alert(
-                 context: context,
-                 title: "Are you sure you want to delete your post?",
-                 desc: "Your post will be permanently deleted. You can't undo.",
-                 buttons: [
-                   DialogButton(
-                     color: Palette.grey,
-                     child: Text(
-                       "Cancel",
-                       style: TextStyle(
-                           color: Palette.backgroundColor,
-                           fontWeight: FontWeight.bold,
-                           fontSize: 18),
-                     ),
-                     onPressed: () {
-                       Navigator.pop(context);
-                     },
-                   ),
-                   DialogButton(
-                     color: Palette.red,
-                     child: const Text(
-                       "Delete",
-                       style: TextStyle(
-                           color: Palette.backgroundColor,
-                           fontWeight: FontWeight.bold,
-                           fontSize: 18),
-                     ),
-                     onPressed: ()  {
-                       deletePost(postId);
-                       Navigator.of(context).popAndPushNamed('/navigationBar');
-                     },
-                   )
-                 ]).show();
-           }else{
-             Alert(
-                 context: context,
-                 title: "Report Post",
-                 desc: "Report post will be implemented next release stay tuned!",
-                ).show();
-           }
+      children:  [
+        ListTile(
+          leading: (FirebaseAuth.instance.currentUser!.uid== puid)?
+          Icon(Icons.delete):
+          Icon(Icons.flag),
+          title: (FirebaseAuth.instance.currentUser!.uid== puid)?
+          Text("Delete Post"):
+          Text("Report Post"),
+          onTap: () {
+            Navigator.pop(context);
+            print("delete");
+            if(FirebaseAuth.instance.currentUser!.uid== puid){
+              Alert(
+                  context: context,
+                  title: "Are you sure you want to delete your post?",
+                  desc: "Your post will be permanently deleted. You can't undo.",
+                  buttons: [
+                    DialogButton(
+                      color: Palette.grey,
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    DialogButton(
+                      color: Palette.red,
+                      child: const Text(
+                        "Delete",
+                        style: TextStyle(
+                            color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      onPressed: ()  {
+                        deletePost(postId);
+                        Navigator.of(context).popAndPushNamed('/navigationBar');
+                      },
+                    )
+                  ]).show();
+            }else{
+              Alert(
+                context: context,
+                title: "Report Post",
+                desc: "Report post will be implemented next release stay tuned!",
+              ).show();
+            }
 
-         },
-       )
-     ],
-   );
+          },
+        )
+      ],
+    );
   }
 }
