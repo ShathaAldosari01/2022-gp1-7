@@ -15,7 +15,7 @@ class NotificationPage extends StatelessWidget {
         ),
         body: Center(
           child: Text(
-            'Notification',
+            'Notifications',
             style: TextStyle(fontSize: 30, color: Colors.black),
           ),
         ),

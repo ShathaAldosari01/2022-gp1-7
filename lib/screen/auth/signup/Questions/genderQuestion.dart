@@ -11,7 +11,7 @@ class GenderQuestion extends StatefulWidget {
 }
 
 class _GenderQuestionState extends State<GenderQuestion> {
-  static const questg = <String>['Female', 'Male', "I'd rather not to say"];
+  static const questg = <String>['Female', 'Male'];
   String selectedQuestg = "";
   bool isButtonActive = false;
   //database
@@ -47,10 +47,6 @@ class _GenderQuestionState extends State<GenderQuestion> {
             }
             if (gender.toString().compareTo("1") == 0) {
               this.selectedQuestg = "Male";
-              isButtonActive = true;
-            }
-            if (gender.toString().compareTo("2") == 0) {
-              this.selectedQuestg = "I'd rather not to say";
               isButtonActive = true;
             }
           });

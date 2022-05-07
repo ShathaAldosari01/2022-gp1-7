@@ -694,7 +694,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       children: [
 
                         /*county text*/
-                        Text('County',
+                        Text('Country',
                             style: TextStyle(
                                 fontSize: titleSize,
                                 fontWeight: FontWeight.w500
@@ -704,7 +704,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                         SizedBox(height: 12),
 
-                        /*county*/
+                        /*country*/
                         Container(
                           width: 235,
                           child: Column(
@@ -768,7 +768,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                   ],
                 ),
-                /*end of county*/
+                /*end of country*/
 
 
                 /*Location */
@@ -932,8 +932,8 @@ class _AddPostPageState extends State<AddPostPage> {
                                   : null,
                               child: Text(
                                 !isButtonActive[0]
-                                    ? 'Choose Place'
-                                    : 'Change Place',
+                                    ? 'Choose place'
+                                    : 'Change place',
                                 style: TextStyle(
                                   color: Palette.backgroundColor,
                                   fontWeight: FontWeight.bold,
@@ -1453,7 +1453,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                                     /*hint*/
                                     border: OutlineInputBorder(),
-                                    hintText: "Title Of Post",
+                                    hintText: "Title",
                                     hintStyle: TextStyle(fontSize: 18.0,
                                       color: Palette.grey,
                                       height: 2.0,),
@@ -1646,7 +1646,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           /*page title */
                           Text(
-                            "Page 1",
+                            "Slide 1",
                             style: TextStyle(
                               color: Palette.textColor,
                               fontWeight: FontWeight.w500,
@@ -1660,7 +1660,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           ),
 
 
-                          /* body 1 */
+                          /* caption 1 */
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -1731,7 +1731,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of First Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -1874,7 +1874,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 /*end of body 1*/
 
 
-                /*body 2 */
+                /*caption 2 */
                 Visibility(
                   visible: vis[1],
                   child: Row(
@@ -1919,20 +1919,20 @@ class _AddPostPageState extends State<AddPostPage> {
                         children: [
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 2",
+                                "Slide 2",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[0],
                                 child: IconButton(
@@ -1941,7 +1941,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[1] = false;
                                         counter--;
@@ -1962,7 +1962,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -2039,7 +2039,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Second Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -2226,23 +2226,23 @@ class _AddPostPageState extends State<AddPostPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
 
-                          /*page title */
+                          /*slide title */
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 3",
+                                "Slide 3",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              // end of page title
+                              // end of slide title
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[1],
                                 child: IconButton(
@@ -2251,7 +2251,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[2] = false;
                                         counter--;
@@ -2272,7 +2272,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -2349,7 +2349,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Thread Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -2539,20 +2539,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 4",
+                                "Slide 4",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[2],
                                 child: IconButton(
@@ -2561,7 +2561,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[3] = false;
                                         counter--;
@@ -2582,7 +2582,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -2658,7 +2658,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of forth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -2848,20 +2848,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 5",
+                                "Slide 5",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[3],
                                 child: IconButton(
@@ -2870,7 +2870,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[4] = false;
                                         counter--;
@@ -2891,7 +2891,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -2966,7 +2966,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Fifth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -3156,20 +3156,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 6",
+                                "Slide 6",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[4],
                                 child: IconButton(
@@ -3178,7 +3178,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[5] = false;
                                         counter--;
@@ -3199,7 +3199,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -3275,7 +3275,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of sixth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -3465,20 +3465,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 7",
+                                "Slide 7",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[5],
                                 child: IconButton(
@@ -3487,7 +3487,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[6] = false;
                                         counter--;
@@ -3508,7 +3508,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -3584,7 +3584,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Seventh Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -3774,20 +3774,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 8",
+                                "Slide 8",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[6],
                                 child: IconButton(
@@ -3796,7 +3796,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[7] = false;
                                         counter--;
@@ -3817,7 +3817,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -3893,7 +3893,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of eight Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -4083,20 +4083,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 9",
+                                "Slide 9",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[7],
                                 child: IconButton(
@@ -4105,7 +4105,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[8] = false;
                                         counter--;
@@ -4126,7 +4126,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -4202,7 +4202,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Ninth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -4392,20 +4392,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 10",
+                                "Slide 10",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[8],
                                 child: IconButton(
@@ -4414,7 +4414,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[9] = false;
                                         counter--;
@@ -4435,7 +4435,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -4511,7 +4511,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Tenth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -4701,20 +4701,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 11",
+                                "Slide 11",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[9],
                                 child: IconButton(
@@ -4723,7 +4723,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[10] = false;
                                         counter--;
@@ -4744,7 +4744,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -4820,7 +4820,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Eleventh Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -5010,20 +5010,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 12",
+                                "Slide 12",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[10],
                                 child: IconButton(
@@ -5032,7 +5032,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[11] = false;
                                         counter--;
@@ -5053,7 +5053,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -5129,7 +5129,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of twelfth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -5319,20 +5319,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 13",
+                                "Slide 13",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[11],
                                 child: IconButton(
@@ -5341,7 +5341,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[12] = false;
                                         counter--;
@@ -5362,7 +5362,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -5437,7 +5437,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Thirteenth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -5627,20 +5627,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 14",
+                                "Slide 14",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[12],
                                 child: IconButton(
@@ -5649,7 +5649,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[13] = false;
                                         counter--;
@@ -5670,7 +5670,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -5745,7 +5745,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Fourteenth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -5927,20 +5927,20 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           Row(
                             children: [
-                              /*page title */
+                              /*slide title */
                               Text(
-                                "Page 15",
+                                "Slide 15",
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
                                   fontSize: titleSize,
                                 ),
                               ),
-                              /* end of page title */
+                              /* end of slide title */
 
                               SizedBox(width: 193,),
 
-                              //Delete page
+                              //Delete slide
                               Visibility(
                                 visible: visIcon[13],
                                 child: IconButton(
@@ -5949,7 +5949,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     constraints: BoxConstraints(),
                                     //End of remove margin
                                     onPressed: () {
-                                      //remove a page
+                                      //remove a slide
                                       setState(() {
                                         vis[14] = false;
                                         counter--;
@@ -5970,7 +5970,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     )
                                 ),
                               ),
-                              //end delete page
+                              //end delete slide
                             ],
                           ),
 
@@ -6045,7 +6045,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                           vertical: 1.0, horizontal: 10),
                                       filled: true,
                                       border: OutlineInputBorder(),
-                                      hintText: "Body Of Fifteenth Page",
+                                      hintText: "Caption",
                                       hintStyle: TextStyle(
                                           fontSize: 18.0, color: Palette.grey),
 
@@ -6188,7 +6188,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 /*end of body 15*/
 
 
-                /*add page*/
+                /*add slide*/
                 counter != 15
                     ? Row(
                   children: [
@@ -6240,7 +6240,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
 
-                        /*add page button*/
+                        /*add slide button*/
                         TextButton(
                           // List<bool> isButtonActive = [true, false, false,false, false, false,false, false, false,false,false, false,false,false,  false,false, false];
                           // location , rating , title, page1, page2, page3, page4, page5, page6, page7, page8, page9, page10, page11, page12, page13, page14,
@@ -6353,7 +6353,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           child:
 
                           Text(
-                            "Add Another Page",
+                            "Add another slide",
                             style: TextStyle(
                                 color:
                                 (counter == 0 && isButtonActive[2] &&
@@ -6403,7 +6403,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        /*end of add page button*/
+                        /*end of add slide button*/
 
                       ],
                     )
@@ -6411,7 +6411,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                   ],
                 ) : Text(""),
-                /*end of add page*/
+                /*end of add slide*/
 
 
                 /* next button */

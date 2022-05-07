@@ -203,7 +203,7 @@ class _Profile_pageState extends State<Profile_page> {
                     Alert(
                         context: context,
                         /*text*/
-                        title: "Are you want to log out",
+                        title: "Do you want to log out?",
                         buttons: [
                           /*cancel button*/
                           DialogButton(
@@ -542,8 +542,8 @@ class _Profile_pageState extends State<Profile_page> {
           Icon(Icons.delete):
           Icon(Icons.flag),
           title: (FirebaseAuth.instance.currentUser!.uid== puid)?
-          Text("Delete Post"):
-          Text("Report Post"),
+          Text("Delete post"):
+          Text("Report post"),
           onTap: () {
             Navigator.pop(context);
             print("delete");
@@ -551,7 +551,7 @@ class _Profile_pageState extends State<Profile_page> {
               Alert(
                   context: context,
                   title: "Are you sure you want to delete your post?",
-                  desc: "Your post will be permanently deleted. You can't undo.",
+                  desc: "Your post will be permanently deleted. You can't undo this action.",
                   buttons: [
                     DialogButton(
                       color: Palette.grey,

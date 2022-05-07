@@ -41,11 +41,11 @@ class _navigationBarState extends State<navigationBar> {
   @override
   Widget build(BuildContext context) {
     final items = <Widget>[
-      Icon(Icons.home, size: 30, color: index==0?Palette.buttonColor:Palette.backgroundColor),
-      Icon(Icons.search, size: 30, color: index==1?Palette.buttonColor:Palette.backgroundColor),
-      Icon(Icons.add, size: 30, color: index==2?Palette.buttonColor:Palette.backgroundColor),
-      Icon(Icons.list, size: 30, color: index==3?Palette.buttonColor:Palette.backgroundColor),
-      Icon(Icons.person, size: 30, color: index==4?Palette.buttonColor:Palette.backgroundColor),
+      Icon(Icons.home, size: 30, color: Colors.black),
+      Icon(Icons.search, size: 30, color: Colors.black),
+      Icon(Icons.add, size: 30, color: Colors.black),
+      Icon(Icons.list, size: 30, color:Colors.black),
+      Icon(Icons.person, size: 30, color: Colors.black),
     ];
 
     return Scaffold(
@@ -60,22 +60,19 @@ class _navigationBarState extends State<navigationBar> {
           iconTheme: IconThemeData(),
         ),
         child: CurvedNavigationBar(
-          color: index==0?Palette.textColor:Palette.textColor,
+          color: Palette.icongrey,
           backgroundColor: Colors.transparent,
-          height: 60,
+          height: 50,
           animationCurve: Curves.easeInOut,
           animationDuration: Duration(milliseconds: 300),
           index: index,
           items: items,
           onTap: (index) {
             setState(() {this.index = index;});
-           if(index == 2){
+            if(index == 2){
               Navigator.of(context).popAndPushNamed('/addPost');
-
-           }
+            }
           },
-
-
         ),
       ),
     );
