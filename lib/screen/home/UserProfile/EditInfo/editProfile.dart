@@ -12,9 +12,12 @@ import '../../../auth/signup/userInfo/photo/storageMethods.dart';
 import '../../../auth/signup/userInfo/photo/utils.dart';
 import 'package:flutter/cupertino.dart';
 
+import 'editName.dart';
+
 class EditProfile extends StatefulWidget {
   final uid;
-  const EditProfile({Key? key, this.uid}) : super(key: key);
+  final userData;
+  const EditProfile({Key? key, this.uid, required this.userData}) : super(key: key);
 
   @override
   _EditProfileState createState() => _EditProfileState();
@@ -32,7 +35,12 @@ class _EditProfileState extends State<EditProfile> {
 
   @override
   void initState() {
-    getData();
+    if(widget.userData ==null)
+      getData();
+    setState(() {
+      userData = widget.userData;
+      _isloaded= true;
+    });
     super.initState();
   }
 
@@ -98,7 +106,7 @@ class _EditProfileState extends State<EditProfile> {
     return
       WillPopScope(
         onWillPop: () async{
-      Navigator.pushNamed(context, '/Profile_Page');
+          Navigator.pop(context);
       return true;
     },
 
@@ -108,39 +116,18 @@ class _EditProfileState extends State<EditProfile> {
         //appBar style
         elevation: 0,
         backgroundColor: Palette.backgroundColor,
-        automaticallyImplyLeading: false, //no arrow,
+        iconTheme: IconThemeData(
+          color: Palette.textColor, //change your color here
+        ),
 
-        title: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Palette.textColor),
-                  onPressed: () => Navigator.pushNamed(context, '/Profile_Page'),
-                ),
-                Padding(
-                  padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
-                  child: Text(
-                    "Edit Profile",
-                    style: TextStyle(
-                      color: Palette.textColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Icon(Icons.arrow_back, color: Palette.backgroundColor),
-                ),
-              ],
-            ),
-            //line
-            Divider(
-              height: 1,
-            ),
-          ],
+        centerTitle: true,
+        title:  Text(
+          "Edit Profile",
+          style: TextStyle(
+            color: Palette.textColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
         ),
       ),
 
@@ -303,8 +290,10 @@ class _EditProfileState extends State<EditProfile> {
                               Container(
                                 child: TextButton(
                                   onPressed: () {
-                                    Navigator.of(context)
-                                        .popAndPushNamed('/editName');
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context)=> EditName(uid: FirebaseAuth.instance.currentUser!.uid))
+                                    );
                                   },
                                   child: _isloaded
                                       ? Text(

@@ -19,7 +19,6 @@ class _ImageDisplayerState extends State<ImageDisplayer> {
     final size = MediaQuery.of(context).size;
 
     return Container(
-      padding: EdgeInsets.only(bottom: 71),
       width: size.width,
       height: size.height,
       decoration: const BoxDecoration(color: Colors.black),

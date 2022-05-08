@@ -12,6 +12,7 @@ import '../../../../config/palette.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 import '../../services/firestore_methods.dart';
 import '../UserProfile/Profile_Page.dart';
+import '../goBack.dart';
 import 'ImageDisplayer.dart';
 
 class HomePage extends StatefulWidget {
@@ -109,41 +110,53 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  buildProfile(String profilePhoto) {
+  buildProfile(String profilePhoto, int index) {
     return SizedBox(
       width: 50,
       height: 50,
-      child: Stack(
-          children: [
-             profilePhoto != "no"?
-            Positioned(
-              child: Container(
-                width: 40,
-                height: 40,
-                padding: const EdgeInsets.all(1),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                  child:ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child:
-                  Image(
-                    image: NetworkImage(profilePhoto),
-                    fit: BoxFit.cover,
+      child: InkWell(
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: theUserData.isNotEmpty?
+                  (context) => Profile_page(uid: userData[index]['uid'].toString(), userData: userData[index],):
+                  (context) => Profile_page(uid: userData[index]['uid'].toString(), userData: null,),
+            ),
+          );
+        },
+        child: Stack(
+            children: [
+               profilePhoto != "no"?
+              Positioned(
+                child: Container(
+                  width: 40,
+                  height: 40,
+                  padding: const EdgeInsets.all(1),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                    child:ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child:
+                    Image(
+                      image: NetworkImage(profilePhoto),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                  ),
+                ): CircleAvatar(
+                  backgroundColor: Colors.white.withOpacity(0.8),
+                  radius: 25,
+                  child: Icon(
+                    Icons.account_circle_sharp,
+                    color: Colors.grey,
+                    size: 50,
                   ),
                 )
-                ),
-              ): CircleAvatar(
-                backgroundColor: Colors.white.withOpacity(0.8),
-                radius: 25,
-                child: Icon(
-                  Icons.account_circle_sharp,
-                  color: Colors.grey,
-                  size: 50,
-                ),
-              )
-          ]
+            ]
+        ),
       ),
     );
   }
@@ -164,6 +177,13 @@ class _HomePageState extends State<HomePage> {
         automaticallyImplyLeading: false,
         //no arrow
 
+        centerTitle: true,
+        title: Text(
+            "Following",
+          style: TextStyle(
+            color: Palette.backgroundColor
+          ),
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.notifications, color: Palette.backgroundColor,),
@@ -175,12 +195,14 @@ class _HomePageState extends State<HomePage> {
       ),
 
       body:  !_isTheUserLoaded?
-      Container(
-        margin: EdgeInsets.all(32),
-        child: CircularProgressIndicator(
-          backgroundColor: Palette.lightgrey,
-          valueColor:
-          AlwaysStoppedAnimation<Color>(Palette.midgrey),
+      Center(
+        child: Container(
+          margin: EdgeInsets.all(32),
+          child: CircularProgressIndicator(
+            backgroundColor: Palette.lightgrey,
+            valueColor:
+            AlwaysStoppedAnimation<Color>(Palette.midgrey),
+          ),
         ),
       ):
       StreamBuilder(
@@ -287,7 +309,9 @@ class _HomePageState extends State<HomePage> {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) => Profile_page(uid: userData[index]['uid'].toString()),
+                                                        builder: theUserData.isNotEmpty?
+                                                            (context) => Profile_page(uid: userData[index]['uid'].toString(), userData: userData[index],):
+                                                            (context) => Profile_page(uid: userData[index]['uid'].toString(), userData: null,),
                                                       ),
                                                     );
                                                   },
@@ -366,7 +390,7 @@ class _HomePageState extends State<HomePage> {
                                                     ),
                                                     /*profile img*/
                                                     _isloaded[index]?
-                                                    buildProfile(userData[index]['photoPath'].toString()) : Container(
+                                                    buildProfile(userData[index]['photoPath'].toString(), index) : Container(
                                                       margin: EdgeInsets.all(32),
                                                       child: CircularProgressIndicator(
                                                         backgroundColor: Palette.lightgrey,
@@ -642,7 +666,7 @@ class _HomePageState extends State<HomePage> {
                                               ),
                                               /*end of date*/
 
-                                              SizedBox(height: 80),
+                                              SizedBox(height: 55),
                                             ],
                                           ),
                                         ),
@@ -700,7 +724,9 @@ class _HomePageState extends State<HomePage> {
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                          builder: (context) => Profile_page(uid: userData[index]['uid'].toString()),
+                                                          builder: theUserData.isNotEmpty?
+                                                              (context) => Profile_page(uid:userData[index]['uid'].toString(), userData: userData[index],):
+                                                              (context) => Profile_page(uid: userData[index]['uid'].toString(), userData: null,),
                                                         ),
                                                       );
                                                     },
@@ -728,7 +754,7 @@ class _HomePageState extends State<HomePage> {
                                                   /*end of username*/
 
                                                   SizedBox(
-                                                    height: 80,
+                                                    height: 55,
                                                   ),
 
                                                 ],
@@ -754,7 +780,7 @@ class _HomePageState extends State<HomePage> {
                                                       height: 7,
                                                     ),
                                                     /*profile img*/
-                                                    buildProfile(userData[index]['photoPath'].toString()),
+                                                    buildProfile(userData[index]['photoPath'].toString(), index),
                                                     Column(
                                                       children: [
                                                         /*like*/
@@ -977,8 +1003,11 @@ class _HomePageState extends State<HomePage> {
                            fontSize: 18),
                      ),
                      onPressed: ()  {
+                       Navigator.pop(context);
                        deletePost(postId);
-                       Navigator.of(context).popAndPushNamed('/navigationBar');
+                       setState(() {
+
+                       });
                      },
                    )
                  ]).show();

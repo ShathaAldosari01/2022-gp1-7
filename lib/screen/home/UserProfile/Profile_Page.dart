@@ -3,17 +3,23 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
+import '../../../Widgets/follow_button.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
+
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../services/firestore_methods.dart';
+import 'following.dart';
 import 'user-post-view.dart';
 
 class Profile_page extends StatefulWidget {
   final uid;
-  const Profile_page({Key? key, required this.uid}) : super(key: key);
+  final userData;
+  const Profile_page({Key? key, required this.uid,required this.userData}) : super(key: key);
 
   @override
   State<Profile_page> createState() => _Profile_pageState();
@@ -27,23 +33,54 @@ class _Profile_pageState extends State<Profile_page> {
   bool isFollowing = false;
   var padding = 0.8;
   var userData = {};
+  var uid;
+  var theUserId = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void initState() {
+    if(widget.userData==null){
+    uid = widget.uid;
+    getUser();
+    }else{
+      setState(() {
+        userData=widget.userData;
+        followers = userData!['followers'].length;
+        following = userData!['following'].length;
+        isFollowing =userData!['followers']
+            .contains(FirebaseAuth.instance.currentUser!.uid);
+        _isloaded = true;
+      });
+    }
     getData();
     super.initState();
   }
-
-  /* get data method */
-  getData() async {
+  getUser()async{
     try {
       if (widget.uid != null) {
         var userSnap = await FirebaseFirestore.instance
             .collection('users')
             .doc(widget.uid)
             .get();
-        /*get user post*/
 
+        setState(() {
+          userData = userSnap.data()!;
+          followers = userData['followers'].length;
+          following = userData['following'].length;
+          isFollowing =userData['followers']
+              .contains(FirebaseAuth.instance.currentUser!.uid);
+        });
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  /* get data method */
+  getData() async {
+    try {
+      if (widget.uid != null) {
+
+        /*get user post*/
         var postSnap = await FirebaseFirestore.instance
             .collection("posts")
             .orderBy("datePublished", descending: false)
@@ -51,19 +88,14 @@ class _Profile_pageState extends State<Profile_page> {
             .get();
 
         postLen = postSnap.docs.length;
-        userData = userSnap.data()!;
-        followers = userSnap.data()!['followers'].length;
-        following = userSnap.data()!['following'].length;
-        isFollowing = userSnap
-            .data()!['followers']
-            .contains(FirebaseAuth.instance.currentUser!.uid);
+
         setState(() {});
         /*end*/
-        if (userSnap.data() != null) {
-          userData = userSnap.data()!;
+        if (userData!= null) {
           setState(() {
             _isloaded = true;
           });
+          if(widget.uid==FirebaseAuth.instance.currentUser!.uid)
           if (userData['name'].toString().isEmpty) {
             Navigator.of(context).popAndPushNamed('/name');
           } else if (userData["birthday"].toString().isEmpty) {
@@ -186,6 +218,7 @@ class _Profile_pageState extends State<Profile_page> {
 
         //setting icon
         actions: [
+          theUserId==uid?
           FocusedMenuHolder(
             //
             menuWidth: MediaQuery.of(context).size.width * 0.4,
@@ -194,6 +227,7 @@ class _Profile_pageState extends State<Profile_page> {
 
             //list
             menuItems: [
+
               /*Log out*/
               FocusedMenuItem(
                   title: const Text("Log out"),
@@ -248,7 +282,10 @@ class _Profile_pageState extends State<Profile_page> {
                 title: const Text("Settings"),
                 trailingIcon: const Icon(Icons.settings),
                 onPressed: () {
-                  Navigator.of(context).popAndPushNamed('/settings');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=> settings())
+                  );
                 },
               ),
               /*end of Settings*/
@@ -258,10 +295,52 @@ class _Profile_pageState extends State<Profile_page> {
                 title: const Text("Edit Profile"),
                 trailingIcon: const Icon(Icons.edit),
                 onPressed: () {
-                  Navigator.of(context).popAndPushNamed('/editProfile');
+                  if(userData.isNotEmpty)
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid, userData: userData))
+                    );
+                  else
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid, userData: null))
+                    );
                 },
               ),
               /*end of Edit Profile*/
+            ],
+
+            openWithTap: true,
+            onPressed: () {},
+
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Image.asset(
+                "assets/menu-icon.png",
+                height: 25,
+                width: 25,
+              ),
+            ),
+          ):FocusedMenuHolder(
+            //
+            menuWidth: MediaQuery.of(context).size.width * 0.4,
+            menuOffset: 0,
+            menuItemExtent: 49,
+
+            //list
+            menuItems: [
+
+              /*Log out*/
+              FocusedMenuItem(
+                  title: userData['username'].toString().length<5?
+                  Container(child: Text("Share @"+userData['username'].toString())):
+                  Container(child: Text("Share @"+userData['username'].toString().substring(0,5)+"...")),
+                  trailingIcon: const Icon(Icons.logout),
+                  onPressed: () {
+                    showSnackBar(context, "This feature will be available next release. Stay tuned");
+                  },
+              ),
+              /*end of Log out*/
             ],
 
             openWithTap: true,
@@ -370,13 +449,86 @@ class _Profile_pageState extends State<Profile_page> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(flex: 10, child: buildStatColumn(postLen, "Posts")),
                       Expanded(
-                          flex: 10, child: buildStatColumn(followers, "Followers")),
+                          flex: 10,
+                          child: buildStatColumn(postLen, "Posts")
+                      ),
                       Expanded(
-                          flex: 10, child: buildStatColumn(following, "Following")),
+                          flex: 10,
+                          child: InkWell(
+                              child: buildStatColumn(followers, "Followers"),
+                            onTap: (){},
+                          )
+                      ),
+                      Expanded(
+                          flex: 10,
+                          child: InkWell(
+                              child: buildStatColumn(following, "Following"),
+                            onTap: _isloaded?(){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => Following(following: userData['following']),
+                                ),
+                              );
+                            }:null,
+                          )
+                      ),
                     ],
                   ),
+                ),
+
+
+                Row(
+                  mainAxisAlignment:
+                  MainAxisAlignment.spaceEvenly,
+                  children: [
+                    FirebaseAuth.instance.currentUser!.uid !=
+                        widget.uid
+                        ?
+                    isFollowing
+                        ? FollowButton(
+                      text: 'Unfollow',
+                      backgroundColor: Colors.white,
+                      textColor: Colors.black,
+                      borderColor: Colors.grey,
+                      function: () async {
+                        await FireStoreMethods()
+                            .followUser(
+                          FirebaseAuth.instance
+                              .currentUser!.uid,
+                          userData['uid'],
+                        );
+
+                        setState(() {
+                          isFollowing = false;
+                          followers--;
+                        });
+                      },
+                      horizontal: (size.width/2)-50,
+                      vertical: 9,
+                    )
+                        : FollowButton(
+                      text: 'Follow',
+                      backgroundColor: Palette.buttonColor,
+                      textColor: Palette.backgroundColor,
+                      borderColor: Palette.buttonColor,
+                      function: () async {
+                        await FireStoreMethods()
+                            .followUser(
+                          FirebaseAuth.instance
+                              .currentUser!.uid,
+                          userData['uid'],
+                        );
+
+                        setState(() {
+                          isFollowing = true;
+                          followers++;
+                        });
+                      }, horizontal: (size.width/2)-50,
+                      vertical: 9,
+                    ):SizedBox()
+                  ],
                 ),
 
 
@@ -399,6 +551,7 @@ class _Profile_pageState extends State<Profile_page> {
               }
 
               return GridView.builder(
+                physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 itemCount: (snapshot.data! as dynamic).docs.length,
                 gridDelegate:
@@ -447,7 +600,10 @@ class _Profile_pageState extends State<Profile_page> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => UserPost(uid: snap['uid'].toString(),index: index),
+                              builder:userData.isNotEmpty?
+                                  (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
+                                  (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index)
+                              ,
                             ),
                           );
                         },
@@ -482,7 +638,9 @@ class _Profile_pageState extends State<Profile_page> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => UserPost(uid: snap['uid'].toString(), index: index,),
+                                  builder:userData.isNotEmpty?
+                                      (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
+                                      (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index),
                                 ),
                               );
                             },
@@ -576,8 +734,11 @@ class _Profile_pageState extends State<Profile_page> {
                             fontSize: 18),
                       ),
                       onPressed: ()  {
+                        Navigator.pop(context);
                         deletePost(postId);
-                        Navigator.of(context).popAndPushNamed('/navigationBar');
+                        setState(() {
+                          postLen--;
+                        });
                       },
                     )
                   ]).show();

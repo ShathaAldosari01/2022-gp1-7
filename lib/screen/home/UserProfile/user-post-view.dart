@@ -17,7 +17,8 @@ import '../UserProfile/Profile_Page.dart';
 class UserPost extends StatefulWidget {
   final uid;
   final index;
-  const UserPost({Key? key, required this.uid, required this.index}) : super(key: key);
+  final theUserData;
+  const UserPost({Key? key, required this.uid, required this.index, required this.theUserData}) : super(key: key);
 
   @override
   _UserPostState createState() => _UserPostState();
@@ -33,7 +34,14 @@ class _UserPostState extends State<UserPost> {
 
   @override
   void initState() {
-    getTheData();
+    if(widget.theUserData==null){
+      getTheData();
+    }
+    else
+      setState(() {
+         theUserData = widget.theUserData;
+        _isTheUserLoaded = true;
+      });
     super.initState();
   }
 
@@ -89,37 +97,49 @@ class _UserPostState extends State<UserPost> {
     return SizedBox(
       width: 50,
       height: 50,
-      child: Stack(
-          children: [
-            profilePhoto != "no"?
-            Positioned(
-              child: Container(
-                  width: 40,
-                  height: 40,
-                  padding: const EdgeInsets.all(1),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child:ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                    child:
-                    Image(
-                      image: NetworkImage(profilePhoto),
-                      fit: BoxFit.cover,
+      child: InkWell(
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: theUserData.isNotEmpty?
+                  (context) => Profile_page(uid: theUserData['uid'].toString(), userData: theUserData,):
+                  (context) => Profile_page(uid: theUserData['uid'].toString(), userData: null,),
+            ),
+          );
+        },
+        child: Stack(
+            children: [
+              profilePhoto != "no"?
+              Positioned(
+                child: Container(
+                    width: 40,
+                    height: 40,
+                    padding: const EdgeInsets.all(1),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                  )
-              ),
-            ): CircleAvatar(
-              backgroundColor: Colors.white.withOpacity(0.8),
-              radius: 25,
-              child: Icon(
-                Icons.account_circle_sharp,
-                color: Colors.grey,
-                size: 50,
-              ),
-            )
-          ]
+                    child:ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child:
+                      Image(
+                        image: NetworkImage(profilePhoto),
+                        fit: BoxFit.cover,
+                      ),
+                    )
+                ),
+              ): CircleAvatar(
+                backgroundColor: Colors.white.withOpacity(0.8),
+                radius: 25,
+                child: Icon(
+                  Icons.account_circle_sharp,
+                  color: Colors.grey,
+                  size: 50,
+                ),
+              )
+            ]
+        ),
       ),
     );
   }
@@ -139,14 +159,15 @@ class _UserPostState extends State<UserPost> {
         iconTheme: IconThemeData(
           color: Palette.backgroundColor, //change your color here
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.notifications, color: Palette.backgroundColor,),
-            onPressed: () {
-              Navigator.of(context).popAndPushNamed('/notification');
-            },
-          )
-        ],
+          centerTitle: true,
+          title: _isTheUserLoaded
+              ? Text(theUserData['name'],
+            style: TextStyle(
+              color: Palette.backgroundColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 24,
+            ),
+          ):SizedBox()
       ),
 
       body:  !_isTheUserLoaded?
@@ -250,7 +271,9 @@ class _UserPostState extends State<UserPost> {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: (context) => Profile_page(uid: theUserData['uid'].toString()),
+                                                        builder: theUserData.isNotEmpty?
+                                                            (context) => Profile_page(uid: theUserData['uid'].toString(), userData: theUserData,):
+                                                            (context) => Profile_page(uid: theUserData['uid'].toString(), userData: null,),
                                                       ),
                                                     );
                                                   },
@@ -588,7 +611,7 @@ class _UserPostState extends State<UserPost> {
                                               ),
                                               /*end of date*/
 
-                                              SizedBox(height: 80),
+                                              SizedBox(height: 5),
                                             ],
                                           ),
                                         ),
@@ -646,7 +669,9 @@ class _UserPostState extends State<UserPost> {
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                          builder: (context) => Profile_page(uid: theUserData['uid'].toString()),
+                                                          builder: theUserData.isNotEmpty?
+                                                              (context) => Profile_page(uid: theUserData['uid'].toString(), userData: theUserData,):
+                                                              (context) => Profile_page(uid: theUserData['uid'].toString(), userData: null,),
                                                         ),
                                                       );
                                                     },
@@ -674,7 +699,7 @@ class _UserPostState extends State<UserPost> {
                                                   /*end of username*/
 
                                                   SizedBox(
-                                                    height: 80,
+                                                    height: 5,
                                                   ),
 
                                                 ],
@@ -923,8 +948,9 @@ class _UserPostState extends State<UserPost> {
                             fontSize: 18),
                       ),
                       onPressed: ()  {
+                        Navigator.pop(context);
                         deletePost(postId);
-                        Navigator.of(context).popAndPushNamed('/navigationBar');
+                        setState(() {});
                       },
                     )
                   ]).show();

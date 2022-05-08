@@ -79,19 +79,29 @@ class _settingsState extends State<settings> {
     return
       WillPopScope(
         onWillPop: () async{
-      Navigator.pushNamed(context, '/Profile_Page');
+          Navigator.pop(context);
       return true;
     },
 
     child: Scaffold(
       backgroundColor: Palette.backgroundColor,
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pushNamed(context, '/Profile_Page'),
-        ),
+        //appBar style
         elevation: 0,
         backgroundColor: Palette.backgroundColor,
+        iconTheme: IconThemeData(
+          color: Palette.textColor, //change your color here
+        ),
+
+        centerTitle: true,
+        title:  Text(
+          "Settings",
+          style: TextStyle(
+            color: Palette.textColor,
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -8,6 +8,7 @@ import 'package:gp1_7_2022/screen/auth/signup/Questions/question3.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question4.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question5.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
+import 'package:gp1_7_2022/screen/home/NavigationBar/navbar.dart';
 import 'package:gp1_7_2022/screen/home/TimeLine/ImageDisplayer.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editBio.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editName.dart';
@@ -66,8 +67,6 @@ void main() async {
     '/settings': (context) => settings(),
 
     /*edit profile*/
-    '/editProfile': (context) =>
-        EditProfile(uid: FirebaseAuth.instance.currentUser!.uid),
     '/editName': (context) =>
         EditName(uid: FirebaseAuth.instance.currentUser!.uid),
     '/editUsername': (context) =>

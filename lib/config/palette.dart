@@ -6,6 +6,7 @@ class Palette {
   static const Color backgroundColor = Color(0xFFffffff); //0xFF1c1c1c
   static const Color textColor = Color(0xFF000000);
   static const Color buttonColor = Color(0xff1bd3db);
+  static const Color darkButtonColor = Color(0xff18bdc5);
   static const Color buttonDisableColor = Color(0xff8AE6EA);
   static const Color lightbuttonColor = Color(0xff8DE9ED);
   static const Color nameColor = Color(0xff527bdb);
