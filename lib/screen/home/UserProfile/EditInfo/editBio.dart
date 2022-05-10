@@ -243,7 +243,7 @@ class _EditBioState extends State<EditBio> {
                                         val.contains(",") ||
                                         val.contains("?") ||
                                         val.contains("/"))) {
-                                      return "bio should not contain special characters. only '-', '_' and '.'.";
+                                      return "bio should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },

@@ -420,22 +420,22 @@ class _AddPostPageState extends State<AddPostPage> {
   int maxImgs = 15;
 
   /*hight*/
-  double devHight = 121;
-  double devHight1 = 145;
-  double devHight2 = 145;
-  double devHight3 = 145;
-  double devHight4 = 145;
-  double devHight5 = 145;
-  double devHight6 = 145;
-  double devHight7 = 145;
-  double devHight8 = 145;
-  double devHight9 = 145;
-  double devHight10 = 145;
-  double devHight11 = 145;
-  double devHight12 = 145;
-  double devHight13 = 145;
-  double devHight14 = 145;
-  double devHight15 = 145;
+  double devHight = 121 + 17;
+  double devHight1 = 145 + 20;
+  double devHight2 = 145 + 20;
+  double devHight3 = 145 + 20;
+  double devHight4 = 145 + 20;
+  double devHight5 = 145 + 20;
+  double devHight6 = 145 + 20;
+  double devHight7 = 145 + 20;
+  double devHight8 = 145 + 20;
+  double devHight9 = 145 + 20;
+  double devHight10 = 145 + 20;
+  double devHight11 = 145 + 20;
+  double devHight12 = 145 + 20;
+  double devHight13 = 145 + 20;
+  double devHight14 = 145 + 20;
+  double devHight15 = 145 + 20;
 
   //for the type
   double devHightType = 90;
@@ -574,7 +574,55 @@ class _AddPostPageState extends State<AddPostPage> {
         child: CircularProgressIndicator(),
       ),
     ):
-    Scaffold(
+    WillPopScope(
+        onWillPop: () async{
+          bool change = _selectedCountry.code.toString().isNotEmpty;
+          for(var item in isButtonActive){
+            if(item){
+              change = true;
+              break;
+            }
+          }
+          if(change) {
+            Alert(
+                context: context,
+                title: "Are you sure you want to leave this page?",
+                desc: "once you click leave the information tha you filled will be gone",
+                buttons: [
+                  DialogButton(
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        /*go to sign up page*/
+                        Navigator.pop(context);
+                      },
+                      gradient: const LinearGradient(colors: [
+                        Palette.grey,
+                        Palette.grey,
+                      ])),
+                  DialogButton(
+                      child: const Text(
+                        "Leave",
+                        style: TextStyle(color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onPressed: () {
+                        /*go to home page*/
+                        Navigator.pushNamed(context, '/navigationBar');
+                      },
+                      gradient: const LinearGradient(colors: [
+                        Palette.red,
+                        Palette.red,
+                      ]))
+                ]).show();
+          }
+          else Navigator.pushNamed(context, '/navigationBar');
+          return false;
+    },
+    child:Scaffold(
       backgroundColor: Palette.backgroundColor,
 
       appBar: AppBar(
@@ -593,8 +641,49 @@ class _AddPostPageState extends State<AddPostPage> {
                   /* make own arrow*/
                   IconButton(
                     icon: const Icon(Icons.arrow_back, color: Palette.textColor),
-                    onPressed: () =>
-                        Navigator.pushNamed(context, '/navigationBar'),
+                    onPressed: () {
+                      bool change = _selectedCountry.code.toString().isNotEmpty;
+                      for(var item in isButtonActive){
+                        if(item){
+                          change = true;
+                          break;
+                        }
+                      }
+                      if(change)
+                      Alert(
+                          context: context,
+                          title: "Are you sure you want to leave this page?",
+                          desc: "once you click leave the information tha you filled will be gone",
+                          buttons: [
+                            DialogButton(
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(color: Palette.backgroundColor,fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  /*go to sign up page*/
+                                  Navigator.pop(context);
+                                },
+                                gradient: const LinearGradient(colors: [
+                                  Palette.grey,
+                                  Palette.grey,
+                                ])),
+                            DialogButton(
+                                child: const Text(
+                                  "Leave",
+                                  style: TextStyle(color: Palette.backgroundColor,fontWeight: FontWeight.bold),
+                                ),
+                                onPressed: () {
+                                  /*go to home page*/
+                                  Navigator.pushNamed(context, '/navigationBar');
+                                },
+                                gradient: const LinearGradient(colors: [
+                                  Palette.red,
+                                  Palette.red,
+                                ]))
+                          ]).show();
+                      else Navigator.pushNamed(context, '/navigationBar');
+                    }
                   ),
 
                   /*title (Add Post)*/
@@ -699,7 +788,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                       /*country*/
                       Container(
-                        width: 235,
+                        width: width-80,
                         child: Column(
                           children: [
                             SearchField(
@@ -830,7 +919,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             /*Name*/
                             locationName.isNotEmpty ?
                             Container(
-                                width: 260,
+                                width: width-100,
                                 child: RichText(
                                   textAlign: TextAlign.left,
                                   text: TextSpan(
@@ -862,7 +951,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             /*Address*/
                             locationAdress.isNotEmpty ?
                             Container(
-                                width: 260,
+                                width: width-100,
                                 child: RichText(
                                   text: TextSpan(
                                       text: "Address : ",
@@ -922,7 +1011,9 @@ class _AddPostPageState extends State<AddPostPage> {
                                 .toString()
                                 .isNotEmpty
                                 ? _handlePressButton
-                                : null,
+                                : (){
+                              showSnackBar(context, "You need to choose country first!");
+                            },
                             child: Text(
                               !isButtonActive[0]
                                   ? 'Choose place'
@@ -1095,7 +1186,6 @@ class _AddPostPageState extends State<AddPostPage> {
                           height: 16,
                         ),
 
-
                       ],
                     )
                     /*end right*/
@@ -1266,7 +1356,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                       /*date*/
                       Container(
-                        width: 235,
+                        width: width-80,
                         child: TextFormField(
                           onTap: () {
                             Utils.showSheet(context, child: buildDatePicker(),
@@ -1275,6 +1365,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     visit = DateFormat.yMMMMd('en_US').format(
                                         dateTime);
                                   });
+                                  Navigator.pop(context);
                                 });
                           },
 
@@ -1386,7 +1477,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           Form(
                             key: _formKey,
                             child: Container(
-                              width: 235,
+                              width: width-80,
                               child: TextFormField(
                                 //for disable for the done button
                                 controller: titleControl,
@@ -1409,29 +1500,22 @@ class _AddPostPageState extends State<AddPostPage> {
                                   if ((val.contains('&') ||
                                       val.contains("#") ||
                                       val.contains("*") ||
-                                      val.contains("!") ||
                                       val.contains("%") ||
                                       val.contains("~") ||
-                                      val.contains("`") ||
                                       val.contains("@") ||
+                                      val.contains("'") ||
                                       val.contains("^") ||
-                                      val.contains("(") ||
-                                      val.contains(")") ||
                                       val.contains("+") ||
                                       val.contains("=") ||
                                       val.contains("{") ||
                                       val.contains("[") ||
                                       val.contains("}") ||
                                       val.contains("]") ||
-                                      val.contains("|") ||
                                       val.contains(":") ||
                                       val.contains(";") ||
                                       val.contains("<") ||
-                                      val.contains(">") ||
-                                      val.contains(",") ||
-                                      val.contains("?") ||
-                                      val.contains("/"))) {
-                                    return "Title should not contain special characters. only '-', '_' and '.'.";
+                                      val.contains(">") )) {
+                                    return "Title should not contain symbol. only '-', '_' and '.'.";
                                   }
                                   return null;
                                 },
@@ -1468,23 +1552,26 @@ class _AddPostPageState extends State<AddPostPage> {
                           ),
                           /*end of title*/
 
-                          /*image icon*/
-                          Container(
-                            margin: EdgeInsets.only(bottom: 8),
-                            child: IconButton(
-                                onPressed: selectCoverImage,
-                                icon: Icon(
-                                  Icons.image,
-                                  color: Palette.buttonColor,
-                                  size: 35,
-                                )
-                            ),
-                          ),
-                          /*end of image icon*/
-
                         ],
                       ),
                       /*end of title*/
+
+                      /*add image*/
+                      _Coverimage == null?
+                      Container(
+                        margin: EdgeInsets.all(3),
+                        child:TextButton(
+                          onPressed: selectCoverImage,
+                          child: Text(
+                            "Add image",
+                            style: TextStyle(
+                                color: Palette.link
+                            ),
+                          )
+                        ),
+                      ):SizedBox(),
+                      /*end of add image */
+
 
                       SizedBox(
                         height: 4,
@@ -1529,7 +1616,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     print(_Coverimage);
                                     paths[0] = 'no';
                                     _Coverimage = null;
-                                    devHight = 121;
+                                    devHight = 121 +17;
                                     checkImgs[0] = true;
                                   });
                                 },
@@ -1659,7 +1746,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey1,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
 
                                   //for disable button
@@ -1683,30 +1770,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
+                                        val.contains(">"))) {
                                       return ""
-                                          "Body should not contain special characters. only '-', '_' and '.'.";
+                                          "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -1745,20 +1825,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 1*/
 
-                            /*image image 1*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage1,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -1766,6 +1832,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image1 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage1,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image1 != null
@@ -1804,7 +1886,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[1] = 'no';
                                       _image1 = null;
-                                      devHight1 = 121;
+                                      devHight1 = 145 + 20;
                                       checkImgs[1] = true;
                                     });
                                   },
@@ -1922,7 +2004,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -1941,7 +2023,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[2] = 'no';
                                       _image2 = null;
-                                      devHight2 = 145;
+                                      devHight2 = 145 + 20;
                                       checkImgs[2] = true;
                                     });
                                     //clear the text
@@ -1971,7 +2053,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey2,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body2Control,
@@ -1992,29 +2074,22 @@ class _AddPostPageState extends State<AddPostPage> {
                                         (val.contains('&') ||
                                             val.contains("#") ||
                                             val.contains("*") ||
-                                            val.contains("!") ||
                                             val.contains("%") ||
                                             val.contains("~") ||
-                                            val.contains("`") ||
                                             val.contains("@") ||
+                                            val.contains("'") ||
                                             val.contains("^") ||
-                                            val.contains("(") ||
-                                            val.contains(")") ||
                                             val.contains("+") ||
                                             val.contains("=") ||
                                             val.contains("{") ||
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains("|") ||
                                             val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("<") ||
-                                            val.contains(">") ||
-                                            val.contains(",") ||
-                                            val.contains("?") ||
-                                            val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                            val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -2053,20 +2128,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 1*/
 
-                            /*image image 2*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage2,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 2 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -2074,6 +2135,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image2 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage2,
+                              child: Text(
+                                  "Add image",
+                                  style: TextStyle(
+                                      color: Palette.link
+                                  ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image2 != null
@@ -2112,7 +2189,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[2] = 'no';
                                       _image2 = null;
-                                      devHight2 = 121;
+                                      devHight2 = 145 +20;
                                       checkImgs[2] = true;
                                     });
                                   },
@@ -2232,7 +2309,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             // end of slide title
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -2250,7 +2327,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[3] = 'no';
                                       _image3 = null;
-                                      devHight3 = 145;
+                                      devHight3 = 145 + 20;
                                       visIcon[0] = true;
                                       checkImgs[3] = true;
                                     });
@@ -2281,7 +2358,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey3,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
 
                                   onChanged: (val) {
@@ -2299,29 +2376,22 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -2363,20 +2433,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 3*/
 
-                            /*image image 3*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage3,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 3 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -2384,6 +2440,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image3 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage3,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image3 != null
@@ -2422,7 +2494,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[3] = 'no';
                                       _image3 = null;
-                                      devHight3 = 121;
+                                      devHight3 =  145 + 20;
                                       checkImgs[3] = true;
                                     });
                                   },
@@ -2542,7 +2614,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -2560,7 +2632,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[4] = 'no';
                                       _image4 = null;
-                                      devHight4 = 145;
+                                      devHight4 = 145 + 20;
                                       checkImgs[4] = true;
                                       visIcon[1] = true;
                                     });
@@ -2591,7 +2663,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey4,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body4Control,
@@ -2611,29 +2683,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -2672,20 +2738,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 4*/
 
-                            /*image image 4*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage4,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 4 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -2693,6 +2745,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image4 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage4,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image4 != null
@@ -2731,7 +2799,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[4] = 'no';
                                       _image4 = null;
-                                      devHight4 = 121;
+                                      devHight4 = 145 + 20;
                                       checkImgs[4] = true;
                                     });
                                   },
@@ -2851,7 +2919,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -2869,7 +2937,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[5] = 'no';
                                       _image5 = null;
-                                      devHight5 = 145;
+                                      devHight5 = 145 + 20;
                                       checkImgs[5] = true;
                                       visIcon[2] = true;
                                     });
@@ -2899,7 +2967,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey5,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body5Control,
@@ -2919,29 +2987,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -2980,20 +3042,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 5*/
 
-                            /*image image 5*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage5,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 5 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -3001,6 +3049,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image5 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage5,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image5 != null
@@ -3039,7 +3103,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[5] = 'no';
                                       _image5 = null;
-                                      devHight5 = 121;
+                                      devHight5 = 145 + 20;
                                       checkImgs[5] = true;
                                     });
                                   },
@@ -3159,7 +3223,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -3177,7 +3241,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[6] = 'no';
                                       _image6 = null;
-                                      devHight6 = 145;
+                                      devHight6 = 145 + 20;
                                       checkImgs[6] = true;
                                       visIcon[3] = true;
                                     });
@@ -3208,7 +3272,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey6,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body6Control,
@@ -3228,29 +3292,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -3289,20 +3347,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 6*/
 
-                            /*image image 6*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage6,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -3310,6 +3354,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image6 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage6,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image6 != null
@@ -3348,7 +3408,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[6] = 'no';
                                       _image6 = null;
-                                      devHight6 = 121;
+                                      devHight6 = 145 + 20;
                                       checkImgs[6] = true;
                                     });
                                   },
@@ -3468,7 +3528,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -3486,7 +3546,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[7] = 'no';
                                       _image7 = null;
-                                      devHight7 = 145;
+                                      devHight7 = 145 + 20;
                                       checkImgs[7] = true;
                                       visIcon[4] = true;
                                     });
@@ -3517,7 +3577,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey7,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body7Control,
@@ -3537,29 +3597,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -3598,20 +3652,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 7*/
 
-                            /*image image 7*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage7,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 7*/
-
                           ],
                         ),
                         /*end of title*/
@@ -3619,6 +3659,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image7 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage7,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image7 != null
@@ -3657,7 +3713,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[7] = 'no';
                                       _image7 = null;
-                                      devHight7 = 121;
+                                      devHight7 = 145 + 20;
                                       checkImgs[7] = true;
                                     });
                                   },
@@ -3777,7 +3833,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -3795,7 +3851,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[8] = 'no';
                                       _image8 = null;
-                                      devHight8 = 145;
+                                      devHight8 = 145 + 20;
                                       checkImgs[8] = true;
                                       visIcon[5] = true;
                                     });
@@ -3826,7 +3882,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey8,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body8Control,
@@ -3846,29 +3902,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -3907,20 +3957,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 8*/
 
-                            /*image image 8*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage8,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 8 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -3928,6 +3964,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image8 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage8,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /* image 8*/
                         _image8 != null
@@ -3966,7 +4018,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[8] = 'no';
                                       _image8 = null;
-                                      devHight8 = 121;
+                                      devHight8 = 145 + 20;
                                       checkImgs[8] = true;
                                     });
                                   },
@@ -4086,7 +4138,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -4104,7 +4156,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[9] = 'no';
                                       _image9 = null;
-                                      devHight9 = 145;
+                                      devHight9 = 145 + 20;
                                       checkImgs[9] = true;
                                       visIcon[6] = true;
                                     });
@@ -4135,7 +4187,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey9,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body9Control,
@@ -4155,29 +4207,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -4216,20 +4262,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 9*/
 
-                            /*image image 9*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage9,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 9 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -4237,6 +4269,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image9 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage9,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /* image 9*/
                         _image9 != null
@@ -4275,7 +4323,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[9] = 'no';
                                       _image9 = null;
-                                      devHight9 = 121;
+                                      devHight9 = 145 + 20;
                                       checkImgs[9] = true;
                                     });
                                   },
@@ -4395,7 +4443,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -4413,7 +4461,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[10] = 'no';
                                       _image10 = null;
-                                      devHight10 = 145;
+                                      devHight10 = 145 + 20;
                                       checkImgs[10] = true;
                                       visIcon[7] = true;
                                     });
@@ -4444,7 +4492,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey10,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body10Control,
@@ -4464,29 +4512,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -4524,21 +4566,6 @@ class _AddPostPageState extends State<AddPostPage> {
                               ),
                             ),
                             /*end of body 10*/
-
-                            /*image image 10*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage10,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 10 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -4546,6 +4573,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image10 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage10,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /* image 10*/
                         _image10 != null
@@ -4584,7 +4627,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[10] = 'no';
                                       _image10 = null;
-                                      devHight10 = 121;
+                                      devHight10 = 145 + 20;
                                       checkImgs[11] = true;
                                     });
                                   },
@@ -4704,7 +4747,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -4722,7 +4765,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[11] = 'no';
                                       _image11 = null;
-                                      devHight11 = 145;
+                                      devHight11 = 145 + 20;
                                       checkImgs[11] = true;
                                       visIcon[8] = true;
                                     });
@@ -4753,7 +4796,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey11,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body11Control,
@@ -4773,29 +4816,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -4834,20 +4871,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 11*/
 
-                            /*image image 11*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage11,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 11 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -4855,6 +4878,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image11 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage11,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /* image  11*/
                         _image11 != null
@@ -4893,7 +4932,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[11] = 'no';
                                       _image11 = null;
-                                      devHight11 = 121;
+                                      devHight11 = 145 + 20;
                                       checkImgs[11] = true;
                                     });
                                   },
@@ -5013,7 +5052,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -5031,7 +5070,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[12] = 'no';
                                       _image12 = null;
-                                      devHight12 = 145;
+                                      devHight12 = 145 + 20;
                                       checkImgs[12] = true;
                                       visIcon[9] = true;
                                     });
@@ -5062,7 +5101,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey12,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body12Control,
@@ -5082,29 +5121,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -5142,21 +5175,6 @@ class _AddPostPageState extends State<AddPostPage> {
                               ),
                             ),
                             /*end of body 12*/
-
-                            /*image image 12*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage12,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 12 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -5164,6 +5182,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image12 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage12,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /* image 12*/
                         _image12 != null
@@ -5202,7 +5236,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[12] = 'no';
                                       _image12 = null;
-                                      devHight12 = 121;
+                                      devHight12 = 145 + 20;
                                       checkImgs[12] = true;
                                     });
                                   },
@@ -5322,7 +5356,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -5340,7 +5374,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[13] = 'no';
                                       _image13 = null;
-                                      devHight13 = 145;
+                                      devHight13 = 145 + 20;
                                       checkImgs[13] = true;
                                       visIcon[10] = true;
                                     });
@@ -5370,7 +5404,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey13,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body13Control,
@@ -5390,29 +5424,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -5451,20 +5479,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 13*/
 
-                            /*image image 13*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage13,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 13 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -5472,6 +5486,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image13 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage13,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /* image 13*/
                         _image13 != null
@@ -5510,7 +5540,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[13] = 'no';
                                       _image13 = null;
-                                      devHight13 = 121;
+                                      devHight13 = 145 + 20;
                                       checkImgs[13] = true;
                                     });
                                   },
@@ -5630,7 +5660,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -5648,7 +5678,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[14] = 'no';
                                       _image14 = null;
-                                      devHight14 = 145;
+                                      devHight14 = 145 + 20;
                                       checkImgs[14] = true;
                                       visIcon[11] = true;
                                     });
@@ -5678,7 +5708,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey14,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   //for disable button
                                   controller: body14Control,
@@ -5698,29 +5728,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -5759,20 +5783,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 14*/
 
-                            /*image image 14*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage14,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image 14 icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -5780,6 +5790,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image14 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage14,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /*cover image*/
                         _image14 != null
@@ -5818,7 +5844,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[14] = 'no';
                                       _image14 = null;
-                                      devHight14 = 121;
+                                      devHight14 = 145 + 20;
                                       checkImgs[14] = true;
                                     });
                                   },
@@ -5930,7 +5956,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /* end of slide title */
 
-                            SizedBox(width: 193,),
+                            SizedBox(width: width-155,),
 
                             //Delete slide
                             Visibility(
@@ -5948,7 +5974,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       //remove the image
                                       paths[15] = 'no';
                                       _image15 = null;
-                                      devHight15 = 145;
+                                      devHight15 = 145 + 20;
                                       checkImgs[15] = true;
                                       visIcon[12] = true;
                                     });
@@ -5979,7 +6005,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             Form(
                               key: _formKey15,
                               child: Container(
-                                width: 235,
+                                width: width-80,
                                 child: TextFormField(
                                   controller: body15Control,
 
@@ -5998,29 +6024,23 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if ((val.contains('&') ||
                                         val.contains("#") ||
                                         val.contains("*") ||
-                                        val.contains("!") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
-                                        val.contains("`") ||
                                         val.contains("@") ||
+                                        val.contains("'") ||
                                         val.contains("^") ||
-                                        val.contains("(") ||
-                                        val.contains(")") ||
                                         val.contains("+") ||
                                         val.contains("=") ||
                                         val.contains("{") ||
                                         val.contains("[") ||
                                         val.contains("}") ||
                                         val.contains("]") ||
-                                        val.contains("|") ||
                                         val.contains(":") ||
                                         val.contains(";") ||
                                         val.contains("<") ||
-                                        val.contains(">") ||
-                                        val.contains(",") ||
-                                        val.contains("?") ||
-                                        val.contains("/"))) {
-                                      return "Body should not contain special characters. only '-', '_' and '.'.";
+                                        val.contains('"') ||
+                                        val.contains(">"))) {
+                                      return "Body should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
@@ -6059,20 +6079,6 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                             /*end of body 15*/
 
-                            /*image image 15*/
-                            Container(
-                              margin: EdgeInsets.only(bottom: 8),
-                              child: IconButton(
-                                  onPressed: selectImage15,
-                                  icon: Icon(
-                                    Icons.image,
-                                    color: Palette.buttonColor,
-                                    size: 35,
-                                  )
-                              ),
-                            ),
-                            /*end of image icon*/
-
                           ],
                         ),
                         /*end of title*/
@@ -6080,6 +6086,22 @@ class _AddPostPageState extends State<AddPostPage> {
                         SizedBox(
                           height: 4,
                         ),
+
+                        /*add image*/
+                        _image15 == null?
+                        Container(
+                          margin: EdgeInsets.all(3),
+                          child:TextButton(
+                              onPressed: selectImage15,
+                              child: Text(
+                                "Add image",
+                                style: TextStyle(
+                                    color: Palette.link
+                                ),
+                              )
+                          ),
+                        ):SizedBox(),
+                        /*end of add image */
 
                         /* image 15*/
                         _image15 != null
@@ -6118,7 +6140,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     setState(() {
                                       paths[15] = 'no';
                                       _image15 = null;
-                                      devHight15 = 121;
+                                      devHight15 = 145 + 20;
                                       checkImgs[15] = true;
                                     });
                                   },
@@ -6433,10 +6455,23 @@ class _AddPostPageState extends State<AddPostPage> {
                   minWidth: 350,
                   child: FlatButton(
                     onPressed:
-                    isButtonActive[0] && isButtonActive[1] &&
-                        isButtonActive[2] && isButtonActive[3] &&
-                        isButtonActive[17]
-                        ? () async {
+                    !isButtonActive[0]?(){
+                      showSnackBar(context, "You need to choose place first!");
+                    }:
+                    !isButtonActive[17]?(){
+                      showSnackBar(context, "You need to choose category that most fit the place.");
+                    }:
+                    !isButtonActive[1]?(){
+                      showSnackBar(context, "You need rate the place first!");
+                    }:
+                    !isButtonActive[2]?(){
+                      showSnackBar(context, "You need to add title first!");
+                    }:
+                    !isButtonActive[3]?(){
+                      showSnackBar(context, "You need to add caption to slide 1 first!");
+                    }:
+
+                         () async {
 
                       /*make sure of the validation*/
                       if (!_formKey.currentState!.validate()) {
@@ -6515,7 +6550,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         }
                         isDone = true;
                       }
-                    } : null,
+                    },
                     child: Text(
                       'Done',
                       style: TextStyle(
@@ -6534,6 +6569,7 @@ class _AddPostPageState extends State<AddPostPage> {
           ),
         ),
       ),
+    )
     );
   }
 
@@ -6669,6 +6705,41 @@ class _AddPostPageState extends State<AddPostPage> {
           devHightType += 47;
           numbers.add(0);
         }
+
+
+        if(locationTypes.length==1){
+          locationType = locationTypes[0];
+          //change style
+          //1A) reverse the colors
+          int num = numbers[0];
+
+          //2) remove from all
+          setState(() {
+            for (int j = 0; j <
+                numbers.length; j++) {
+              if (numbers[j] == 1) {
+                numbers[j] = 0;
+              }
+            }
+          });
+
+          //1B) reverse the colors
+          if (num == 0)
+            setState(() {
+              numbers[0] = 1;
+            });
+          bool flag = false;
+          for (int j = 0; j <
+              numbers.length; j++) {
+            if (numbers[j] == 1) {
+              flag = true;
+            }
+          }
+          setState(() {
+            isButtonActive[17] = flag;
+          });
+        }
+
       });
       setState(() {
         locationId = place.placeId ?? "";

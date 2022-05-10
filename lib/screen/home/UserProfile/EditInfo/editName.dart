@@ -249,7 +249,7 @@ class _EditNameState extends State<EditName> {
                                         val.contains(",") ||
                                         val.contains("?") ||
                                         val.contains("/"))) {
-                                      return "name should not contain special characters. only '-', '_' and '.'.";
+                                      return "name should not contain symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },

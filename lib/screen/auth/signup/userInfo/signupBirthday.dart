@@ -3,15 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart'; //for date
 import 'package:intl/intl.dart';
-/*extra */
-import 'package:flutter/services.dart';
-import 'package:flutter/gestures.dart';
-
-/*pages */
-import 'package:gp1_7_2022/screen/auth/signup_login.dart';
-import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';

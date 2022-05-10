@@ -72,6 +72,7 @@ class _UserPostState extends State<UserPost> {
   deletePost(String postId) async {
     try {
       await FireStoreMethods().deletePost(postId);
+      showSnackBar(context, "post was deleted successfully!");
     } catch (err) {
       showSnackBar(
         context,
@@ -345,109 +346,109 @@ class _UserPostState extends State<UserPost> {
                                                     buildProfile(theUserData['photoPath'].toString()) ,
                                                     Column(
                                                       children: [
-                                                        /*like*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.favorite_border,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "200",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of like*/
-
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-
-                                                        /*comment*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.comment,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of comment*/
-
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-
-                                                        /*list*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.playlist_add,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of list*/
-
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-
-                                                        /*share*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.reply,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of share*/
+                                                        // /*like*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.favorite_border,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "200",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of like*/
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 7,
+                                                        // ),
+                                                        //
+                                                        // /*comment*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.comment,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "2",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of comment*/
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 7,
+                                                        // ),
+                                                        //
+                                                        // /*list*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.playlist_add,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "2",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of list*/
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 7,
+                                                        // ),
+                                                        //
+                                                        // /*share*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.reply,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "2",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of share*/
 
                                                         SizedBox(
                                                           height: 7,
@@ -699,7 +700,7 @@ class _UserPostState extends State<UserPost> {
                                                   /*end of username*/
 
                                                   SizedBox(
-                                                    height: 5,
+                                                    height: 12,
                                                   ),
 
                                                 ],
@@ -728,109 +729,109 @@ class _UserPostState extends State<UserPost> {
                                                     buildProfile(theUserData['photoPath'].toString()),
                                                     Column(
                                                       children: [
-                                                        /*like*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.favorite_border,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "200",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of like*/
-
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-
-                                                        /*comment*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.comment,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of comment*/
-
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-
-                                                        /*list*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.playlist_add,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of list*/
-
-                                                        SizedBox(
-                                                          height: 7,
-                                                        ),
-
-                                                        /*share*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.reply,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of share*/
+                                                        // /*like*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.favorite_border,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "200",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of like*/
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 7,
+                                                        // ),
+                                                        //
+                                                        // /*comment*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.comment,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "2",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of comment*/
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 7,
+                                                        // ),
+                                                        //
+                                                        // /*list*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.playlist_add,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "2",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of list*/
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 7,
+                                                        // ),
+                                                        //
+                                                        // /*share*/
+                                                        // InkWell(
+                                                        //   onTap: (){},
+                                                        //   child: Icon(
+                                                        //     Icons.reply,
+                                                        //     size: 30,
+                                                        //     color: Palette.backgroundColor,
+                                                        //   ),
+                                                        // ),
+                                                        //
+                                                        // SizedBox(
+                                                        //   height: 4,
+                                                        // ),
+                                                        //
+                                                        // Text(
+                                                        //   "2",
+                                                        //   style: TextStyle(
+                                                        //       fontSize: 16,
+                                                        //       color: Palette.backgroundColor
+                                                        //   ),
+                                                        // ),
+                                                        // /*end of share*/
 
                                                         SizedBox(
                                                           height: 7,
@@ -850,7 +851,7 @@ class _UserPostState extends State<UserPost> {
                                                         /*end of more*/
 
                                                         SizedBox(
-                                                          height: 140,
+                                                          height: 65,
                                                         ),
 
                                                       ],

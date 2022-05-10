@@ -71,7 +71,7 @@ class _Profile_pageState extends State<Profile_page> {
         });
       }
     }catch(e){
-      showSnackBar(context, e.toString());
+      print(e.toString());
     }
   }
 
@@ -166,13 +166,14 @@ class _Profile_pageState extends State<Profile_page> {
       }else
         Navigator.of(context).popAndPushNamed('/navigationBar');
     } catch (e) {
-      showSnackBar(context, e.toString());
+      print(e.toString());
     }
   }
 
   deletePost(String postId) async {
     try {
       await FireStoreMethods().deletePost(postId);
+      showSnackBar(context, "post was deleted successfully!");
     } catch (err) {
       showSnackBar(
         context,
@@ -218,7 +219,7 @@ class _Profile_pageState extends State<Profile_page> {
 
         //setting icon
         actions: [
-          theUserId==uid?
+          uid==FirebaseAuth.instance.currentUser!.uid?
           FocusedMenuHolder(
             //
             menuWidth: MediaQuery.of(context).size.width * 0.4,
@@ -298,12 +299,12 @@ class _Profile_pageState extends State<Profile_page> {
                   if(userData.isNotEmpty)
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid, userData: userData))
+                      MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid))
                     );
                   else
                     Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid, userData: null))
+                        MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid))
                     );
                 },
               ),
@@ -332,9 +333,9 @@ class _Profile_pageState extends State<Profile_page> {
 
               /*Log out*/
               FocusedMenuItem(
-                  title: userData['username'].toString().length<5?
+                  title: userData['username'].toString().length<4?
                   Container(child: Text("Share @"+userData['username'].toString())):
-                  Container(child: Text("Share @"+userData['username'].toString().substring(0,5)+"...")),
+                  Container(child: Text("Share @"+userData['username'].toString().substring(0,4)+"...")),
                   trailingIcon: const Icon(Icons.logout),
                   onPressed: () {
                     showSnackBar(context, "This feature will be available next release. Stay tuned");
@@ -455,24 +456,11 @@ class _Profile_pageState extends State<Profile_page> {
                       ),
                       Expanded(
                           flex: 10,
-                          child: InkWell(
-                              child: buildStatColumn(followers, "Followers"),
-                            onTap: (){},
-                          )
+                          child: buildStatColumn(followers, "Followers")
                       ),
                       Expanded(
                           flex: 10,
-                          child: InkWell(
-                              child: buildStatColumn(following, "Following"),
-                            onTap: _isloaded?(){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => Following(following: userData['following']),
-                                ),
-                              );
-                            }:null,
-                          )
+                          child: buildStatColumn(following, "Following")
                       ),
                     ],
                   ),
@@ -614,12 +602,12 @@ class _Profile_pageState extends State<Profile_page> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(22,4,0,22),
-                            child: InkWell(
-                              onTap: (){
-                                onMore(snap["postId"].toString(), snap['uid'].toString());
-                              },
+                          InkWell(
+                            onTap: (){
+                              onMore(snap["postId"].toString(), snap['uid'].toString());
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.fromLTRB(20,4,0,20),
                               child: Icon(
                                 Icons.more_vert_rounded,
                                 color: Palette.backgroundColor,

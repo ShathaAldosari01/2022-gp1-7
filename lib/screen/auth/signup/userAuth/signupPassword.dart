@@ -193,7 +193,7 @@ class _signupPasswordState extends State<signupPassword> {
                                   val.contains(",") ||
                                   val.contains(".") ||
                                   val.contains("?"))) {
-                                return "Password should contain special characters.";
+                                return "Password should contain symbol.";
                               }
                               return null;
                             },
@@ -315,7 +315,7 @@ class _signupPasswordState extends State<signupPassword> {
                                     val.contains(",") ||
                                     val.contains(".") ||
                                     val.contains("?"))) {
-                                  return "Password should contain special characters.";
+                                  return "Password should contain symbol.";
                                 }
                               }
                               return null;

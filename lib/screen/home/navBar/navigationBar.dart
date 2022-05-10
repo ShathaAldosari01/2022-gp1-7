@@ -42,13 +42,18 @@ class _navigationBarState extends State<navigationBar> {
   Widget build(BuildContext context) {
     final items = <Widget>[
       Icon(Icons.home, size: 30, color: index==0? Palette.buttonColor: Palette.textColor),
-      Icon(Icons.search, size: 30, color: index==1? Palette.backgroundColor: index!=0? Palette.textColor:Palette.backgroundColor),
-      Icon(Icons.add, size: 30, color: index==2? Palette.darkButtonColor: index!=0? Palette.textColor:Palette.backgroundColor),
-      Icon(Icons.list, size: 30, color: index==3? Palette.textColor: index!=0? Palette.textColor:Palette.backgroundColor),
-      Icon(Icons.person, size: 30, color: index==4? Palette.darkButtonColor: index!=0? Palette.textColor:Palette.backgroundColor),
+      Icon(Icons.search, size: 30, color: index==1? Palette.darkButtonColor: Palette.textColor),
+      Icon(Icons.add, size: 30, color: index==2? Palette.darkButtonColor:  Palette.textColor),
+      Icon(Icons.list, size: 30, color: index==3? Palette.darkButtonColor: Palette.textColor),
+      Icon(Icons.person, size: 30, color: index==4? Palette.darkButtonColor:  Palette.textColor),
     ];
 
-    return Scaffold(
+    return   WillPopScope(
+        onWillPop: () async{
+
+      return false;
+    },
+    child:Scaffold(
       extendBody: true,
       backgroundColor: Palette.backgroundColor,
       body: IndexedStack(
@@ -60,7 +65,7 @@ class _navigationBarState extends State<navigationBar> {
           iconTheme: IconThemeData(),
         ),
         child: CurvedNavigationBar(
-          color: index==0? Palette.textColor: Palette.icongrey,
+          color: Palette.icongrey,
           backgroundColor: Colors.transparent,
           height: 50,
           animationCurve: Curves.easeInOut,
@@ -75,6 +80,6 @@ class _navigationBarState extends State<navigationBar> {
           },
         ),
       ),
-    );
+    ));
   }
 }

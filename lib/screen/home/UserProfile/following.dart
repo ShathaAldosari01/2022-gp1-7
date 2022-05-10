@@ -32,7 +32,7 @@ class _FollowingState extends State<Following> {
     for(var user in following){
       setState(() {
         print(user);
-        print(getUser(user));
+        // print(getUser(user));
         usersData.add( getUser(user));
       });
     }
@@ -48,9 +48,10 @@ class _FollowingState extends State<Following> {
             .collection('users')
             .doc(uid)
             .get();
+        var userData = userSnap.data()!;
 
-        print(userSnap.data()!["username"].toString());
-        return userSnap.data()!["username"].toString();
+        // print(userSnap.data()!["username"].toString());
+        return Text(userData['username']);
       }
     }catch(e){
       showSnackBar(context, e.toString());
@@ -83,12 +84,12 @@ class _FollowingState extends State<Following> {
         body: !islouded?
       const Center(
         child: CircularProgressIndicator(),
-      ):usersData.isNotEmpty?
+      ):following.isNotEmpty?
       Column(
         children: [
-          for(var user in following)
-            Container(child: Text(getUser(user)),
-          ),
+          for(var user in usersData)
+            user,
+
         ],
       ):Text("No following yet!"),
     );

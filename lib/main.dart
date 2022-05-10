@@ -67,6 +67,8 @@ void main() async {
     '/settings': (context) => settings(),
 
     /*edit profile*/
+    '/editProfile': (context) =>
+        EditProfile(uid: FirebaseAuth.instance.currentUser!.uid),
     '/editName': (context) =>
         EditName(uid: FirebaseAuth.instance.currentUser!.uid),
     '/editUsername': (context) =>

@@ -255,7 +255,7 @@ class _EditUsernameState extends State<EditUsername> {
                                         val.contains("?") ||
                                         val.contains("/") ||
                                         val.contains(" "))) {
-                                      return "username should not contain space or special characters. only '-', '_' and '.'.";
+                                      return "username should not contain space or symbol. only '-', '_' and '.'.";
                                     }
                                     return null;
                                   },
