@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import '../../../Widgets/follow_button.dart';
+import '../../../Widgets/refresh_widget.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
@@ -18,8 +19,7 @@ import 'user-post-view.dart';
 
 class Profile_page extends StatefulWidget {
   final uid;
-  final userData;
-  const Profile_page({Key? key, required this.uid,required this.userData}) : super(key: key);
+  const Profile_page({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<Profile_page> createState() => _Profile_pageState();
@@ -35,23 +35,12 @@ class _Profile_pageState extends State<Profile_page> {
   var userData = {};
   var uid;
   var theUserId = FirebaseAuth.instance.currentUser!.uid;
+  bool isActive = true;
 
   @override
   void initState() {
-    if(widget.userData==null){
     uid = widget.uid;
     getUser();
-    }else{
-      setState(() {
-        userData=widget.userData;
-        followers = userData!['followers'].length;
-        following = userData!['following'].length;
-        isFollowing =userData!['followers']
-            .contains(FirebaseAuth.instance.currentUser!.uid);
-        _isloaded = true;
-      });
-    }
-    getData();
     super.initState();
   }
   getUser()async{
@@ -69,6 +58,7 @@ class _Profile_pageState extends State<Profile_page> {
           isFollowing =userData['followers']
               .contains(FirebaseAuth.instance.currentUser!.uid);
         });
+        getData();
       }
     }catch(e){
       print(e.toString());
@@ -182,6 +172,10 @@ class _Profile_pageState extends State<Profile_page> {
     }
   }
 
+  Future updateUserData()async{
+    getUser();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -268,7 +262,7 @@ class _Profile_pageState extends State<Profile_page> {
                             ),
                             onPressed: ()  async {
                               /*go to sign up page*/
-                              Navigator.pushNamed(context, '/');
+                              Navigator.pop(context);
                               return FirebaseAuth.instance.signOut();
                             },
                           )
@@ -362,297 +356,341 @@ class _Profile_pageState extends State<Profile_page> {
       //fix overload error
       resizeToAvoidBottomInset: false,
 
-      body: ListView(
-        children: [
-          Container(
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                _isloaded
-                    ? userData['photoPath'] != "no"
-                    ? CircleAvatar(
-                    backgroundColor: Palette.grey,
-                    backgroundImage:
-                    NetworkImage(userData['photoPath']),
-                    radius: 45)
-                //user photo
-             : CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 45,
-                  child: Icon(
-                    Icons.account_circle_sharp,
-                    color: Colors.grey,
-                    size: 90,
-                  ),
-                )
-              : Container(
-                  margin: EdgeInsets.all(32),
-                  child: CircularProgressIndicator(
-                    backgroundColor: Palette.lightgrey,
-                    valueColor:
-                    AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                  ),
-                ),
-
-                //username
-                Container(
-                  alignment: Alignment.center,
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-                  child: _isloaded
-                  ? Text("@"+
-                      userData['username'],
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
+      body: RefreshWidget(
+    onRefresh:updateUserData,
+        child: ListView(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  _isloaded
+                      ? userData['photoPath'] != "no"
+                      ? CircleAvatar(
+                      backgroundColor: Palette.grey,
+                      backgroundImage:
+                      NetworkImage(userData['photoPath']),
+                      radius: 45)
+                  //user photo
+               : CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 45,
+                    child: Icon(
+                      Icons.account_circle_sharp,
+                      color: Colors.grey,
+                      size: 90,
                     ),
                   )
-                 : Container(
-                    width: 100,
-                    child: LinearProgressIndicator(
-                      minHeight: 15,
+                : Container(
+                    margin: EdgeInsets.all(32),
+                    child: CircularProgressIndicator(
                       backgroundColor: Palette.lightgrey,
                       valueColor:
                       AlwaysStoppedAnimation<Color>(Palette.midgrey),
                     ),
                   ),
-                ),
-                //end of username
 
-                //bio
-                Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
-                  child: _isloaded
-                      ? userData['bio'].toString().isNotEmpty
-                      ? Text(
-                    userData['bio'],
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 16,
-                    ),
-                  )
-                      : SizedBox()
-                      : Container(
-                    width: 100,
-                    child: LinearProgressIndicator(
-                      minHeight: 15,
-                      backgroundColor: Palette.lightgrey,
-                      valueColor:
-                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                  //username
+                  Container(
+                    alignment: Alignment.center,
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                    child: _isloaded
+                    ? Text("@"+
+                        userData['username'],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    )
+                   : Container(
+                      width: 100,
+                      child: LinearProgressIndicator(
+                        minHeight: 15,
+                        backgroundColor: Palette.lightgrey,
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                      ),
                     ),
                   ),
-                ),
-                //end of bio
+                  //end of username
 
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  //bio
+                  Container(
+                    alignment: Alignment.center,
+                    padding: const EdgeInsets.fromLTRB(0, 1, 0, 0),
+                    child: _isloaded
+                        ? userData['bio'].toString().isNotEmpty
+                        ? Text(
+                      userData['bio'],
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    )
+                        : SizedBox()
+                        : Container(
+                      width: 100,
+                      child: LinearProgressIndicator(
+                        minHeight: 15,
+                        backgroundColor: Palette.lightgrey,
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                      ),
+                    ),
+                  ),
+                  //end of bio
+
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Expanded(
+                            flex: 10,
+                            child: InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:userData.isNotEmpty?
+                                        (context) => UserPost(theUserData: userData,uid: widget.uid.toString(),index: 0):
+                                        (context) => UserPost(theUserData: null,uid: widget.uid.toString(),index: 0),
+                                  ),
+                                );
+                              },
+                                child: buildStatColumn(postLen, "Posts")
+                            )
+                        ),
+                        Expanded(
+                            flex: 10,
+                            child: InkWell(
+                                onTap:(){
+                                  Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) => Following(following:userData['followers'], isFollowing: false),
+                                  ),
+                                );
+                                },
+                                child: buildStatColumn(followers, "Followers")
+                            )
+                        ),
+                        Expanded(
+                            flex: 10,
+                            child: InkWell(
+                                onTap:(){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => Following(following:userData['following'],isFollowing: true, ),
+                                    ),
+                                  );
+                                },
+                                child: buildStatColumn(following, "Following")
+                            )
+                        ),
+                      ],
+                    ),
+                  ),
+
+
+                  Row(
+                    mainAxisAlignment:
+                    MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                          flex: 10,
-                          child: buildStatColumn(postLen, "Posts")
-                      ),
-                      Expanded(
-                          flex: 10,
-                          child: buildStatColumn(followers, "Followers")
-                      ),
-                      Expanded(
-                          flex: 10,
-                          child: buildStatColumn(following, "Following")
-                      ),
+                      FirebaseAuth.instance.currentUser!.uid !=
+                          widget.uid
+                          ?
+                      isFollowing
+                          ? FollowButton(
+                        text: 'Unfollow',
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        borderColor: Colors.grey,
+                        function: isActive?() async {
+                          setState(() {
+                            isActive = false;
+                            isFollowing = false;
+                            followers--;
+                          });
+                          await FireStoreMethods()
+                              .followUser(
+                            FirebaseAuth.instance
+                                .currentUser!.uid,
+                            userData['uid'],
+                          );
+                          setState(() {
+                            isActive =true;
+                          });
+                        }:null,
+                        horizontal: (size.width/2)-50,
+                        vertical: 9,
+                      )
+                          : FollowButton(
+                        text: 'Follow',
+                        backgroundColor: Palette.link,
+                        textColor: Palette.backgroundColor,
+                        borderColor: Palette.link,
+                        function: isActive?() async {
+                          setState(() {
+                            isActive= false;
+                            isFollowing = true;
+                            followers++;
+                          });
+                          await FireStoreMethods()
+                              .followUser(
+                            FirebaseAuth.instance
+                                .currentUser!.uid,
+                            userData['uid'],
+                          );
+                          setState(() {
+                            isActive= true;
+                          });
+                        }:null,
+                        horizontal: (size.width/2)-50,
+                        vertical: 9,
+                      ):SizedBox()
                     ],
                   ),
-                ),
 
 
-                Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment.spaceEvenly,
-                  children: [
-                    FirebaseAuth.instance.currentUser!.uid !=
-                        widget.uid
-                        ?
-                    isFollowing
-                        ? FollowButton(
-                      text: 'Unfollow',
-                      backgroundColor: Colors.white,
-                      textColor: Colors.black,
-                      borderColor: Colors.grey,
-                      function: () async {
-                        await FireStoreMethods()
-                            .followUser(
-                          FirebaseAuth.instance
-                              .currentUser!.uid,
-                          userData['uid'],
-                        );
-
-                        setState(() {
-                          isFollowing = false;
-                          followers--;
-                        });
-                      },
-                      horizontal: (size.width/2)-50,
-                      vertical: 9,
-                    )
-                        : FollowButton(
-                      text: 'Follow',
-                      backgroundColor: Palette.buttonColor,
-                      textColor: Palette.backgroundColor,
-                      borderColor: Palette.buttonColor,
-                      function: () async {
-                        await FireStoreMethods()
-                            .followUser(
-                          FirebaseAuth.instance
-                              .currentUser!.uid,
-                          userData['uid'],
-                        );
-
-                        setState(() {
-                          isFollowing = true;
-                          followers++;
-                        });
-                      }, horizontal: (size.width/2)-50,
-                      vertical: 9,
-                    ):SizedBox()
-                  ],
-                ),
-
-
-              ],
+                ],
+              ),
             ),
-          ),
-          const Divider(),
-          FutureBuilder(
-            future: FirebaseFirestore.instance
-                .collection('posts')
-                .orderBy("datePublished", descending: true)
-                .where('uid', isEqualTo: widget.uid)
-                .get(),
+            const Divider(),
+            FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('posts')
+                  .orderBy("datePublished", descending: true)
+                  .where('uid', isEqualTo: widget.uid)
+                  .get(),
 
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
 
-              return GridView.builder(
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: (snapshot.data! as dynamic).docs.length,
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 5,
-                  mainAxisSpacing: 1.5,
-                  childAspectRatio: 0.6,
-                ),
-                itemBuilder: (context, index) {
-                  DocumentSnapshot snap =
-                  (snapshot.data! as dynamic).docs[index];
+                return GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: (snapshot.data! as dynamic).docs.length,
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 1.5,
+                    childAspectRatio: 0.6,
+                  ),
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot snap =
+                    (snapshot.data! as dynamic).docs[index];
 
-                  return Stack(
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            height: (size.width/3)*(100/60)-5.6,
-                            color:Palette.backgroundColor,
-                            child: snap['imgsPath'][0]!= "no"?
-                            Image(
-                              image: NetworkImage(snap['imgsPath'][0]),
-                              fit: BoxFit.cover,
-                            ):Center(
-                              child: Container(
-                                color: Palette.buttonColor,
-                                margin: EdgeInsets.symmetric(horizontal: 4),
-                                padding: EdgeInsets.symmetric(vertical: 2, horizontal: 3),
-                                child: Text(
-                                  snap['title'],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Palette.textColor,
+                    return Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: (size.width/3)*(100/60)-5.6,
+                              color:Palette.backgroundColor,
+                              child: snap['imgsPath'][0]!= "no"?
+                              Image(
+                                image: NetworkImage(snap['imgsPath'][0]),
+                                fit: BoxFit.cover,
+                              ):Center(
+                                child: Container(
+                                  color: Palette.buttonColor,
+                                  margin: EdgeInsets.symmetric(horizontal: 4),
+                                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 3),
+                                  child: Text(
+                                    snap['title'],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.textColor,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      InkWell(
-                        onTap:(){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder:userData.isNotEmpty?
-                                  (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
-                                  (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index)
-                              ,
-                            ),
-                          );
-                        },
-                        child: Container(
-                          color: Colors.black.withOpacity(0.3),
+                          ],
                         ),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                            onTap: (){
-                              onMore(snap["postId"].toString(), snap['uid'].toString());
-                            },
-                            child: Container(
-                              padding: const EdgeInsets.fromLTRB(20,4,0,20),
-                              child: Icon(
-                                Icons.more_vert_rounded,
-                                color: Palette.backgroundColor,
-                                size: 18,
+                        InkWell(
+                          onTap:(){
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder:userData.isNotEmpty?
+                                    (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
+                                    (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index)
+                                ,
+                              ),
+                            );
+                          },
+                          child: Container(
+                            color: Colors.black.withOpacity(0.3),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: (){
+                                onMore(snap["postId"].toString(), snap['uid'].toString());
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(20,4,0,20),
+                                child: Icon(
+                                  Icons.more_vert_rounded,
+                                  color: Palette.backgroundColor,
+                                  size: 18,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap:(){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:userData.isNotEmpty?
+                                        (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
+                                        (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal:6, vertical: 7 ),
+                                child:snap['imgsPath'][0]!= "no"?
+                                Text(
+                                    snap['title'],
+                                  style: TextStyle(
+                                      color: Palette.backgroundColor,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ):SizedBox(),
                               ),
                             ),
-                          )
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          InkWell(
-                            onTap:(){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:userData.isNotEmpty?
-                                      (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
-                                      (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              padding: EdgeInsets.symmetric(horizontal:6, vertical: 7 ),
-                              child:snap['imgsPath'][0]!= "no"?
-                              Text(
-                                  snap['title'],
-                                style: TextStyle(
-                                    color: Palette.backgroundColor,
-                                  fontWeight: FontWeight.bold
-                                ),
-                              ):SizedBox(),
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  );
-                },
-              );
-            },
-          )
-        ],
+                          ],
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+            )
+          ],
+        ),
       ),
     );
   }

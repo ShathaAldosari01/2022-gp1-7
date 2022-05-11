@@ -103,9 +103,8 @@ class _UserPostState extends State<UserPost> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: theUserData.isNotEmpty?
-                  (context) => Profile_page(uid: theUserData['uid'].toString(), userData: theUserData,):
-                  (context) => Profile_page(uid: theUserData['uid'].toString(), userData: null,),
+              builder:
+                  (context) => Profile_page(uid: theUserData['uid'].toString(),),
             ),
           );
         },
@@ -223,7 +222,27 @@ class _UserPostState extends State<UserPost> {
                           paths: snapshot.data!.docs[index].data()['imgsPath'].cast<String>(), title: snapshot.data!.docs[index].data()['title'], index: index, isCover: snapshot.data!.docs[index].data()['isCoverPage'].cast<bool>(),
                         ),
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      margin: EdgeInsets.fromLTRB(2,80,2,0),
+                                      color: Palette.backgroundColor,
+                                      height: 3,
+                                    ),
+                                  ),
+                                  for(int i=0; i< snapshot.data!.docs[index].data()['counter']; i++)
+                                    Expanded(
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(2,80,2,0),
+                                        color: Palette.darkGray,
+                                        height: 3,
+                                      ),
+                                    )
+                                ]
+                            ),
                             Expanded(
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -272,9 +291,8 @@ class _UserPostState extends State<UserPost> {
                                                     Navigator.push(
                                                       context,
                                                       MaterialPageRoute(
-                                                        builder: theUserData.isNotEmpty?
-                                                            (context) => Profile_page(uid: theUserData['uid'].toString(), userData: theUserData,):
-                                                            (context) => Profile_page(uid: theUserData['uid'].toString(), userData: null,),
+                                                        builder:
+                                                            (context) => Profile_page(uid: theUserData['uid'].toString(), ),
                                                       ),
                                                     );
                                                   },
@@ -635,7 +653,20 @@ class _UserPostState extends State<UserPost> {
                           paths: snapshot.data!.docs[index].data()['imgsPath'].cast<String>(), title: snapshot.data!.docs[index].data()['title'], index: indexIn, isCover: snapshot.data!.docs[index].data()['isCoverPage'].cast<bool>() ,
                         ),
                         Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
+                            Row(
+                                children: [
+                                  for(int i=0; i< snapshot.data!.docs[index].data()['counter']+1; i++)
+                                    Expanded(
+                                      child: Container(
+                                        margin: EdgeInsets.fromLTRB(2,80,2,0),
+                                        color: i!=indexIn?Palette.darkGray:Palette.backgroundColor,
+                                        height: 3,
+                                      ),
+                                    )
+                                ]
+                            ),
                             Expanded(
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,
@@ -670,9 +701,8 @@ class _UserPostState extends State<UserPost> {
                                                       Navigator.push(
                                                         context,
                                                         MaterialPageRoute(
-                                                          builder: theUserData.isNotEmpty?
-                                                              (context) => Profile_page(uid: theUserData['uid'].toString(), userData: theUserData,):
-                                                              (context) => Profile_page(uid: theUserData['uid'].toString(), userData: null,),
+                                                          builder:
+                                                              (context) => Profile_page(uid: theUserData['uid'].toString(), ),
                                                         ),
                                                       );
                                                     },

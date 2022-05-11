@@ -239,7 +239,6 @@ class _settingsState extends State<settings> {
 
                               if(step4){
                                 //go to sign up log in page
-                                await Navigator.pushNamed(context, '/');
                                 step4 = false ;
                               }
 

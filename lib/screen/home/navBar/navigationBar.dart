@@ -27,7 +27,7 @@ class _navigationBarState extends State<navigationBar> {
     SearchPage(),
     Empty(),
     lists(),
-    Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, userData: null, ),
+    Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, ),
   ];
 
   @override

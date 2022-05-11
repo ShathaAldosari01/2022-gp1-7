@@ -30,7 +30,7 @@ class TabNavigator extends StatelessWidget {
     else if(tabItem == "List")
       child = lists();
     else if(tabItem == "Profile")
-      child = Profile_page(uid: FirebaseAuth.instance.currentUser!.uid,userData: null, );
+      child = Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, );
 
     return Navigator(
       key: navigatorKey,
@@ -47,7 +47,7 @@ class TabNavigator extends StatelessWidget {
               else if(tabItem == "List")
                 return lists();
               else if(tabItem == "Profile")
-                return Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, userData: null,);
+                return Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, );
               return HomePage();
             }
 

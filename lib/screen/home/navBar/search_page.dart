@@ -66,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
                 onTap: () => Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => Profile_page(
-                      uid: (snapshot.data! as dynamic).docs[index]['uid'], userData: null,
+                      uid: (snapshot.data! as dynamic).docs[index]['uid'],
                     ),
                   ),
                 ),
@@ -99,25 +99,6 @@ class _SearchPageState extends State<SearchPage> {
             );
           }
           return Text("hi");
-
-          // return StaggeredGridView.countBuilder(
-          //   crossAxisCount: 3,
-          //   itemCount: (snapshot.data! as dynamic).docs.length,
-          //   itemBuilder: (context, index) => Image.network(
-          //     (snapshot.data! as dynamic).docs[index]['postUrl'],
-          //     fit: BoxFit.cover,
-          //   ),
-          //   staggeredTileBuilder: (index) => MediaQuery.of(context)
-          //       .size
-          //       .width >
-          //       webScreenSize
-          //       ? StaggeredTile.count(
-          //       (index % 7 == 0) ? 1 : 1, (index % 7 == 0) ? 1 : 1)
-          //       : StaggeredTile.count(
-          //       (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
-          //   mainAxisSpacing: 8.0,
-          //   crossAxisSpacing: 8.0,
-          // );
         },
       ),
     );
