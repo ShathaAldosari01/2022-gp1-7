@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
+import 'package:intl/intl.dart';
 import '../../../Widgets/follow_button.dart';
 import '../../../Widgets/refresh_widget.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
@@ -641,7 +642,7 @@ class _Profile_pageState extends State<Profile_page> {
                           children: [
                             InkWell(
                               onTap: (){
-                                onMore(snap["postId"].toString(), snap['uid'].toString());
+                                onMore(snap["postId"].toString(), snap['uid'].toString(), snap["datePublished"].toDate());
                               },
                               child: Container(
                                 padding: const EdgeInsets.fromLTRB(20,4,0,20),
@@ -696,13 +697,13 @@ class _Profile_pageState extends State<Profile_page> {
   }
 
 
-  void onMore(String postId, puid) {
+  void onMore(String postId, puid, date) {
     showModalBottomSheet(context: context, builder: (context){
       return Container(
         color: Color(0xFF737373),
-        height: 180/3,
+        height: 180/3+22,
         child: Container(
-          child: onMorePressed(postId, puid),
+          child: onMorePressed(postId, puid, date),
           decoration: BoxDecoration(
             color: Palette.backgroundColor,
             borderRadius: BorderRadius.only(
@@ -718,9 +719,33 @@ class _Profile_pageState extends State<Profile_page> {
     });
   }
 
-  Column onMorePressed(String postId, puid) {
+  Column onMorePressed(String postId, puid, date) {
     return Column(
       children:  [
+        Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child:RichText(
+              text: TextSpan(
+                text: 'Date posted: ',
+                style: TextStyle(
+                  color: Palette.textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                      text:  DateFormat('dd/MM/yyyy').format(date).toString(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Palette.textColor,
+                        fontWeight: FontWeight.normal,
+                      )
+                  ),
+                ],
+              ),
+            )
+        ),
+
         ListTile(
           leading: (FirebaseAuth.instance.currentUser!.uid== puid)?
           Icon(Icons.delete):

@@ -587,7 +587,7 @@ class _AddPostPageState extends State<AddPostPage> {
             Alert(
                 context: context,
                 title: "Are you sure you want to leave this page?",
-                desc: "once you click leave the information tha you filled will be gone",
+                desc: "once you click leave the information that you filled will be gone.",
                 buttons: [
                   DialogButton(
                       child: Text(
@@ -653,7 +653,7 @@ class _AddPostPageState extends State<AddPostPage> {
                       Alert(
                           context: context,
                           title: "Are you sure you want to leave this page?",
-                          desc: "once you click leave the information tha you filled will be gone",
+                          desc: "once you click leave the information that you filled will be gone.",
                           buttons: [
                             DialogButton(
                                 child: Text(
@@ -1497,9 +1497,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                   if (val.length >= 35) {
                                     return "Create a shorter title under 36 characters.";
                                   }
-                                  if ((val.contains('&') ||
-                                      val.contains("#") ||
-                                      val.contains("*") ||
+                                  if ((val.contains("*") ||
                                       val.contains("%") ||
                                       val.contains("~") ||
                                       val.contains("@") ||
@@ -1767,9 +1765,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -2071,9 +2067,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                       return "Create a shorter body under 281 characters.";
                                     }
                                     if (val!.isNotEmpty &&
-                                        (val.contains('&') ||
-                                            val.contains("#") ||
-                                            val.contains("*") ||
+                                        (val.contains("*") ||
                                             val.contains("%") ||
                                             val.contains("~") ||
                                             val.contains("@") ||
@@ -2373,9 +2367,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -2680,9 +2672,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -2984,9 +2974,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -3289,9 +3277,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -3594,9 +3580,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -3899,9 +3883,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -4204,9 +4186,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -4509,8 +4489,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
+                                    if ((
                                         val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
@@ -4813,9 +4792,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -5118,9 +5095,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -5421,9 +5396,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -5725,9 +5698,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
-                                        val.contains("*") ||
+                                    if ((val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||
                                         val.contains("@") ||
@@ -6021,8 +5992,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if ((val.contains('&') ||
-                                        val.contains("#") ||
+                                    if ((val.contains("#") ||
                                         val.contains("*") ||
                                         val.contains("%") ||
                                         val.contains("~") ||

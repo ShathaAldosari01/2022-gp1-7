@@ -27,10 +27,12 @@ class UserPost extends StatefulWidget {
 class _UserPostState extends State<UserPost> {
 
   late Future<void> _launched;
+  var test = 0;
   var theUserData ={};
   bool _isTheUserLoaded = false;
   String phoneNumber ="";
   String _launchUrl="https://www.google.com";
+  var isContentShow = [];
 
   @override
   void initState() {
@@ -39,7 +41,7 @@ class _UserPostState extends State<UserPost> {
     }
     else
       setState(() {
-         theUserData = widget.theUserData;
+        theUserData = widget.theUserData;
         _isTheUserLoaded = true;
       });
     super.initState();
@@ -152,13 +154,13 @@ class _UserPostState extends State<UserPost> {
       extendBodyBehindAppBar:true,
       backgroundColor: Palette.backgroundColor,
       appBar: AppBar(
-        backgroundColor: Color(0x44000000),
-        foregroundColor: Palette.textColor,
-        elevation: 0,
-        //no shadow
-        iconTheme: IconThemeData(
-          color: Palette.backgroundColor, //change your color here
-        ),
+          backgroundColor: Color(0x44000000),
+          foregroundColor: Palette.textColor,
+          elevation: 0,
+          //no shadow
+          iconTheme: IconThemeData(
+            color: Palette.backgroundColor, //change your color here
+          ),
           centerTitle: true,
           title: _isTheUserLoaded
               ? Text(theUserData['name'],
@@ -204,11 +206,20 @@ class _UserPostState extends State<UserPost> {
                 ),
               );
             }
-            else return PageView.builder( //to make the page scroll
+            else {
+              int len = snapshot.data?.docs.length??0;
+              for (int i=0; i<len ; i++){
+                isContentShow.add([]);
+              }
+              return PageView.builder( //to make the page scroll
               itemCount: snapshot.data?.docs.length??0,
               controller: PageController(initialPage: widget.index, viewportFraction: 1),
               scrollDirection: Axis.vertical, //to scroll vertically
               itemBuilder: (context, index) {
+                int len = snapshot.data!.docs[index].data()['counter']+1;
+                for (int i=0; i<len ; i++){
+                  isContentShow[index].add(true);
+                }
                 return PageView.builder( //to make the page scroll
                   itemCount: snapshot.data!.docs[index].data()['counter']+1,
                   controller: PageController(initialPage: 0, viewportFraction: 1),
@@ -218,9 +229,15 @@ class _UserPostState extends State<UserPost> {
                     Stack(
                       children: [
                         /*image*/
-                        ImageDisplayer(
-                          paths: snapshot.data!.docs[index].data()['imgsPath'].cast<String>(), title: snapshot.data!.docs[index].data()['title'], index: index, isCover: snapshot.data!.docs[index].data()['isCoverPage'].cast<bool>(),
+                        InkWell(
+                          onTap:(){
+                            isContentShow[index][indexIn]= !isContentShow[index][indexIn];
+                          },
+                          child: ImageDisplayer(
+                            paths: snapshot.data!.docs[index].data()['imgsPath'].cast<String>(), title: snapshot.data!.docs[index].data()['title'], index: indexIn, isCover: snapshot.data!.docs[index].data()['isCoverPage'].cast<bool>(),
+                          ),
                         ),
+                        true?
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -364,110 +381,6 @@ class _UserPostState extends State<UserPost> {
                                                     buildProfile(theUserData['photoPath'].toString()) ,
                                                     Column(
                                                       children: [
-                                                        // /*like*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.favorite_border,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "200",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of like*/
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 7,
-                                                        // ),
-                                                        //
-                                                        // /*comment*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.comment,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "2",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of comment*/
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 7,
-                                                        // ),
-                                                        //
-                                                        // /*list*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.playlist_add,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "2",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of list*/
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 7,
-                                                        // ),
-                                                        //
-                                                        // /*share*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.reply,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "2",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of share*/
-
                                                         SizedBox(
                                                           height: 7,
                                                         ),
@@ -475,7 +388,7 @@ class _UserPostState extends State<UserPost> {
                                                         /*more*/
                                                         InkWell(
                                                           onTap: (){
-                                                            onMore(snapshot.data!.docs[index].data()["postId"].toString(), snapshot.data!.docs[index].data()['uid'].toString());
+                                                            onMore(snapshot.data!.docs[index].data()["postId"].toString(), snapshot.data!.docs[index].data()['uid'].toString(),  snapshot.data!.docs[index].data()["datePublished"].toDate());
                                                           },
                                                           child: Icon(
                                                             Icons.more_horiz,
@@ -643,7 +556,7 @@ class _UserPostState extends State<UserPost> {
                               ),
                             ),
                           ],
-                        ),
+                        ): SizedBox(),
                       ],
                     )
                         : Stack(
@@ -759,109 +672,6 @@ class _UserPostState extends State<UserPost> {
                                                     buildProfile(theUserData['photoPath'].toString()),
                                                     Column(
                                                       children: [
-                                                        // /*like*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.favorite_border,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "200",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of like*/
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 7,
-                                                        // ),
-                                                        //
-                                                        // /*comment*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.comment,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "2",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of comment*/
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 7,
-                                                        // ),
-                                                        //
-                                                        // /*list*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.playlist_add,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "2",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of list*/
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 7,
-                                                        // ),
-                                                        //
-                                                        // /*share*/
-                                                        // InkWell(
-                                                        //   onTap: (){},
-                                                        //   child: Icon(
-                                                        //     Icons.reply,
-                                                        //     size: 30,
-                                                        //     color: Palette.backgroundColor,
-                                                        //   ),
-                                                        // ),
-                                                        //
-                                                        // SizedBox(
-                                                        //   height: 4,
-                                                        // ),
-                                                        //
-                                                        // Text(
-                                                        //   "2",
-                                                        //   style: TextStyle(
-                                                        //       fontSize: 16,
-                                                        //       color: Palette.backgroundColor
-                                                        //   ),
-                                                        // ),
-                                                        // /*end of share*/
 
                                                         SizedBox(
                                                           height: 7,
@@ -870,7 +680,7 @@ class _UserPostState extends State<UserPost> {
                                                         /*more*/
                                                         InkWell(
                                                           onTap: (){
-                                                            onMore(snapshot.data!.docs[index].data()["postId"].toString(), snapshot.data!.docs[index].data()['uid'].toString());
+                                                            onMore(snapshot.data!.docs[index].data()["postId"].toString(), snapshot.data!.docs[index].data()['uid'].toString(), snapshot.data!.docs[index].data()["datePublished"].toDate());
                                                           },
                                                           child: Icon(
                                                             Icons.more_horiz,
@@ -910,18 +720,19 @@ class _UserPostState extends State<UserPost> {
                 );
               },
             );
+            }
           }
       ),
     );
   }
 
-  void onMore(String postId, puid) {
+  void onMore(String postId, puid, date) {
     showModalBottomSheet(context: context, builder: (context){
       return Container(
         color: Color(0xFF737373),
-        height: 180/3,
+        height: 180/3+22,
         child: Container(
-          child: onMorePressed(postId, puid),
+          child: onMorePressed(postId, puid, date),
           decoration: BoxDecoration(
             color: Palette.backgroundColor,
             borderRadius: BorderRadius.only(
@@ -937,9 +748,45 @@ class _UserPostState extends State<UserPost> {
     });
   }
 
-  Column onMorePressed(String postId, puid) {
+  void onContentShow() {
+    showModalBottomSheet(context: context, builder: (context){
+      return Container(
+        color: Color(0xFF737373),
+        height: 0,
+        child: SizedBox()
+      );
+
+
+    });
+  }
+
+  Column onMorePressed(String postId, puid, date) {
     return Column(
       children:  [
+        Container(
+            margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+            child:RichText(
+              text: TextSpan(
+                text: 'Date posted: ',
+                style: TextStyle(
+                  color: Palette.textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+                children: <TextSpan>[
+                  TextSpan(
+                      text:  DateFormat('dd/MM/yyyy').format(date).toString(),
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Palette.textColor,
+                        fontWeight: FontWeight.normal,
+                      )
+                  ),
+                ],
+              ),
+            )
+        ),
+
         ListTile(
           leading: (FirebaseAuth.instance.currentUser!.uid== puid)?
           Icon(Icons.delete):
