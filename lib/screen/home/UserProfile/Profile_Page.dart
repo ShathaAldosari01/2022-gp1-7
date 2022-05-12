@@ -264,6 +264,7 @@ class _Profile_pageState extends State<Profile_page> {
                             onPressed: ()  async {
                               /*go to sign up page*/
                               Navigator.pop(context);
+                              Navigator.pushNamed(context, '/');
                               return FirebaseAuth.instance.signOut();
                             },
                           )
@@ -285,25 +286,6 @@ class _Profile_pageState extends State<Profile_page> {
                 },
               ),
               /*end of Settings*/
-
-              /*Edit Profile*/
-              FocusedMenuItem(
-                title: const Text("Edit Profile"),
-                trailingIcon: const Icon(Icons.edit),
-                onPressed: () {
-                  if(userData.isNotEmpty)
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid))
-                    );
-                  else
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid))
-                    );
-                },
-              ),
-              /*end of Edit Profile*/
             ],
 
             openWithTap: true,
@@ -553,7 +535,27 @@ class _Profile_pageState extends State<Profile_page> {
                         }:null,
                         horizontal: (size.width/2)-50,
                         vertical: 9,
-                      ):SizedBox()
+                      ):
+                      FollowButton(
+                        text: 'Edit Profile',
+                        backgroundColor: Colors.white,
+                        textColor: Colors.black,
+                        borderColor: Colors.grey,
+                        function: () async {
+                          if(userData.isNotEmpty)
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid))
+                            );
+                          else
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context)=> EditProfile( uid: FirebaseAuth.instance.currentUser!.uid))
+                            );
+                        },
+                        horizontal: (size.width/2)-50,
+                        vertical: 9,
+                      )
                     ],
                   ),
 
