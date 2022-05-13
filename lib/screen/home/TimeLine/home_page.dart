@@ -102,6 +102,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future loadPost() async{
+    getTheData();
     setState(() {
       homePosts = FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', whereIn: theUserData['following']).snapshots();
     });
