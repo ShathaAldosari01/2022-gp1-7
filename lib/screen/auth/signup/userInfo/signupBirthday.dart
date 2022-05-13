@@ -3,7 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart'; //for date
 import 'package:intl/intl.dart';
+/*extra */
+import 'package:flutter/services.dart';
+import 'package:flutter/gestures.dart';
+
+/*pages */
+import 'package:gp1_7_2022/screen/auth/signup_login.dart';
+import 'package:gp1_7_2022/screen/auth/signup/userAuth/signup.dart';
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -18,7 +26,7 @@ class SignupBirthday extends StatefulWidget {
 class _SignupBirthdayState extends State<SignupBirthday> {
   //date
   DateTime birthday =
-      DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+  DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
   String _dataFormate = DateFormat.yMMMMd('en_US').format(DateTime.now());
   //date controller
   late TextEditingController _birthdayController;
@@ -39,7 +47,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
       if (uid != null) {
         //we have uid
         var userSnap =
-            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
         if (userSnap.data() != null) {
           //we have user data
           userData = userSnap.data()!;
@@ -50,7 +58,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
               birthday = userData['birthday'].toDate();
               _dataFormate = DateFormat.yMMMMd('en_US')
                   .format(userData['birthday'].toDate());
-              isButtonActive = true;
             }
           });
         } else
@@ -191,12 +198,12 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                 validator: (val) {
                                   DateTime timeNow = DateTime.now();
                                   DateTime oldest = new DateTime(
-                                      timeNow.year + 100,
+                                      timeNow.year - 99,
                                       timeNow.month,
                                       timeNow.day);
                                   bool isNotoldest = birthday.isBefore(oldest);
                                   DateTime younge = new DateTime(
-                                      timeNow.year - 12,
+                                      timeNow.year - 11,
                                       timeNow.month,
                                       timeNow.day);
                                   bool isfuture = birthday.isAfter(younge);
@@ -216,9 +223,6 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                                     });
                                     return "You should be at least 12 years old to sign up.";
                                   }
-                                  setState(() {
-                                    isButtonActive = true;
-                                  });
                                   return null;
                                 },
 
@@ -282,13 +286,13 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     borderRadius: BorderRadius.all(Radius.circular(8.0)),
                     gradient: isButtonActive
                         ? LinearGradient(colors: [
-                            Palette.buttonColor,
-                            Palette.nameColor,
-                          ])
+                      Palette.buttonColor,
+                      Palette.nameColor,
+                    ])
                         : LinearGradient(colors: [
-                            Palette.buttonDisableColor,
-                            Palette.nameDisablColor,
-                          ]),
+                      Palette.buttonDisableColor,
+                      Palette.nameDisablColor,
+                    ]),
                   ),
                   /*button*/
                   child: ButtonTheme(
@@ -297,30 +301,35 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     child: FlatButton(
                       onPressed: isButtonActive
                           ? () async {
-                              /*add to database*/
-                              try {
-                                var uid =
-                                    FirebaseAuth.instance.currentUser!.uid;
-                                await _firestore
-                                    .collection("users")
-                                    .doc(uid)
-                                    .update({
-                                  'birthday': birthday,
-                                });
+                        /*add to database*/
+                        try {
+                          var uid =
+                              FirebaseAuth.instance.currentUser!.uid;
+                          await _firestore
+                              .collection("users")
+                              .doc(uid)
+                              .update({
+                            'birthday': birthday,
+                          });
 
-                                /*go to sign up page*/
-                                Navigator.pushNamed(context, '/signupBirthday');
-                              } catch (e) {
-                                Alert(
-                                  context: context,
-                                  title: "Invalid input!",
-                                  desc: e.toString(),
-                                ).show();
-                                print(e);
-                              }
-                              /*go to sign up page*/
-                              Navigator.pushNamed(context, '/signupUsername');
-                            }
+                          /*deactivate the button*/
+                          setState(() {
+                            isButtonActive = false;
+                          });
+
+                          /*go to sign up page*/
+                          Navigator.pushNamed(context, '/signupBirthday');
+                        } catch (e) {
+                          Alert(
+                            context: context,
+                            title: "Invalid input!",
+                            desc: e.toString(),
+                          ).show();
+                          print(e);
+                        }
+                        /*go to sign up page*/
+                        Navigator.pushNamed(context, '/signupUsername');
+                      }
                           : null,
                       child: Text(
                         'Next',
@@ -346,10 +355,10 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                     onDateTimeChanged: (n) {
                       DateTime timeNow = DateTime.now();
                       DateTime oldest = new DateTime(
-                          timeNow.year - 100, timeNow.month, timeNow.day);
+                          timeNow.year - 99, timeNow.month, timeNow.day);
                       bool isoldest = birthday.isBefore(oldest);
                       DateTime younge = new DateTime(
-                          timeNow.year - 12, timeNow.month, timeNow.day);
+                          timeNow.year - 11, timeNow.month, timeNow.day);
                       bool isfuture = birthday.isAfter(younge);
 
                       setState(() {
