@@ -4,13 +4,14 @@
 </p>
 
 # ✈️ About Odyssey
-For a traveler who faces difficulties finding places/activities to experience, people with similar interests to follow, and feels overwhelmed when planning for a trip, the Odyssey is a social network platform designed for travelers that will help them create lists to plan upcoming trips and discover new places all under the same roof. Odyssey will make sure that users can look at other users’ suggested lists that are similar to them so they might want to try something they're interested in.
+For a traveler who faces difficulties finding places/activities to experience, people with similar interests to follow, and feels overwhelmed when planning for a trip, Odyssey is a social network platform designed for travelers that will help them share reviews about places and create lists to plan upcoming trips and discover new places. Odyssey will make sure that users can look at other users’ suggested lists that are similar to them so they might want to try something they're interested in.
 
 The purpose of this application is for travelers to share their adventures so that others who are lost on where to go can get inspiration from them. 
 
 # 👩‍💻 Technology Used
 - Flutter framework (Dart programming language)
 - Cloud Firebase
+- Google API
 
 # ✔️ Requirements To Launch The Application
 - Android Studio with SDK
