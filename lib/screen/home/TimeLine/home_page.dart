@@ -102,10 +102,30 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future loadPost() async{
+    setState(() {
+      _isloaded = [];
+      userData = [];
+    });
     getTheData();
     setState(() {
       homePosts = FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', whereIn: theUserData['following']).snapshots();
     });
+    if (homePosts.connectionState == ConnectionState.waiting) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+
+    int len = homePosts.data?.docs.length??0;
+    for(int i = 0 ; i < len ; i++){
+      _isloaded.add(false);
+      userData.add('');
+    }
+    for(int i = 0 ; i < len ; i++){
+      if(!_isloaded[i]) {
+        getData(homePosts.data!.docs[i].data()['uid'], i);
+      }
+    }
   }
 
 
