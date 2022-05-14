@@ -59,8 +59,8 @@ class _HomePageState extends State<HomePage> {
             homePosts = FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', whereIn: theUserData['following']).snapshots();
           });
 
-        } else
-          Navigator.of(context).popAndPushNamed('/Signup_Login');
+        } //else
+          // Navigator.of(context).popAndPushNamed('/Signup_Login');
       }
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -102,30 +102,45 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future loadPost() async{
+    print("hi 1");
     setState(() {
       _isloaded = [];
       userData = [];
     });
+    print("hi 2");
     getTheData();
+    print("hi 3");
     setState(() {
       homePosts = FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', whereIn: theUserData['following']).snapshots();
     });
-    if (homePosts.connectionState == ConnectionState.waiting) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+    print("hi 4");
+    StreamBuilder(
+        stream: homePosts,
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
 
-    int len = homePosts.data?.docs.length??0;
-    for(int i = 0 ; i < len ; i++){
-      _isloaded.add(false);
-      userData.add('');
-    }
-    for(int i = 0 ; i < len ; i++){
-      if(!_isloaded[i]) {
-        getData(homePosts.data!.docs[i].data()['uid'], i);
-      }
-    }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          int len = snapshot.data?.docs.length??0;
+          for(int i = 0 ; i < len ; i++){
+            _isloaded.add(false);
+            userData.add('');
+          }
+          for(int i = 0 ; i < len ; i++){
+            if(!_isloaded[i]) {
+              getData(snapshot.data!.docs[i].data()['uid'], i);
+            }
+          }
+
+          return SizedBox();
+        }
+    );
+
+
   }
 
 
