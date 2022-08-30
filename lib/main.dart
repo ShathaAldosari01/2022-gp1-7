@@ -8,6 +8,7 @@ import 'package:gp1_7_2022/screen/auth/signup/Questions/question3.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question4.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/question5.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
+import 'package:gp1_7_2022/screen/home/Lists/addList.dart';
 import 'package:gp1_7_2022/screen/home/NavigationBar/navbar.dart';
 import 'package:gp1_7_2022/screen/home/TimeLine/ImageDisplayer.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editBio.dart';
@@ -85,6 +86,9 @@ void main() async {
     '/addPost':(context)=>AddPostPage(),
     '/ContentOfPost':(context)=>ContentOfPost(),
 
+
+    /*create list*/
+    '/createList':(context)=> AddList(),
 
 
   }));

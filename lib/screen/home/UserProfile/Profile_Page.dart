@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
@@ -37,12 +38,21 @@ class _Profile_pageState extends State<Profile_page> {
   var uid;
   var theUserId = FirebaseAuth.instance.currentUser!.uid;
   bool isActive = true;
-
+  /*icon colors*/
+  static Color postColor = Color(0xff1bd3db);
+  static Color listColor = Palette.darkGray;
+/*visabilaty*/
+  bool postVis = true;
+  bool listVis = false;
   @override
   void initState() {
     uid = widget.uid;
     getUser();
     super.initState();
+    postVis = true;
+    listVis = false;
+    postColor = Color(0xff1bd3db);
+    listColor = Palette.darkGray;
   }
   getUser()async{
     try {
@@ -87,71 +97,71 @@ class _Profile_pageState extends State<Profile_page> {
             _isloaded = true;
           });
           if(widget.uid==FirebaseAuth.instance.currentUser!.uid)
-          if (userData['name'].toString().isEmpty) {
-            Navigator.of(context).popAndPushNamed('/name');
-          } else if (userData["birthday"].toString().isEmpty) {
-            Navigator.of(context).popAndPushNamed('/signupBirthday');
-          } else if (userData['username'].toString().isEmpty) {
-            Navigator.of(context).popAndPushNamed('/signupUsername');
-          } else if (userData['questions']["married"]
-              .toString()
-              .compareTo("-1") ==
-              0) {
-            Navigator.of(context).popAndPushNamed('/question1');
-          } else if (userData['questions']["children"]
-              .toString()
-              .compareTo("-1") ==
-              0) {
-            Navigator.of(context).popAndPushNamed('/question2');
-          } else if (userData['questions']["gender"]
-              .toString()
-              .compareTo("-1") ==
-              0) {
-            Navigator.of(context).popAndPushNamed('/gender');
-          } else if ((userData['questions']["countries"]["Middle eastern"]
-              .toString()
-              .compareTo("0") ==
-              0) &&
-              (userData['questions']["countries"]["Asian"]
-                  .toString()
-                  .compareTo("0") ==
-                  0) &&
-              (userData['questions']["countries"]["European"]
-                  .toString()
-                  .compareTo("0") ==
-                  0) &&
-              (userData['questions']["countries"]["American"]
-                  .toString()
-                  .compareTo("0") ==
-                  0) &&
-              (userData['questions']["countries"]["African"]
-                  .toString()
-                  .compareTo("0") ==
-                  0)) {
-            Navigator.of(context).popAndPushNamed('/question4');
-          } else if ((userData['questions']["places"]["Restaurants and cafes"]
-              .toString()
-              .compareTo("0") ==
-              0) &&
-              (userData['questions']["places"]["Museums"]
-                  .toString()
-                  .compareTo("0") ==
-                  0) &&
-              (userData['questions']["places"]["Shopping malls"]
-                  .toString()
-                  .compareTo("0") ==
-                  0) &&
-              (userData['questions']["places"]["Parks"]
-                  .toString()
-                  .compareTo("0") ==
-                  0) &&
-              (userData['questions']["places"]["Sports attractions"]
-                  .toString()
-                  .compareTo("0") ==
-                  0)) {
+            if (userData['name'].toString().isEmpty) {
+              Navigator.of(context).popAndPushNamed('/name');
+            } else if (userData["birthday"].toString().isEmpty) {
+              Navigator.of(context).popAndPushNamed('/signupBirthday');
+            } else if (userData['username'].toString().isEmpty) {
+              Navigator.of(context).popAndPushNamed('/signupUsername');
+            } else if (userData['questions']["married"]
+                .toString()
+                .compareTo("-1") ==
+                0) {
+              Navigator.of(context).popAndPushNamed('/question1');
+            } else if (userData['questions']["children"]
+                .toString()
+                .compareTo("-1") ==
+                0) {
+              Navigator.of(context).popAndPushNamed('/question2');
+            } else if (userData['questions']["gender"]
+                .toString()
+                .compareTo("-1") ==
+                0) {
+              Navigator.of(context).popAndPushNamed('/gender');
+            } else if ((userData['questions']["countries"]["Middle eastern"]
+                .toString()
+                .compareTo("0") ==
+                0) &&
+                (userData['questions']["countries"]["Asian"]
+                    .toString()
+                    .compareTo("0") ==
+                    0) &&
+                (userData['questions']["countries"]["European"]
+                    .toString()
+                    .compareTo("0") ==
+                    0) &&
+                (userData['questions']["countries"]["American"]
+                    .toString()
+                    .compareTo("0") ==
+                    0) &&
+                (userData['questions']["countries"]["African"]
+                    .toString()
+                    .compareTo("0") ==
+                    0)) {
+              Navigator.of(context).popAndPushNamed('/question4');
+            } else if ((userData['questions']["places"]["Restaurants and cafes"]
+                .toString()
+                .compareTo("0") ==
+                0) &&
+                (userData['questions']["places"]["Museums"]
+                    .toString()
+                    .compareTo("0") ==
+                    0) &&
+                (userData['questions']["places"]["Shopping malls"]
+                    .toString()
+                    .compareTo("0") ==
+                    0) &&
+                (userData['questions']["places"]["Parks"]
+                    .toString()
+                    .compareTo("0") ==
+                    0) &&
+                (userData['questions']["places"]["Sports attractions"]
+                    .toString()
+                    .compareTo("0") ==
+                    0)) {
 
 
-          }
+            }
         } else
           Navigator.of(context).popAndPushNamed('/Signup_Login');
       }else
@@ -310,13 +320,13 @@ class _Profile_pageState extends State<Profile_page> {
 
               /*Log out*/
               FocusedMenuItem(
-                  title: userData['username'].toString().length<4?
-                  Container(child: Text("Share @"+userData['username'].toString())):
-                  Container(child: Text("Share @"+userData['username'].toString().substring(0,4)+"...")),
-                  trailingIcon: const Icon(Icons.logout),
-                  onPressed: () {
-                    showSnackBar(context, "This feature will be available next release. Stay tuned");
-                  },
+                title: userData['username'].toString().length<4?
+                Container(child: Text("Share @"+userData['username'].toString())):
+                Container(child: Text("Share @"+userData['username'].toString().substring(0,4)+"...")),
+                trailingIcon: const Icon(Icons.logout),
+                onPressed: () {
+                  showSnackBar(context, "This feature will be available next release. Stay tuned");
+                },
               ),
               /*end of Log out*/
             ],
@@ -340,7 +350,7 @@ class _Profile_pageState extends State<Profile_page> {
       resizeToAvoidBottomInset: false,
 
       body: RefreshWidget(
-    onRefresh:updateUserData,
+        onRefresh:updateUserData,
         child: ListView(
           children: [
             Container(
@@ -355,7 +365,7 @@ class _Profile_pageState extends State<Profile_page> {
                       NetworkImage(userData['photoPath']),
                       radius: 45)
                   //user photo
-               : CircleAvatar(
+                      : CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 45,
                     child: Icon(
@@ -364,7 +374,7 @@ class _Profile_pageState extends State<Profile_page> {
                       size: 90,
                     ),
                   )
-                : Container(
+                      : Container(
                     margin: EdgeInsets.all(32),
                     child: CircularProgressIndicator(
                       backgroundColor: Palette.lightgrey,
@@ -378,7 +388,7 @@ class _Profile_pageState extends State<Profile_page> {
                     alignment: Alignment.center,
                     padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                     child: _isloaded
-                    ? Text("@"+
+                        ? Text("@"+
                         userData['username'],
                       textAlign: TextAlign.center,
                       style: TextStyle(
@@ -386,7 +396,7 @@ class _Profile_pageState extends State<Profile_page> {
                         fontSize: 18,
                       ),
                     )
-                   : Container(
+                        : Container(
                       width: 100,
                       child: LinearProgressIndicator(
                         minHeight: 15,
@@ -432,16 +442,16 @@ class _Profile_pageState extends State<Profile_page> {
                         Expanded(
                             flex: 10,
                             child: InkWell(
-                              onTap: (){
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:userData.isNotEmpty?
-                                        (context) => UserPost(theUserData: userData,uid: widget.uid.toString(),index: 0):
-                                        (context) => UserPost(theUserData: null,uid: widget.uid.toString(),index: 0),
-                                  ),
-                                );
-                              },
+                                onTap: (){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:userData.isNotEmpty?
+                                          (context) => UserPost(theUserData: userData,uid: widget.uid.toString(),index: 0):
+                                          (context) => UserPost(theUserData: null,uid: widget.uid.toString(),index: 0),
+                                    ),
+                                  );
+                                },
                                 child: buildStatColumn(postLen, "Posts")
                             )
                         ),
@@ -450,12 +460,12 @@ class _Profile_pageState extends State<Profile_page> {
                             child: InkWell(
                                 onTap:(){
                                   Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:
-                                        (context) => Following(following:userData['followers'], isFollowing: false),
-                                  ),
-                                );
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:
+                                          (context) => Following(following:userData['followers'], isFollowing: false),
+                                    ),
+                                  );
                                 },
                                 child: buildStatColumn(followers, "Followers")
                             )
@@ -563,135 +573,234 @@ class _Profile_pageState extends State<Profile_page> {
                 ],
               ),
             ),
-            const Divider(),
-            FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('posts')
-                  .orderBy("datePublished", descending: true)
-                  .where('uid', isEqualTo: widget.uid)
-                  .get(),
+            const Divider(
+              color: Palette.darkGray,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          postColor = Color(0xff1bd3db);
+                          listColor = Palette.darkGray;
 
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                return GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: (snapshot.data! as dynamic).docs.length,
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 1.5,
-                    childAspectRatio: 0.6,
+                          postVis = true;
+                          listVis = false;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.amp_stories_sharp,
+                        color: postColor,
+                        size: 30,
+                      )
                   ),
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot snap =
-                    (snapshot.data! as dynamic).docs[index];
+                ),
 
-                    return Stack(
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              height: (size.width/3)*(100/60)-5.6,
-                              color:Palette.backgroundColor,
-                              child: snap['imgsPath'][0]!= "no"?
-                              Image(
-                                image: NetworkImage(snap['imgsPath'][0]),
-                                fit: BoxFit.cover,
-                              ):Center(
-                                child: Container(
-                                  color: Palette.buttonColor,
-                                  margin: EdgeInsets.symmetric(horizontal: 4),
-                                  padding: EdgeInsets.symmetric(vertical: 2, horizontal: 3),
-                                  child: Text(
-                                    snap['title'],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Palette.textColor,
+                Container(
+                    height: 25,
+                    child: VerticalDivider(
+                      color: Palette.darkGray,
+                    )
+                ),
+
+                Container(
+                  padding: const EdgeInsets.all(0.0),
+                  child: IconButton(
+                      onPressed: (){
+                        setState(() {
+                          postColor = Palette.darkGray;
+                          listColor = Color(0xff1bd3db);
+
+                          postVis = false;
+                          listVis = true;
+                        });
+                      },
+                      icon: Icon(
+                        Icons.list,
+                        color: listColor,
+                        size: 30,
+                      )
+                  ),
+                )
+              ],
+            ),
+            const Divider(
+              color: Palette.darkGray,
+            ),
+
+
+            /*posts*/
+            Visibility(
+              visible: postVis,
+              child: FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('posts')
+                    .orderBy("datePublished", descending: true)
+                    .where('uid', isEqualTo: widget.uid)
+                    .get(),
+
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+
+                  return GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: (snapshot.data! as dynamic).docs.length,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 1.5,
+                      childAspectRatio: 0.6,
+                    ),
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot snap =
+                      (snapshot.data! as dynamic).docs[index];
+
+                      return Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                height: (size.width/3)*(100/60)-5.6,
+                                color:Palette.backgroundColor,
+                                child: snap['imgsPath'][0]!= "no"?
+                                Image(
+                                  image: NetworkImage(snap['imgsPath'][0]),
+                                  fit: BoxFit.cover,
+                                ):Center(
+                                  child: Container(
+                                    color: Palette.buttonColor,
+                                    margin: EdgeInsets.symmetric(horizontal: 4),
+                                    padding: EdgeInsets.symmetric(vertical: 2, horizontal: 3),
+                                    child: Text(
+                                      snap['title'],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Palette.textColor,
+                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        InkWell(
-                          onTap:(){
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:userData.isNotEmpty?
-                                    (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
-                                    (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index)
-                                ,
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.black.withOpacity(0.3),
+                            ],
                           ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: (){
-                                onMore(snap["postId"].toString(), snap['uid'].toString(), snap["datePublished"].toDate());
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.fromLTRB(20,4,0,20),
-                                child: Icon(
-                                  Icons.more_vert_rounded,
-                                  color: Palette.backgroundColor,
-                                  size: 18,
+                          InkWell(
+                            onTap:(){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:userData.isNotEmpty?
+                                      (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
+                                      (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index)
+                                  ,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: (){
+                                  onMore(snap["postId"].toString(), snap['uid'].toString(), snap["datePublished"].toDate());
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.fromLTRB(20,4,0,20),
+                                  child: Icon(
+                                    Icons.more_vert_rounded,
+                                    color: Palette.backgroundColor,
+                                    size: 18,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap:(){
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder:userData.isNotEmpty?
+                                          (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
+                                          (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(horizontal:6, vertical: 7 ),
+                                  child:snap['imgsPath'][0]!= "no"?
+                                  Text(
+                                    snap['title'],
+                                    style: TextStyle(
+                                        color: Palette.backgroundColor,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ):SizedBox(),
                                 ),
                               ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap:(){
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder:userData.isNotEmpty?
-                                        (context) => UserPost(theUserData: userData,uid: snap['uid'].toString(),index: index):
-                                        (context) => UserPost(theUserData: null,uid: snap['uid'].toString(),index: index),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal:6, vertical: 7 ),
-                                child:snap['imgsPath'][0]!= "no"?
-                                Text(
-                                    snap['title'],
-                                  style: TextStyle(
-                                      color: Palette.backgroundColor,
-                                    fontWeight: FontWeight.bold
-                                  ),
-                                ):SizedBox(),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  },
-                );
-              },
+                            ],
+                          )
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+
+            /*Lists*/
+            Visibility(
+              visible: listVis,
+              child: Column(
+                children: [
+                  /* Create A List*/
+
+                  (widget.uid == FirebaseAuth.instance.currentUser!.uid) ?
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 5 , horizontal: 5 ),
+                    child: InkWell(
+                      onTap:(){
+                        Navigator.of(context).popAndPushNamed('/createList');
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children:[
+                              SizedBox(width: 5,),
+                              Icon(Icons.add, color: Palette.darkGray, size: 25,),
+                              SizedBox(width: 5,),
+                              Text("Create new list", style: TextStyle(color: Palette.darkGray, fontWeight: FontWeight.bold, fontSize: 16) ,),
+                            ],
+                          ),
+                          Container(
+                              margin: EdgeInsets.only(right: 5),
+                              child: Icon(Icons.arrow_forward_ios, color: Palette.darkGray, size: 20,)),
+                        ],
+                      ),
+                    ),
+                  ): SizedBox(),
+                ],
+              ),
             )
+
           ],
         ),
       ),

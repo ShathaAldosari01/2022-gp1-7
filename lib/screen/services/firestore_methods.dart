@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gp1_7_2022/model/List.dart';
 import '../../model/post.dart';
 
 class FireStoreMethods {
@@ -127,5 +128,50 @@ class FireStoreMethods {
     } catch(e) {
       print(e.toString());
     }
+  }
+
+
+  //upload List
+  Future<String> uploadList(
+      //NOTE: i didnt add post ID in code because this will be done after the list is created and when add post to list is done
+      /*user info*/
+      String uid,
+
+      /*List info*/
+      final String Cover,
+      final String Description,
+      final String ListID,
+      final String Title,
+      final bool Access,
+      final List<String> Tags,
+
+
+      ) async{
+    String res = "some error occurred";
+    try{
+
+      Lists List = Lists(
+        /*user info*/
+        uid: uid,
+
+
+        /*List info*/
+        Cover: Cover,
+        Description: Description,
+        ListID: ListID,
+        Title: Title,
+        Access: Access,
+        Tags: Tags,
+
+      );
+
+      _firestore.collection("Lists").doc(ListID).set(
+        List.toJson(),
+      );
+      res = "success";
+    }catch(err){
+      res = err.toString();
+    }
+    return res;
   }
 }
