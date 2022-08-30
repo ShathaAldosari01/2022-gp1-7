@@ -43,7 +43,7 @@ class AddPostPage extends StatefulWidget {
   _AddPostPageState createState() => _AddPostPageState();
 }
 //API key
-const kGoogleApiKey = 'AIzaSyCckhVmNilRBCInrm087ZQr0WxR1u3AbhU';
+const kGoogleApiKey = 'AIzaSyB9ERKZzvBaP9hdZin3w5GTguezqxoo1IU';
 
 class _AddPostPageState extends State<AddPostPage> {
 

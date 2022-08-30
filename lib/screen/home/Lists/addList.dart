@@ -145,8 +145,6 @@ class _AddListState extends State<AddList> {
       var uid =   FirebaseAuth.instance.currentUser!.uid;
       /*to do upload in data base*/
       String p = await StorageMethods().uploadImageToStorage("Lists/"+uid+"/"+ListID+"/Cover", _Cover!, true);
-      print(p);
-      print("in hereeeeeeee");
 
       setState(() {
         newCover = p;
@@ -1015,6 +1013,7 @@ class _AddListState extends State<AddList> {
                   ),
                   /*end of access*/
 
+
                   /* done button */
                   Container(
                     margin: EdgeInsets.symmetric(vertical: 30, horizontal: 20),
@@ -1040,40 +1039,55 @@ class _AddListState extends State<AddList> {
                       minWidth: 350,
                       child: FlatButton(
                         onPressed:
+
                         !isButtonActive[0]?(){
+
                           showSnackBar(context, "You need to write title first!");
+
                         }:
 
                             () async {
 
+
                           /*make sure of the validation*/
                           if (!_formKey.currentState!.validate()) {
+
                             return;
                           }
                           if (!_formKey1.currentState!.validate()) {
+
                             return;
                           }
 
                           setState(() {
+
                             isLoaded = true;
+
                           });
 
                           bool isDone = true;
                           while(true) {
                             await Future.delayed(const Duration(seconds: 1), () {
-                              print("wait1");
-                              if (loadingPath) {
-                                isDone = false;
-                                print("hi");
-                              }
+
+
+
+                                for (int i = 0; i < loading.length; i++) {
+                                  if (loading[i]) {
+                                    isDone = false;
+                                    print("hi");
+                                  }
+                                }
                             });
                             if (isDone) {
-                              print("submit?");
+
                               submitList();
+
                               break;
                             }
                             isDone = true;
+
                           }
+
                         },
                         child: Text(
                           'Done',
@@ -1093,6 +1107,7 @@ class _AddListState extends State<AddList> {
   }
 
   submitList() async {
+
     /*Data preprocessing*/
     var uid = FirebaseAuth.instance.currentUser!.uid;
     var userData = {};
@@ -1121,18 +1136,23 @@ class _AddListState extends State<AddList> {
     );
     /*end of create list*/
 
+
     /*disable button and clear text field */
     setState(() {
+
+
       for (int i = 0; i < isButtonActive.length; i++) {
         isButtonActive[i] = false;
       }
       titleControl.clear();
+
+
     });
     /*end of disable button and clear text field */
 
     print(newCover);
     print(CoverPath);
-    print("here is cover");
+    print("final");
     /*go home */
     Navigator.pushNamed(context, '/navigationBar');
   }
