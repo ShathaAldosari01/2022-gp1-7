@@ -871,7 +871,7 @@ class _AddListState extends State<AddList> {
                                             //remove a image
                                             setState(() {
                                               print(_Cover);
-                                              CoverPath = 'no';
+                                              CoverPath = '';
                                               _Cover = null;
                                               devHight = 121 +17;
                                               checkImgs[0] = true;
