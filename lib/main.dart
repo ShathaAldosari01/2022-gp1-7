@@ -88,7 +88,7 @@ void main() async {
 
 
     /*create list*/
-    '/createList':(context)=> AddList(),
+    '/createList':(context)=> AddList(pid:null),
 
 
   }));

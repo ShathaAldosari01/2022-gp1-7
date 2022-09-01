@@ -12,6 +12,7 @@ class Lists {
   final String Title;
   final bool Access;
   final List<String> Tags;
+  final List<String> postIds;
 
 
   const Lists(
@@ -27,6 +28,7 @@ class Lists {
         required this.Title,
         required this.Access,
         required this.Tags,
+        required this.postIds,
 
 
       });
@@ -46,6 +48,7 @@ class Lists {
       Title: snapshot["Title"],
       Access: snapshot["Access"],
       Tags: snapshot["Tags"],
+      postIds: snapshot["postIds"],
 
 
 
@@ -65,6 +68,7 @@ class Lists {
     "Title": Title,
     "Access": Access,
     "Tags": Tags,
+    "postIds": postIds,
 
 
 

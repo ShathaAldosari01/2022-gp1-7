@@ -12,6 +12,7 @@ import '../../../../config/palette.dart';
 import '../../../Widgets/refresh_widget.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 import '../../services/firestore_methods.dart';
+import '../Lists/addList.dart';
 import '../UserProfile/Profile_Page.dart';
 import 'ImageDisplayer.dart';
 
@@ -88,6 +89,8 @@ class _HomePageState extends State<HomePage> {
       print(e.toString());
     }
   }
+
+
 
   deletePost(String postId) async {
     try {
@@ -479,6 +482,117 @@ class _HomePageState extends State<HomePage> {
                                                                   height: 7,
                                                                 ),
 
+                                                                /*like*/
+                                                                InkWell(
+                                                                  onTap: (){},
+                                                                  child: Icon(
+                                                                    Icons.favorite_border,
+                                                                    size: 30,
+                                                                    color: Palette.backgroundColor,
+                                                                  ),
+                                                                ),
+
+                                                                SizedBox(
+                                                                  height: 4,
+                                                                ),
+
+                                                                Text(
+                                                                  "200",
+                                                                  style: TextStyle(
+                                                                      fontSize: 16,
+                                                                      color: Palette.backgroundColor
+                                                                  ),
+                                                                ),
+                                                                /*end of like*/
+
+                                                                SizedBox(
+                                                                  height: 7,
+                                                                ),
+
+                                                                /*comment*/
+                                                                InkWell(
+                                                                  onTap: (){},
+                                                                  child: Icon(
+                                                                    Icons.comment,
+                                                                    size: 30,
+                                                                    color: Palette.backgroundColor,
+                                                                  ),
+                                                                ),
+
+                                                                SizedBox(
+                                                                  height: 4,
+                                                                ),
+
+                                                                Text(
+                                                                  "2",
+                                                                  style: TextStyle(
+                                                                      fontSize: 16,
+                                                                      color: Palette.backgroundColor
+                                                                  ),
+                                                                ),
+                                                                /*end of comment*/
+
+                                                                SizedBox(
+                                                                  height: 7,
+                                                                ),
+
+                                                                /*list*/
+                                                                InkWell(
+                                                                  onTap: (){
+                                                                    addPostToList(snapshot.data!.docs[index].data()["postId"].toString() );
+                                                                  },
+                                                                  child: Icon(
+                                                                    Icons.playlist_add,
+                                                                    size: 30,
+                                                                    color: Palette.backgroundColor,
+                                                                  ),
+                                                                ),
+
+                                                                SizedBox(
+                                                                  height: 4,
+                                                                ),
+
+                                                                Text(
+                                                                  "2",
+                                                                  style: TextStyle(
+                                                                      fontSize: 16,
+                                                                      color: Palette.backgroundColor
+                                                                  ),
+                                                                ),
+                                                                /*end of list*/
+
+                                                                SizedBox(
+                                                                  height: 7,
+                                                                ),
+
+                                                                /*share*/
+                                                                InkWell(
+                                                                  onTap: (){},
+                                                                  child: Icon(
+                                                                    Icons.reply,
+                                                                    size: 30,
+                                                                    color: Palette.backgroundColor,
+                                                                  ),
+                                                                ),
+
+                                                                SizedBox(
+                                                                  height: 4,
+                                                                ),
+
+                                                                Text(
+                                                                  "2",
+                                                                  style: TextStyle(
+                                                                      fontSize: 16,
+                                                                      color: Palette.backgroundColor
+                                                                  ),
+                                                                ),
+                                                                /*end of share*/
+
+                                                                SizedBox(
+                                                                  height: 7,
+                                                                ),
+
+
                                                                 /*more*/
                                                                 InkWell(
                                                                   onTap: (){
@@ -778,6 +892,115 @@ class _HomePageState extends State<HomePage> {
                                                               height: 7,
                                                             ),
 
+                                                            /*like*/
+                                                            InkWell(
+                                                              onTap: (){},
+                                                              child: Icon(
+                                                                Icons.favorite_border,
+                                                                size: 30,
+                                                                color: Palette.backgroundColor,
+                                                              ),
+                                                            ),
+
+                                                            SizedBox(
+                                                              height: 4,
+                                                            ),
+
+                                                            Text(
+                                                              "200",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Palette.backgroundColor
+                                                              ),
+                                                            ),
+                                                            /*end of like*/
+
+                                                            SizedBox(
+                                                              height: 7,
+                                                            ),
+
+                                                            /*comment*/
+                                                            InkWell(
+                                                              onTap: (){},
+                                                              child: Icon(
+                                                                Icons.comment,
+                                                                size: 30,
+                                                                color: Palette.backgroundColor,
+                                                              ),
+                                                            ),
+
+                                                            SizedBox(
+                                                              height: 4,
+                                                            ),
+
+                                                            Text(
+                                                              "2",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Palette.backgroundColor
+                                                              ),
+                                                            ),
+                                                            /*end of comment*/
+
+                                                            SizedBox(
+                                                              height: 7,
+                                                            ),
+
+                                                            /*list*/
+                                                            InkWell(
+                                                              onTap: (){},
+                                                              child: Icon(
+                                                                Icons.playlist_add,
+                                                                size: 30,
+                                                                color: Palette.backgroundColor,
+                                                              ),
+                                                            ),
+
+                                                            SizedBox(
+                                                              height: 4,
+                                                            ),
+
+                                                            Text(
+                                                              "2",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Palette.backgroundColor
+                                                              ),
+                                                            ),
+                                                            /*end of list*/
+
+                                                            SizedBox(
+                                                              height: 7,
+                                                            ),
+
+                                                            /*share*/
+                                                            InkWell(
+                                                              onTap: (){},
+                                                              child: Icon(
+                                                                Icons.reply,
+                                                                size: 30,
+                                                                color: Palette.backgroundColor,
+                                                              ),
+                                                            ),
+
+                                                            SizedBox(
+                                                              height: 4,
+                                                            ),
+
+                                                            Text(
+                                                              "2",
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Palette.backgroundColor
+                                                              ),
+                                                            ),
+                                                            /*end of share*/
+
+                                                            SizedBox(
+                                                              height: 7,
+                                                            ),
+
+
                                                             /*more*/
                                                             InkWell(
                                                               onTap: (){
@@ -826,6 +1049,87 @@ class _HomePageState extends State<HomePage> {
             }
         ),
       ),
+    );
+  }
+
+  // For adding post to list
+  void addPostToList(String postId) {
+    showModalBottomSheet(context: context, builder: (context){
+      return Container(
+        color: Color(0xFF737373),
+        height: (180/3)+ 22 + 100,
+        child: Container(
+          child: addPostToListPressed(postId, theUserData['listIds'],theUserData["uid"]),
+          decoration: BoxDecoration(
+            color: Palette.backgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: const Radius.circular(10),
+
+            ),
+          ),
+        ),
+      );
+
+
+    });
+  }
+  Column addPostToListPressed(String postId, listIds, uid) {
+    // var x = retrieveListData(listIds, uid);
+    return Column(
+      children:  [
+        Container(
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child:Row(
+              mainAxisAlignment:MainAxisAlignment.spaceBetween ,
+              children: [
+                Text(
+                  "Save post to...",
+                  style: TextStyle(
+                    color: Palette.textColor,
+                    fontSize: 18,
+                  ),
+                ),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => AddList(pid: postId),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "+ NEW LIST",
+                    style: TextStyle(
+                      color: Palette.link,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                )
+              ],
+            )
+        ),
+
+        //retrieve list from database
+        FutureBuilder(
+          future: retrieveListData(listIds, uid),
+            builder: (context, snapchat){
+            if(snapchat.hasData){
+              var data = snapchat.data!;
+              // var datai = data[0];
+              // for(var d in data)
+              return Text('$data["Title"]');
+            }else{
+              return SizedBox();
+            }
+
+          }
+        )
+
+      ],
     );
   }
 
@@ -935,5 +1239,40 @@ class _HomePageState extends State<HomePage> {
         )
       ],
     );
+  }
+
+  Future retrieveListData(listIds, uid) async {
+
+    print("here we go again!");
+    print (listIds);
+    var listData = [];
+    int counter = 0;
+
+    try {
+      print("so far so good try");
+      if (uid != null && listIds.isNotEmpty) {
+        print("so far so good if");
+        for(int i=0; i<listIds.length;i++ ){
+          print("so far so good for");
+          var snap = await FirebaseFirestore.instance
+              .collection('Lists')
+              .doc(listIds[i])
+              .get();
+
+          if (snap.data() != null) {
+            print("so far so good if2");
+            if(snap.data()!["uid"]==uid){
+              print("so far so good3 if");
+              listData.add(snap.data()!);
+              print("so far so good");
+            }
+          }
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return listData;
   }
 }

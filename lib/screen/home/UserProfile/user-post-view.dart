@@ -11,6 +11,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../config/palette.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 import '../../services/firestore_methods.dart';
+import '../Lists/addList.dart';
 import '../TimeLine/ImageDisplayer.dart';
 import '../UserProfile/Profile_Page.dart';
 
@@ -384,6 +385,84 @@ class _UserPostState extends State<UserPost> {
                                                         SizedBox(
                                                           height: 7,
                                                         ),
+                                                        /*like*/
+                                                        InkWell(
+                                                          onTap: (){},
+                                                          child: Icon(
+                                                            Icons.favorite_border,
+                                                            size: 30,
+                                                            color: Palette.backgroundColor,
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+
+                                                        Text(
+                                                          "200",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Palette.backgroundColor
+                                                          ),
+                                                        ),
+                                                        /*end of like*/
+
+                                                        SizedBox(
+                                                          height: 7,
+                                                        ),
+
+                                                        /*comment*/
+                                                        InkWell(
+                                                          onTap: (){},
+                                                          child: Icon(
+                                                            Icons.comment,
+                                                            size: 30,
+                                                            color: Palette.backgroundColor,
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+
+                                                        Text(
+                                                          "2",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Palette.backgroundColor
+                                                          ),
+                                                        ),
+                                                        /*end of comment*/
+
+                                                        SizedBox(
+                                                          height: 7,
+                                                        ),
+
+                                                        /*list*/
+                                                        InkWell(
+                                                          onTap: (){
+                                                            addPostToList(snapshot.data!.docs[index].data()["postId"].toString() );
+                                                          },
+                                                          child: Icon(
+                                                            Icons.playlist_add,
+                                                            size: 30,
+                                                            color: Palette.backgroundColor,
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+
+                                                        Text(
+                                                          "2",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Palette.backgroundColor
+                                                          ),
+                                                        ),
+                                                        /*end of list*/
 
                                                         /*more*/
                                                         InkWell(
@@ -676,6 +755,84 @@ class _UserPostState extends State<UserPost> {
                                                         SizedBox(
                                                           height: 7,
                                                         ),
+                                                        /*like*/
+                                                        InkWell(
+                                                          onTap: (){},
+                                                          child: Icon(
+                                                            Icons.favorite_border,
+                                                            size: 30,
+                                                            color: Palette.backgroundColor,
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+
+                                                        Text(
+                                                          "200",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Palette.backgroundColor
+                                                          ),
+                                                        ),
+                                                        /*end of like*/
+
+                                                        SizedBox(
+                                                          height: 7,
+                                                        ),
+
+                                                        /*comment*/
+                                                        InkWell(
+                                                          onTap: (){},
+                                                          child: Icon(
+                                                            Icons.comment,
+                                                            size: 30,
+                                                            color: Palette.backgroundColor,
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+
+                                                        Text(
+                                                          "2",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Palette.backgroundColor
+                                                          ),
+                                                        ),
+                                                        /*end of comment*/
+
+                                                        SizedBox(
+                                                          height: 7,
+                                                        ),
+
+                                                        /*list*/
+                                                        InkWell(
+                                                          onTap: (){
+                                                            addPostToList(snapshot.data!.docs[index].data()["postId"].toString() );
+                                                          },
+                                                          child: Icon(
+                                                            Icons.playlist_add,
+                                                            size: 30,
+                                                            color: Palette.backgroundColor,
+                                                          ),
+                                                        ),
+
+                                                        SizedBox(
+                                                          height: 4,
+                                                        ),
+
+                                                        Text(
+                                                          "2",
+                                                          style: TextStyle(
+                                                              fontSize: 16,
+                                                              color: Palette.backgroundColor
+                                                          ),
+                                                        ),
+                                                        /*end of list*/
 
                                                         /*more*/
                                                         InkWell(
@@ -723,6 +880,84 @@ class _UserPostState extends State<UserPost> {
             }
           }
       ),
+    );
+  }
+// For adding post to list
+  void addPostToList(String postId) {
+    showModalBottomSheet(context: context, builder: (context){
+      return Container(
+        color: Color(0xFF737373),
+        height: 180/3+22,
+        child: Container(
+          child: addPostToListPressed(postId, theUserData['listIds'],theUserData["uid"]),
+          decoration: BoxDecoration(
+            color: Palette.backgroundColor,
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(10),
+              topRight: const Radius.circular(10),
+
+            ),
+          ),
+        ),
+      );
+
+
+    });
+  }
+  Column addPostToListPressed(String postId, listIds, uid) {
+    // var x = retrieveListData(listIds, uid);
+    return Column(
+      children:  [
+        Container(
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child:Row(
+              mainAxisAlignment:MainAxisAlignment.spaceBetween ,
+              children: [
+                Text(
+                  "Save post to...",
+                  style: TextStyle(
+                    color: Palette.textColor,
+                    fontSize: 18,
+                  ),
+                ),
+                InkWell(
+                  onTap: (){
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => AddList(pid: postId),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "+ NEW LIST",
+                    style: TextStyle(
+                      color: Palette.link,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                )
+              ],
+            )
+        ),
+
+        //retrieve list from database
+        // FutureBuilder(
+        //     future: retrieveListData(listIds, uid),
+        //     builder: (context, snapchat){
+        //       if(snapchat.hasData){
+        //         var data = snapchat.data!;
+        //         return Text('$data["Title"]');
+        //       }else{
+        //         return SizedBox();
+        //       }
+        //
+        //     }
+        // )
+
+      ],
     );
   }
 

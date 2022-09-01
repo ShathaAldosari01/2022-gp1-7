@@ -20,7 +20,8 @@ import '../../auth/signup/userInfo/photo/storageMethods.dart';
 import '../../services/firestore_methods.dart';
 
 class AddList extends StatefulWidget {
-  const AddList({Key? key}) : super(key: key);
+  final pid;
+  const AddList({Key? key,required this.pid}) : super(key: key);
 
   @override
   State<AddList> createState() => _AddListState();
@@ -41,13 +42,14 @@ class _AddListState extends State<AddList> {
       String Title,
       bool Access,
       List<String> Tags,
+      List<String> postIds,
 
 
 
       )async{
 
     try{
-      String res = await FireStoreMethods().uploadList(uid, CoverPath, Description, ListID, Title, Access, Tags);
+      String res = await FireStoreMethods().uploadList(uid, CoverPath, Description, ListID, Title, Access, Tags, postIds);
       if(res== "success"){
 
         showSnackBar(context, "Posted!");
@@ -98,7 +100,7 @@ class _AddListState extends State<AddList> {
   bool Access = true ;
   List <String> Tags =[];
   String TagsBeforeProcess = "";
-
+  List <String> postIds =[];
   /*screen width*/
   double width = 370;
   double hight = 700;
@@ -177,6 +179,11 @@ class _AddListState extends State<AddList> {
   @override
   void initState() {
     super.initState();
+    if(widget.pid!=null){
+      print(widget.pid);
+      postIds.add(widget.pid);
+    }
+
     //screen width
     Future.delayed(Duration.zero, () {
       setState(() {
@@ -1119,6 +1126,21 @@ class _AddListState extends State<AddList> {
     if (userSnap.data() != null)
       userData = userSnap.data()!;
 
+    try {
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+      print(uid);
+      await _firestore.collection("users").doc(uid).update({
+        'listIds': FieldValue.arrayUnion([ListID]),
+      });
+    } catch (e) {
+      Alert(
+        context: context,
+        title: "Something went wrong!",
+        desc: e.toString(),
+      ).show();
+      print(e);
+    }
+
 
     /*save list to DB*/
     addListToDatabase(
@@ -1132,6 +1154,7 @@ class _AddListState extends State<AddList> {
       Title,
       Access,
       Tags,
+      postIds
 
     );
     /*end of create list*/

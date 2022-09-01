@@ -144,6 +144,7 @@ class FireStoreMethods {
       final String Title,
       final bool Access,
       final List<String> Tags,
+      final List<String> postIds,
 
 
       ) async{
@@ -162,6 +163,7 @@ class FireStoreMethods {
         Title: Title,
         Access: Access,
         Tags: Tags,
+        postIds: postIds,
 
       );
 
