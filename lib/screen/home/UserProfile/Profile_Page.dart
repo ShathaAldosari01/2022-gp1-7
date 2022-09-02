@@ -884,13 +884,7 @@ class _Profile_pageState extends State<Profile_page> {
                                               topLeft: Radius.circular(20),
                                               topRight: Radius.circular(20),
                                             ),
-                                            gradient: LinearGradient(
-                                                begin: Alignment.bottomCenter,
-                                                end: Alignment.topCenter,
-                                                colors: [
-                                                  Palette.buttonColor,
-                                                  Palette.nameColor
-                                                ])),
+                                          ),
                                         //doceration dont work
                                         height: size.height / 4.45,
                                         width: size.width - 20,
@@ -898,11 +892,19 @@ class _Profile_pageState extends State<Profile_page> {
                                             ? Container(
                                             //doceration dont work
                                               child: ClipRRect(
-                                              borderRadius:BorderRadius.circular(20) ,
-                                                child: Image(
-                                                  image: NetworkImage(
-                                                      snap['Cover']),
-                                                  fit: BoxFit.fitWidth,
+                                                borderRadius:BorderRadius.circular(20) ,
+                                                child: ColorFiltered(
+                                                  colorFilter:
+                                                  ColorFilter.mode(Colors.black.withOpacity(0.3),
+                                                      BlendMode.darken),
+                                                  child: ClipRRect(
+                                                  borderRadius:BorderRadius.circular(20) ,
+                                                    child: Image(
+                                                      image: NetworkImage(
+                                                          snap['Cover']),
+                                                      fit: BoxFit.fitWidth,
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             )
