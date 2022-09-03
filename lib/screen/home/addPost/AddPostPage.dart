@@ -2065,7 +2065,7 @@ class _AddPostPageState extends State<AddPostPage> {
                                     if (val!.isNotEmpty && val.length >= 280) {
                                       return "Create a shorter body under 281 characters.";
                                     }
-                                    if (val!.isNotEmpty &&
+                                    if (val.isNotEmpty &&
                                         (val.contains("*") ||
                                             val.contains("%") ||
                                             val.contains("~") ||
@@ -6625,7 +6625,7 @@ class _AddPostPageState extends State<AddPostPage> {
       });
       setState(() {
         locationAdress = place?.description ?? " ";
-        int index = locationAdress!.indexOf(',') ?? 0,//1
+        int index = locationAdress?.indexOf(',') ?? 0,//1
             index2 = locationAdress?.indexOf('-') ?? 0;
         if(index ==-1)
           index = index2;

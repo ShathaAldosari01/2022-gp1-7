@@ -287,7 +287,7 @@ class _FollowingState extends State<Following> {
   }
 
   isFollowing(uid) {
-    return theUserData!['following'].contains(uid);
+    return theUserData['following'].contains(uid);
   }
 
 

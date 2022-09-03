@@ -43,13 +43,14 @@ class _AddListState extends State<AddList> {
       bool Access,
       List<String> Tags,
       List<String> postIds,
+      List<String> users,
 
 
 
       )async{
 
     try{
-      String res = await FireStoreMethods().uploadList(uid, CoverPath, Description, ListID, Title, Access, Tags, postIds);
+      String res = await FireStoreMethods().uploadList(uid, CoverPath, Description, ListID, Title, Access, Tags, postIds, users);
       if(res== "success"){
 
         showSnackBar(context, "Posted!");
@@ -99,6 +100,7 @@ class _AddListState extends State<AddList> {
   String Description = "";
   bool Access = true ;
   List <String> Tags =[];
+  List <String> users =[];
   String TagsBeforeProcess = "";
   List <String> postIds =[];
   /*screen width*/
@@ -920,12 +922,12 @@ class _AddListState extends State<AddList> {
                             backgroundColor: Palette.grey,
                             child:accessRadio==1?
                             Icon(
-                              Icons.lock_open,
+                              Icons.public,
                               color: Palette.backgroundColor,
                               size: 20,
                             ):
                             Icon(
-                              Icons.lock,
+                              Icons.lock_outline,
                               color: Palette.backgroundColor,
                               size: 20,
                             ),
@@ -1154,7 +1156,8 @@ class _AddListState extends State<AddList> {
       Title,
       Access,
       Tags,
-      postIds
+      postIds,
+      users,//user id how save the list
 
     );
     /*end of create list*/

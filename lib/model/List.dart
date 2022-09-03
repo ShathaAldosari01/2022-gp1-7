@@ -13,13 +13,13 @@ class Lists {
   final bool Access;
   final List<String> Tags;
   final List<String> postIds;
+  final List <String> users;
 
 
   const Lists(
       {
         /*user info*/
         required this.uid,
-
 
         /*List info*/
         required this.Cover,
@@ -29,6 +29,7 @@ class Lists {
         required this.Access,
         required this.Tags,
         required this.postIds,
+        required this.users,
 
 
       });
@@ -49,6 +50,7 @@ class Lists {
       Access: snapshot["Access"],
       Tags: snapshot["Tags"],
       postIds: snapshot["postIds"],
+      users: snapshot["users"],
 
 
 
@@ -69,7 +71,7 @@ class Lists {
     "Access": Access,
     "Tags": Tags,
     "postIds": postIds,
-
+    "users": users,
 
 
   };
