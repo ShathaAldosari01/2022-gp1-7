@@ -40,6 +40,7 @@ class _ListCountentState extends State<ListCountent> {
           listData = userSnap.data()!;
           _isloaded = true;
           tags = listData['Tags'];
+          postIds = listData['postId'];
         });
         getUserData(listData["uid"]);
       }
@@ -72,6 +73,7 @@ class _ListCountentState extends State<ListCountent> {
   bool _isloaded  =false;
   bool _isUserLoaded = false;
   var tags = [];
+  List<String> postIds=[];
 
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -118,390 +120,408 @@ class _ListCountentState extends State<ListCountent> {
         ),
       ),
 
-      body:Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            /*cover img*/
-            _isloaded?
-              listData["Cover"]!=""?
-              /*show img*/
+      body:ListView(
+        children:[
+          Container(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              /*cover img*/
+              _isloaded?
+                listData["Cover"]!=""?
+                /*show img*/
+                Container(
+                  height: 100,
+                  width: size.width,
+                  child: Image(
+                    image:
+                    NetworkImage(listData["Cover"]),
+                    fit: BoxFit.cover,
+                  ),
+                )
+                :SizedBox()
+              /*loading*/
+              :Container(
+                margin: EdgeInsets.all(27),
+                child: CircularProgressIndicator(
+                  backgroundColor: Palette.lightgrey,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Palette.midgrey),
+                ),
+              ),
+              /*end of cover img*/
+
+              SizedBox(height: 5,),
+
+              Row(
+                children: [
+                  /*title*/
+                  _isloaded?
+                  Container(
+                    margin: EdgeInsets.fromLTRB(10, 5,2,5),
+                    child: Text(
+                      "${listData['Title']}",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+
+                  : Container(
+                    width: 100,
+                    child: LinearProgressIndicator(
+                      minHeight: 15,
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(
+                          Palette.midgrey),
+                    ),
+                  ),
+                  /*end of title*/
+
+                  /*Access*/
+                  _isloaded?
+                     Icon(
+                         listData["Access"]?
+                         Icons.public
+                         :Icons.lock_outline,
+                        color: Palette.textColor
+                    )
+                  :Container(
+                    margin: EdgeInsets.all(10),
+                    child: CircularProgressIndicator(
+                      backgroundColor: Palette.lightgrey,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                          Palette.midgrey),
+                    ),
+                  ),
+                  /*end of access*/
+
+                ],
+              ),
+
+              /*username of the owner of the list*/
+              _isUserLoaded?
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      userData["username"],
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Palette.darkGray,
+                      ),
+                    ),
+                  )
+
+              :Container(
+                width: 100,
+                child: LinearProgressIndicator(
+                  minHeight: 15,
+                  backgroundColor: Palette.lightgrey,
+                  valueColor:
+                  AlwaysStoppedAnimation<Color>(
+                      Palette.midgrey),
+                ),
+              ),
+              /*end of username*/
+
+              SizedBox(height: 15),
+
+              /*des*/
+              _isloaded?
               Container(
-                height: 100,
-                width: size.width,
-                child: Image(
-                  image:
-                  NetworkImage(listData["Cover"]),
-                  fit: BoxFit.cover,
+                margin: EdgeInsets.fromLTRB(10, 0, 10, 3),
+                child: Text(
+                  listData['Description'],
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Palette.darkGray,
+                  ),
                 ),
               )
-              :SizedBox()
-            /*loading*/
-            :Container(
-              margin: EdgeInsets.all(27),
-              child: CircularProgressIndicator(
-                backgroundColor: Palette.lightgrey,
-                valueColor: AlwaysStoppedAnimation<Color>(
-                    Palette.midgrey),
-              ),
-            ),
-            /*end of cover img*/
 
-            SizedBox(height: 5,),
-
-            Row(
-              children: [
-                /*title*/
-                _isloaded?
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 5,2,5),
-                  child: Text(
-                    "${listData['Title']}",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-
-                : Container(
-                  width: 100,
-                  child: LinearProgressIndicator(
-                    minHeight: 15,
-                    backgroundColor: Palette.lightgrey,
-                    valueColor:
-                    AlwaysStoppedAnimation<Color>(
-                        Palette.midgrey),
-                  ),
-                ),
-                /*end of title*/
-
-                /*Access*/
-                _isloaded?
-                   Icon(
-                       listData["Access"]?
-                       Icons.public
-                       :Icons.lock_outline,
-                      color: Palette.textColor
-                  )
-                :Container(
-                  margin: EdgeInsets.all(10),
-                  child: CircularProgressIndicator(
-                    backgroundColor: Palette.lightgrey,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                        Palette.midgrey),
-                  ),
-                ),
-                /*end of access*/
-
-              ],
-            ),
-
-            /*username of the owner of the list*/
-            _isUserLoaded?
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    userData["username"],
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Palette.darkGray,
-                    ),
-                  ),
-                )
-
-            :Container(
-              width: 100,
-              child: LinearProgressIndicator(
-                minHeight: 15,
-                backgroundColor: Palette.lightgrey,
-                valueColor:
-                AlwaysStoppedAnimation<Color>(
-                    Palette.midgrey),
-              ),
-            ),
-            /*end of username*/
-
-            SizedBox(height: 15),
-
-            /*des*/
-            _isloaded?
-            Container(
-              margin: EdgeInsets.fromLTRB(10, 0, 10, 3),
-              child: Text(
-                listData['Description'],
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Palette.darkGray,
+              :Container(
+                width: 100,
+                child: LinearProgressIndicator(
+                  minHeight: 15,
+                  backgroundColor: Palette.lightgrey,
+                  valueColor:
+                  AlwaysStoppedAnimation<Color>(
+                      Palette.midgrey),
                 ),
               ),
-            )
+              /*end of des*/
 
-            :Container(
-              width: 100,
-              child: LinearProgressIndicator(
-                minHeight: 15,
-                backgroundColor: Palette.lightgrey,
-                valueColor:
-                AlwaysStoppedAnimation<Color>(
-                    Palette.midgrey),
-              ),
-            ),
-            /*end of des*/
-
-            /*tags*/
-            _isloaded?
-                Container(
-                  margin: EdgeInsets.symmetric(horizontal: 6),
-                  child: Wrap(
-                    children: tags.map((tag) {
-                      tag = tag.substring(1);
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 3),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 4),
-                          color: Colors.amber.withOpacity(0.3),
+              /*tags*/
+              _isloaded?
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 6),
+                    child: Wrap(
+                      children: tags.map((tag) {
+                        tag = tag.substring(1);
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 3),
                           child: Container(
-                            padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
-                            child: Text(
-                              tag,
-                              style: TextStyle(
+                            margin: EdgeInsets.symmetric(horizontal: 4),
+                            color: Colors.amber.withOpacity(0.3),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(horizontal: 4, vertical: 4),
+                              child: Text(
+                                tag,
+                                style: TextStyle(
 
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                )
-            :Container(
-              width: 100,
-              child: LinearProgressIndicator(
-                minHeight: 15,
+                        );
+                      }).toList(),
+                    ),
+                  )
+              :Container(
+                width: 100,
+                child: LinearProgressIndicator(
+                  minHeight: 15,
 
 
-                backgroundColor: Palette.lightgrey,
-                valueColor:
-                AlwaysStoppedAnimation<Color>(
-                    Palette.midgrey),
+                  backgroundColor: Palette.lightgrey,
+                  valueColor:
+                  AlwaysStoppedAnimation<Color>(
+                      Palette.midgrey),
+                ),
               ),
-            ),
-            /*end of tags*/
+              /*end of tags*/
 
-            SizedBox(height: 10),
+              SizedBox(height: 10),
 
-            /*edit/add button*/
-            FollowButton(
-              text: listData["uid"]==userId
-                  ?'Edit List'
-                  :listData["users"].contains(userId)?"Remove List":'Save List',
-              // todo: check if the user already add the list if so it should say remove list
-              //the way to do so is by adding list of users how add the list and check if the user are one of them.
-              backgroundColor: Colors.white,
-              textColor: Colors.black,
-              borderColor: Colors.grey,
-              function: () async {
-                /*go to edit list*/
-                if (listData["uid"]==userId)
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EditList(
-                              listData: listData)));
-                /*add list*/
+              /*edit/add button*/
+              _isloaded?
+                FollowButton(
+                  text: listData["uid"]==userId
+                      ?'Edit List'
+                      :listData["users"].contains(userId)?"Remove List":'Save List',
+                  // todo: check if the user already add the list if so it should say remove list
+                  //the way to do so is by adding list of users how add the list and check if the user are one of them.
+                  backgroundColor: Colors.white,
+                  textColor: Colors.black,
+                  borderColor: Colors.grey,
+                  function: () async {
+                    /*go to edit list*/
+                    if (listData["uid"]==userId)
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => EditList(
+                                  listData: listData)));
+                    /*add list*/
 
-                else
-                  //remove?
-                  if (listData["users"].contains(userId)){
-                    //remove user from list
-                    await _firestore.collection("Lists").doc(widget.listId).update({
-                      'users': FieldValue.arrayRemove([userId]),
-                    });
-                    //remove list from user
-                    await _firestore.collection("users").doc(userId).update({
-                      'listIds': FieldValue.arrayRemove([widget.listId]),
-                    });
+                    else
+                      //remove?
+                      if (listData["users"].contains(userId)){
+                        //remove user from list
+                        await _firestore.collection("Lists").doc(widget.listId).update({
+                          'users': FieldValue.arrayRemove([userId]),
+                        });
+                        //remove list from user
+                        await _firestore.collection("users").doc(userId).update({
+                          'listIds': FieldValue.arrayRemove([widget.listId]),
+                        });
 
-                  /*add*/
-                  }else{
-                    //add user in list
-                    await _firestore.collection("Lists").doc(widget.listId).update({
-                      'users': FieldValue.arrayUnion([userId]),
-                    });
-                    //add list in user
-                    await _firestore.collection("users").doc(userId).update({
-                      'listIds': FieldValue.arrayUnion([widget.listId]),
-                    });
+                      /*add*/
+                      }else{
+                        //add user in list
+                        await _firestore.collection("Lists").doc(widget.listId).update({
+                          'users': FieldValue.arrayUnion([userId]),
+                        });
+                        //add list in user
+                        await _firestore.collection("users").doc(userId).update({
+                          'listIds': FieldValue.arrayUnion([widget.listId]),
+                        });
+                      }
+                  },
+                  horizontal: (size.width / 2) - 50,
+                  vertical: 9,
+                )
+                  :Container(
+                width: 100,
+                child: LinearProgressIndicator(
+                  minHeight: 15,
+                  backgroundColor: Palette.lightgrey,
+                  valueColor:
+                  AlwaysStoppedAnimation<Color>(
+                      Palette.midgrey),
+                ),
+              ),
+              /*end of button*/
+
+              const Divider(
+                color: Palette.darkGray,
+              ),
+
+              /*posts*/
+              _isloaded?
+              FutureBuilder(
+                future: FirebaseFirestore.instance
+                    .collection('posts')
+                    // .orderBy("datePublished", descending: true)
+                    // .where('postId',  whereIn: postIds)
+                    .get(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
                   }
-              },
-              horizontal: (size.width / 2) - 50,
-              vertical: 9,
-            ),
-            /*end of button*/
 
+                  return GridView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: (snapshot.data! as dynamic).docs.length,
+                    gridDelegate:
+                    const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 5,
+                      mainAxisSpacing: 1.5,
+                      childAspectRatio: 0.6,
+                    ),
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot snap =
+                      (snapshot.data! as dynamic).docs[index];
 
-            /*posts*/
-            // _isloaded?
-            // FutureBuilder(
-            //   future: FirebaseFirestore.instance
-            //       .collection('posts')
-            //       // .orderBy("datePublished", descending: true)
-            //       .where('uid',  whereIn: listData["postIds"])
-            //       .get(),
-            //   builder: (context, snapshot) {
-            //     if (snapshot.connectionState == ConnectionState.waiting) {
-            //       return const Center(
-            //         child: CircularProgressIndicator(),
-            //       );
-            //     }
-            //
-            //     return GridView.builder(
-            //       physics: NeverScrollableScrollPhysics(),
-            //       shrinkWrap: true,
-            //       itemCount: (snapshot.data! as dynamic).docs.length,
-            //       gridDelegate:
-            //       const SliverGridDelegateWithFixedCrossAxisCount(
-            //         crossAxisCount: 3,
-            //         crossAxisSpacing: 5,
-            //         mainAxisSpacing: 1.5,
-            //         childAspectRatio: 0.6,
-            //       ),
-            //       itemBuilder: (context, index) {
-            //         DocumentSnapshot snap =
-            //         (snapshot.data! as dynamic).docs[index];
-            //
-            //         return Stack(
-            //           children: [
-            //             Column(
-            //               children: [
-            //                 Container(
-            //                   height: (size.width / 3) * (100 / 60) - 5.6,
-            //                   color: Palette.backgroundColor,
-            //                   child: snap['imgsPath'][0] != "no"
-            //                       ? Image(
-            //                     image:
-            //                     NetworkImage(snap['imgsPath'][0]),
-            //                     fit: BoxFit.cover,
-            //                   )
-            //                       : Center(
-            //                     child: Container(
-            //                       color: Palette.buttonColor,
-            //                       margin: EdgeInsets.symmetric(
-            //                           horizontal: 4),
-            //                       padding: EdgeInsets.symmetric(
-            //                           vertical: 2, horizontal: 3),
-            //                       child: Text(
-            //                         snap['title'],
-            //                         textAlign: TextAlign.center,
-            //                         style: TextStyle(
-            //                           fontSize: 18,
-            //                           fontWeight: FontWeight.bold,
-            //                           color: Palette.textColor,
-            //                         ),
-            //                       ),
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ],
-            //             ),
-            //             InkWell(
-            //               onTap: () {
-            //                 Navigator.push(
-            //                   context,
-            //                   MaterialPageRoute(
-            //                     builder: userData.isNotEmpty
-            //                         ? (context) => UserPost(
-            //                         theUserData: userData,
-            //                         uid: snap['uid'].toString(),
-            //                         index: index)
-            //                         : (context) => UserPost(
-            //                         theUserData: null,
-            //                         uid: snap['uid'].toString(),
-            //                         index: index),
-            //                   ),
-            //                 );
-            //               },
-            //               child: Container(
-            //                 color: Colors.black.withOpacity(0.3),
-            //               ),
-            //             ),
-            //             Row(
-            //               mainAxisAlignment: MainAxisAlignment.end,
-            //               children: [
-            //                 InkWell(
-            //                   onTap: () {
-            //                     onMorePost(
-            //                         snap["postId"].toString(),
-            //                         listData["uid"]);
-            //                   },
-            //                   child: Container(
-            //                     padding:
-            //                     const EdgeInsets.fromLTRB(20, 4, 0, 20),
-            //                     child: Icon(
-            //                       Icons.more_vert_rounded,
-            //                       color: Palette.backgroundColor,
-            //                       size: 18,
-            //                     ),
-            //                   ),
-            //                 )
-            //               ],
-            //             ),
-            //             Column(
-            //               crossAxisAlignment: CrossAxisAlignment.stretch,
-            //               mainAxisAlignment: MainAxisAlignment.end,
-            //               children: [
-            //                 InkWell(
-            //                   onTap: () {
-            //                     Navigator.push(
-            //                       context,
-            //                       MaterialPageRoute(
-            //                         builder: userData.isNotEmpty
-            //                             ? (context) => UserPost(
-            //                             theUserData: userData,
-            //                             uid: snap['uid'].toString(),
-            //                             index: index)
-            //                             : (context) => UserPost(
-            //                             theUserData: null,
-            //                             uid: snap['uid'].toString(),
-            //                             index: index),
-            //                       ),
-            //                     );
-            //                   },
-            //                   child: Container(
-            //                     padding: EdgeInsets.symmetric(
-            //                         horizontal: 6, vertical: 7),
-            //                     child: snap['imgsPath'][0] != "no"
-            //                         ? Text(
-            //                       snap['title'],
-            //                       style: TextStyle(
-            //                           color: Palette.backgroundColor,
-            //                           fontWeight: FontWeight.bold),
-            //                     )
-            //                         : SizedBox(),
-            //                   ),
-            //                 ),
-            //               ],
-            //             )
-            //           ],
-            //         );
-            //       },
-            //     );
-            //   },
-            // )
-            // /*loading*/
-            // :Container(
-            //   margin: EdgeInsets.all(27),
-            //   child: CircularProgressIndicator(
-            //     backgroundColor: Palette.lightgrey,
-            //     valueColor: AlwaysStoppedAnimation<Color>(
-            //         Palette.midgrey),
-            //   ),
-            // ),
-            /*end post*/
+                      return Stack(
+                        children: [
+                          Column(
+                            children: [
+                              Container(
+                                height: (size.width / 3) * (100 / 60) - 5.6,
+                                color: Palette.backgroundColor,
+                                child: snap['imgsPath'][0] != "no"
+                                    ? Image(
+                                  image:
+                                  NetworkImage(snap['imgsPath'][0]),
+                                  fit: BoxFit.cover,
+                                )
+                                    : Center(
+                                  child: Container(
+                                    color: Palette.buttonColor,
+                                    margin: EdgeInsets.symmetric(
+                                        horizontal: 4),
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: 2, horizontal: 3),
+                                    child: Text(
+                                      snap['title'],
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Palette.textColor,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: userData.isNotEmpty
+                                      ? (context) => UserPost(
+                                      theUserData: userData,
+                                      uid: snap['uid'].toString(),
+                                      index: index)
+                                      : (context) => UserPost(
+                                      theUserData: null,
+                                      uid: snap['uid'].toString(),
+                                      index: index),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  onMorePost(
+                                      snap["postId"].toString(),
+                                      listData["uid"]);
+                                },
+                                child: Container(
+                                  padding:
+                                  const EdgeInsets.fromLTRB(20, 4, 0, 20),
+                                  child: Icon(
+                                    Icons.more_vert_rounded,
+                                    color: Palette.backgroundColor,
+                                    size: 18,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: userData.isNotEmpty
+                                          ? (context) => UserPost(
+                                          theUserData: userData,
+                                          uid: snap['uid'].toString(),
+                                          index: index)
+                                          : (context) => UserPost(
+                                          theUserData: null,
+                                          uid: snap['uid'].toString(),
+                                          index: index),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 7),
+                                  child: snap['imgsPath'][0] != "no"
+                                      ? Text(
+                                    snap['title'],
+                                    style: TextStyle(
+                                        color: Palette.backgroundColor,
+                                        fontWeight: FontWeight.bold),
+                                  )
+                                      : SizedBox(),
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      );
+                    },
+                  );
+                },
+              )
+              /*loading*/
+              :Container(
+                margin: EdgeInsets.all(27),
+                child: CircularProgressIndicator(
+                  backgroundColor: Palette.lightgrey,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                      Palette.midgrey),
+                ),
+              ),
+              /*end post*/
 
-          ],
+            ],
+          ),
         ),
+    ]
       ),
 
     );

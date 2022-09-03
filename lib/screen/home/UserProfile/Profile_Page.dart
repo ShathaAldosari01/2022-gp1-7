@@ -16,6 +16,7 @@ import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../services/firestore_methods.dart';
+import '../Lists/listCountent.dart';
 import '../navBar/navigationBar.dart';
 import 'following.dart';
 import 'user-post-view.dart';
@@ -954,9 +955,9 @@ class _Profile_pageState extends State<Profile_page> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => navigationBar(
-                                                  ind: 3,
-                                                )),
+                                            builder: (context) => ListCountent(
+                                              listId: snap["ListID"],
+                                            )),
                                       );
                                     },
                                   ),
@@ -971,8 +972,8 @@ class _Profile_pageState extends State<Profile_page> {
                                             context,
                                             MaterialPageRoute(
                                                 builder: (context) =>
-                                                    navigationBar(
-                                                      ind: 3,
+                                                    ListCountent(
+                                                      listId: snap["ListID"],
                                                     )),
                                           );
                                         },
