@@ -16,7 +16,6 @@ import 'package:gp1_7_2022/config/palette.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../services/firestore_methods.dart';
-import '../Lists/listCountent.dart';
 import '../navBar/navigationBar.dart';
 import 'following.dart';
 import 'user-post-view.dart';
@@ -845,7 +844,7 @@ class _Profile_pageState extends State<Profile_page> {
 
                   //the user created and added list
                   Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: FutureBuilder(
                         future: FirebaseFirestore.instance
                             .collection('Lists')
@@ -863,7 +862,7 @@ class _Profile_pageState extends State<Profile_page> {
                             shrinkWrap: true,
                             itemCount: (snapshot.data! as dynamic).docs.length,
                             gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 1,
                               crossAxisSpacing: 0.5,
                               mainAxisSpacing: 12,
@@ -871,40 +870,82 @@ class _Profile_pageState extends State<Profile_page> {
                             ),
                             itemBuilder: (context, index) {
                               DocumentSnapshot snap =
-                              (snapshot.data! as dynamic).docs[index];
+                                  (snapshot.data! as dynamic).docs[index];
 
                               return Stack(
                                 children: [
                                   Column(
                                     children: [
                                       Container(
-                                        height: size.height/4.45,
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                            ),
+                                            gradient: LinearGradient(
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                                colors: [
+                                                  Palette.buttonColor,
+                                                  Palette.nameColor
+                                                ])),
+                                        //doceration dont work
+                                        height: size.height / 4.45,
                                         width: size.width - 20,
-                                        color: Palette.backgroundColor,
                                         child: snap['Cover'] != ""
-                                            ? Image(
-                                          image:
-                                          NetworkImage(snap['Cover']),
-                                          fit: BoxFit.fitWidth,
-                                        )
-                                            : Center(
-                                          child: Container(
-                                            color: Palette.buttonColor,
-                                            margin: EdgeInsets.symmetric(
-                                                horizontal: 4),
-                                            padding: EdgeInsets.symmetric(
-                                                vertical: 2, horizontal: 3),
-                                            child: Text(
-                                              snap['Title'],
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold,
-                                                color: Palette.textColor,
+                                            ? Container(
+                                            //doceration dont work
+                                              child: ClipRRect(
+                                              borderRadius:BorderRadius.circular(20) ,
+                                                child: Image(
+                                                  image: NetworkImage(
+                                                      snap['Cover']),
+                                                  fit: BoxFit.fitWidth,
+                                                ),
+                                              ),
+                                            )
+                                            : Container(
+                                              decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(20),
+                                                bottomRight: Radius.circular(20),
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                              ),
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter,
+                                                  colors: [
+                                                    Palette.buttonColor,
+                                                    Palette.nameColor
+                                                  ])),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.stretch,
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                children: [
+                                                  Container(
+                                                    margin: EdgeInsets.symmetric(
+                                                        horizontal: 4),
+                                                    padding: EdgeInsets.symmetric(
+                                                        horizontal: 6,
+                                                        vertical: 7),
+                                                    child: Text(
+                                                      snap['Title'],
+                                                      textAlign: TextAlign.left,
+                                                      style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Palette
+                                                            .backgroundColor,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                        ),
                                       ),
                                     ],
                                   ),
@@ -913,18 +954,15 @@ class _Profile_pageState extends State<Profile_page> {
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                          builder:  (context) =>
-                                               ListCountent(listId: snap['ListID'])
-                                        ),
+                                            builder: (context) => navigationBar(
+                                                  ind: 3,
+                                                )),
                                       );
                                     },
-                                    child: Container(
-                                      color: Colors.black.withOpacity(0.3),
-                                    ),
                                   ),
-
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.stretch,
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       InkWell(
@@ -932,9 +970,10 @@ class _Profile_pageState extends State<Profile_page> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder:  (context) =>
-                                                    ListCountent(listId: snap['ListID'])
-                                            ),
+                                                builder: (context) =>
+                                                    navigationBar(
+                                                      ind: 3,
+                                                    )),
                                           );
                                         },
                                         child: Container(
@@ -942,11 +981,13 @@ class _Profile_pageState extends State<Profile_page> {
                                               horizontal: 6, vertical: 7),
                                           child: snap['Cover'] != ""
                                               ? Text(
-                                            snap['Title'],
-                                            style: TextStyle(
-                                                color: Palette.backgroundColor,
-                                                fontWeight: FontWeight.bold),
-                                          )
+                                                  snap['Title'],
+                                                  style: TextStyle(
+                                                      color: Palette
+                                                          .backgroundColor,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                )
                                               : SizedBox(),
                                         ),
                                       ),
