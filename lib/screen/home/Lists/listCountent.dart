@@ -290,62 +290,51 @@ class _ListCountentState extends State<ListCountent> {
             SizedBox(height: 10),
 
             /*edit/add button*/
-            _isloaded?
-              FollowButton(
-                text: listData["uid"]==userId
-                    ?'Edit List'
-                    :listData["users"].contains(userId)?"Remove List":'Save List',
-                // todo: check if the user already add the list if so it should say remove list
-                //the way to do so is by adding list of users how add the list and check if the user are one of them.
-                backgroundColor: Colors.white,
-                textColor: Colors.black,
-                borderColor: Colors.grey,
-                function: () async {
-                  /*go to edit list*/
-                  if (listData["uid"]==userId)
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EditList(
-                                listData: listData)));
-                  /*add list*/
+            FollowButton(
+              text: listData["uid"]==userId
+                  ?'Edit List'
+                  :listData["users"].contains(userId)?"Remove List":'Save List',
+              // todo: check if the user already add the list if so it should say remove list
+              //the way to do so is by adding list of users how add the list and check if the user are one of them.
+              backgroundColor: Colors.white,
+              textColor: Colors.black,
+              borderColor: Colors.grey,
+              function: () async {
+                /*go to edit list*/
+                if (listData["uid"]==userId)
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => EditList(
+                              listData: listData)));
+                /*add list*/
 
-                  else
-                    //remove?
-                    if (listData["users"].contains(userId)){
-                      //remove user from list
-                      await _firestore.collection("Lists").doc(widget.listId).update({
-                        'users': FieldValue.arrayRemove([userId]),
-                      });
-                      //remove list from user
-                      await _firestore.collection("users").doc(userId).update({
-                        'listIds': FieldValue.arrayRemove([widget.listId]),
-                      });
+                else
+                  //remove?
+                  if (listData["users"].contains(userId)){
+                    //remove user from list
+                    await _firestore.collection("Lists").doc(widget.listId).update({
+                      'users': FieldValue.arrayRemove([userId]),
+                    });
+                    //remove list from user
+                    await _firestore.collection("users").doc(userId).update({
+                      'listIds': FieldValue.arrayRemove([widget.listId]),
+                    });
 
-                    /*add*/
-                    }else{
-                      //add user in list
-                      await _firestore.collection("Lists").doc(widget.listId).update({
-                        'users': FieldValue.arrayUnion([userId]),
-                      });
-                      //add list in user
-                      await _firestore.collection("users").doc(userId).update({
-                        'listIds': FieldValue.arrayUnion([widget.listId]),
-                      });
-                    }
-                },
-                horizontal: (size.width / 2) - 50,
-                vertical: 9,
-              )
-            :Container(
-              width: 100,
-              child: LinearProgressIndicator(
-                minHeight: 15,
-                backgroundColor: Palette.lightgrey,
-                valueColor:
-                AlwaysStoppedAnimation<Color>(
-                    Palette.midgrey),
-              ),
+                  /*add*/
+                  }else{
+                    //add user in list
+                    await _firestore.collection("Lists").doc(widget.listId).update({
+                      'users': FieldValue.arrayUnion([userId]),
+                    });
+                    //add list in user
+                    await _firestore.collection("users").doc(userId).update({
+                      'listIds': FieldValue.arrayUnion([widget.listId]),
+                    });
+                  }
+              },
+              horizontal: (size.width / 2) - 50,
+              vertical: 9,
             ),
             /*end of button*/
 
