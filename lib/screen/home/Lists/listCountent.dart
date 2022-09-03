@@ -280,6 +280,7 @@ class _ListCountentState extends State<ListCountent> {
               child: LinearProgressIndicator(
                 minHeight: 15,
 
+
                 backgroundColor: Palette.lightgrey,
                 valueColor:
                 AlwaysStoppedAnimation<Color>(
