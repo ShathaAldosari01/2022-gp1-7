@@ -7,6 +7,8 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../../Widgets/follow_button.dart';
 import '../../../config/palette.dart';
+import '../../auth/signup/userInfo/photo/utils.dart';
+import '../../services/firestore_methods.dart';
 import '../UserProfile/user-post-view.dart';
 import 'editList.dart';
 
@@ -64,6 +66,18 @@ class _ListCountentState extends State<ListCountent> {
       }
     } catch (e) {
       print(e.toString());
+    }
+  }
+
+  deleteList(String ListID) async {
+    try {
+      await FireStoreMethods().deleteList(ListID);
+      showSnackBar(context, "List was deleted successfully!");
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
     }
   }
 
@@ -548,7 +562,7 @@ class _ListCountentState extends State<ListCountent> {
         });
   }
 
-  Column onMorePressed(String listId, luid) {
+  Column onMorePressed(String ListId, luid) {
     return Column(
       children: [
         SizedBox(height: 10,),
@@ -593,11 +607,12 @@ class _ListCountentState extends State<ListCountent> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                        // deleteList(listId);
+                         deleteList(ListId);
                         //to do :
                         //it should be deleted in every user who save this list
                         //users > userid > listIds > delete listId
                         //List > delete listId
+
                       },
                     )
                   ]).show();

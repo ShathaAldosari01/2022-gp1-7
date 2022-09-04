@@ -99,6 +99,17 @@ class FireStoreMethods {
     return res;
   }
 
+  // Delete List
+  Future<String> deleteList(String ListID) async {
+    String res = "Some error occurred";
+    try {
+      await _firestore.collection('Lists').doc(ListID).delete();
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
   Future<void> followUser(
       String uid,
       String followId
