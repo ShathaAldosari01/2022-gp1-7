@@ -1118,10 +1118,44 @@ class _HomePageState extends State<HomePage> {
           future: retrieveListData(listIds, uid),
             builder: (context, snapchat){
             if(snapchat.hasData){
+
               var data = snapchat.data!;
-              // var datai = data[0];
-              // for(var d in data)
-              return Text('$data["Title"]');
+               List<Cut> listIdTitle=[];
+              int startIdIndex = 0;
+              int endIdIndex = 0;
+              String id="";
+
+              int startTitleIndex = 0;
+              int endTitleIndex = 0;
+              String title = "";
+
+              while(true){
+                startIdIndex = data.toString().indexOf("ListID:", startIdIndex+1)+8;
+                endIdIndex = data.toString().indexOf(", postIds:", endIdIndex+1);
+
+                startTitleIndex = data.toString().indexOf("Title:", startTitleIndex+1)+8;
+                endTitleIndex = data.toString().indexOf(", Tags:", endTitleIndex+1);
+
+                if(startIdIndex!= -1 && endIdIndex != -1)
+                   id = data.toString().substring(startIdIndex,endIdIndex);
+                else{
+                  break;
+                }
+
+                if(startTitleIndex!= -1 && endTitleIndex != -1)
+                  title = data.toString().substring(startTitleIndex,endTitleIndex);
+                else{
+                  break;
+                }
+
+                listIdTitle.add(Cut(id: id, title: title));
+             }
+
+              return Column(
+                children: listIdTitle.map((e) {
+                  return Text(e.title);
+                }).toList(),
+              );
             }else{
               return SizedBox();
             }
@@ -1273,6 +1307,13 @@ class _HomePageState extends State<HomePage> {
       print(e.toString());
     }
 
+
     return listData;
   }
+}
+class Cut {
+    String id ;
+    String title ;
+
+    Cut({required this.id,required this.title});
 }
