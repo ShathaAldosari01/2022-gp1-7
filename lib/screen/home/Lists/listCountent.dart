@@ -40,8 +40,10 @@ class _ListCountentState extends State<ListCountent> {
 
         setState(() {
           listData = userSnap.data()!;
+          print("Hello");
           tags = listData['Tags'];
-          postIds = listData['postId'];
+          print("bye");
+          postIds = listData['postIds'];
           print("in postIds");
           _isloaded = true;
           print("_isloaded");
@@ -76,7 +78,7 @@ class _ListCountentState extends State<ListCountent> {
     }
   }
 
-  deleteList(String ListID) async {
+ /* deleteList(String ListID) async {
     try {
       await FireStoreMethods().deleteList(ListID);
       showSnackBar(context, "List was deleted successfully!");
@@ -86,7 +88,7 @@ class _ListCountentState extends State<ListCountent> {
         err.toString(),
       );
     }
-  }
+  } */
 
   var userId;//the user visiting the page
   var listData = {};
@@ -621,7 +623,7 @@ class _ListCountentState extends State<ListCountent> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                         deleteList(ListId);
+                       //  deleteList(ListId);
                         //to do :
                         //it should be deleted in every user who save this list
                         //users > userid > listIds > delete listId
