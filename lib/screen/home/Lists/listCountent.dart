@@ -40,11 +40,17 @@ class _ListCountentState extends State<ListCountent> {
 
         setState(() {
           listData = userSnap.data()!;
-          _isloaded = true;
           tags = listData['Tags'];
           postIds = listData['postId'];
+          print("in postIds");
+          _isloaded = true;
+          print("_isloaded");
+
+
         });
         getUserData(listData["uid"]);
+      }else{
+        print("no id???");
       }
     } catch (e) {
       print(e.toString());
@@ -52,6 +58,7 @@ class _ListCountentState extends State<ListCountent> {
   }
 
   getUserData(uid) async {
+    print("in getUserData");
     try {
       if (uid != null) {
         var userSnap = await FirebaseFirestore.instance
@@ -86,8 +93,8 @@ class _ListCountentState extends State<ListCountent> {
   var userData = {};
   bool _isloaded  =false;
   bool _isUserLoaded = false;
-  var tags = [];
-  List<String> postIds=[];
+  List<dynamic> tags = [];
+  List<dynamic> postIds=[];
 
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -379,7 +386,7 @@ class _ListCountentState extends State<ListCountent> {
                 future: FirebaseFirestore.instance
                     .collection('posts')
                     // .orderBy("datePublished", descending: true)
-                    // .where('postId',  whereIn: postIds)
+                    .where('postId',  whereIn: postIds)
                     .get(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -446,11 +453,15 @@ class _ListCountentState extends State<ListCountent> {
                                       ? (context) => UserPost(
                                       theUserData: userData,
                                       uid: snap['uid'].toString(),
-                                      index: index)
+                                      index: index,
+                                      fromList: true,
+                                      listInfo: listData,)
                                       : (context) => UserPost(
                                       theUserData: null,
                                       uid: snap['uid'].toString(),
-                                      index: index),
+                                      index: index,
+                                      fromList: true,
+                                    listInfo: listData,),
                                 ),
                               );
                             },
@@ -463,6 +474,7 @@ class _ListCountentState extends State<ListCountent> {
                             children: [
                               InkWell(
                                 onTap: () {
+                                  if(FirebaseAuth.instance.currentUser!.uid == listData["uid"])
                                   onMorePost(
                                       snap["postId"].toString(),
                                       listData["uid"]);
@@ -492,11 +504,13 @@ class _ListCountentState extends State<ListCountent> {
                                           ? (context) => UserPost(
                                           theUserData: userData,
                                           uid: snap['uid'].toString(),
-                                          index: index)
+                                          index: index,
+                                          fromList: true)
                                           : (context) => UserPost(
                                           theUserData: null,
                                           uid: snap['uid'].toString(),
-                                          index: index),
+                                          index: index,
+                                          fromList: true),
                                     ),
                                   );
                                 },

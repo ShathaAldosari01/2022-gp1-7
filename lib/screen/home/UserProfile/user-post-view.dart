@@ -19,7 +19,9 @@ class UserPost extends StatefulWidget {
   final uid;
   final index;
   final theUserData;
-  const UserPost({Key? key, required this.uid, required this.index, required this.theUserData}) : super(key: key);
+  final fromList;
+  final listInfo;
+  const UserPost({Key? key, required this.uid, required this.index, required this.theUserData, this.fromList, this.listInfo}) : super(key: key);
 
   @override
   _UserPostState createState() => _UserPostState();
@@ -34,16 +36,29 @@ class _UserPostState extends State<UserPost> {
   String phoneNumber ="";
   String _launchUrl="https://www.google.com";
   var isContentShow = [];
+  bool isFromList = false;
+  var listData = {};
+  var userData = [];
+  List<bool> _isloaded = [];
+  var homePosts;
 
   @override
   void initState() {
+
     if(widget.theUserData==null){
       getTheData();
     }
+
     else
       setState(() {
         theUserData = widget.theUserData;
         _isTheUserLoaded = true;
+      });
+
+    if(widget.fromList!= null && widget.listInfo !=null)
+      setState(() {
+        isFromList = true;
+        listData = widget.listInfo;
       });
     super.initState();
   }
@@ -71,6 +86,70 @@ class _UserPostState extends State<UserPost> {
     }
   }
 
+  /* get data method */
+  getData(puid,index) async {
+    try {
+      if (puid != null) {
+        var userSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(puid)
+            .get();
+
+        if (userSnap.data() != null) {
+          userData[index] = (userSnap.data()!);
+          setState(() {
+            _isloaded[index] = true;
+          });
+          print("done");
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
+
+  Future loadPost() async{
+    print("hi 1");
+    setState(() {
+      _isloaded = [];
+      userData = [];
+    });
+    print("hi 2");
+    getTheData();
+    print("hi 3");
+    setState(() {
+      homePosts = FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', whereIn: theUserData['following']).snapshots();
+    });
+    print("hi 4");
+    StreamBuilder(
+        stream: homePosts,
+        builder: (context,
+            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+
+          int len = snapshot.data?.docs.length??0;
+          for(int i = 0 ; i < len ; i++){
+            _isloaded.add(false);
+            userData.add('');
+          }
+          for(int i = 0 ; i < len ; i++){
+            if(!_isloaded[i]) {
+              getData(snapshot.data!.docs[i].data()['uid'], i);
+            }
+          }
+
+          return SizedBox();
+        }
+    );
+
+
+  }
 
   deletePost(String postId) async {
     try {
@@ -163,14 +242,16 @@ class _UserPostState extends State<UserPost> {
             color: Palette.backgroundColor, //change your color here
           ),
           centerTitle: true,
-          title: _isTheUserLoaded
-              ? Text(theUserData['name'],
+          title:
+
+          Text(isFromList?listData["Title"]:
+          _isTheUserLoaded?theUserData['name']:"",
             style: TextStyle(
               color: Palette.backgroundColor,
               fontWeight: FontWeight.bold,
               fontSize: 24,
             ),
-          ):SizedBox()
+          )
       ),
 
       body:  !_isTheUserLoaded?
@@ -183,7 +264,15 @@ class _UserPostState extends State<UserPost> {
         ),
       ):
       StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('posts').orderBy("datePublished", descending: true).where('uid', isEqualTo:widget.uid).snapshots(),
+          stream: isFromList?
+          FirebaseFirestore.instance.collection('posts')
+          // .orderBy("datePublished", descending: true)
+              .where('postId',  whereIn: listData['postId'])
+              .snapshots()
+          :FirebaseFirestore.instance.collection('posts')
+              .orderBy("datePublished", descending: true)
+              .where('uid', isEqualTo:widget.uid)
+              .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
 
@@ -197,7 +286,8 @@ class _UserPostState extends State<UserPost> {
               return Center(
                 child: Container(
                   child: Text(
-                    "User have no posts yet!",
+                    isFromList?"No post has been added yet!"
+                    :"User have no posts yet!",
                     style: TextStyle(
                       color: Palette.textColor,
                       fontSize: 20,
