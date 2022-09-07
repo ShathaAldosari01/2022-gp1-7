@@ -6624,18 +6624,18 @@ class _AddPostPageState extends State<AddPostPage> {
         isButtonActive[0] = true;
       });
       setState(() {
-        locationAdress = place?.description ?? " ";
-        int index = locationAdress?.indexOf(',') ?? 0,//1
-            index2 = locationAdress?.indexOf('-') ?? 0;
+        locationAdress = place.description ?? " ";
+        int index = locationAdress.indexOf(',') ,//1
+            index2 = locationAdress.indexOf('-');
         if(index ==-1)
           index = index2;
         else if(index2!= -1 && index2 < index)
           index = index2;
         if(index!=-1) {
           locationName = locationAdress.substring(0, index);
-          int index3 = locationAdress.indexOf(country, index + 1) ?? 0;
+          int index3 = locationAdress.indexOf(country, index + 1);
           if(index3 != -1)
-            city =  index ==index2?locationAdress!.substring(0, index3 - 2) ?? "":locationAdress!.substring(0, index3 - 1) ?? "";
+            city =  index ==index2?locationAdress.substring(0, index3 - 2):locationAdress.substring(0, index3 - 1);
           print(city);
         }
         int index4 = city.lastIndexOf(","),
@@ -6649,11 +6649,11 @@ class _AddPostPageState extends State<AddPostPage> {
           city = city.substring(index4 + 2);
       });
       setState(() {
-        locationTypes = place?.types ?? [];
+        locationTypes = place.types;
         if (locationTypes.indexOf("establishment") != -1)
-          locationTypes.removeAt(locationTypes!.indexOf("establishment"));
+          locationTypes.removeAt(locationTypes.indexOf("establishment"));
         if (locationTypes.indexOf("point_of_interest") != -1)
-          locationTypes.removeAt(locationTypes!.indexOf("point_of_interest"));
+          locationTypes.removeAt(locationTypes.indexOf("point_of_interest"));
 
         for (int i = 1; i < locationTypes.length; i++) {
           devHightType += 47;

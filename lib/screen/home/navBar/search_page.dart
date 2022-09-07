@@ -72,11 +72,20 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 child: (snapshot.data! as dynamic).docs[index]['username'].toString().isNotEmpty?
                 ListTile(
-                  leading: CircleAvatar(
+                  leading: (snapshot.data! as dynamic).docs[index]['photoPath']!="no"?
+                  CircleAvatar(
                     backgroundImage: NetworkImage(
                       (snapshot.data! as dynamic).docs[index]['photoPath'],
                     ),
                     radius: 16,
+                  ):CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.8),
+                    radius: 16,
+                    child: Icon(
+                      Icons.account_circle_sharp,
+                      color: Colors.grey,
+                      size: 35,
+                    ),
                   ),
                   title: Text(
                     (snapshot.data! as dynamic).docs[index]['username'],

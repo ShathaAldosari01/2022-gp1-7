@@ -11,6 +11,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
 import 'package:gp1_7_2022/screen/home/Lists/addList.dart';
 import 'package:gp1_7_2022/screen/home/NavigationBar/navbar.dart';
 import 'package:gp1_7_2022/screen/home/TimeLine/ImageDisplayer.dart';
+import 'package:gp1_7_2022/screen/home/TimeLine/home_page.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editBio.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editName.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editUsername.dart';
@@ -23,11 +24,15 @@ import 'package:gp1_7_2022/screen/auth/signup/userAuth/signupConfirmationCode.da
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupBirthday.dart';
 import 'package:gp1_7_2022/screen/auth/signup/userInfo/signupUsername.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
+import 'package:gp1_7_2022/screen/home/UserProfile/Profile_Page.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
 import 'package:gp1_7_2022/screen/home/addPost/ContentOfPost.dart';
 import 'package:gp1_7_2022/screen/home/addPost/AddPostPage.dart';
+import 'package:gp1_7_2022/screen/home/navBar/empty.dart';
+import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
 import 'package:gp1_7_2022/screen/home/navBar/navigationBar.dart';
 import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
+import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
 
 
 

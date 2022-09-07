@@ -25,25 +25,23 @@ class FollowButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton(
       onPressed: function,
-      child: Expanded(
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
-          //style
-          decoration: BoxDecoration(
-            color: backgroundColor,
-            border: Border.all(
-              color: borderColor,
-            ),
-            borderRadius: BorderRadius.circular(5),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: horizontal, vertical: vertical),
+        //style
+        decoration: BoxDecoration(
+          color: backgroundColor,
+          border: Border.all(
+            color: borderColor,
           ),
-          alignment: Alignment.center,
-          child: Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+          borderRadius: BorderRadius.circular(5),
+        ),
+        alignment: Alignment.center,
+        child: Text(
+          text,
+          style: TextStyle(
+            color: textColor,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
           ),
         ),
       ),
