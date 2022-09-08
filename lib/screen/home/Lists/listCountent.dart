@@ -40,13 +40,11 @@ class _ListCountentState extends State<ListCountent> {
 
         setState(() {
           listData = userSnap.data()!;
-          print("Hello");
-          tags = listData['Tags'];
-          print("bye");
-          postIds = listData['postIds'];
-          print("in postIds");
+
+          tags = listData['Tags']??[];
+          postIds = listData['postIds']??[];
+
           _isloaded = true;
-          print("_isloaded");
 
 
         });
@@ -78,7 +76,7 @@ class _ListCountentState extends State<ListCountent> {
     }
   }
 
- /* deleteList(String ListID) async {
+  deleteList(String ListID) async {
     try {
       await FireStoreMethods().deleteList(ListID);
       showSnackBar(context, "List was deleted successfully!");
@@ -88,7 +86,7 @@ class _ListCountentState extends State<ListCountent> {
         err.toString(),
       );
     }
-  } */
+  }
 
   var userId;//the user visiting the page
   var listData = {};
@@ -180,6 +178,7 @@ class _ListCountentState extends State<ListCountent> {
                 children: [
                   /*title*/
                   _isloaded?
+                  listData['Title']!=""?
                   Container(
                     margin: EdgeInsets.fromLTRB(10, 5,2,5),
                     child: Text(
@@ -189,7 +188,7 @@ class _ListCountentState extends State<ListCountent> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  )
+                  ):SizedBox()
 
                   : Container(
                     width: 100,
@@ -225,7 +224,7 @@ class _ListCountentState extends State<ListCountent> {
               ),
 
               /*username of the owner of the list*/
-              _isUserLoaded?
+              _isUserLoaded?userData["username"]!=""?
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     child: Text(
@@ -235,7 +234,7 @@ class _ListCountentState extends State<ListCountent> {
                         color: Palette.darkGray,
                       ),
                     ),
-                  )
+                  ): SizedBox()
 
               :Container(
                 width: 100,
@@ -253,6 +252,7 @@ class _ListCountentState extends State<ListCountent> {
 
               /*des*/
               _isloaded?
+              listData['Description']!=""?
               Container(
                 margin: EdgeInsets.fromLTRB(10, 0, 10, 3),
                 child: Text(
@@ -262,8 +262,9 @@ class _ListCountentState extends State<ListCountent> {
                     color: Palette.darkGray,
                   ),
                 ),
-              )
+              ): SizedBox()
 
+              /*loading*/
               :Container(
                 width: 100,
                 child: LinearProgressIndicator(
@@ -277,12 +278,13 @@ class _ListCountentState extends State<ListCountent> {
               /*end of des*/
 
               /*tags*/
-              _isloaded?
+              _isloaded? tags.isNotEmpty?
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 6),
                     child: Wrap(
                       children: tags.map((tag) {
-                        tag = tag.substring(1);
+                        if (tag.toString().length>1)
+                          tag = tag.substring(1);
                         return Container(
                           margin: EdgeInsets.symmetric(vertical: 3),
                           child: Container(
@@ -301,7 +303,7 @@ class _ListCountentState extends State<ListCountent> {
                         );
                       }).toList(),
                     ),
-                  )
+                  ):SizedBox()
               :Container(
                 width: 100,
                 child: LinearProgressIndicator(
@@ -383,7 +385,7 @@ class _ListCountentState extends State<ListCountent> {
               ),
 
               /*posts*/
-              _isloaded?
+              _isloaded? postIds.isNotEmpty?
               FutureBuilder(
                 future: FirebaseFirestore.instance
                     .collection('posts')
@@ -537,6 +539,15 @@ class _ListCountentState extends State<ListCountent> {
                   );
                 },
               )
+              :Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                child: Text(
+                    "No post has been save yet!",
+                  style: TextStyle(
+                    color: Palette.darkGray
+                  ),
+                ),
+              )
               /*loading*/
               :Container(
                 margin: EdgeInsets.all(27),
@@ -623,7 +634,7 @@ class _ListCountentState extends State<ListCountent> {
                       ),
                       onPressed: () {
                         Navigator.pop(context);
-                       //  deleteList(ListId);
+                        deleteList(ListId);
                         //to do :
                         //it should be deleted in every user who save this list
                         //users > userid > listIds > delete listId
