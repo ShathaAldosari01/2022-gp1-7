@@ -162,7 +162,7 @@ class _UserPostState extends State<UserPost> {
     }
   }
 
-  buildProfile(String profilePhoto) {
+  buildProfile(String profilePhoto, int index) {
     return SizedBox(
       width: 50,
       height: 50,
@@ -172,7 +172,10 @@ class _UserPostState extends State<UserPost> {
             context,
             MaterialPageRoute(
               builder:
-                  (context) => Profile_page(uid: theUserData['uid'].toString(),),
+                  isFromList?(context) => Profile_page(
+                    uid: userData[index]['uid'].toString(),
+                  )
+                  :(context) => Profile_page(uid: theUserData['uid'].toString(),),
             ),
           );
         },
@@ -253,11 +256,11 @@ class _UserPostState extends State<UserPost> {
           stream: isFromList?
           FirebaseFirestore.instance.collection('posts')
           // .orderBy("datePublished", descending: true)
-              .where('postId',  whereIn: listData['postId'])
+              .where('postId',  whereIn: listData['postIds'])
               .snapshots()
           :FirebaseFirestore.instance.collection('posts')
               .orderBy("datePublished", descending: true)
-              .where('uid', isEqualTo:widget.uid)
+              .where('uid', isEqualTo :widget.uid)
               .snapshots(),
           builder: (context,
               AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
@@ -266,6 +269,17 @@ class _UserPostState extends State<UserPost> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
+            }
+
+            int len = snapshot.data?.docs.length ?? 0;
+            for (int i = 0; i < len; i++) {
+              _isloaded.add(false);
+              userData.add('');
+            }
+            for (int i = 0; i < len; i++) {
+              if (!_isloaded[i]) {
+                getData(snapshot.data!.docs[i].data()['uid'], i);
+              }
             }
 
             if (snapshot.data == null) {
@@ -380,7 +394,37 @@ class _UserPostState extends State<UserPost> {
                                                 SizedBox(height: 5),
 
                                                 /*username*/
-                                                InkWell(
+                                                isFromList?
+                                                _isloaded[index]
+                                                    ? InkWell(
+                                                  onTap: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => Profile_page(
+                                                          uid: userData[index]['uid'].toString(),
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  child: Text(
+                                                    "@" + userData[index]['username'].toString(),
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      color: Palette.backgroundColor,
+                                                      fontWeight: FontWeight.bold,
+                                                    ),
+                                                  ),
+                                                )
+                                                    : Container(
+                                                  width: 100,
+                                                  child: LinearProgressIndicator(
+                                                    minHeight: 15,
+                                                    backgroundColor: Colors.black.withOpacity(0.3),
+                                                    valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                                                  ),
+                                                )
+                                                :InkWell(
                                                   onTap: (){
                                                     Navigator.push(
                                                       context,
@@ -454,7 +498,18 @@ class _UserPostState extends State<UserPost> {
                                                     height:7,
                                                   ),
                                                   /*profile img*/
-                                                  buildProfile(theUserData['photoPath'].toString()) ,
+                                                  isFromList?
+                                                  _isloaded[index]?buildProfile(userData[index]['photoPath'].toString(), index):
+                                                  Container(
+                                                    margin: EdgeInsets.all(32),
+                                                    child: CircularProgressIndicator(
+                                                      backgroundColor: Palette.lightgrey,
+                                                      valueColor:
+                                                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                                                    ),
+                                                  )
+                                                      :
+                                                  buildProfile(theUserData['photoPath'].toString(), 0) ,
                                                   Column(
                                                     children: [
                                                       SizedBox(
@@ -766,12 +821,17 @@ class _UserPostState extends State<UserPost> {
                                                         context,
                                                         MaterialPageRoute(
                                                           builder:
-                                                              (context) => Profile_page(uid: theUserData['uid'].toString(), ),
+                                                              isFromList? (context) => Profile_page(
+                                                                uid: userData[index]['uid'].toString(),
+                                                              )
+                                                              :(context) => Profile_page(uid: theUserData['uid'].toString(), ),
                                                         ),
                                                       );
                                                     },
                                                     child: Text(
-                                                      "@"+theUserData['username'].toString(),
+                                                      isFromList?
+                                                      "@" + userData[index]['username'].toString()
+                                                      :"@"+theUserData['username'].toString(),
                                                       style: TextStyle(
                                                         fontSize: 16,
                                                         color: Palette.backgroundColor,
@@ -819,7 +879,9 @@ class _UserPostState extends State<UserPost> {
                                                     height: 7,
                                                   ),
                                                   /*profile img*/
-                                                  buildProfile(theUserData['photoPath'].toString()),
+                                                  isFromList?
+                                                  buildProfile(userData[index]['photoPath'].toString(), index)
+                                                  :buildProfile(theUserData['photoPath'].toString(),0),
                                                   Column(
                                                     children: [
 

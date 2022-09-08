@@ -125,6 +125,7 @@ class _ListCountentState extends State<ListCountent> {
                 }),
 
             /*more*/
+            listData["uid"]==FirebaseAuth.instance.currentUser!.uid ?
             InkWell(
               onTap: (){
                 onMore(widget.listId, listData["uid"]);
@@ -134,7 +135,7 @@ class _ListCountentState extends State<ListCountent> {
                 size: 30,
                 color: Palette.textColor,
               ),
-            ),
+            ):SizedBox(),
             /*end of more*/
 
           ],
@@ -476,6 +477,7 @@ class _ListCountentState extends State<ListCountent> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
+                              FirebaseAuth.instance.currentUser!.uid== listData["uid"]?
                               InkWell(
                                 onTap: () {
                                   if(FirebaseAuth.instance.currentUser!.uid == listData["uid"])
@@ -492,7 +494,7 @@ class _ListCountentState extends State<ListCountent> {
                                     size: 18,
                                   ),
                                 ),
-                              )
+                              ):SizedBox()
                             ],
                           ),
                           Column(
