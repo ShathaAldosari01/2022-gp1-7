@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../config/palette.dart';
 import '../../../Widgets/refresh_widget.dart';
@@ -25,7 +24,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //to open link
   var uid = FirebaseAuth.instance.currentUser!.uid;
-  late Future<void> _launched;
   var homePosts;
   var userData = [];
   var theUserData = {};
@@ -33,6 +31,8 @@ class _HomePageState extends State<HomePage> {
   String phoneNumber = "";
   List<bool> _isloaded = [];
   var isContentShow = [];
+  //database
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -558,7 +558,12 @@ class _HomePageState extends State<HomePage> {
                                                               onTap: (){
                                                                 addPostToList(snapshot.data!.docs[index].data()["postId"].toString() );
                                                               },
-                                                              child: Icon(
+                                                              child: isSaved(snapshot.data!.docs[index].data()["listIds"],theUserData['listIds'])?
+                                                              Icon(
+                                                                Icons.playlist_add_check,
+                                                                size: 30,
+                                                                color: Palette.backgroundColor,
+                                                              ):Icon(
                                                                 Icons.playlist_add,
                                                                 size: 30,
                                                                 color: Palette.backgroundColor,
@@ -1231,7 +1236,7 @@ class _HomePageState extends State<HomePage> {
                       data.toString().indexOf("Title:", startTitleIndex + 1) +
                           7;
                   endTitleIndex =
-                      data.toString().indexOf(", Tags:", endTitleIndex + 1);
+                      data.toString().indexOf(", users:", endTitleIndex + 1);
 
                   //list id
                   if (startIdIndex != -1 && endIdIndex != -1)
@@ -1295,6 +1300,11 @@ class _HomePageState extends State<HomePage> {
                               onTap: () {
                                 print("before");
                                 print(e.isInList);
+                                /*update to the the database*/
+                                if(e.isInList)
+                                  addPostToDatabase(postId, e.id);
+                                else
+                                  addPostToDatabase(postId, e.id);
                                 setState(() {
                                   e.isInList = !e.isInList;
                                 });
@@ -1486,6 +1496,52 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+
+  void addPostToDatabase(String postId, String listId) async{
+    /*todo add to database*/
+    try {
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+      print(uid);
+      await _firestore.collection("posts").doc(postId).update({
+        'listIds': FieldValue.arrayUnion([listId]),
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    try {
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+      print(uid);
+      await _firestore.collection("Lists").doc(listId).update({
+        'postIds': FieldValue.arrayUnion([postId]),
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
+
+  isSaved( postListIds, userListIds) {
+    //if post listIds in user listIds then true
+    bool isSave = false;
+    if(postListIds!= null && userListIds!= null){
+
+      for (var ulid in userListIds) {
+        /*check if the post id exist? */
+        isSave = postListIds.contains(ulid);
+        if(isSave){
+          break;
+        }
+      }
+
+    }
+
+    return isSave;
+
+  }
+
+
 }
 
 class Cut {

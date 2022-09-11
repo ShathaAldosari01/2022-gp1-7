@@ -34,6 +34,7 @@ class Post {
 
   /*likes*/
   final likes;
+  final listIds;
 
   const Post(
       {
@@ -70,6 +71,7 @@ class Post {
 
         /*likes*/
         required this.likes,
+        required this.listIds,
       });
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -109,6 +111,7 @@ class Post {
 
       /*likes*/
       likes: snapshot["likes"],
+      listIds: snapshot["listIds"],
     );
   }
 
@@ -146,5 +149,6 @@ class Post {
 
     /*likes*/
     "likes": likes,
+    "listIds": listIds,
   };
 }

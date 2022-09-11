@@ -73,8 +73,9 @@ class FireStoreMethods {
         isCoverPage: isCoverPage,
         counter: counter,
 
-        /*likes*/
+        /*likes and list*/
         likes: [],
+        listIds: [],
       );
 
       _firestore.collection("posts").doc(postId).set(
