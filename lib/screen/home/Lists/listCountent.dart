@@ -483,7 +483,9 @@ class _ListCountentState extends State<ListCountent> {
                                   if(FirebaseAuth.instance.currentUser!.uid == listData["uid"])
                                   onMorePost(
                                       snap["postId"].toString(),
-                                      listData["uid"]);
+                                      listData["uid"],
+                                      widget.listId,
+                                  );
                                 },
                                 child: Container(
                                   padding:
@@ -659,7 +661,7 @@ class _ListCountentState extends State<ListCountent> {
     );
   }
 
-  void onMorePost(String postId, puid) {
+  void onMorePost(String postId, puid, listId) {
     showModalBottomSheet(
         context: context,
         builder: (context) {
@@ -667,7 +669,7 @@ class _ListCountentState extends State<ListCountent> {
             color: Color(0xFF737373),
             height: 180 / 3 + 22,
             child: Container(
-              child: onMorePressedPost(postId, puid),
+              child: onMorePressedPost(postId, puid, listId),
               decoration: BoxDecoration(
                 color: Palette.backgroundColor,
                 borderRadius: BorderRadius.only(
@@ -680,7 +682,7 @@ class _ListCountentState extends State<ListCountent> {
         });
   }
 
-  Column onMorePressedPost(String postId, puid) {
+  Column onMorePressedPost(String postId, puid, listId) {
     return Column(
       children: [
         ListTile(
@@ -688,52 +690,35 @@ class _ListCountentState extends State<ListCountent> {
               ? Icon(Icons.delete)
               : Icon(Icons.flag),
           title: (FirebaseAuth.instance.currentUser!.uid == puid)
-              ? Text("Delete post from List")
+              ? Text("Remove post from List")
               : Text("Report post"),
-          onTap: () {
+          onTap: () async {
             Navigator.pop(context);
-            print("delete");
-            if (FirebaseAuth.instance.currentUser!.uid == puid) {
-              Alert(
-                  context: context,
-                  title: "Are you sure you want to delete this post from the list?",
-                  desc:
-                  "The post will be permanently deleted from your list. You can't undo this action.",
-                  buttons: [
-                    DialogButton(
-                      color: Palette.grey,
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(
-                            color: Palette.backgroundColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    DialogButton(
-                      color: Palette.red,
-                      child: const Text(
-                        "Delete",
-                        style: TextStyle(
-                            color: Palette.backgroundColor,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      onPressed: () {
-                        //delete post from list todo
-                      },
-                    )
-                  ]).show();
-            } else {
-              Alert(
-                context: context,
-                title: "Report Post",
-                desc:
-                "Report post will be implemented next release stay tuned!",
-              ).show();
+
+            print("Remove");
+            print("postId");
+            print(postId);
+            print("listId");
+            print(listId);
+
+            try {
+              var uid = FirebaseAuth.instance.currentUser!.uid;
+              print(uid);
+              await _firestore.collection("posts").doc(postId).update({
+                'listIds': FieldValue.arrayRemove([listId]),
+              });
+            } catch (e) {
+              print(e);
+            }
+
+            try {
+              var uid = FirebaseAuth.instance.currentUser!.uid;
+              print(uid);
+              await _firestore.collection("Lists").doc(listId).update({
+                'postIds': FieldValue.arrayRemove([postId]),
+              });
+            } catch (e) {
+              print(e);
             }
           },
         )

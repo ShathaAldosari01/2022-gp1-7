@@ -1294,38 +1294,38 @@ class _HomePageState extends State<HomePage> {
                 return StatefulBuilder(
                     builder: (BuildContext context, setState) => Column(
                       children: listIdTitle.map((e) {
-                        return Column(
-                          children: [
-                            ListTile(
-                              onTap: () {
-                                print("before");
-                                print(e.isInList);
-                                /*update to the the database*/
+                        return ListTile(
+                          onTap: () {
+                            print("before");
+                            print(e.isInList);
+                            /*update to the the database*/
+                            if(e.isInList)
+                              removePostToDatabase(postId, e.id);
+                            else
+                              addPostToDatabase(postId, e.id);
+                            setState(() {
+                              e.isInList = !e.isInList;
+                            });
+                            print("after");
+                            print(e.isInList);
+                          },
+                          leading: Checkbox(
+                              value: e.isInList,
+                              onChanged: (bool? value) {
                                 if(e.isInList)
-                                  addPostToDatabase(postId, e.id);
+                                  removePostToDatabase(postId, e.id);
                                 else
                                   addPostToDatabase(postId, e.id);
                                 setState(() {
-                                  e.isInList = !e.isInList;
+                                  e.isInList = value!;
                                 });
-                                print("after");
-                                print(e.isInList);
-                              },
-                              leading: Checkbox(
-                                  value: e.isInList,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      e.isInList = value!;
-                                    });
-                                  }),
-                              title: Text(
-                                e.title,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                ),
-                              ),
+                              }),
+                          title: Text(
+                            e.title,
+                            style: TextStyle(
+                              fontSize: 20,
                             ),
-                          ],
+                          ),
                         );
                       }).toList(),
                     )
@@ -1516,6 +1516,36 @@ class _HomePageState extends State<HomePage> {
         'postIds': FieldValue.arrayUnion([postId]),
       });
     } catch (e) {
+      print(e);
+    }
+  }
+
+  void removePostToDatabase(String postId, String listId) async{
+
+    print("postId");
+    print(postId);
+    print("listId");
+    print(listId);
+
+    try {
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+      print(uid);
+      await _firestore.collection("posts").doc(postId).update({
+        'listIds': FieldValue.arrayRemove([listId]),
+      });
+    } catch (e) {
+      print("someting went wrong in removing post from list in post");
+      print(e);
+    }
+
+    try {
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+      print(uid);
+      await _firestore.collection("Lists").doc(listId).update({
+        'postIds': FieldValue.arrayRemove([postId]),
+      });
+    } catch (e) {
+      print("someting went wrong in removing post from list in list");
       print(e);
     }
   }
