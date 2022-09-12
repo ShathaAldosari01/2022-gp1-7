@@ -20,4 +20,6 @@ class Palette {
   static const Color orange = Color(0xFFf5d5c8);
   static const Color darkGray = Color(0xFF575757);
   static const Color darkBlue = Color(0xFF03045E);
+  static const Color subtitle = Color(0xff878787);
 }
+

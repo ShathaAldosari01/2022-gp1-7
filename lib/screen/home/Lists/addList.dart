@@ -53,7 +53,7 @@ class _AddListState extends State<AddList> {
       String res = await FireStoreMethods().uploadList(uid, CoverPath, Description, ListID, Title, Access, Tags, postIds, users);
       if(res== "success"){
 
-        showSnackBar(context, "Posted!");
+        showSnackBar(context, "List has been created successfully!");
       }else{
         showSnackBar(context, res);
       }
@@ -323,7 +323,7 @@ class _AddListState extends State<AddList> {
                                         onPressed: () {
                                           /*go to home page*/
                                           Navigator.pushNamed(
-                                              context, '/navigationBar');
+                                              context, '/Profile_Page');
                                         },
                                         gradient: const LinearGradient(colors: [
                                           Palette.red,
@@ -331,7 +331,7 @@ class _AddListState extends State<AddList> {
                                         ]))
                                   ]).show();
                             else
-                              Navigator.pushNamed(context, '/navigationBar');
+                              Navigator.pushNamed(context, '/Profile_Page');
                           }),
 
                       /*title (Add Post)*/
@@ -909,7 +909,7 @@ class _AddListState extends State<AddList> {
                   ),
                   /*end of photo*/
 
-                  /*access*/
+                  /*privacy*/
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -954,7 +954,7 @@ class _AddListState extends State<AddList> {
                           Container(
                             margin:EdgeInsets.only(left: 10),
                             child: Text(
-                              "Access",
+                              "Privacy",
                               style: TextStyle(
                                 color: Palette.textColor,
                                 fontWeight: FontWeight.w500,
@@ -1180,7 +1180,7 @@ class _AddListState extends State<AddList> {
     print(CoverPath);
     print("final");
     /*go home */
-    Navigator.pushNamed(context, '/navigationBar');
+    Navigator.pushNamed(context, '/Profile_Page');
   }
 
 
