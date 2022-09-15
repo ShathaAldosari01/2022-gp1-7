@@ -892,18 +892,22 @@ class _Profile_pageState extends State<Profile_page> {
                                                   Palette.buttonColor,
                                                   Palette.nameColor
                                                 ])),
-                                        //doceration dont work
+
                                         height: size.height / 4.45,
                                         width: size.width - 20,
                                         child: snap['Cover'] != ""
                                             ? Container(
-                                            //doceration dont work
                                               child: ClipRRect(
                                               borderRadius:BorderRadius.circular(20) ,
-                                                child: Image(
-                                                  image: NetworkImage(
-                                                      snap['Cover']),
-                                                  fit: BoxFit.fitWidth,
+                                                child: ColorFiltered(
+                                                  colorFilter:
+                                                  ColorFilter.mode(Colors.black.withOpacity(0.3),
+                                                      BlendMode.darken),
+                                                  child: Image(
+                                                    image: NetworkImage(
+                                                        snap['Cover']),
+                                                    fit: BoxFit.fitWidth,
+                                                  ),
                                                 ),
                                               ),
                                             )
@@ -923,8 +927,7 @@ class _Profile_pageState extends State<Profile_page> {
                                                     Palette.nameColor
                                                   ])),
                                               child: Column(
-                                                crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
+                                                crossAxisAlignment: CrossAxisAlignment.stretch,
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
                                                   Container(
