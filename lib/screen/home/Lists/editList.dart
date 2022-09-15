@@ -41,7 +41,7 @@ class _EditListState extends State<EditList> {
         });
       }
 //append value to description
-      if (widget.listData["Description"].toString().isNotEmpty) {
+      if (widget.listData["Description"] != null && widget.listData["Description"].toString().isNotEmpty) {
         setState(() {
           _descriptionController = TextEditingController(
               text: widget.listData["Description"].toString());
@@ -60,7 +60,8 @@ class _EditListState extends State<EditList> {
     }
 
     //append value to tags
-    if (widget.listData["Tags"].isNotEmpty) {
+    if (widget.listData["Tags"] != null && widget.listData["Tags"].isNotEmpty) {
+      print("Shatha");
       String tagsString = "";
       for (var t in widget.listData["Tags"]) {
         tagsString += t + " ";
@@ -80,8 +81,13 @@ class _EditListState extends State<EditList> {
           isButtonActive = istagsNotEmpty;
         });
       });
-    } else
+    } else {
       _tagsController = TextEditingController();
+      setState(() {
+        _isloaded = true;
+      });
+    }
+
 
     //append value to privacy
     if (widget.listData["Access"].toString().isNotEmpty) {
@@ -200,12 +206,12 @@ class _EditListState extends State<EditList> {
                     ]))
               ]).show();
         }
-       else
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => ListCountent(
-                    listId: widget.listData["ListID"])));
+        else
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ListCountent(
+                      listId: widget.listData["ListID"])));
         return false;
       },
 
@@ -309,30 +315,30 @@ class _EditListState extends State<EditList> {
         ),
         //fix overload error
         resizeToAvoidBottomInset: false,
-        body: Column(
+        body: ListView(
           children: [
             /*cover img*/
             _isloaded
                 ? CoverPath != ""
-                    ?
-                    /*show img*/
-                    Container(
-                        height: 100,
-                        width: size.width,
-                        child: Image(
-                          image: NetworkImage(CoverPath),
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : SizedBox()
-                /*loading*/
+                ?
+            /*show img*/
+            Container(
+              height: 100,
+              width: size.width,
+              child: Image(
+                image: NetworkImage(CoverPath),
+                fit: BoxFit.cover,
+              ),
+            )
+                : SizedBox()
+            /*loading*/
                 : Container(
-                    margin: EdgeInsets.all(27),
-                    child: CircularProgressIndicator(
-                      backgroundColor: Palette.lightgrey,
-                      valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                    ),
-                  ),
+              margin: EdgeInsets.all(27),
+              child: CircularProgressIndicator(
+                backgroundColor: Palette.lightgrey,
+                valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
+              ),
+            ),
             /*end of cover img*/
 
             /*change cover image*/
@@ -342,47 +348,47 @@ class _EditListState extends State<EditList> {
               child: Center(
                 child: CoverPath != ""
                     ? InkWell(
-                        onTap: () {
-                          onMore();
-                        },
-                        child: Container(
-                          margin: EdgeInsets.only(top: 5),
-                          child: Text(
-                            "Change/remove cover image",
+                    onTap: () {
+                      onMore();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(top: 5),
+                      child: Text(
+                        "Change/remove cover image",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Palette.link,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                    ))
+                    : InkWell(
+                  child: Container(
+                      width: size.width,
+                      height: 100,
+                      color: Palette.grey,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.add_photo_alternate,
+                            color: Palette.backgroundColor,
+                            size: 50,
+                          ),
+                          Text(
+                            "Add cover image",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                                color: Palette.link,
+                                color: Palette.backgroundColor,
                                 fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                        ))
-                    : InkWell(
-                        child: Container(
-                            width: size.width,
-                            height: 100,
-                            color: Palette.grey,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(
-                                  Icons.add_photo_alternate,
-                                  color: Palette.backgroundColor,
-                                  size: 50,
-                                ),
-                                Text(
-                                  "Add cover image",
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Palette.backgroundColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                )
-                              ],
-                            )),
-                        onTap: () {
-                          selectCoverImage();
-                        },
-                      ),
+                                fontSize: 16),
+                          )
+                        ],
+                      )),
+                  onTap: () {
+                    selectCoverImage();
+                  },
+                ),
               ),
             ),
             //end of change cover image
@@ -457,7 +463,7 @@ class _EditListState extends State<EditList> {
                         decoration: InputDecoration(
                           hintText: "",
                           hintStyle:
-                              TextStyle(fontSize: 18.0, color: Palette.grey),
+                          TextStyle(fontSize: 18.0, color: Palette.grey),
                         ),
                       ),
                     ),
@@ -491,7 +497,7 @@ class _EditListState extends State<EditList> {
                               isContentChanged[1] = true;
                             }
                             else
-                            isContentChanged[1] = false;
+                              isContentChanged[1] = false;
                           });
                         },
 
@@ -525,7 +531,7 @@ class _EditListState extends State<EditList> {
                         decoration: InputDecoration(
                           hintText: "Description",
                           hintStyle:
-                              TextStyle(fontSize: 18.0, color: Palette.grey),
+                          TextStyle(fontSize: 18.0, color: Palette.grey),
                         ),
                       ),
                     ),
@@ -555,7 +561,7 @@ class _EditListState extends State<EditList> {
                           /*change the val of pass*/
                           setState(() {
                             tags = val;
-                              isContentChanged[2] = true;
+                            isContentChanged[2] = true;
                           });
                           //process tags
                           int numOfTags = 0;
@@ -612,7 +618,7 @@ class _EditListState extends State<EditList> {
                         decoration: InputDecoration(
                           hintText: "Tags",
                           hintStyle:
-                              TextStyle(fontSize: 18.0, color: Palette.grey),
+                          TextStyle(fontSize: 18.0, color: Palette.grey),
                         ),
                       ),
                     ),
@@ -648,7 +654,7 @@ class _EditListState extends State<EditList> {
                         //design
                         decoration: InputDecoration(
                           hintStyle:
-                              TextStyle(fontSize: 18.0, color: Palette.grey),
+                          TextStyle(fontSize: 18.0, color: Palette.grey),
                         ),
                       ),
                     ),
@@ -666,13 +672,13 @@ class _EditListState extends State<EditList> {
                       borderRadius: BorderRadius.all(Radius.circular(8.0)),
                       gradient: isContentChanged[0] || isContentChanged[1] || isContentChanged[2] || isContentChanged[3] || isContentChanged[4]
                           ? LinearGradient(colors: [
-                              Palette.buttonColor,
-                              Palette.nameColor,
-                            ])
+                        Palette.buttonColor,
+                        Palette.nameColor,
+                      ])
                           : LinearGradient(colors: [
-                              Palette.buttonDisableColor,
-                              Palette.nameDisablColor,
-                            ]),
+                        Palette.buttonDisableColor,
+                        Palette.nameDisablColor,
+                      ]),
                     ),
                     /* button */
                     child: ButtonTheme(
@@ -681,44 +687,44 @@ class _EditListState extends State<EditList> {
                       child: FlatButton(
                         onPressed: !isContentChanged[0] && !isContentChanged[1] && !isContentChanged[2] && !isContentChanged[3] &&  !isContentChanged[4]
                             ? () {
-                                showSnackBar(
-                                    context, "Content has not been modified");
-                              }
+                          showSnackBar(
+                              context, "Content has not been modified");
+                        }
                             : () async {
-                                /*make sure of the validation*/
-                                if (!_titleKey.currentState!.validate()) {
-                                  return;
-                                }
-                                if (!_descriptionKey.currentState!.validate()) {
-                                  return;
-                                }
-                                if (!_tagsKey.currentState!.validate()) {
-                                  return;
-                                }
-                                if (!_privacyKey.currentState!.validate()) {
-                                  return;
-                                }
+                          /*make sure of the validation*/
+                          if (!_titleKey.currentState!.validate()) {
+                            return;
+                          }
+                          if (!_descriptionKey.currentState!.validate()) {
+                            return;
+                          }
+                          if (!_tagsKey.currentState!.validate()) {
+                            return;
+                          }
+                          if (!_privacyKey.currentState!.validate()) {
+                            return;
+                          }
 
-                                setState(() {
-                                  _isloaded = true;
-                                  loadingWhenUpdated = true;
-                                });
+                          setState(() {
+                            _isloaded = true;
+                            loadingWhenUpdated = true;
+                          });
 
-                                bool isSave = true;
-                                while (true) {
-                                  await Future.delayed(const Duration(seconds: 1),
-                                      () {
-                                    if (loading) {
-                                      isSave = false;
-                                    }
-                                  });
-                                  if (isSave) {
-                                    submitEditList();
-                                    break;
+                          bool isSave = true;
+                          while (true) {
+                            await Future.delayed(const Duration(seconds: 1),
+                                    () {
+                                  if (loading) {
+                                    isSave = false;
                                   }
-                                  isSave = true;
-                                }
-                              },
+                                });
+                            if (isSave) {
+                              submitEditList();
+                              break;
+                            }
+                            isSave = true;
+                          }
+                        },
                         child: Text(
                           'Save',
                           style: TextStyle(
@@ -766,9 +772,9 @@ class _EditListState extends State<EditList> {
       children: [
         ListTile(
           leading:
-              Icon(CoverPath != "" ? Icons.edit : Icons.add_photo_alternate),
+          Icon(CoverPath != "" ? Icons.edit : Icons.add_photo_alternate),
           title:
-              Text(CoverPath != "" ? "Change cover image" : "Add cover image"),
+          Text(CoverPath != "" ? "Change cover image" : "Add cover image"),
           onTap: () {
             Navigator.pop(context);
             selectCoverImage();
@@ -776,48 +782,48 @@ class _EditListState extends State<EditList> {
         ),
         CoverPath != ""
             ? ListTile(
-                leading: Icon(Icons.delete),
-                title: Text("Remove cover image"),
-                onTap: () {
-                  Navigator.pop(context);
-                  Alert(
-                      context: context,
-                      title: "Are you sure you want to remove the cover image?",
-                      desc: "You can't undo this action.",
-                      buttons: [
-                        DialogButton(
-                          color: Palette.grey,
-                          child: Text(
-                            "Cancel",
-                            style: TextStyle(
-                                color: Palette.backgroundColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                        ),
-                        DialogButton(
-                          color: Palette.red,
-                          child: const Text(
-                            "Remove",
-                            style: TextStyle(
-                                color: Palette.backgroundColor,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          ),
-                          onPressed: () async {
-                            Navigator.pop(context);
-                            setState(() {
-                              CoverPath = "";
-                              isContentChanged[4] = true;
-                            });
-                          },
-                        )
-                      ]).show();
-                },
-              )
+          leading: Icon(Icons.delete),
+          title: Text("Remove cover image"),
+          onTap: () {
+            Navigator.pop(context);
+            Alert(
+                context: context,
+                title: "Are you sure you want to remove the cover image?",
+                desc: "You can't undo this action.",
+                buttons: [
+                  DialogButton(
+                    color: Palette.grey,
+                    child: Text(
+                      "Cancel",
+                      style: TextStyle(
+                          color: Palette.backgroundColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  DialogButton(
+                    color: Palette.red,
+                    child: const Text(
+                      "Remove",
+                      style: TextStyle(
+                          color: Palette.backgroundColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      setState(() {
+                        CoverPath = "";
+                        isContentChanged[4] = true;
+                      });
+                    },
+                  )
+                ]).show();
+          },
+        )
             : SizedBox()
       ],
     );
@@ -931,7 +937,7 @@ class _EditListState extends State<EditList> {
   }
 
   submitEditList() async {
-      isContentChanged[0] = false;
+    isContentChanged[0] = false;
     /*Data update*/
     try {
       await _firestore.collection("Lists").doc(widget.listData["ListID"]).update({
@@ -949,11 +955,14 @@ class _EditListState extends State<EditList> {
       loadingWhenUpdated = false;
     });
 
-      /*go to list content*/
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => ListCountent(
-                  listId: widget.listData["ListID"])));
+    /*go to list content*/
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => ListCountent(
+                listId: widget.listData["ListID"])));
+    showSnackBar(
+        context, "Content has been modified successfully!");
   }
 }
+
