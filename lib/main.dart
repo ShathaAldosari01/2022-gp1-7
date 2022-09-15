@@ -88,8 +88,8 @@ void main() async {
 
 
     /*add post*/
-    '/addPost':(context)=>AddPostPage(),
-    '/ContentOfPost':(context)=>ContentOfPost(),
+    '/addPost':(context)=> AddPostPage(),
+    '/ContentOfPost':(context)=> ContentOfPost(),
 
 
 
@@ -144,3 +144,4 @@ class _MainPageState extends State<MainPage> {
     );
   }
 }
+
