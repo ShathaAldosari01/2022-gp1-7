@@ -1159,9 +1159,9 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  Column addPostToListPressed(String postId, listIds, uid) {
+  ListView addPostToListPressed(String postId, listIds, uid) {
     // var x = retrieveListData(listIds, uid);
-    return Column(
+    return ListView(
       children: [
         Container(
             margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
@@ -1300,9 +1300,9 @@ class _HomePageState extends State<HomePage> {
                             print(e.isInList);
                             /*update to the the database*/
                             if(e.isInList)
-                              removePostToDatabase(postId, e.id);
+                              removePostToDatabase(postId, e.id, e.title);
                             else
-                              addPostToDatabase(postId, e.id);
+                              addPostToDatabase(postId, e.id, e.title);
                             setState(() {
                               e.isInList = !e.isInList;
                             });
@@ -1313,9 +1313,9 @@ class _HomePageState extends State<HomePage> {
                               value: e.isInList,
                               onChanged: (bool? value) {
                                 if(e.isInList)
-                                  removePostToDatabase(postId, e.id);
+                                  removePostToDatabase(postId, e.id, e.title);
                                 else
-                                  addPostToDatabase(postId, e.id);
+                                  addPostToDatabase(postId, e.id, e.title);
                                 setState(() {
                                   e.isInList = value!;
                                 });
@@ -1497,7 +1497,7 @@ class _HomePageState extends State<HomePage> {
         ),
       );
 
-  void addPostToDatabase(String postId, String listId) async{
+  void addPostToDatabase(String postId, String listId, String title) async{
     /*todo add to database*/
     try {
       var uid = FirebaseAuth.instance.currentUser!.uid;
@@ -1515,12 +1515,14 @@ class _HomePageState extends State<HomePage> {
       await _firestore.collection("Lists").doc(listId).update({
         'postIds': FieldValue.arrayUnion([postId]),
       });
+      Navigator.pop(context);
+      showSnackBar(context, "Post has been added to "+title+" successfully!");
     } catch (e) {
       print(e);
     }
   }
 
-  void removePostToDatabase(String postId, String listId) async{
+  void removePostToDatabase(String postId, String listId, String title) async{
 
     print("postId");
     print(postId);
@@ -1533,8 +1535,10 @@ class _HomePageState extends State<HomePage> {
       await _firestore.collection("posts").doc(postId).update({
         'listIds': FieldValue.arrayRemove([listId]),
       });
+      Navigator.pop(context);
+      showSnackBar(context, "Post has been removed from "+title+"  successfully!");
     } catch (e) {
-      print("someting went wrong in removing post from list in post");
+      print("something went wrong in removing post from list in post");
       print(e);
     }
 
@@ -1545,7 +1549,7 @@ class _HomePageState extends State<HomePage> {
         'postIds': FieldValue.arrayRemove([postId]),
       });
     } catch (e) {
-      print("someting went wrong in removing post from list in list");
+      print("something went wrong in removing post from list in list");
       print(e);
     }
   }
