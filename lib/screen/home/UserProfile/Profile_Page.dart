@@ -844,12 +844,14 @@ class _Profile_pageState extends State<Profile_page> {
                       : SizedBox(),
 
                   //the user created and added list
+                  FirebaseAuth.instance.currentUser!.uid != widget.uid?
                   Container(
                     margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                     child: FutureBuilder(
                         future: FirebaseFirestore.instance
                             .collection('Lists')
                             .where('uid', isEqualTo: widget.uid)
+                            .where('Access', isEqualTo:true)
                             .get(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
@@ -1002,7 +1004,167 @@ class _Profile_pageState extends State<Profile_page> {
                             },
                           );
                         }),
-                  )
+                  ) :
+                      //if the same user they shoul;d view their private lists
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                    child: FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('Lists')
+                            .where('uid', isEqualTo: widget.uid)
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return GridView.builder(
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: (snapshot.data! as dynamic).docs.length,
+                            gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
+                              crossAxisSpacing: 0.5,
+                              mainAxisSpacing: 12,
+                              childAspectRatio: 2,
+                            ),
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot snap =
+                              (snapshot.data! as dynamic).docs[index];
+
+                              return Stack(
+                                children: [
+                                  Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                            ),
+                                            gradient: LinearGradient(
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                                colors: [
+                                                  Palette.buttonColor,
+                                                  Palette.nameColor
+                                                ])),
+
+                                        height: size.height / 4.45,
+                                        width: size.width - 20,
+                                        child: snap['Cover'] != ""
+                                            ? Container(
+                                          child: ClipRRect(
+                                            borderRadius:BorderRadius.circular(20) ,
+                                            child: ColorFiltered(
+                                              colorFilter:
+                                              ColorFilter.mode(Colors.black.withOpacity(0.3),
+                                                  BlendMode.darken),
+                                              child: Image(
+                                                image: NetworkImage(
+                                                    snap['Cover']),
+                                                fit: BoxFit.fitWidth,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                            : Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.only(
+                                                bottomLeft: Radius.circular(20),
+                                                bottomRight: Radius.circular(20),
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20),
+                                              ),
+                                              gradient: LinearGradient(
+                                                  begin: Alignment.bottomCenter,
+                                                  end: Alignment.topCenter,
+                                                  colors: [
+                                                    Palette.buttonColor,
+                                                    Palette.nameColor
+                                                  ])),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                                            mainAxisAlignment: MainAxisAlignment.end,
+                                            children: [
+                                              Container(
+                                                margin: EdgeInsets.symmetric(
+                                                    horizontal: 4),
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 6,
+                                                    vertical: 7),
+                                                child: Text(
+                                                  snap['Title'],
+                                                  textAlign: TextAlign.left,
+                                                  style: TextStyle(
+                                                    fontWeight:
+                                                    FontWeight.bold,
+                                                    color: Palette
+                                                        .backgroundColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ListCountent(
+                                              listId: snap["ListID"],
+                                            )),
+                                      );
+                                    },
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                    CrossAxisAlignment.stretch,
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    ListCountent(
+                                                      listId: snap["ListID"],
+                                                    )),
+                                          );
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 6, vertical: 7),
+                                          child: snap['Cover'] != ""
+                                              ? Text(
+                                            snap['Title'],
+                                            style: TextStyle(
+                                                color: Palette
+                                                    .backgroundColor,
+                                                fontWeight:
+                                                FontWeight.bold),
+                                          )
+                                              : SizedBox(),
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              );
+                            },
+                          );
+                        }),
+                  ),
                 ],
               ),
             )
