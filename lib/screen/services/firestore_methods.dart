@@ -7,44 +7,40 @@ class FireStoreMethods {
 
   //upload post
   Future<String> uploadPost(
-      /*user info*/
-      String uid,
+    /*user info*/
+    String uid,
 
+    /*place type*/
+    String country,
+    String city,
+    List<String> categories,
+    String type,
+    String locationId,
 
-      /*place type*/
-      String country,
-      String city,
-      List<String> categories,
-      String type,
-      String locationId,
+    /*place info*/
+    String postId,
+    String name,
+    String address,
+    double rating,
 
-      /*place info*/
-      String postId,
-      String name,
-      String address,
-      double rating,
+    /*visibility*/
+    String visibility,
 
-      /*visibility*/
-      String visibility,
+    /*date*/
+    DateTime dateVisit,
 
-      /*date*/
-      DateTime dateVisit,
-
-      /*content*/
-      String title,
-      List<String> bodies,
-      List<String> imgsPath,
-      List<bool> isCoverPage,
-      int counter,
-
-      ) async{
+    /*content*/
+    String title,
+    List<String> bodies,
+    List<String> imgsPath,
+    List<bool> isCoverPage,
+    int counter,
+  ) async {
     String res = "some error occurred";
-    try{
-
+    try {
       Post post = Post(
         /*user info*/
         uid: uid,
-
 
         /*place type*/
         country: country,
@@ -79,10 +75,10 @@ class FireStoreMethods {
       );
 
       _firestore.collection("posts").doc(postId).set(
-        post.toJson(),
-      );
+            post.toJson(),
+          );
       res = "success";
-    }catch(err){
+    } catch (err) {
       res = err.toString();
     }
     return res;
@@ -111,15 +107,14 @@ class FireStoreMethods {
     }
     return res;
   }
-  Future<void> followUser(
-      String uid,
-      String followId
-      ) async {
+
+  Future<void> followUser(String uid, String followId) async {
     try {
-      DocumentSnapshot snap = await _firestore.collection('users').doc(uid).get();
+      DocumentSnapshot snap =
+          await _firestore.collection('users').doc(uid).get();
       List following = (snap.data()! as dynamic)['following'];
 
-      if(following.contains(followId)) {
+      if (following.contains(followId)) {
         await _firestore.collection('users').doc(followId).update({
           'followers': FieldValue.arrayRemove([uid])
         });
@@ -136,38 +131,31 @@ class FireStoreMethods {
           'following': FieldValue.arrayUnion([followId])
         });
       }
-
-    } catch(e) {
+    } catch (e) {
       print(e.toString());
     }
   }
 
-
   //upload List
   Future<String> uploadList(
-      //NOTE: i didnt add post ID in code because this will be done after the list is created and when add post to list is done
-      /*user info*/
-      String uid,
+    /*user info*/
+    String uid,
 
-      /*List info*/
-      final String Cover,
-      final String Description,
-      final String ListID,
-      final String Title,
-      final bool Access,
-      final List<String> Tags,
-      final List<String> postIds,
-      final List <String> users,
-
-
-      ) async{
+    /*List info*/
+    final String Cover,
+    final String Description,
+    final String ListID,
+    final String Title,
+    final bool Access,
+    final List<String> Tags,
+    final List<String> postIds,
+    final List<String> users,
+  ) async {
     String res = "some error occurred";
-    try{
-
+    try {
       Lists List = Lists(
         /*user info*/
         uid: uid,
-
 
         /*List info*/
         Cover: Cover,
@@ -178,14 +166,13 @@ class FireStoreMethods {
         Tags: Tags,
         postIds: postIds,
         users: users,
-
       );
 
       _firestore.collection("Lists").doc(ListID).set(
-        List.toJson(),
-      );
+            List.toJson(),
+          );
       res = "success";
-    }catch(err){
+    } catch (err) {
       res = err.toString();
     }
     return res;
