@@ -1193,6 +1193,9 @@ class _Profile_pageState extends State<Profile_page> {
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
+                            return const Center(
+                              child: SizedBox() ,
+                            );
 
                           }
                           return GridView.builder(
@@ -1274,7 +1277,7 @@ class _Profile_pageState extends State<Profile_page> {
                                                     horizontal: 6,
                                                     vertical: 7),
                                                 child: Text(
-                                                  snap['Title'],
+                                                  snap['Title']+ " (Added List)",
                                                   textAlign: TextAlign.left,
                                                   style: TextStyle(
                                                     fontWeight:
