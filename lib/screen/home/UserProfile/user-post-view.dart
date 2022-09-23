@@ -14,6 +14,7 @@ import '../../auth/signup/userInfo/photo/utils.dart';
 import '../../services/firestore_methods.dart';
 import '../Lists/addList.dart';
 import '../TimeLine/ImageDisplayer.dart';
+import '../TimeLine/comment_screen.dart';
 import '../UserProfile/Profile_Page.dart';
 
 class UserPost extends StatefulWidget {
@@ -547,7 +548,7 @@ class _UserPostState extends State<UserPost> {
 
                                                         /*comment*/
                                                         InkWell(
-                                                          onTap: (){},
+                                                          onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
                                                           child: Icon(
                                                             Icons.comment,
                                                             size: 30,
@@ -920,7 +921,7 @@ class _UserPostState extends State<UserPost> {
 
                                                         /*comment*/
                                                         InkWell(
-                                                          onTap: (){},
+                                                          onTap: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
                                                           child: Icon(
                                                             Icons.comment,
                                                             size: 30,

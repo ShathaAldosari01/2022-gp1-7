@@ -29,6 +29,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
   #alert:
   rflutter_alert: ^2.0.4
 
@@ -54,7 +55,7 @@ dependencies:
 
   #for search
   flutter_staggered_grid_view: ^0.6.1
-
+  get: ^4.6.5
 
 
 

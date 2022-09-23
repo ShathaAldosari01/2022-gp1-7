@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/screen/auth/signup/Questions/genderQuestion.dart';
@@ -11,6 +12,7 @@ import 'package:gp1_7_2022/screen/auth/signup/userInfo/photo/photo.dart';
 import 'package:gp1_7_2022/screen/home/Lists/addList.dart';
 import 'package:gp1_7_2022/screen/home/NavigationBar/navbar.dart';
 import 'package:gp1_7_2022/screen/home/TimeLine/ImageDisplayer.dart';
+import 'package:gp1_7_2022/screen/home/TimeLine/comment_screen.dart';
 import 'package:gp1_7_2022/screen/home/TimeLine/home_page.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editBio.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editName.dart';
@@ -39,6 +41,15 @@ import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // var homePosts;
+  // var theUserData;
+  // var uid = FirebaseAuth.instance.currentUser!.uid;
+  // var userSnap =
+  // await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  // theUserData = userSnap.data()!;
+  // homePosts = FirebaseFirestore.instance
+  //     .collection('posts')
+  //     .snapshots();
   runApp(MaterialApp(
     /*remove degage*/
       debugShowCheckedModeBanner: false,
@@ -91,7 +102,8 @@ void main() async {
     '/addPost':(context)=> AddPostPage(),
     '/ContentOfPost':(context)=> ContentOfPost(),
 
-
+    /*comments*/
+   // '/comment_screen':(context)=> CommentScreen(cid: homePosts.id,),
 
     /*create list*/
     '/createList':(context)=> AddList(pid:null),

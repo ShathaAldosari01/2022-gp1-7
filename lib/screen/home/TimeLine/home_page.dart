@@ -15,6 +15,7 @@ import '../../services/firestore_methods.dart';
 import '../Lists/addList.dart';
 import '../UserProfile/Profile_Page.dart';
 import 'ImageDisplayer.dart';
+import 'comment_screen.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -286,6 +287,7 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection:
                       Axis.horizontal, //to scroll horizontally
                       itemBuilder: (context, indexIn) {
+                        
                         return indexIn == 0
                             ? InkWell(
                           onTap: () {
@@ -528,7 +530,7 @@ class _HomePageState extends State<HomePage> {
 
                                                             /*comment*/
                                                             InkWell(
-                                                              onTap: (){},
+                                                              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
                                                               child: Icon(
                                                                 Icons.comment,
                                                                 size: 30,
@@ -1003,7 +1005,7 @@ class _HomePageState extends State<HomePage> {
 
                                                         /*comment*/
                                                         InkWell(
-                                                          onTap: (){},
+                                                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
                                                           child: Icon(
                                                             Icons.comment,
                                                             size: 30,
@@ -1585,4 +1587,3 @@ class Cut {
 
   Cut({required this.id, required this.title, required this.isInList});
 }
-
