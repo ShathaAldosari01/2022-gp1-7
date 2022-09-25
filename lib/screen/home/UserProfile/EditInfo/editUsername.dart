@@ -120,8 +120,7 @@ class _EditUsernameState extends State<EditUsername> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                FlatButton(
-                  textColor: Palette.textColor,
+                TextButton(
                   onPressed: () {
                     Navigator.of(context).popAndPushNamed('/editProfile');
                   },
@@ -129,8 +128,13 @@ class _EditUsernameState extends State<EditUsername> {
                     "Cancel",
                     style: TextStyle(fontSize: 18),
                   ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.transparent)
+                            )
+                        )
+                    )
                 ),
                 Padding(
                   padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
@@ -143,8 +147,7 @@ class _EditUsernameState extends State<EditUsername> {
                     ),
                   ),
                 ),
-                FlatButton(
-                  textColor: Palette.link,
+                TextButton(
                   onPressed: isButtonActive &&
                           userData['username'].toString().compareTo(username) !=
                               0
@@ -162,8 +165,13 @@ class _EditUsernameState extends State<EditUsername> {
                             ? Palette.link
                             : Palette.grey),
                   ),
-                  shape:
-                      CircleBorder(side: BorderSide(color: Colors.transparent)),
+                    style: ButtonStyle(
+                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                                side: BorderSide(color: Colors.transparent)
+                            )
+                        )
+                    )
                 ),
               ],
             ),

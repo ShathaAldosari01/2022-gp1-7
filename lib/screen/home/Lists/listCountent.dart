@@ -345,7 +345,7 @@ class _ListCountentState extends State<ListCountent> {
                           child: ButtonTheme(
                             height: 50.0,
                             minWidth: 350,
-                            child: FlatButton(
+                            child: TextButton(
                               onPressed: () async {
                                 /*go to edit list*/
 

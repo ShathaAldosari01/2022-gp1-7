@@ -267,7 +267,7 @@ class _SignupUsernameState extends State<SignupUsername> {
                               child: ButtonTheme(
                                 height: 50.0,
                                 minWidth: 350,
-                                child: FlatButton(
+                                child: TextButton(
                                   onPressed:
                                       isButtonActive ? goQues1Page : null,
                                   child: Text(

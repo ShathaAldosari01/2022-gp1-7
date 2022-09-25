@@ -279,7 +279,7 @@ class _nameState extends State<name> {
                               child: ButtonTheme(
                                 height: 50.0,
                                 minWidth: 350,
-                                child: FlatButton(
+                                child: TextButton(
                                   onPressed:
                                       isButtonActive ? goBirthPage : null,
                                   child: Text(

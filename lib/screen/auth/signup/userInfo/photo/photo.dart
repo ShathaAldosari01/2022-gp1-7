@@ -269,7 +269,7 @@ class _PhotoState extends State<Photo> {
                           child: ButtonTheme(
                             height: 50.0,
                             minWidth: 350,
-                            child: FlatButton(
+                            child: TextButton(
                               onPressed:
                                   /*select image */
                                   selectImage,
@@ -297,7 +297,7 @@ class _PhotoState extends State<Photo> {
                           child: ButtonTheme(
                             height: 50.0,
                             minWidth: 350,
-                            child: FlatButton(
+                            child: TextButton(
                               onPressed: () {
                                 /*go to sign up page*/
                                 if (adult == 1)

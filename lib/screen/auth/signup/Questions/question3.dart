@@ -144,7 +144,7 @@ class _question3State extends State<question3> {
               child: ButtonTheme(
                 height: 50.0,
                 minWidth: 350,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: isButtonActive
                       ? () {
                           checkboxes.forEach((checkbox) async {

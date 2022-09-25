@@ -1046,7 +1046,7 @@ class _AddListState extends State<AddList> {
                     child: ButtonTheme(
                       height: 50.0,
                       minWidth: 350,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed:
 
                         !isButtonActive[0]?(){

@@ -228,7 +228,7 @@ class _ConfirmationCodeState extends State<ConfirmationCode> {
                             child: ButtonTheme(
                               height: 50.0,
                               minWidth: 350,
-                              child: FlatButton(
+                              child: TextButton(
                                 onPressed:canResendEmail?
                                     (){
                                   sendVerificationEmail();

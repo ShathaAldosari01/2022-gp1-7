@@ -156,7 +156,7 @@ class _question1State extends State<question1> {
               child: ButtonTheme(
                 height: 50.0,
                 minWidth: 350,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: isButtonActive
                       ? () {
                           if (this.selectedQuest1.toString().compareTo("No") ==

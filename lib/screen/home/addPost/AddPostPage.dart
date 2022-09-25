@@ -1005,7 +1005,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         child: ButtonTheme(
                           height: 50.0,
                           minWidth: 350,
-                          child: FlatButton(
+                          child: TextButton(
                             onPressed:
                             _selectedCountry.code
                                 .toString()
@@ -6407,7 +6407,7 @@ class _AddPostPageState extends State<AddPostPage> {
                 child: ButtonTheme(
                   height: 50.0,
                   minWidth: 350,
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed:
                     !isButtonActive[0]?(){
                       showSnackBar(context, "You need to choose place first!");

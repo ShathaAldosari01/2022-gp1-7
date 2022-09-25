@@ -214,7 +214,7 @@ class _forget_passwordState extends State<forget_password> {
                 child: ButtonTheme(
                   height: 50.0,
                   minWidth: 350,
-                  child: FlatButton(
+                  child: TextButton(
                     onPressed: isButtonActive
                         ? () async {
                             try {

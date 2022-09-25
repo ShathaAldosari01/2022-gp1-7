@@ -69,7 +69,7 @@ class _Signup_LoginState extends State<Signup_Login> {
               child: ButtonTheme(
                 height: 50.0,
                 minWidth: 350,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {
                     /*go to sign up page*/
                     Navigator.pushNamed(context, '/signup');
@@ -96,7 +96,7 @@ class _Signup_LoginState extends State<Signup_Login> {
               /*button*/
               child: ButtonTheme(
                 height: 50.0,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {
                     /*go to sign up page*/
                     Navigator.pushNamed(context, '/login');

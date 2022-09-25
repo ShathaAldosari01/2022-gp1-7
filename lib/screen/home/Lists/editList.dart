@@ -684,7 +684,7 @@ class _EditListState extends State<EditList> {
                     child: ButtonTheme(
                       height: 50.0,
                       minWidth: 350,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: !isContentChanged[0] && !isContentChanged[1] && !isContentChanged[2] && !isContentChanged[3] &&  !isContentChanged[4]
                             ? () {
                           showSnackBar(

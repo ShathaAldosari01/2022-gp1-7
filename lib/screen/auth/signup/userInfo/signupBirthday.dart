@@ -298,7 +298,7 @@ class _SignupBirthdayState extends State<SignupBirthday> {
                   child: ButtonTheme(
                     height: 50.0,
                     minWidth: 350,
-                    child: FlatButton(
+                    child: TextButton(
                       onPressed: isButtonActive
                           ? () async {
                         /*add to database*/

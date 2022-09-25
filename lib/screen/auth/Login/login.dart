@@ -301,7 +301,7 @@ class _LoginState extends State<Login> {
                     child: ButtonTheme(
                       height: 50.0,
                       minWidth: 350,
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: isButtonActive ? goProfilePage : null,
                         child: const Text(
                           'Log in',
@@ -338,9 +338,10 @@ class _LoginState extends State<Login> {
                                 color: Palette.grey,
                               ),
                             ),
-                            FlatButton(
+                            TextButton(
                               // color: Colors.red,
-                              padding: const EdgeInsets.fromLTRB(0, 0, 30, 0),
+                                style: TextButton.styleFrom(
+                                  padding: const EdgeInsets.fromLTRB(0, 0, 30, 0)),
                               onPressed: () {
                                 Navigator.pushNamed(context, '/signup');
                               },
