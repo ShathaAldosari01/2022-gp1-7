@@ -66,6 +66,30 @@ class _UserPostState extends State<UserPost> {
     super.initState();
   }
 
+
+  Future<void> _toggleFavorite(isFavorited, favoriteCount, postID) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    try {
+      DocumentSnapshot snap =
+      await _firestore.collection('posts').doc(postID).get();
+      List likes = (snap.data()! as dynamic)['likes'];
+
+      if (likes.contains(uid)) {
+        await _firestore.collection('posts').doc(postID).update({
+          'likes': FieldValue.arrayRemove([uid])
+        });
+
+      } else {
+        await _firestore.collection('posts').doc(postID).update({
+          'likes': FieldValue.arrayUnion([uid])
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+  }
+
   /* get data method */
   getTheData() async {
     try {
@@ -519,28 +543,38 @@ class _UserPostState extends State<UserPost> {
                                                         SizedBox(
                                                           height: 7,
                                                         ),
-                                                        /*like*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.favorite_border,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
+                                                        //like
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                                              child: IconButton(
+                                                                  padding: EdgeInsets.zero,
+                                                                  constraints: BoxConstraints(),
+                                                                  alignment: Alignment.centerRight,
+                                                                  icon: (snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid)
+                                                                      ? const Icon(Icons.favorite, size: 30)
+                                                                      : const Icon(Icons.favorite_border, size: 30)),
+                                                                  color: Palette.backgroundColor,
+                                                                  onPressed: (){
+                                                                    bool isFavorited = !snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid);
+                                                                    int favoriteCount = snapshot.data!.docs[index].data()['likes'].length;
+                                                                    String postID = snapshot.data!.docs[index].data()['postId'].toString();
+                                                                    _toggleFavorite(isFavorited, favoriteCount, postID);
+                                                                  }
+                                                              ),
+                                                            ),
+                                                            SizedBox(width: 5)
+                                                          ],
                                                         ),
-
                                                         SizedBox(
-                                                          height: 4,
+                                                          child: Text (snapshot.data!.docs[index].data()['likes'].length.toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Palette.backgroundColor
+                                                            ),),
                                                         ),
-
-                                                        Text(
-                                                          "200",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of like*/
+                                                        //end of like
 
                                                         SizedBox(
                                                           height: 7,
@@ -892,28 +926,38 @@ class _UserPostState extends State<UserPost> {
                                                         SizedBox(
                                                           height: 7,
                                                         ),
-                                                        /*like*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.favorite_border,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
+                                                        //like
+                                                        Row(
+                                                          children: [
+                                                            Container(
+                                                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                                              child: IconButton(
+                                                                  padding: EdgeInsets.zero,
+                                                                  constraints: BoxConstraints(),
+                                                                  alignment: Alignment.centerRight,
+                                                                  icon: (snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid)
+                                                                      ? const Icon(Icons.favorite, size: 30)
+                                                                      : const Icon(Icons.favorite_border, size: 30)),
+                                                                  color: Palette.backgroundColor,
+                                                                  onPressed: (){
+                                                                    bool isFavorited = !snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid);
+                                                                    int favoriteCount = snapshot.data!.docs[index].data()['likes'].length;
+                                                                    String postID = snapshot.data!.docs[index].data()['postId'].toString();
+                                                                    _toggleFavorite(isFavorited, favoriteCount, postID);
+                                                                  }
+                                                              ),
+                                                            ),
+                                                            SizedBox(width: 5)
+                                                          ],
                                                         ),
-
                                                         SizedBox(
-                                                          height: 4,
+                                                          child: Text (snapshot.data!.docs[index].data()['likes'].length.toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Palette.backgroundColor
+                                                            ),),
                                                         ),
-
-                                                        Text(
-                                                          "200",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of like*/
+                                                        //end of like
 
                                                         SizedBox(
                                                           height: 7,
