@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
 import '../../../model/comment.dart';
+import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'comment_screen.dart';
@@ -73,7 +74,9 @@ class CommentController extends GetxController {
         await firestore.collection('posts').doc(postId).get();
         await firestore.collection('posts').doc(postId).update({
           'commentCount': (doc.data()! as dynamic)['commentCount'] + 1,
-        });
+        }
+
+        );
       }
     } catch (e) {
       Get.snackbar(

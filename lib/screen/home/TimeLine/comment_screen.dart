@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'comment_controller.dart';
-// import 'package:timeago/timeago.dart' as timeago;
+
 class CommentScreen extends StatefulWidget {
   final  postId;
    CommentScreen({Key? key, required this.postId}) : super(key: key);
@@ -25,7 +25,6 @@ class _CommentScreenState extends State<CommentScreen> {
 
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    commentController.updatePostId(widget.postId);
     return Scaffold(
       body: SingleChildScrollView(
         child: SizedBox(
@@ -34,9 +33,7 @@ class _CommentScreenState extends State<CommentScreen> {
           child: Column(
             children: [
               Expanded(
-                  child: StreamBuilder<Object>(
-                    stream: null,
-                    builder: (context, snapshot) {
+                  child: Obx(() {
                       return ListView.builder(
                           itemCount: commentController.comments.length,
                           itemBuilder: (context, index) {
@@ -70,11 +67,6 @@ class _CommentScreenState extends State<CommentScreen> {
                               subtitle: Row(
                                 children: [
                                   Text('date',
-                                    style: const TextStyle(fontSize: 12,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700),),
-                                  const SizedBox(width: 10,),
-                                  Text('likes',
                                     style: const TextStyle(fontSize: 12,
                                         color: Colors.black,
                                         fontWeight: FontWeight.w700),),

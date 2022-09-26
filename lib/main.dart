@@ -102,8 +102,6 @@ void main() async {
     '/addPost':(context)=> AddPostPage(),
     '/ContentOfPost':(context)=> ContentOfPost(),
 
-    /*comments*/
-   // '/comment_screen':(context)=> CommentScreen(cid: homePosts.id,),
 
     /*create list*/
     '/createList':(context)=> AddList(pid:null),

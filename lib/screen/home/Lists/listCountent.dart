@@ -371,6 +371,7 @@ class _ListCountentState extends State<ListCountent> {
                                       .doc(widget.listId)
                                       .update({
                                     'users': FieldValue.arrayRemove([userId]),
+
                                   });
                                   //remove list from user
                                   await _firestore
@@ -380,6 +381,13 @@ class _ListCountentState extends State<ListCountent> {
                                     'listIds':
                                         FieldValue.arrayRemove([widget.listId]),
                                   });
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ListCountent(
+                                          listId: widget.listId,
+                                        )),
+                                  );
                                 }
 
                                 /*add*/
@@ -400,6 +408,13 @@ class _ListCountentState extends State<ListCountent> {
                                     'listIds':
                                         FieldValue.arrayUnion([widget.listId]),
                                   });
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ListCountent(
+                                          listId: widget.listId,
+                                        )),
+                                  );
                                 }
                               },
                               child: Text(
