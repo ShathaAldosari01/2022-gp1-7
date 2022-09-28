@@ -5,6 +5,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -15,6 +17,7 @@ import '../../services/firestore_methods.dart';
 import '../Lists/addList.dart';
 import '../UserProfile/Profile_Page.dart';
 import 'ImageDisplayer.dart';
+import 'comment_controller.dart';
 import 'comment_screen.dart';
 
 class HomePage extends StatefulWidget {
@@ -47,7 +50,7 @@ class _HomePageState extends State<HomePage> {
 
   }
 
-
+  CommentController commentController = Get.put(CommentController());
 
   //to open link
   var uid = FirebaseAuth.instance.currentUser!.uid;
@@ -298,7 +301,7 @@ class _HomePageState extends State<HomePage> {
                   PageController(initialPage: 0, viewportFraction: 1),
                   scrollDirection: Axis.vertical, //to scroll vertically
                   itemBuilder: (context, index) {
-                    int len =
+                        int len =
                         snapshot.data!.docs[index].data()['counter'] + 1;
                     for (int i = 0; i < len; i++) {
                       isContentShow[index].add(true);
