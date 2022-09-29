@@ -1195,7 +1195,7 @@ class _HomePageState extends State<HomePage> {
                       height: (180 / 3) + 22 + 200,
                       child: Container(
                         child: addPostToListPressed(
-                            postId, theUserData['listIds'], theUserData["uid"]),
+                            postId, theUserData['listIds'], FirebaseAuth.instance.currentUser!.uid),
                         decoration: BoxDecoration(
                           color: Palette.backgroundColor,
                           borderRadius: BorderRadius.only(

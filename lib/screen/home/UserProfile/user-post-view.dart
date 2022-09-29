@@ -1063,13 +1063,29 @@ class _UserPostState extends State<UserPost> {
     );
   }
 // For adding post to list
-  void addPostToList(String postId) {
+  Future<void> addPostToList(String postId) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    var userData = null;
+    try {
+      if (uid != null) {
+        var userSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .get();
+
+        if (userSnap.data() != null) {
+          userData= (userSnap.data()!);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    }
     showModalBottomSheet(context: context, builder: (context){
       return Container(
         color: Color(0xFF737373),
         height: 180/3+22+200,
         child: Container(
-          child: addPostToListPressed(postId, theUserData['listIds'],theUserData["uid"]),
+          child: addPostToListPressed(postId, userData!['listIds'],uid),
           decoration: BoxDecoration(
             color: Palette.backgroundColor,
             borderRadius: BorderRadius.only(
@@ -1084,6 +1100,7 @@ class _UserPostState extends State<UserPost> {
 
     });
   }
+
   ListView addPostToListPressed(String postId, listIds, uid) {
     // var x = retrieveListData(listIds, uid);
     return ListView(
