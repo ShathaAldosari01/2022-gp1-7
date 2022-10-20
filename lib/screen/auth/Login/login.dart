@@ -377,7 +377,7 @@ class _LoginState extends State<Login> {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         /*go to Profile_Page page*/
-        Navigator.of(context).popUntil((route) => route.isFirst);
+          Navigator.of(context).popUntil((route) => route.isFirst);
       } on FirebaseAuthException catch (e) {
         Alert(
             context: context,

@@ -17,7 +17,6 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../services/firestore_methods.dart';
 import '../Lists/listCountent.dart';
-import '../navBar/navigationBar.dart';
 import 'following.dart';
 import 'user-post-view.dart';
 
@@ -1200,6 +1199,9 @@ class _Profile_pageState extends State<Profile_page> {
                             );
 
                           }
+                          if ((snapshot.data! as dynamic).docs.length ==0)
+                            return Container();
+                          else
                           return GridView.builder(
                             physics: NeverScrollableScrollPhysics(),
                             shrinkWrap: true,
