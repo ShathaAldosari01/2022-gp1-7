@@ -424,12 +424,16 @@ class _HomePageState extends State<HomePage> {
                                                                 ),
                                                               );
                                                             },
-                                                            child: Text(
-                                                              "@" + userData[index]['username'].toString(),
-                                                              style: TextStyle(
-                                                                fontSize: 16,
-                                                                color: Palette.backgroundColor,
-                                                                fontWeight: FontWeight.bold,
+                                                            child: Container(
+                                                              padding: EdgeInsets.all(3),
+                                                              color:  uid == userData[index]['uid'].toString()?Palette.link.withOpacity(0.5):Palette.link.withOpacity(0),
+                                                              child: Text(
+                                                                "@" + userData[index]['username'].toString(),
+                                                                style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  color: Palette.backgroundColor,
+                                                                  fontWeight: FontWeight.bold,
+                                                                ),
                                                               ),
                                                             ),
                                                           )
@@ -933,12 +937,15 @@ class _HomePageState extends State<HomePage> {
                                                             );
                                                           },
                                                           child:
-                                                          Text(
-                                                            "@" + userData[index]['username'].toString(),
-                                                            style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor,
-                                                              fontWeight: FontWeight.bold,
+                                                          Container(
+                                                            color:  uid == userData[index]['uid'].toString()?Palette.link.withOpacity(0.5):Palette.link.withOpacity(0),
+                                                            child: Text(
+                                                              "@" + userData[index]['username'].toString(),
+                                                              style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Palette.backgroundColor,
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
