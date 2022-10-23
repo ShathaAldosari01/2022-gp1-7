@@ -1,11 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../TimeLine/home_page.dart';
-import '../UserProfile/Profile_Page.dart';
-import '../addPost/AddPostPage.dart';
-import '../navBar/lists.dart';
-import '../navBar/search_page.dart';
+import '../../TimeLine/home_page.dart';
+import '../../UserProfile/Profile_Page.dart';
+import '../../addPost/AddPostPage.dart';
+import '../../navBar/lists.dart';
+import '../../navBar/search_page.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';

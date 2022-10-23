@@ -10,6 +10,7 @@ import '../../../Widgets/refresh_widget.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/EditInfo/editProfile.dart';
 import 'package:gp1_7_2022/screen/home/UserProfile/settings.dart';
+import 'package:uuid/uuid.dart';
 
 /*colors */
 import 'package:gp1_7_2022/config/palette.dart';
@@ -55,6 +56,7 @@ class _Profile_pageState extends State<Profile_page> {
     listVis = false;
     postColor = Color(0xff1bd3db);
     listColor = Palette.darkGray;
+    reportController = TextEditingController();
   }
 
   getUser() async {
@@ -187,6 +189,16 @@ class _Profile_pageState extends State<Profile_page> {
 
   Future updateUserData() async {
     getUser();
+  }
+
+  /*reportController*/
+  late TextEditingController reportController;
+
+  @override
+  void dispose() {
+    reportController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -1450,18 +1462,93 @@ class _Profile_pageState extends State<Profile_page> {
                     )
                   ]).show();
             } else {
-              Alert(
-                context: context,
-                title: "Report Post",
-                desc:
-                    "Report post will be implemented next release stay tuned!",
-              ).show();
+              openDialog(postId);
             }
           },
         )
       ],
     );
   }
+
+  void reportPost(String postId, String reason) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    String reportId = const Uuid().v1();
+    try{
+      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason );
+      if(res== "success"){
+
+        showSnackBar(context, "Report has been send successfully!");
+      }else{
+        showSnackBar(context, res);
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future openDialog(String postId) {
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text("Report Post"),
+            content: Container(
+              height:96,
+              child: Column(
+                children: [
+                  Text(
+                    'Let us know more by adding a comment.',
+                    style: TextStyle(
+                        color: Palette.darkGray
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: reportController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: "Comment",
+                    ),
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Palette.grey,
+                  ),
+                ) ,
+                onPressed: (){
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: Text(
+                  "Report",
+                  style: TextStyle(
+                    color: Palette.link,
+                  ),
+                ) ,
+                onPressed: (){
+                  reportPost(postId, reportController.text);
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+
+
+
 }
 
 // function to show following/followers/# of posts

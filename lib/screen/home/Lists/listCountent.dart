@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
+import 'package:uuid/uuid.dart';
 import '../../../Widgets/refresh_widget.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
@@ -27,6 +28,10 @@ class _ListCountentState extends State<ListCountent> {
     /*get data*/
     getListData();
     userId = FirebaseAuth.instance.currentUser!.uid;
+
+    reportController = TextEditingController();
+    super.initState();
+
     super.initState();
   }
 
@@ -60,7 +65,7 @@ class _ListCountentState extends State<ListCountent> {
     try {
       if (uid != null) {
         var userSnap =
-            await FirebaseFirestore.instance.collection('users').doc(uid).get();
+        await FirebaseFirestore.instance.collection('users').doc(uid).get();
 
         setState(() {
           userData = userSnap.data()!;
@@ -99,6 +104,16 @@ class _ListCountentState extends State<ListCountent> {
   //database
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  /*reportController*/
+  late TextEditingController reportController;
+
+  @override
+  void dispose() {
+    reportController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     /*size of screen*/
@@ -106,7 +121,7 @@ class _ListCountentState extends State<ListCountent> {
     return WillPopScope(
       onWillPop: () async {
         /*back page*/
-        Navigator.pushNamed(context, '/Profile_Page');
+        Navigator.pop(context);
         return false;
       },
       child: Scaffold(
@@ -124,26 +139,28 @@ class _ListCountentState extends State<ListCountent> {
                   icon: const Icon(Icons.arrow_back, color: Palette.textColor),
                   onPressed: () {
                     /*back page*/
-                    Navigator.pushNamed(context, '/Profile_Page');
+                    Navigator.pop(context);
                   }),
 
               /*more*/
-              listData["uid"] == FirebaseAuth.instance.currentUser!.uid
-                  ? InkWell(
-                      onTap: () {
-                        onMore(widget.listId, listData["uid"]);
-                      },
-                      child: Icon(
-                        Icons.more_vert,
-                        size: 30,
-                        color: Palette.textColor,
-                      ),
-                    )
-                  : SizedBox(),
+              InkWell(
+                onTap: () {
+                  onMore(widget.listId, listData["uid"]);
+                },
+                child: Icon(
+                  Icons.more_vert,
+                  size: 30,
+                  color: Palette.textColor,
+                ),
+              ),
               /*end of more*/
             ],
           ),
         ),
+
+        //fix overflowed error
+        resizeToAvoidBottomInset: false,
+
         body: RefreshWidget(
           onRefresh: updateListData,
           child: ListView(children: [
@@ -154,26 +171,26 @@ class _ListCountentState extends State<ListCountent> {
                   /*cover img*/
                   _isloaded
                       ? listData["Cover"] != ""
-                          ?
-                          /*show img*/
-                          Container(
-                              height: 100,
-                              width: size.width,
-                              child: Image(
-                                image: NetworkImage(listData["Cover"]),
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : SizedBox()
-                      /*loading*/
+                      ?
+                  /*show img*/
+                  Container(
+                    height: 100,
+                    width: size.width,
+                    child: Image(
+                      image: NetworkImage(listData["Cover"]),
+                      fit: BoxFit.cover,
+                    ),
+                  )
+                      : SizedBox()
+                  /*loading*/
                       : Container(
-                          margin: EdgeInsets.all(27),
-                          child: CircularProgressIndicator(
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                          ),
-                        ),
+                    margin: EdgeInsets.all(27),
+                    child: CircularProgressIndicator(
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                   /*end of cover img*/
 
                   SizedBox(
@@ -184,43 +201,43 @@ class _ListCountentState extends State<ListCountent> {
                       /*title*/
                       _isloaded
                           ? listData['Title'] != ""
-                              ? Container(
-                                  margin: EdgeInsets.fromLTRB(10, 5, 2, 5),
-                                  child: Text(
-                                    "${listData['Title']}",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              : SizedBox()
+                          ? Container(
+                        margin: EdgeInsets.fromLTRB(10, 5, 2, 5),
+                        child: Text(
+                          "${listData['Title']}",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      )
+                          : SizedBox()
                           : Container(
-                              width: 100,
-                              child: LinearProgressIndicator(
-                                minHeight: 15,
-                                backgroundColor: Palette.lightgrey,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Palette.midgrey),
-                              ),
-                            ),
+                        width: 100,
+                        child: LinearProgressIndicator(
+                          minHeight: 15,
+                          backgroundColor: Palette.lightgrey,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Palette.midgrey),
+                        ),
+                      ),
                       /*end of title*/
 
                       /*Access*/
                       _isloaded
                           ? Icon(
-                              listData["Access"]
-                                  ? Icons.public
-                                  : Icons.lock_outline,
-                              color: Palette.textColor)
+                          listData["Access"]
+                              ? Icons.public
+                              : Icons.lock_outline,
+                          color: Palette.textColor)
                           : Container(
-                              margin: EdgeInsets.all(10),
-                              child: CircularProgressIndicator(
-                                backgroundColor: Palette.lightgrey,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Palette.midgrey),
-                              ),
-                            ),
+                        margin: EdgeInsets.all(10),
+                        child: CircularProgressIndicator(
+                          backgroundColor: Palette.lightgrey,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Palette.midgrey),
+                        ),
+                      ),
                       /*end of access*/
                     ],
                   ),
@@ -228,26 +245,26 @@ class _ListCountentState extends State<ListCountent> {
                   /*username of the owner of the list*/
                   _isUserLoaded
                       ? userData["username"] != ""
-                          ? Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                userData["username"],
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Palette.darkGray,
-                                ),
-                              ),
-                            )
-                          : SizedBox()
+                      ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      userData["username"],
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Palette.darkGray,
+                      ),
+                    ),
+                  )
+                      : SizedBox()
                       : Container(
-                          width: 100,
-                          child: LinearProgressIndicator(
-                            minHeight: 15,
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                          ),
-                        ),
+                    width: 100,
+                    child: LinearProgressIndicator(
+                      minHeight: 15,
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                   /*end of username*/
 
                   SizedBox(height: 15),
@@ -255,68 +272,68 @@ class _ListCountentState extends State<ListCountent> {
                   /*des*/
                   _isloaded
                       ? listData['Description'] != ""
-                          ? Container(
-                              margin: EdgeInsets.fromLTRB(10, 0, 10, 3),
-                              child: Text(
-                                listData['Description'],
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Palette.darkGray,
-                                ),
-                              ),
-                            )
-                          : SizedBox()
+                      ? Container(
+                    margin: EdgeInsets.fromLTRB(10, 0, 10, 3),
+                    child: Text(
+                      listData['Description'],
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Palette.darkGray,
+                      ),
+                    ),
+                  )
+                      : SizedBox()
 
-                      /*loading*/
+                  /*loading*/
                       : Container(
-                          width: 100,
-                          child: LinearProgressIndicator(
-                            minHeight: 15,
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                          ),
-                        ),
+                    width: 100,
+                    child: LinearProgressIndicator(
+                      minHeight: 15,
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                   /*end of des*/
 
                   /*tags*/
                   _isloaded
                       ? tags.isNotEmpty
-                          ? Container(
-                              margin: EdgeInsets.symmetric(horizontal: 6),
-                              child: Wrap(
-                                children: tags.map((tag) {
-                                  if (tag.toString().length > 1)
-                                    tag = tag.substring(1);
-                                  return Container(
-                                    margin: EdgeInsets.symmetric(vertical: 3),
-                                    child: Container(
-                                      margin:
-                                          EdgeInsets.symmetric(horizontal: 4),
-                                      color: Colors.amber.withOpacity(0.3),
-                                      child: Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 4, vertical: 4),
-                                        child: Text(
-                                          tag,
-                                          style: TextStyle(),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
+                      ? Container(
+                    margin: EdgeInsets.symmetric(horizontal: 6),
+                    child: Wrap(
+                      children: tags.map((tag) {
+                        if (tag.toString().length > 1)
+                          tag = tag.substring(1);
+                        return Container(
+                          margin: EdgeInsets.symmetric(vertical: 3),
+                          child: Container(
+                            margin:
+                            EdgeInsets.symmetric(horizontal: 4),
+                            color: Colors.amber.withOpacity(0.3),
+                            child: Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 4, vertical: 4),
+                              child: Text(
+                                tag,
+                                style: TextStyle(),
                               ),
-                            )
-                          : SizedBox()
-                      : Container(
-                          width: 100,
-                          child: LinearProgressIndicator(
-                            minHeight: 15,
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                            ),
                           ),
-                        ),
+                        );
+                      }).toList(),
+                    ),
+                  )
+                      : SizedBox()
+                      : Container(
+                    width: 100,
+                    child: LinearProgressIndicator(
+                      minHeight: 15,
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                   /*end of tags*/
 
                   SizedBox(height: 10),
@@ -326,122 +343,122 @@ class _ListCountentState extends State<ListCountent> {
                   _isloaded
                       ?
 
-                      /* done button */
-                      Container(
-                          margin: EdgeInsets.symmetric(
-                              vertical: 30, horizontal: 20),
-                          alignment: Alignment.center,
-                          width: double.infinity,
-                          height: 50.0,
-                          /* button colors */
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8.0)),
-                              gradient: LinearGradient(colors: [
-                                Palette.buttonColor,
-                                Palette.nameColor,
-                              ])),
-                          /* button */
-                          child: ButtonTheme(
-                            height: 50.0,
-                            minWidth: 350,
-                            child: TextButton(
-                              onPressed: () async {
-                                /*go to edit list*/
+                  /* done button */
+                  Container(
+                    margin: EdgeInsets.symmetric(
+                        vertical: 30, horizontal: 20),
+                    alignment: Alignment.center,
+                    width: double.infinity,
+                    height: 50.0,
+                    /* button colors */
+                    decoration: BoxDecoration(
+                        borderRadius:
+                        BorderRadius.all(Radius.circular(8.0)),
+                        gradient: LinearGradient(colors: [
+                          Palette.buttonColor,
+                          Palette.nameColor,
+                        ])),
+                    /* button */
+                    child: ButtonTheme(
+                      height: 50.0,
+                      minWidth: 350,
+                      child: TextButton(
+                        onPressed: () async {
+                          /*go to edit list*/
 
-                                if (listData["uid"] == userId)
-                                  Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  EditList(listData: listData)))
-                                      .then((_) {
-                                    // This block runs when you have returned back to the 1st Page from 2nd.
-                                    setState(() {
-                                      // Call setState to refresh the page.
-                                    });
-                                  });
+                          if (listData["uid"] == userId)
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) =>
+                                        EditList(listData: listData)))
+                                .then((_) {
+                              // This block runs when you have returned back to the 1st Page from 2nd.
+                              setState(() {
+                                // Call setState to refresh the page.
+                              });
+                            });
 
-                                //remove list
+                          //remove list
 
-                                else if (listData["users"].contains(userId)) {
-                                  //remove user from list
-                                  await _firestore
-                                      .collection("Lists")
-                                      .doc(widget.listId)
-                                      .update({
-                                    'users': FieldValue.arrayRemove([userId]),
+                          else if (listData["users"].contains(userId)) {
+                            //remove user from list
+                            await _firestore
+                                .collection("Lists")
+                                .doc(widget.listId)
+                                .update({
+                              'users': FieldValue.arrayRemove([userId]),
 
-                                  });
-                                  //remove list from user
-                                  await _firestore
-                                      .collection("users")
-                                      .doc(userId)
-                                      .update({
-                                    'listIds':
-                                        FieldValue.arrayRemove([widget.listId]),
-                                  });
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ListCountent(
-                                          listId: widget.listId,
-                                        )),
-                                  );
-                                }
+                            });
+                            //remove list from user
+                            await _firestore
+                                .collection("users")
+                                .doc(userId)
+                                .update({
+                              'listIds':
+                              FieldValue.arrayRemove([widget.listId]),
+                            });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListCountent(
+                                    listId: widget.listId,
+                                  )),
+                            );
+                          }
 
-                                /*add*/
+                          /*add*/
 
-                                else {
-                                  //add user in list
-                                  await _firestore
-                                      .collection("Lists")
-                                      .doc(widget.listId)
-                                      .update({
-                                    'users': FieldValue.arrayUnion([userId]),
-                                  });
-                                  //add list in user
-                                  await _firestore
-                                      .collection("users")
-                                      .doc(userId)
-                                      .update({
-                                    'listIds':
-                                        FieldValue.arrayUnion([widget.listId]),
-                                  });
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ListCountent(
-                                          listId: widget.listId,
-                                        )),
-                                  );
-                                }
-                              },
-                              child: Text(
-                                listData["uid"] == userId
-                                    ? 'Edit List'
-                                    : listData["users"].contains(userId)
-                                        ? "Remove List"
-                                        : 'Save List',
-                                style: TextStyle(
-                                  color: Palette.backgroundColor,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                      /*end of button*/
-                      : Container(
-                          width: 100,
-                          child: LinearProgressIndicator(
-                            minHeight: 15,
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                          else {
+                            //add user in list
+                            await _firestore
+                                .collection("Lists")
+                                .doc(widget.listId)
+                                .update({
+                              'users': FieldValue.arrayUnion([userId]),
+                            });
+                            //add list in user
+                            await _firestore
+                                .collection("users")
+                                .doc(userId)
+                                .update({
+                              'listIds':
+                              FieldValue.arrayUnion([widget.listId]),
+                            });
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ListCountent(
+                                    listId: widget.listId,
+                                  )),
+                            );
+                          }
+                        },
+                        child: Text(
+                          listData["uid"] == userId
+                              ? 'Edit List'
+                              : listData["users"].contains(userId)
+                              ? "Remove List"
+                              : 'Save List',
+                          style: TextStyle(
+                            color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
                           ),
                         ),
+                      ),
+                    ),
+                  )
+                  /*end of button*/
+                      : Container(
+                    width: 100,
+                    child: LinearProgressIndicator(
+                      minHeight: 15,
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                   const Divider(
                     color: Palette.darkGray,
                   ),
@@ -449,214 +466,205 @@ class _ListCountentState extends State<ListCountent> {
                   /*posts*/
                   _isloaded
                       ? postIds.isNotEmpty
-                          ? FutureBuilder(
-                              future: FirebaseFirestore.instance
-                                  .collection('posts')
-                                  // .orderBy("datePublished", descending: true)
-                                  .where('postId', whereIn: postIds)
-                                  .get(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                                }
+                      ? FutureBuilder(
+                    future: FirebaseFirestore.instance
+                        .collection('posts')
+                    // .orderBy("datePublished", descending: true)
+                        .where('postId', whereIn: postIds)
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
 
-                                return GridView.builder(
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      (snapshot.data! as dynamic).docs.length,
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 3,
-                                    crossAxisSpacing: 5,
-                                    mainAxisSpacing: 1.5,
-                                    childAspectRatio: 0.6,
-                                  ),
-                                  itemBuilder: (context, index) {
-                                    DocumentSnapshot snap =
-                                        (snapshot.data! as dynamic).docs[index];
+                      return GridView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount:
+                        (snapshot.data! as dynamic).docs.length,
+                        gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3,
+                          crossAxisSpacing: 5,
+                          mainAxisSpacing: 1.5,
+                          childAspectRatio: 0.6,
+                        ),
+                        itemBuilder: (context, index) {
+                          DocumentSnapshot snap =
+                          (snapshot.data! as dynamic).docs[index];
 
-                                    return Stack(
-                                      children: [
-                                        Column(
-                                          children: [
-                                            Container(
-                                              height: (size.width / 3) *
-                                                      (100 / 60) -
-                                                  5.6,
-                                              color: Palette.backgroundColor,
-                                              child: snap['imgsPath'][0] != "no"
-                                                  ? Image(
-                                                      image: NetworkImage(
-                                                          snap['imgsPath'][0]),
-                                                      fit: BoxFit.cover,
-                                                    )
-                                                  : Center(
-                                                      child: Container(
-                                                        color:
-                                                            Palette.buttonColor,
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                                horizontal: 4),
-                                                        padding: EdgeInsets
-                                                            .symmetric(
-                                                                vertical: 2,
-                                                                horizontal: 3),
-                                                        child: Text(
-                                                          snap['title'],
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                          style: TextStyle(
-                                                            fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Palette
-                                                                .textColor,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                            ),
-                                          ],
-                                        ),
-                                        InkWell(
-                                          onTap: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: userData.isNotEmpty
-                                                    ? (context) => UserPost(
-                                                          theUserData: userData,
-                                                          uid: snap['uid']
-                                                              .toString(),
-                                                          index: index,
-                                                          fromList: true,
-                                                          listInfo: listData,
-                                                        )
-                                                    : (context) => UserPost(
-                                                          theUserData: null,
-                                                          uid: snap['uid']
-                                                              .toString(),
-                                                          index: index,
-                                                          fromList: true,
-                                                          listInfo: listData,
-                                                        ),
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            color:
-                                                Colors.black.withOpacity(0.3),
+                          return Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  Container(
+                                    height: (size.width / 3) *
+                                        (100 / 60) -
+                                        5.6,
+                                    color: Palette.backgroundColor,
+                                    child: snap['imgsPath'][0] != "no"
+                                        ? Image(
+                                      image: NetworkImage(
+                                          snap['imgsPath'][0]),
+                                      fit: BoxFit.cover,
+                                    )
+                                        : Center(
+                                      child: Container(
+                                        color:
+                                        Palette.buttonColor,
+                                        margin: EdgeInsets
+                                            .symmetric(
+                                            horizontal: 4),
+                                        padding: EdgeInsets
+                                            .symmetric(
+                                            vertical: 2,
+                                            horizontal: 3),
+                                        child: Text(
+                                          snap['title'],
+                                          textAlign:
+                                          TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight:
+                                            FontWeight.bold,
+                                            color: Palette
+                                                .textColor,
                                           ),
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            FirebaseAuth.instance.currentUser!
-                                                        .uid ==
-                                                    listData["uid"]
-                                                ? InkWell(
-                                                    onTap: () {
-                                                      if (FirebaseAuth
-                                                              .instance
-                                                              .currentUser!
-                                                              .uid ==
-                                                          listData["uid"])
-                                                        onMorePost(
-                                                          snap["postId"]
-                                                              .toString(),
-                                                          listData["uid"],
-                                                          widget.listId,
-                                                        );
-                                                    },
-                                                    child: Container(
-                                                      padding: const EdgeInsets
-                                                              .fromLTRB(
-                                                          20, 4, 0, 20),
-                                                      child: Icon(
-                                                        Icons.more_vert_rounded,
-                                                        color: Palette
-                                                            .backgroundColor,
-                                                        size: 18,
-                                                      ),
-                                                    ),
-                                                  )
-                                                : SizedBox()
-                                          ],
-                                        ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.stretch,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: userData.isNotEmpty
-                                                        ? (context) => UserPost(
-                                                            theUserData:
-                                                                userData,
-                                                            uid: snap['uid']
-                                                                .toString(),
-                                                            index: index,
-                                                            fromList: true)
-                                                        : (context) => UserPost(
-                                                            theUserData: null,
-                                                            uid: snap['uid']
-                                                                .toString(),
-                                                            index: index,
-                                                            fromList: true),
-                                                  ),
-                                                );
-                                              },
-                                              child: Container(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 6, vertical: 7),
-                                                child:
-                                                    snap['imgsPath'][0] != "no"
-                                                        ? Text(
-                                                            snap['title'],
-                                                            style: TextStyle(
-                                                                color: Palette
-                                                                    .backgroundColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold),
-                                                          )
-                                                        : SizedBox(),
-                                              ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    );
-                                  },
-                                );
-                              },
-                            )
-                          : Container(
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Text(
-                                "No post has been save yet!",
-                                style: TextStyle(color: Palette.darkGray),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            )
-                      /*loading*/
+                              InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: userData.isNotEmpty
+                                          ? (context) => UserPost(
+                                        theUserData: userData,
+                                        uid: snap['uid']
+                                            .toString(),
+                                        index: index,
+                                        fromList: true,
+                                        listInfo: listData,
+                                      )
+                                          : (context) => UserPost(
+                                        theUserData: null,
+                                        uid: snap['uid']
+                                            .toString(),
+                                        index: index,
+                                        fromList: true,
+                                        listInfo: listData,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  color:
+                                  Colors.black.withOpacity(0.3),
+                                ),
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      onMorePost(
+                                        snap["postId"]
+                                            .toString(),
+                                        listData["uid"],
+                                        widget.listId,
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets
+                                          .fromLTRB(
+                                          20, 4, 0, 20),
+                                      child: Icon(
+                                        Icons.more_vert_rounded,
+                                        color: Palette
+                                            .backgroundColor,
+                                        size: 18,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.stretch,
+                                mainAxisAlignment:
+                                MainAxisAlignment.end,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: userData.isNotEmpty
+                                              ? (context) => UserPost(
+                                              theUserData:
+                                              userData,
+                                              uid: snap['uid']
+                                                  .toString(),
+                                              index: index,
+                                              fromList: true)
+                                              : (context) => UserPost(
+                                              theUserData: null,
+                                              uid: snap['uid']
+                                                  .toString(),
+                                              index: index,
+                                              fromList: true),
+                                        ),
+                                      );
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 6, vertical: 7),
+                                      child:
+                                      snap['imgsPath'][0] != "no"
+                                          ? Text(
+                                        snap['title'],
+                                        style: TextStyle(
+                                            color: Palette
+                                                .backgroundColor,
+                                            fontWeight:
+                                            FontWeight
+                                                .bold),
+                                      )
+                                          : SizedBox(),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    },
+                  )
                       : Container(
-                          margin: EdgeInsets.all(27),
-                          child: CircularProgressIndicator(
-                            backgroundColor: Palette.lightgrey,
-                            valueColor:
-                                AlwaysStoppedAnimation<Color>(Palette.midgrey),
-                          ),
-                        ),
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Text(
+                      "No post has been save yet!",
+                      style: TextStyle(color: Palette.darkGray),
+                    ),
+                  )
+                  /*loading*/
+                      : Container(
+                    margin: EdgeInsets.all(27),
+                    child: CircularProgressIndicator(
+                      backgroundColor: Palette.lightgrey,
+                      valueColor:
+                      AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                    ),
+                  ),
                   /*end post*/
                 ],
               ),
@@ -709,7 +717,7 @@ class _ListCountentState extends State<ListCountent> {
                   context: context,
                   title: "Are you sure you want to delete your list?",
                   desc:
-                      "Your list will be permanently deleted. You can't undo this action.",
+                  "Your list will be permanently deleted. You can't undo this action.",
                   buttons: [
                     DialogButton(
                       color: Palette.grey,
@@ -744,12 +752,7 @@ class _ListCountentState extends State<ListCountent> {
                     )
                   ]).show();
             } else {
-              Alert(
-                context: context,
-                title: "Report List",
-                desc:
-                    "Report list will be implemented next release stay tuned!",
-              ).show();
+              openDialog(ListId, true);
             }
           },
         )
@@ -787,75 +790,177 @@ class _ListCountentState extends State<ListCountent> {
               : Icon(Icons.flag),
           title: (FirebaseAuth.instance.currentUser!.uid == puid)
               ? Text("Remove post from List")
-              : Text("Report post"),
+              : Text("Report Post"),
           onTap: () async {
             Navigator.pop(context);
 
-            Alert(
-                context: context,
-                title: "Remove",
-                desc: "Are you sure you want to remove the post from list?",
-                buttons: [
-                  DialogButton(
-                    color: Palette.grey,
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                          color: Palette.backgroundColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
+            if(FirebaseAuth.instance.currentUser!.uid == puid)
+              Alert(
+                  context: context,
+                  title: "Remove",
+                  desc: "Are you sure you want to remove the post from list?",
+                  buttons: [
+                    DialogButton(
+                      color: Palette.grey,
+                      child: Text(
+                        "Cancel",
+                        style: TextStyle(
+                            color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  DialogButton(
-                    color: Palette.red,
-                    child: const Text(
-                      "Remove",
-                      style: TextStyle(
-                          color: Palette.backgroundColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                    onPressed: () async {
-                      Navigator.pop(context);
-                      setState(() {
-                        postIds.remove(postId);
-                      });
-                      try {
-                        var uid = FirebaseAuth.instance.currentUser!.uid;
-                        print(uid);
-                        await _firestore
-                            .collection("posts")
-                            .doc(postId)
-                            .update({
-                          'listIds': FieldValue.arrayRemove([listId]),
+                    DialogButton(
+                      color: Palette.red,
+                      child: const Text(
+                        "Remove",
+                        style: TextStyle(
+                            color: Palette.backgroundColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
+                      ),
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        setState(() {
+                          postIds.remove(postId);
                         });
-                      } catch (e) {
-                        print(e);
-                      }
+                        try {
+                          var uid = FirebaseAuth.instance.currentUser!.uid;
+                          print(uid);
+                          await _firestore
+                              .collection("posts")
+                              .doc(postId)
+                              .update({
+                            'listIds': FieldValue.arrayRemove([listId]),
+                          });
+                        } catch (e) {
+                          print(e);
+                        }
 
-                      try {
-                        var uid = FirebaseAuth.instance.currentUser!.uid;
-                        print(uid);
-                        await _firestore
-                            .collection("Lists")
-                            .doc(listId)
-                            .update({
-                          'postIds': FieldValue.arrayRemove([postId]),
-                        });
-                        showSnackBar(
-                            context, "Post has been Removed successfully!");
-                      } catch (e) {
-                        print(e);
-                      }
-                    },
-                  )
-                ]).show();
+                        try {
+                          var uid = FirebaseAuth.instance.currentUser!.uid;
+                          print(uid);
+                          await _firestore
+                              .collection("Lists")
+                              .doc(listId)
+                              .update({
+                            'postIds': FieldValue.arrayRemove([postId]),
+                          });
+                          showSnackBar(
+                              context, "Post has been Removed successfully!");
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    )
+                  ]).show();
+            else
+              openDialog(postId, false);
           },
         )
       ],
     );
   }
+
+
+  void reportList(String listId, String reason) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    String reportId = const Uuid().v1();
+    try{
+      String res = await FireStoreMethods().createReportList(uid, listId, reportId,reason );
+      if(res== "success"){
+
+        showSnackBar(context, "Report has been send successfully!");
+      }else{
+        showSnackBar(context, res);
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  void reportPost(String postId, String reason) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    String reportId = const Uuid().v1();
+    try{
+      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason );
+      if(res== "success"){
+        showSnackBar(context, "Report has been send successfully!");
+        print('hiiiiii');
+      }else{
+        showSnackBar(context, res);
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future openDialog(String contentId, bool isList) {
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text(isList?"Report List":"Report Post" ),
+            content: Container(
+              height:96,
+              child: Column(
+                children: [
+                  Text(
+                    'Let us know more by adding a comment.',
+                    style: TextStyle(
+                        color: Palette.darkGray
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: reportController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: "Comment",
+                    ),
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Palette.grey,
+                  ),
+                ) ,
+                onPressed: (){
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: Text(
+                  "Report",
+                  style: TextStyle(
+                    color: Palette.link,
+                  ),
+                ) ,
+                onPressed: (){
+                  if(isList)
+                    reportList(contentId, reportController.text);
+                  else
+                    reportPost(contentId, reportController.text);
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }
+    );
+  }
+
+
 }

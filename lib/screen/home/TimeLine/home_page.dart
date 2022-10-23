@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../config/palette.dart';
 import '../../../Widgets/refresh_widget.dart';
@@ -31,7 +32,7 @@ class _HomePageState extends State<HomePage> {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     try {
       DocumentSnapshot snap =
-          await _firestore.collection('posts').doc(postID).get();
+      await _firestore.collection('posts').doc(postID).get();
       List likes = (snap.data()! as dynamic)['likes'];
 
       if (likes.contains(uid)) {
@@ -67,6 +68,8 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     getTheData();
+
+    reportController = TextEditingController();
     super.initState();
   }
 
@@ -132,14 +135,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future loadPost() async {
-    print("hi 1");
     setState(() {
       _isloaded = [];
       userData = [];
     });
-    print("hi 2");
     getTheData();
-    print("hi 3");
     setState(() {
       homePosts = FirebaseFirestore.instance
           .collection('posts')
@@ -147,7 +147,6 @@ class _HomePageState extends State<HomePage> {
           .where('uid', whereIn: theUserData['following'])
           .snapshots();
     });
-    print("hi 4");
     StreamBuilder(
         stream: homePosts,
         builder: (context,
@@ -221,6 +220,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  /*reportController*/
+  late TextEditingController reportController;
+
+  @override
+  void dispose() {
+    reportController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -242,6 +251,10 @@ class _HomePageState extends State<HomePage> {
           style: TextStyle(color: Palette.backgroundColor),
         ),
       ),
+
+      //fix overflowed error
+      resizeToAvoidBottomInset: false,
+
       body: !_isTheUserLoaded
           ? Center(
         child: Container(
@@ -301,7 +314,7 @@ class _HomePageState extends State<HomePage> {
                   PageController(initialPage: 0, viewportFraction: 1),
                   scrollDirection: Axis.vertical, //to scroll vertically
                   itemBuilder: (context, index) {
-                        int len =
+                    int len =
                         snapshot.data!.docs[index].data()['counter'] + 1;
                     for (int i = 0; i < len; i++) {
                       isContentShow[index].add(true);
@@ -316,7 +329,7 @@ class _HomePageState extends State<HomePage> {
                       scrollDirection:
                       Axis.horizontal, //to scroll horizontally
                       itemBuilder: (context, indexIn) {
-                        
+
                         return indexIn == 0
                             ? InkWell(
                           onTap: () {
@@ -342,88 +355,46 @@ class _HomePageState extends State<HomePage> {
                                 children: [
                                   Expanded(
                                     child: Column(
-                                      mainAxisAlignment:
-                                      MainAxisAlignment
-                                          .spaceBetween,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(children: [
                                           Expanded(
                                             child: Container(
-                                              margin: EdgeInsets
-                                                  .fromLTRB(
-                                                  2,
-                                                  80,
-                                                  2,
-                                                  0),
-                                              color: Palette
-                                                  .backgroundColor,
+                                              margin: EdgeInsets.fromLTRB(2, 80, 2, 0),
+                                              color: Palette.backgroundColor,
                                               height: 3,
                                             ),
                                           ),
-                                          for (int i = 0;
-                                          i <
-                                              snapshot
-                                                  .data!
-                                                  .docs[
-                                              index]
-                                                  .data()['counter'];
-                                          i++)
+                                          for (int i = 0; i < snapshot.data!.docs[index].data()['counter']; i++)
                                             Expanded(
                                               child:
                                               Container(
-                                                margin: EdgeInsets
-                                                    .fromLTRB(
-                                                    2,
-                                                    80,
-                                                    2,
-                                                    0),
-                                                color: Palette
-                                                    .darkGray,
+                                                margin: EdgeInsets.fromLTRB(2, 80, 2, 0),
+                                                color: Palette.darkGray,
                                                 height: 3,
                                               ),
                                             )
                                         ]),
                                         Column(
-                                          mainAxisSize:
-                                          MainAxisSize
-                                              .max,
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment
-                                              .end,
-                                          mainAxisAlignment:
-                                          MainAxisAlignment
-                                              .end,
+                                          mainAxisSize: MainAxisSize.max,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.end,
                                           children: [
                                             Row(
-                                              crossAxisAlignment:
-                                              CrossAxisAlignment
-                                                  .end,
-                                              mainAxisAlignment:
-                                              MainAxisAlignment
-                                                  .start,
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.start,
                                               children: [
                                                 Container(
-                                                  width:
-                                                  size.width -
-                                                      49,
-                                                  color: Colors
-                                                      .black
-                                                      .withOpacity(
-                                                      0.3),
-                                                  padding: EdgeInsets
-                                                      .only(
-                                                      left:
-                                                      15),
+                                                  width: size.width - 49,
+                                                  color: Colors.black.withOpacity(0.3),
+                                                  padding: EdgeInsets.only(left: 15),
                                                   child: Row(
                                                     children: [
                                                       /*left*/
                                                       Column(
-                                                        mainAxisSize:
-                                                        MainAxisSize.min,
-                                                        crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
-                                                        mainAxisAlignment:
-                                                        MainAxisAlignment.end,
+                                                        mainAxisSize: MainAxisSize.min,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        mainAxisAlignment: MainAxisAlignment.end,
                                                         children: [
                                                           /*title*/
                                                           snapshot.data!.docs[index].data()['imgsPath'][0] != "no"
@@ -538,17 +509,17 @@ class _HomePageState extends State<HomePage> {
                                                                   child: IconButton(
                                                                       padding: EdgeInsets.zero,
                                                                       constraints: BoxConstraints(),
-                                                                    alignment: Alignment.centerRight,
-                                                                    icon: (snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid)
-                                                                        ? const Icon(Icons.favorite, size: 30)
-                                                                        : const Icon(Icons.favorite_border, size: 30)),
-                                                                    color: Palette.backgroundColor,
+                                                                      alignment: Alignment.centerRight,
+                                                                      icon: (snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid)
+                                                                          ? const Icon(Icons.favorite, size: 30)
+                                                                          : const Icon(Icons.favorite_border, size: 30)),
+                                                                      color: Palette.backgroundColor,
                                                                       onPressed: (){
-                                                                      bool isFavorited = !snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid);
-                                                                      int favoriteCount = snapshot.data!.docs[index].data()['likes'].length;
-                                                                      String postID = snapshot.data!.docs[index].data()['postId'].toString();
-                                                                      _toggleFavorite(isFavorited, favoriteCount, postID);
-                                                                    }
+                                                                        bool isFavorited = !snapshot.data!.docs[index].data()['likes'].contains(FirebaseAuth.instance.currentUser!.uid);
+                                                                        int favoriteCount = snapshot.data!.docs[index].data()['likes'].length;
+                                                                        String postID = snapshot.data!.docs[index].data()['postId'].toString();
+                                                                        _toggleFavorite(isFavorited, favoriteCount, postID);
+                                                                      }
                                                                   ),
                                                                 ),
                                                                 SizedBox(width: 5)
@@ -570,7 +541,7 @@ class _HomePageState extends State<HomePage> {
 
                                                             /*comment*/
                                                             InkWell(
-                                                              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
+                                                              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,postUid:  snapshot.data!.docs[index].data()['uid'].toString() ,),),),
                                                               child: Icon(
                                                                 Icons.comment,
                                                                 size: 30,
@@ -1055,7 +1026,7 @@ class _HomePageState extends State<HomePage> {
 
                                                         /*comment*/
                                                         InkWell(
-                                                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
+                                                          onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,postUid:  snapshot.data!.docs[index].data()['uid'].toString() ,),),),
                                                           child: Icon(
                                                             Icons.comment,
                                                             size: 30,
@@ -1482,12 +1453,7 @@ class _HomePageState extends State<HomePage> {
                     )
                   ]).show();
             } else {
-              Alert(
-                context: context,
-                title: "Report Post",
-                desc:
-                "Report post will be implemented next release stay tuned!",
-              ).show();
+              openDialog(postId);
             }
           },
         )
@@ -1625,6 +1591,84 @@ class _HomePageState extends State<HomePage> {
 
     return isSave;
 
+  }
+
+
+  void reportPost(String postId, String reason) async {
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    String reportId = const Uuid().v1();
+    try{
+      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason );
+      if(res== "success"){
+
+        showSnackBar(context, "Report has been send successfully!");
+      }else{
+        showSnackBar(context, res);
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future openDialog(String postId) {
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text("Report Post"),
+            content: Container(
+              height:96,
+              child: Column(
+                children: [
+                  Text(
+                    'Let us know more by adding a comment.',
+                    style: TextStyle(
+                        color: Palette.darkGray
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: reportController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: "Comment",
+                    ),
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Palette.grey,
+                  ),
+                ) ,
+                onPressed: (){
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: Text(
+                  "Report",
+                  style: TextStyle(
+                    color: Palette.link,
+                  ),
+                ) ,
+                onPressed: (){
+                  reportPost(postId, reportController.text);
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }
+    );
   }
 
 

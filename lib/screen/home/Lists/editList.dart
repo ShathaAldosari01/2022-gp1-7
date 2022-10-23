@@ -194,11 +194,7 @@ class _EditListState extends State<EditList> {
                           fontWeight: FontWeight.bold),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ListCountent(
-                                  listId: widget.listData["ListID"])));
+                      Navigator.pushNamed(context, '/Profile_Page');
                     },
                     gradient: const LinearGradient(colors: [
                       Palette.red,
@@ -274,11 +270,7 @@ class _EditListState extends State<EditList> {
                                 ),
                                 onPressed: () {
                                   /*go to list content*/
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => ListCountent(
-                                              listId: widget.listData["ListID"])));
+                                  Navigator.pushNamed(context, '/Profile_Page');
 
                                 },
                                 gradient: const LinearGradient(colors: [

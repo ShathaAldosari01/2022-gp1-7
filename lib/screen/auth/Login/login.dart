@@ -101,11 +101,11 @@ class _LoginState extends State<Login> {
                       child: Text(
                         "Odyssey",
                         style: TextStyle(
-                           fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w500,
                           fontSize: 65,
                           color: Palette.link,
                           fontFamily: 'Cookie',
-                      //    letterSpacing: 2,
+                          //    letterSpacing: 2,
                         ),
                       ),
                     ),
@@ -146,7 +146,7 @@ class _LoginState extends State<Login> {
 
                                 /* email icon */
                                 prefixIcon:
-                                    Icon(Icons.email, color: Colors.grey),
+                                Icon(Icons.email, color: Colors.grey),
 
                                 /*hint*/
                                 border: OutlineInputBorder(),
@@ -206,15 +206,15 @@ class _LoginState extends State<Login> {
 
                                 /* password icon */
                                 prefixIcon:
-                                    Icon(Icons.lock, color: Colors.grey),
+                                Icon(Icons.lock, color: Colors.grey),
 
                                 /* show/hide password */
                                 suffixIcon: IconButton(
                                   icon: isHidden
                                       ? Icon(Icons.visibility,
-                                          color: Colors.grey)
+                                      color: Colors.grey)
                                       : Icon(Icons.visibility_off,
-                                          color: Colors.grey),
+                                      color: Colors.grey),
                                   onPressed: togglePasswordVisibility,
                                 ),
 
@@ -286,16 +286,16 @@ class _LoginState extends State<Login> {
                     /*button colors*/
                     decoration: BoxDecoration(
                       borderRadius:
-                          const BorderRadius.all(Radius.circular(8.0)),
+                      const BorderRadius.all(Radius.circular(8.0)),
                       gradient: isButtonActive
                           ? const LinearGradient(colors: [
-                              Palette.buttonColor,
-                              Palette.nameColor,
-                            ])
+                        Palette.buttonColor,
+                        Palette.nameColor,
+                      ])
                           : const LinearGradient(colors: [
-                              Palette.buttonDisableColor,
-                              Palette.nameDisablColor,
-                            ]),
+                        Palette.buttonDisableColor,
+                        Palette.nameDisablColor,
+                      ]),
                     ),
                     /*button*/
                     child: ButtonTheme(
@@ -340,7 +340,7 @@ class _LoginState extends State<Login> {
                             ),
                             TextButton(
                               // color: Colors.red,
-                                style: TextButton.styleFrom(
+                              style: TextButton.styleFrom(
                                   padding: const EdgeInsets.fromLTRB(0, 0, 30, 0)),
                               onPressed: () {
                                 Navigator.pushNamed(context, '/signup');
@@ -377,40 +377,72 @@ class _LoginState extends State<Login> {
         await FirebaseAuth.instance
             .signInWithEmailAndPassword(email: email, password: password);
         /*go to Profile_Page page*/
-          Navigator.of(context).popUntil((route) => route.isFirst);
+        Navigator.of(context).popUntil((route) => route.isFirst);
       } on FirebaseAuthException catch (e) {
         Alert(
-            context: context,
-            title: "Invalid input",
-            desc: e.message.toString(),
-            buttons: [
-              DialogButton(
-                  child: Text(
-                    "Sign up",
-                    style: TextStyle(color: Palette.backgroundColor),
+          context: context,
+          desc: e.message.toString(),
+          buttons: [
+            DialogButton(
+                child: Text(
+                  "Sign up",
+                  style: TextStyle(color: Palette.backgroundColor),
+                ),
+                onPressed: () {
+                  /*go to sign up page*/
+                  Navigator.pushNamed(context, '/signup');
+                },
+                gradient: const LinearGradient(colors: [
+                  Palette.buttonColor,
+                  Palette.nameColor,
+                ])),
+            DialogButton(
+                child: const Text(
+                  "Log in",
+                  style: TextStyle(color: Palette.backgroundColor),
+                ),
+                onPressed: () {
+                  /*go to sign up page*/
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                },
+                gradient: const LinearGradient(colors: [
+                  Palette.buttonColor,
+                  Palette.nameColor,
+                ]))
+          ],
+          closeIcon:Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child:
+                  Icon(Icons.arrow_back, color: Palette.backgroundColor),
+                ),
+
+                Text(
+                  "Invalid input",
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
-                  onPressed: () {
-                    /*go to sign up page*/
-                    Navigator.pushNamed(context, '/signup');
-                  },
-                  gradient: const LinearGradient(colors: [
-                    Palette.buttonColor,
-                    Palette.nameColor,
-                  ])),
-              DialogButton(
-                  child: const Text(
-                    "Log in",
-                    style: TextStyle(color: Palette.backgroundColor),
-                  ),
-                  onPressed: () {
-                    /*go to sign up page*/
-                    Navigator.pushNamed(context, '/login');
-                  },
-                  gradient: const LinearGradient(colors: [
-                    Palette.buttonColor,
-                    Palette.nameColor,
-                  ]))
-            ]).show();
+                ),
+
+                IconButton(
+                    onPressed: (){
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(
+                      Icons.cancel,
+                    )
+                ),
+              ],
+            ),
+          ),
+        ).show();
         print(e);
       }
       /*deactivate the button*/

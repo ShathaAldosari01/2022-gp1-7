@@ -7,7 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../config/palette.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
@@ -63,6 +63,8 @@ class _UserPostState extends State<UserPost> {
         isFromList = true;
         listData = widget.listInfo;
       });
+
+    reportController = TextEditingController();
     super.initState();
   }
 
@@ -243,6 +245,16 @@ class _UserPostState extends State<UserPost> {
     );
   }
 
+  /*reportController*/
+  late TextEditingController reportController;
+
+  @override
+  void dispose() {
+    reportController.dispose();
+
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -270,6 +282,9 @@ class _UserPostState extends State<UserPost> {
             ),
           )
       ),
+
+      //fix overflowed error
+      resizeToAvoidBottomInset: false,
 
       body:  !_isTheUserLoaded?
       Container(
@@ -582,7 +597,7 @@ class _UserPostState extends State<UserPost> {
 
                                                         /*comment*/
                                                         InkWell(
-                                                          onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
+                                                          onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,postUid:  snapshot.data!.docs[index].data()['uid'].toString() ,),),),
                                                           child: Icon(
                                                             Icons.comment,
                                                             size: 30,
@@ -957,7 +972,7 @@ class _UserPostState extends State<UserPost> {
                                                                 color: Palette.backgroundColor
                                                             ),),
                                                         ),
-                                                        //end of like
+                                                        //end of likel
 
                                                         SizedBox(
                                                           height: 7,
@@ -965,7 +980,7 @@ class _UserPostState extends State<UserPost> {
 
                                                         /*comment*/
                                                         InkWell(
-                                                          onTap: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,),),),
+                                                          onTap: ()=> Navigator.of(context).push(MaterialPageRoute(builder: (context) =>  CommentScreen(postId:  snapshot.data!.docs[index].data()['postId'].toString() ,postUid:  snapshot.data!.docs[index].data()['uid'].toString() ),),),
                                                           child: Icon(
                                                             Icons.comment,
                                                             size: 30,
@@ -1390,11 +1405,7 @@ class _UserPostState extends State<UserPost> {
                     )
                   ]).show();
             }else{
-              Alert(
-                context: context,
-                title: "Report Post",
-                desc: "Report post will be implemented next release stay tuned!",
-              ).show();
+              openDialog(postId);
             }
 
           },
@@ -1486,6 +1497,87 @@ class _UserPostState extends State<UserPost> {
     }
 
     return listData;
+  }
+
+  void reportPost(String postId, String reason) async {
+    // String uid,
+    // String postId,
+    // String reportId,
+    // String reason,
+    var uid = FirebaseAuth.instance.currentUser!.uid;
+    String reportId = const Uuid().v1();
+    try{
+      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason );
+      if(res== "success"){
+
+        showSnackBar(context, "Report has been send successfully!");
+      }else{
+        showSnackBar(context, res);
+      }
+    }catch(e){
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  Future openDialog(String postId) {
+    return showDialog(
+        context: context,
+        builder: (context){
+          return AlertDialog(
+            title: Text("Report Post"),
+            content: Container(
+              height:96,
+              child: Column(
+                children: [
+                  Text(
+                    'Let us know more by adding a comment.',
+                    style: TextStyle(
+                        color: Palette.darkGray
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  TextField(
+                    controller: reportController,
+                    autofocus: true,
+                    decoration: InputDecoration(
+                      hintText: "Comment",
+                    ),
+                  )
+                ],
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    color: Palette.grey,
+                  ),
+                ) ,
+                onPressed: (){
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              ),
+              TextButton(
+                child: Text(
+                  "Report",
+                  style: TextStyle(
+                    color: Palette.link,
+                  ),
+                ) ,
+                onPressed: (){
+                  reportPost(postId, reportController.text);
+                  reportController.clear();
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        }
+    );
   }
 
 }
