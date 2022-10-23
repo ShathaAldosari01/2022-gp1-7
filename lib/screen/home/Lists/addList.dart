@@ -404,7 +404,7 @@ class _AddListState extends State<AddList> {
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       /*title */
                       Text(
-                        "Title",
+                        "Title *",
                         style: TextStyle(
                           color: Palette.textColor,
                           fontWeight: FontWeight.w500,
@@ -954,7 +954,7 @@ class _AddListState extends State<AddList> {
                           Container(
                             margin:EdgeInsets.only(left: 10),
                             child: Text(
-                              "Privacy",
+                              "Privacy *",
                               style: TextStyle(
                                 color: Palette.textColor,
                                 fontWeight: FontWeight.w500,

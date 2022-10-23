@@ -36,6 +36,9 @@ class Post {
   final likes;
   final listIds;
 
+  /*comment length*/
+  final int numOfComments;
+
   const Post(
       {
         /*user info*/
@@ -72,6 +75,10 @@ class Post {
         /*likes*/
         required this.likes,
         required this.listIds,
+
+        /*comment length*/
+        required this.numOfComments,
+
       });
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -112,6 +119,10 @@ class Post {
       /*likes*/
       likes: snapshot["likes"],
       listIds: snapshot["listIds"],
+
+      /*comment length*/
+      numOfComments: snapshot['numOfComments']
+
     );
   }
 
@@ -150,5 +161,8 @@ class Post {
     /*likes*/
     "likes": likes,
     "listIds": listIds,
+
+    /*comment length*/
+    "numOfComments": numOfComments,
   };
 }

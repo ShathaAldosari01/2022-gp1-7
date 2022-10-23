@@ -338,7 +338,8 @@ class _CommentScreenState extends State<CommentScreen> {
                       ),
                       onPressed: ()  {
                         Navigator.pop(context);
-                        // deleteComment(commentId);
+                         deleteComment(commentId, postId);
+
                         setState(() {});
                       },
                     )
@@ -435,5 +436,16 @@ class _CommentScreenState extends State<CommentScreen> {
       showSnackBar(context, e.toString());
     }
   }
-
+  //delete comment
+  deleteComment(String commentId,String postId) async {
+    try {
+      await FireStoreMethods().deleteComment(commentId,postId);
+      showSnackBar(context, "Comment was deleted successfully!");
+    } catch (err) {
+      showSnackBar(
+        context,
+        err.toString(),
+      );
+    }
+  }
 }

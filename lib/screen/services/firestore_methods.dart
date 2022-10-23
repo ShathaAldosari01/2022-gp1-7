@@ -75,6 +75,9 @@ class FireStoreMethods {
         /*likes and list*/
         likes: [],
         listIds: [],
+
+        /*comment length*/
+        numOfComments: 0,
       );
 
       _firestore.collection("posts").doc(postId).set(
@@ -99,6 +102,31 @@ class FireStoreMethods {
     }
     return res;
   }
+
+  //delete comment
+  Future<String> deleteComment(String commentId, String postId) async {
+    String res = "Some error occurred";
+    try {
+      // delete comment
+      await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).delete();
+      DocumentSnapshot snap =
+      await _firestore.collection('posts').doc(postId).get();
+      List numOfComments = (snap.data()! as dynamic)['numOfComments'];
+      await _firestore.collection('posts').doc(postId).update({
+       // 'numOfComments': numOfComments-1
+      });
+      res = 'success';
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+
+
+
+
+
+
 
   // Delete List
   Future<String> deleteList(String ListID) async {

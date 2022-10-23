@@ -776,7 +776,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         children: [
 
                           /*county text*/
-                          Text('Country',
+                          Text('Country *',
                               style: TextStyle(
                                   fontSize: titleSize,
                                   fontWeight: FontWeight.w500
@@ -894,7 +894,7 @@ class _AddPostPageState extends State<AddPostPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           /* Location title*/
-                          Text("Location",
+                          Text("Location *",
                             style: TextStyle(
                               fontSize: titleSize,
                               fontWeight: FontWeight.w500,
@@ -1086,7 +1086,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                             /*Category title */
                             Text(
-                              "Category ",
+                              "Category *",
                               style: TextStyle(
                                 color: Palette.textColor,
                                 fontWeight: FontWeight.w500,
@@ -1260,7 +1260,7 @@ class _AddPostPageState extends State<AddPostPage> {
                             ),
                           )
                               : Text(
-                            'Rate your visit',
+                            'Rate your visit *',
                             style: TextStyle(
                                 fontSize: titleSize,
                                 fontWeight: FontWeight.w500
@@ -1341,7 +1341,7 @@ class _AddPostPageState extends State<AddPostPage> {
                           /*date of visit*/
                           RichText(
                             text: TextSpan(
-                                text: 'Date of visit',
+                                text: 'Date of visit *',
                                 style: TextStyle(
                                   color: Palette.textColor,
                                   fontWeight: FontWeight.w500,
@@ -1457,7 +1457,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                           /*title */
                           Text(
-                            "Title",
+                            "Title *",
                             style: TextStyle(
                               color: Palette.textColor,
                               fontWeight: FontWeight.w500,
@@ -1723,7 +1723,7 @@ class _AddPostPageState extends State<AddPostPage> {
 
                             /*page title */
                             Text(
-                              "Slide 1",
+                              "Slide 1 *",
                               style: TextStyle(
                                 color: Palette.textColor,
                                 fontWeight: FontWeight.w500,
