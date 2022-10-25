@@ -106,15 +106,20 @@ class FireStoreMethods {
   //delete comment
   Future<String> deleteComment(String commentId, String postId) async {
     String res = "Some error occurred";
+    int numOfComments = 0;
     try {
       // delete comment
-      await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).delete();
-      DocumentSnapshot snap =
-      await _firestore.collection('posts').doc(postId).get();
-      List numOfComments = (snap.data()! as dynamic)['numOfComments'];
+      var userSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postId)
+          .get();
+      var postData = userSnap.data()!;
+      numOfComments = postData['numOfComments'];
+
       await _firestore.collection('posts').doc(postId).update({
-       // 'numOfComments': numOfComments-1
+        'numOfComments': numOfComments-1
       });
+      await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).delete();
       res = 'success';
     } catch (err) {
       res = err.toString();

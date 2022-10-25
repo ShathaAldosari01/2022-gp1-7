@@ -538,7 +538,6 @@ class _HomePageState extends State<HomePage> {
                                                             ),
                                                             //end of like
 
-
                                                             SizedBox(
                                                               height: 7,
                                                             ),
@@ -557,17 +556,15 @@ class _HomePageState extends State<HomePage> {
                                                               height: 4,
                                                             ),
 
-
                                                             //num of comment
-                                                            // SizedBox(
-                                                            //   //  _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).delete();
-                                                            //   child: Text (getNumberofComments(snapshot.data!.docs[index].data()['postId'].toString()),
-                                                            //     style: TextStyle(
-                                                            //         fontSize: 16,
-                                                            //         color: Palette.backgroundColor
-                                                            //     ),
-                                                            //   ),
-                                                            // ),
+                                                            SizedBox(
+                                                              child: Text(snapshot.data!.docs[index].data()['numOfComments'].toString(),
+                                                                style: TextStyle(
+                                                                    fontSize: 16,
+                                                                    color: Palette.backgroundColor
+                                                                ),
+                                                              ),
+                                                            ),
                                                             /*end of comment*/
 
                                                             SizedBox(
@@ -1050,7 +1047,7 @@ class _HomePageState extends State<HomePage> {
                                                         ),
 
                                                         Text(
-                                                          "2",
+                        snapshot.data!.docs[index].data()['numOfComments'].toString(),
                                                           style: TextStyle(
                                                               fontSize: 16,
                                                               color: Palette.backgroundColor
@@ -1681,25 +1678,7 @@ class _HomePageState extends State<HomePage> {
         }
     );
   }
-  // getNumberofComments (String postId)  {
-  //   String res = "Some error occurred";
-  //   var snap;
-  //   var size ;
-  //   try {
-  //     // delete comment
-  //     await _firestore.collection('posts').doc(postId).collection('comments').get().then((snap) => {
-  //     size = snap.size // will return the collection size
-  //     });;
-  //     res = 'success';
-  //   } catch (err) {
-  //     res = err.toString();
-  //   }
-  //   return size;
-  //
-  //
-  // }
-
-}
+ }
 
 class Cut {
   String id;

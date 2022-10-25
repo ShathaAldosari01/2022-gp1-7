@@ -610,7 +610,7 @@ class _UserPostState extends State<UserPost> {
                                                         ),
 
                                                         Text(
-                                                          "2",
+                      snapshot.data!.docs[index].data()['numOfComments'].toString(),
                                                           style: TextStyle(
                                                               fontSize: 16,
                                                               color: Palette.backgroundColor
@@ -993,7 +993,7 @@ class _UserPostState extends State<UserPost> {
                                                         ),
 
                                                         Text(
-                                                          "2",
+                      snapshot.data!.docs[index].data()['numOfComments'].toString(),
                                                           style: TextStyle(
                                                               fontSize: 16,
                                                               color: Palette.backgroundColor

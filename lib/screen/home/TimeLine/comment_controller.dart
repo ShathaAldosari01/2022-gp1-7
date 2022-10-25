@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 import '../../../model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -41,6 +42,18 @@ class CommentController extends GetxController {
   }
 
   postComment(String commentText) async {
+    //update counter
+    int numOfComments = 0;
+    var userSnap = await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .get();
+    var postData = userSnap.data()!;
+    numOfComments = postData['numOfComments'];
+
+    await firestore.collection('posts').doc(postId).update({
+      'numOfComments': numOfComments+1
+    });
     try {
       if (commentText.isNotEmpty) {
         DocumentSnapshot userDoc = await firestore
@@ -52,7 +65,8 @@ class CommentController extends GetxController {
             .doc(postId)
             .collection('comments')
             .get();
-        int len = allDocs.docs.length;
+
+        var commentID = const Uuid().v1();
 
         Comment comment = Comment(
           username: (userDoc.data()! as dynamic)['username'],
@@ -60,13 +74,13 @@ class CommentController extends GetxController {
           datePublished: DateTime.now(),
           profilePhoto: (userDoc.data()! as dynamic)['photoPath'],
           uid: uid,
-          cid: 'Comment $len',
+          cid: commentID,
         );
         await firestore
             .collection('posts')
             .doc(postId)
             .collection('comments')
-            .doc('Comment $len')
+            .doc(commentID)
             .set(
           comment.toJson(),
         );
