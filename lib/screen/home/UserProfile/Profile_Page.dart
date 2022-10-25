@@ -1195,13 +1195,8 @@ class _Profile_pageState extends State<Profile_page> {
                     child: FutureBuilder(
                         future: FirebaseFirestore.instance
                             .collection('Lists')
-                            //.where('uid', isEqualTo: widget.uid)
                          .where('users', arrayContains: theUserId)
                             .where('Access', isEqualTo:true)
-                        //this worked!!!!
-                        // .where("users",whereIn: ["uid"])
-                        // .where("uid",whereIn: ["users"])
-                        //.where("users", arrayContains: "uid")
                             .get(),
                         builder: (context, snapshot) {
                           if (snapshot.connectionState ==
