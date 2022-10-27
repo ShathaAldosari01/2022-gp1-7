@@ -344,6 +344,7 @@ class _ListCountentState extends State<ListCountent> {
                       ?
 
                   /* done button */
+                  FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842"? SizedBox():
                   Container(
                     margin: EdgeInsets.symmetric(
                         vertical: 30, horizontal: 20),
@@ -681,7 +682,7 @@ class _ListCountentState extends State<ListCountent> {
         builder: (context) {
           return Container(
             color: Color(0xFF737373),
-            height: 180 / 3 + 22,
+            height: 180 / 3 +6,
             child: Container(
               child: onMorePressed(listId, luid),
               decoration: BoxDecoration(
@@ -703,20 +704,21 @@ class _ListCountentState extends State<ListCountent> {
           height: 10,
         ),
         ListTile(
-          leading: (FirebaseAuth.instance.currentUser!.uid == luid)
+          leading: (FirebaseAuth.instance.currentUser!.uid == luid || FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842")
               ? Icon(Icons.delete)
               : Icon(Icons.flag),
-          title: (FirebaseAuth.instance.currentUser!.uid == luid)
+          title: (FirebaseAuth.instance.currentUser!.uid == luid || FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842")
               ? Text("Delete list")
               : Text("Report list"),
           onTap: () {
             Navigator.pop(context);
             print("delete");
-            if (FirebaseAuth.instance.currentUser!.uid == luid) {
+            if (FirebaseAuth.instance.currentUser!.uid == luid || FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842") {
               Alert(
                   context: context,
-                  title: "Are you sure you want to delete your list?",
-                  desc:
+                  title: FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842"? "Are you sure you want to delete this list?":"Are you sure you want to delete your list?",
+                  desc:FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842"?
+                  "This list will be permanently deleted. You can't undo this action.":
                   "Your list will be permanently deleted. You can't undo this action.",
                   buttons: [
                     DialogButton(
@@ -766,7 +768,7 @@ class _ListCountentState extends State<ListCountent> {
         builder: (context) {
           return Container(
             color: Color(0xFF737373),
-            height: 180 / 3,
+            height: 180 / 3 +22,
             child: Container(
               child: onMorePressedPost(postId, puid, listId),
               decoration: BoxDecoration(
@@ -870,7 +872,7 @@ class _ListCountentState extends State<ListCountent> {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     String reportId = const Uuid().v1();
     try{
-      String res = await FireStoreMethods().createReportList(uid, listId, reportId,reason );
+      String res = await FireStoreMethods().createReportList(uid, listId, reportId,reason, DateTime.now() );
       if(res== "success"){
 
         showSnackBar(context, "Report has been send successfully!");
@@ -886,10 +888,9 @@ class _ListCountentState extends State<ListCountent> {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     String reportId = const Uuid().v1();
     try{
-      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason );
+      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason, DateTime.now() );
       if(res== "success"){
         showSnackBar(context, "Report has been send successfully!");
-        print('hiiiiii');
       }else{
         showSnackBar(context, res);
       }
@@ -964,3 +965,4 @@ class _ListCountentState extends State<ListCountent> {
 
 
 }
+

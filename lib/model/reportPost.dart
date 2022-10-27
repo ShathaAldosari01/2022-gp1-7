@@ -6,6 +6,7 @@ class ReportPost {
   final String postId;
   final String reportId;
   final String reason;
+  final DateTime date;
 
 
   const ReportPost(
@@ -15,6 +16,7 @@ class ReportPost {
         required this.postId,
         required this.reportId,
         required this.reason,
+        required this.date,
       });
 
   static ReportPost fromSnap(DocumentSnapshot snap) {
@@ -26,6 +28,7 @@ class ReportPost {
       postId: snapshot["postId"],
       reportId: snapshot["reportId"],
       reason: snapshot["reason"],
+      date: snapshot["date"],
     );
   }
 
@@ -35,6 +38,7 @@ class ReportPost {
     "postId": postId,
     "reportId": reportId,
     "reason": reason,
-
+    "date": date,
   };
 }
+

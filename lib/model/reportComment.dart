@@ -7,6 +7,7 @@ class ReportComment {
   final String commentId;
   final String reportId;
   final String reason;
+  final DateTime date;
 
 
   const ReportComment(
@@ -17,6 +18,7 @@ class ReportComment {
         required this.commentId,
         required this.reportId,
         required this.reason,
+        required this.date,
       });
 
   static ReportComment fromSnap(DocumentSnapshot snap) {
@@ -29,6 +31,7 @@ class ReportComment {
       commentId: snapshot["commentId"],
       reportId: snapshot["reportId"],
       reason: snapshot["reason"],
+      date: snapshot["date"],
     );
   }
 
@@ -39,6 +42,7 @@ class ReportComment {
     "commentId": commentId,
     "reportId": reportId,
     "reason": reason,
-
+    "date": date,
   };
 }
+

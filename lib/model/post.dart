@@ -39,6 +39,8 @@ class Post {
   /*comment length*/
   final int numOfComments;
 
+  final List<dynamic> reports;
+
   const Post(
       {
         /*user info*/
@@ -79,6 +81,7 @@ class Post {
         /*comment length*/
         required this.numOfComments,
 
+        required this.reports,
       });
 
   static Post fromSnap(DocumentSnapshot snap) {
@@ -121,7 +124,9 @@ class Post {
       listIds: snapshot["listIds"],
 
       /*comment length*/
-      numOfComments: snapshot['numOfComments']
+      numOfComments: snapshot['numOfComments'],
+
+      reports:snapshot["reports"],
 
     );
   }
@@ -164,5 +169,8 @@ class Post {
 
     /*comment length*/
     "numOfComments": numOfComments,
+
+    "reports":reports,
   };
 }
+

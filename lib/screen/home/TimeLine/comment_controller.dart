@@ -65,16 +65,16 @@ class CommentController extends GetxController {
             .doc(postId)
             .collection('comments')
             .get();
-
         var commentID = const Uuid().v1();
 
         Comment comment = Comment(
-          username: (userDoc.data()! as dynamic)['username'],
-          comment: commentText.trim(),
-          datePublished: DateTime.now(),
-          profilePhoto: (userDoc.data()! as dynamic)['photoPath'],
-          uid: uid,
-          cid: commentID,
+            username: (userDoc.data()! as dynamic)['username'],
+            comment: commentText.trim(),
+            datePublished: DateTime.now(),
+            profilePhoto: (userDoc.data()! as dynamic)['photoPath'],
+            uid: uid,
+            cid: commentID,
+            reports:[]
         );
         await firestore
             .collection('posts')
@@ -102,6 +102,5 @@ class CommentController extends GetxController {
 
 
 }
-
 
 

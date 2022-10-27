@@ -78,6 +78,8 @@ class FireStoreMethods {
 
         /*comment length*/
         numOfComments: 0,
+
+        reports:[],
       );
 
       _firestore.collection("posts").doc(postId).set(
@@ -94,7 +96,51 @@ class FireStoreMethods {
   Future<String> deletePost(String postId) async {
     String res = "Some error occurred";
     try {
-      //todo: delete post form lists
+      List<dynamic> list=[],reports=[];
+      var postSnap = await FirebaseFirestore.instance
+          .collection('posts')
+          .doc(postId)
+          .get();
+      var postData = postSnap.data()!;
+
+      /*delete pos form list*/
+      list = postData['listIds'];
+      list.forEach((listId) async {
+        await _firestore.collection('Lists').doc(listId).update({
+          'postIds': FieldValue.arrayRemove([postId])
+        });
+      });
+
+      //delete post from report
+      reports = postData['reports'];
+      reports.forEach((reportId) async {
+        await _firestore.collection('reportPost').doc(reportId).delete();
+      });
+
+      //delete comment report of the post
+      CollectionReference _collectionRef =
+      await _firestore.collection('posts').doc(postId).collection('comments');
+      List<dynamic> commentReports = [];
+
+      Future<void> getData() async {
+        // Get docs from collection reference
+        QuerySnapshot querySnapshot = await _collectionRef.get();
+
+        // Get data from docs and convert map to List
+        final allData = querySnapshot.docs.map((doc) => doc.data()).toList();
+
+        allData.forEach((comment) {
+          commentReports = (comment as dynamic)["reports"];
+          /*delete reports*/
+          commentReports.forEach((reportId) async {
+            await _firestore.collection('reportComment').doc(reportId).delete();
+          });
+        });
+        print(allData);
+      }
+      await getData();
+
+
       await _firestore.collection('posts').doc(postId).delete();
       res = 'success';
     } catch (err) {
@@ -108,6 +154,14 @@ class FireStoreMethods {
     String res = "Some error occurred";
     int numOfComments = 0;
     try {
+      //delete report abouts comment
+      var commentSnap = await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).get();
+      var commentData = await commentSnap.data();
+      List<dynamic> reports =(commentData as dynamic)["reports"];
+      reports.forEach((reportId) async {
+        await _firestore.collection('reportComment').doc(reportId).delete();
+      });
+
       // delete comment
       var userSnap = await FirebaseFirestore.instance
           .collection('posts')
@@ -128,16 +182,40 @@ class FireStoreMethods {
   }
 
 
-
-
-
-
-
   // Delete List
   Future<String> deleteList(String ListID) async {
     String res = "Some error occurred";
     try {
       //todo: delete list form posts and users
+      List<dynamic> posts=[],users=[],reports=[];
+      var listSnap = await FirebaseFirestore.instance
+          .collection('Lists')
+          .doc(ListID)
+          .get();
+      var listData = listSnap.data()!;
+
+      /*delete list form post*/
+      posts = listData['postIds'];
+      posts.forEach((postId) async {
+        await _firestore.collection('posts').doc(postId).update({
+          'listIds': FieldValue.arrayRemove([ListID])
+        });
+      });
+
+      /*delete list form user*/
+      users = listData['users'];
+      users.forEach((userId) async {
+        await _firestore.collection('users').doc(userId).update({
+          'listIds': FieldValue.arrayRemove([ListID])
+        });
+      });
+
+      /*delete list form reports*/
+      reports = listData['reports'];
+      reports.forEach((reportId) async {
+        await _firestore.collection('reportList').doc(reportId).delete();
+      });
+
       await _firestore.collection('Lists').doc(ListID).delete();
       res = 'success';
     } catch (err) {
@@ -204,6 +282,7 @@ class FireStoreMethods {
         Tags: Tags,
         postIds: postIds,
         users: users,
+        reports:[],
       );
 
       _firestore.collection("Lists").doc(ListID).set(
@@ -223,6 +302,7 @@ class FireStoreMethods {
       String postId,
       String reportId,
       String reason,
+      DateTime date,
 
       ) async {
     String res = "some error occurred";
@@ -233,7 +313,12 @@ class FireStoreMethods {
         postId: postId,
         reportId: reportId,
         reason: reason,
+        date: date,
       );
+
+      await _firestore.collection('posts').doc(postId).update({
+        'reports': FieldValue.arrayUnion([reportId])
+      });
 
       _firestore.collection("reportPost").doc(reportId).set(
         postReport.toJson(),
@@ -252,6 +337,7 @@ class FireStoreMethods {
       String listId,
       String reportId,
       String reason,
+      DateTime date,
 
       ) async {
     String res = "some error occurred";
@@ -262,7 +348,12 @@ class FireStoreMethods {
         listId: listId,
         reportId: reportId,
         reason: reason,
+        date: date,
       );
+
+      await _firestore.collection('Lists').doc(listId).update({
+        'reports': FieldValue.arrayUnion([reportId])
+      });
 
       _firestore.collection("reportList").doc(reportId).set(
         listReport.toJson(),
@@ -282,6 +373,7 @@ class FireStoreMethods {
       String commentId,
       String reportId,
       String reason,
+      DateTime date,
 
       ) async {
     String res = "some error occurred";
@@ -293,7 +385,12 @@ class FireStoreMethods {
         commentId: commentId,
         reportId: reportId,
         reason: reason,
+        date: date,
       );
+
+      await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).update({
+        'reports': FieldValue.arrayUnion([reportId])
+      });
 
       _firestore.collection("reportComment").doc(reportId).set(
         commentReport.toJson(),
@@ -309,8 +406,7 @@ class FireStoreMethods {
   Future<String> AcceptPostReport(String postId, String reportId) async {
     String res = "Some error occurred";
     try {
-      //todo: delete post form lists
-      await _firestore.collection('posts').doc(postId).delete();
+      await deletePost(postId);
       await _firestore.collection('reportPost').doc(reportId).delete();
       res = 'success';
     } catch (err) {
@@ -323,8 +419,7 @@ class FireStoreMethods {
   Future<String> AcceptListReport(String listId, String reportId) async {
     String res = "Some error occurred";
     try {
-      //todo: delete list form post and users
-      await _firestore.collection('Lists').doc(listId).delete();
+      await deleteList(listId);
       await _firestore.collection('reportList').doc(reportId).delete();
       res = 'success';
     } catch (err) {
@@ -334,10 +429,10 @@ class FireStoreMethods {
   }
 
   // Accept Report comment
-  Future<String> AcceptCommentReport(String postId, String reportId) async {
+  Future<String> AcceptCommentReport(commentId, String postId, String reportId) async {
     String res = "Some error occurred";
     try {
-      //todo: delete comment
+      await deleteComment(commentId, postId);
       await _firestore.collection('reportComment').doc(reportId).delete();
       res = 'success';
     } catch (err) {
@@ -347,9 +442,13 @@ class FireStoreMethods {
   }
 
   // decline Report Post
-  Future<String> DeclinePostReport(String reportId) async {
+  Future<String> DeclinePostReport(String reportId, postId) async {
     String res = "Some error occurred";
     try {
+      await _firestore.collection('posts').doc(postId).update({
+        'reports': FieldValue.arrayRemove([reportId])
+      });
+
       await _firestore.collection('reportPost').doc(reportId).delete();
       res = 'success';
     } catch (err) {
@@ -359,9 +458,14 @@ class FireStoreMethods {
   }
 
   // decline Report list
-  Future<String> DeclineListReport(String reportId) async {
+  Future<String> DeclineListReport(String reportId, listId) async {
     String res = "Some error occurred";
     try {
+
+      await _firestore.collection('Lists').doc(listId).update({
+        'reports': FieldValue.arrayRemove([reportId])
+      });
+
       await _firestore.collection('reportList').doc(reportId).delete();
       res = 'success';
     } catch (err) {
@@ -371,9 +475,13 @@ class FireStoreMethods {
   }
 
   // decline Report comment
-  Future<String> DeclineCommentReport( String reportId) async {
+  Future<String> DeclineCommentReport( String reportId,postId,commentId) async {
     String res = "Some error occurred";
     try {
+      await _firestore.collection('posts').doc(postId).collection('comments').doc(commentId).update({
+        'reports': FieldValue.arrayRemove([reportId])
+      });
+
       await _firestore.collection('reportComment').doc(reportId).delete();
       res = 'success';
     } catch (err) {
@@ -385,3 +493,4 @@ class FireStoreMethods {
 
 
 }
+

@@ -14,7 +14,7 @@ import '../../../config/palette.dart';
 class CommentScreen extends StatefulWidget {
   final  postId;
   final  postUid;//the user id of the one how created the post
-   CommentScreen({Key? key, required this.postId, required this.postUid}) : super(key: key);
+  CommentScreen({Key? key, required this.postId, required this.postUid}) : super(key: key);
 
   @override
   State<CommentScreen> createState() => _CommentScreenState();
@@ -98,135 +98,133 @@ class _CommentScreenState extends State<CommentScreen> {
           child: Column(
             children: [
               Expanded(
-                  child: Obx(() {
-                    if(commentController.comments.length ==0)
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 5, vertical:  15),
-                        child: Text(
-                          isLouded?'No comments yet. Be the first.':'Waite for the commend to loaded.',
-                          style: TextStyle(
+                child: Obx(() {
+                  if(commentController.comments.length ==0)
+                    return Container(
+                      margin: EdgeInsets.symmetric(horizontal: 5, vertical:  15),
+                      child: Text(
+                        isLouded?'No comments yet. Be the first.':'Waite for the commend to loaded.',
+                        style: TextStyle(
                             color: Palette.darkGray
-                          ),
                         ),
-                      );
-                    else
-                      return ListView.builder(
-                          itemCount: commentController.comments.length,
-                          itemBuilder: (context, index) {
-                            final comment = commentController.comments[index];
-                            return ListTile(
-                              /*user photo*/
-                              leading: comment.profilePhoto !='no' ?
-                              Container(
-                                child: CircleAvatar(
-                                  backgroundColor: Colors.black,
-                                  radius: 25,
-                                  backgroundImage: NetworkImage(comment.profilePhoto),
-                                ),
-                              ):
-                              CircleAvatar(
-                                backgroundColor: Colors.white,
+                      ),
+                    );
+                  else
+                    return ListView.builder(
+                        itemCount: commentController.comments.length,
+                        itemBuilder: (context, index) {
+                          final comment = commentController.comments[index];
+                          return ListTile(
+                            /*user photo*/
+                            leading: comment.profilePhoto !='no' ?
+                            Container(
+                              child: CircleAvatar(
+                                backgroundColor: Colors.black,
                                 radius: 25,
-                                child: Icon(
-                                  Icons.account_circle_sharp,
-                                  color: Colors.grey,
-                                  size: 60,
-                                ),
+                                backgroundImage: NetworkImage(comment.profilePhoto),
                               ),
-                              /*end of user photo*/
+                            ):
+                            CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 25,
+                              child: Icon(
+                                Icons.account_circle_sharp,
+                                color: Colors.grey,
+                                size: 60,
+                              ),
+                            ),
+                            /*end of user photo*/
 
-                              title: Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      /*username*/
-                                      InkWell(
-                                        onTap: () {  Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => Profile_page(
-                                              uid: comment.uid,
-                                            ),
+                            title: Row(
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    /*username*/
+                                    InkWell(
+                                      onTap: () {  Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => Profile_page(
+                                            uid: comment.uid,
                                           ),
-                                        ); },
-                                        child: Text("${comment.username}  ",
-                                          style:  TextStyle(fontSize: 16,
-                                              color: widget.postUid ==comment.uid? Palette.link: Palette.textColor,
-                                              fontWeight: FontWeight.w700),
                                         ),
+                                      ); },
+                                      child: Text("${comment.username}  ",
+                                        style:  TextStyle(fontSize: 16,
+                                            color: widget.postUid ==comment.uid? Palette.link: Palette.textColor,
+                                            fontWeight: FontWeight.w700),
                                       ),
-                                      /*end of username*/
-
-                                      SizedBox(height: 3,),
-
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-
-                                          /*comment content*/
-                                          SizedBox(
-                                            width: size.width- 122,
-                                            child:
-                                              Text(comment.comment ,
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Palette.textColor,
-                                                    fontWeight: FontWeight.w500
-                                                ),
-                                              ),
-                                          ),
-                                          /*end of comment content*/
-
-                                          /*more*/
-                                          Container(
-                                            child: IconButton(
-                                              padding: EdgeInsets.zero,
-                                              constraints: BoxConstraints(),
-                                                onPressed: (){
-                                                  /*todo: report + delete of comment*/
-                                                  var uid = FirebaseAuth.instance.currentUser!.uid;
-                                                  onMore(comment.cid, comment.uid, uid, widget.postUid);
-                                                },
-                                                icon: Icon(
-                                                    Icons.more_vert,
-                                                ),
-                                            ),
-                                          )
-                                          /*end of more*/
-                                        ],
-                                      ),
-
-                                      SizedBox(height: 3,),
-                                    ],
-                                  )
-
-
-                                ],
-                              ),
-                              /*date of comment*/
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    tago.format(comment.datePublished.toDate()),
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        color: Palette.darkGray,
-                                        fontWeight: FontWeight.w700
                                     ),
+                                    /*end of username*/
+
+                                    SizedBox(height: 3,),
+
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+
+                                        /*comment content*/
+                                        SizedBox(
+                                          width: size.width- 122,
+                                          child:
+                                          Text(comment.comment ,
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Palette.textColor,
+                                                fontWeight: FontWeight.w500
+                                            ),
+                                          ),
+                                        ),
+                                        /*end of comment content*/
+
+                                        /*more*/
+                                        Container(
+                                          child: IconButton(
+                                            padding: EdgeInsets.zero,
+                                            constraints: BoxConstraints(),
+                                            onPressed: (){
+                                              var uid = FirebaseAuth.instance.currentUser!.uid;
+                                              onMore(comment.cid, comment.uid, uid, widget.postUid);
+                                            },
+                                            icon: Icon(
+                                              Icons.more_vert,
+                                            ),
+                                          ),
+                                        )
+                                        /*end of more*/
+                                      ],
+                                    ),
+
+                                    SizedBox(height: 3,),
+                                  ],
+                                )
+
+
+                              ],
+                            ),
+                            /*date of comment*/
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  tago.format(comment.datePublished.toDate()),
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Palette.darkGray,
+                                      fontWeight: FontWeight.w700
                                   ),
-                                ],
-                              ),
-                              /*end of date of comment */
+                                ),
+                              ],
+                            ),
+                            /*end of date of comment */
 
-                              //you can make report comment here
-
-                            );
-                          });
-                    } ),
+                          );
+                        });
+                } ),
               ),
               const Divider(),
+              FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842"? SizedBox():
               ListTile(
                 title: TextFormField(
                   controller: _commentController ,
@@ -259,8 +257,8 @@ class _CommentScreenState extends State<CommentScreen> {
                   child: Text(
                     'send',
                     style: TextStyle(
-                        fontSize: 16,
-                        color: Palette.link,
+                      fontSize: 16,
+                      color: Palette.link,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -300,15 +298,15 @@ class _CommentScreenState extends State<CommentScreen> {
       children:  [
 
         ListTile(
-          leading: (uid == commentUid || uid == postUid)?
+          leading: (uid == commentUid || uid == postUid ||uid =="miostwrsWghrmT0qkc4Q0uhpA842")?
           Icon(Icons.delete):
           Icon(Icons.flag),
-          title: (uid == commentUid || uid == postUid)?
+          title: (uid == commentUid || uid == postUid || uid =="miostwrsWghrmT0qkc4Q0uhpA842")?
           Text("Delete comment"):
           Text("Report comment"),
           onTap: () {
             Navigator.pop(context);
-            if(uid == commentUid || uid == postUid){
+            if(uid == commentUid || uid == postUid || uid =="miostwrsWghrmT0qkc4Q0uhpA842"){
               Alert(
                   context: context,
                   title: uid == commentUid ?"Are you sure you want to delete your comment?":"Are you sure you want to delete this comment?",
@@ -338,8 +336,7 @@ class _CommentScreenState extends State<CommentScreen> {
                       ),
                       onPressed: ()  {
                         Navigator.pop(context);
-                         deleteComment(commentId, postId);
-
+                        deleteComment(commentId, postId);
                         setState(() {});
                       },
                     )
@@ -422,10 +419,10 @@ class _CommentScreenState extends State<CommentScreen> {
     print(postId);
     print(commentId);
     print(reason);
-   var uid = FirebaseAuth.instance.currentUser!.uid;
+    var uid = FirebaseAuth.instance.currentUser!.uid;
     String reportId = const Uuid().v1();
     try{
-      String res = await FireStoreMethods().createReportComment(uid, postId, commentId, reportId,reason );
+      String res = await FireStoreMethods().createReportComment(uid, postId, commentId, reportId,reason,DateTime.now() );
       if(res== "success"){
 
         showSnackBar(context, "Report has been send successfully!");
@@ -436,6 +433,7 @@ class _CommentScreenState extends State<CommentScreen> {
       showSnackBar(context, e.toString());
     }
   }
+
   //delete comment
   deleteComment(String commentId,String postId) async {
     try {
@@ -448,4 +446,6 @@ class _CommentScreenState extends State<CommentScreen> {
       );
     }
   }
+
 }
+

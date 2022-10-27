@@ -124,8 +124,10 @@ class _HomePageState extends State<HomePage> {
 
   deletePost(String postId) async {
     try {
-      await FireStoreMethods().deletePost(postId);
-      showSnackBar(context, "post was deleted successfully!");
+      String msg = await FireStoreMethods().deletePost(postId);
+      if(msg =='success')
+        showSnackBar(context, "post was deleted successfully!");
+      print(msg);
     } catch (err) {
       showSnackBar(
         context,
@@ -538,6 +540,7 @@ class _HomePageState extends State<HomePage> {
                                                             ),
                                                             //end of like
 
+
                                                             SizedBox(
                                                               height: 7,
                                                             ),
@@ -592,12 +595,12 @@ class _HomePageState extends State<HomePage> {
                                                               height: 4,
                                                             ),
 
-                                                            Text(
-                                                              "2",
-                                                              style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Palette.backgroundColor
-                                                              ),
+                                                            SizedBox(
+                                                              child: Text (snapshot.data!.docs[index].data()['listIds'].length.toString(),
+                                                                style: TextStyle(
+                                                                    fontSize: 16,
+                                                                    color: Palette.backgroundColor
+                                                                ),),
                                                             ),
                                                             /*end of list*/
 
@@ -1047,7 +1050,7 @@ class _HomePageState extends State<HomePage> {
                                                         ),
 
                                                         Text(
-                        snapshot.data!.docs[index].data()['numOfComments'].toString(),
+                                                          snapshot.data!.docs[index].data()['numOfComments'].toString(),
                                                           style: TextStyle(
                                                               fontSize: 16,
                                                               color: Palette.backgroundColor
@@ -1073,12 +1076,12 @@ class _HomePageState extends State<HomePage> {
                                                           height: 4,
                                                         ),
 
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
+                                                        SizedBox(
+                                                          child: Text (snapshot.data!.docs[index].data()['listIds'].length.toString(),
+                                                            style: TextStyle(
+                                                                fontSize: 16,
+                                                                color: Palette.backgroundColor
+                                                            ),),
                                                         ),
                                                         /*end of list*/
 
@@ -1606,7 +1609,7 @@ class _HomePageState extends State<HomePage> {
     var uid = FirebaseAuth.instance.currentUser!.uid;
     String reportId = const Uuid().v1();
     try{
-      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason );
+      String res = await FireStoreMethods().createReportPost(uid, postId, reportId,reason, DateTime.now() );
       if(res== "success"){
 
         showSnackBar(context, "Report has been send successfully!");
@@ -1678,7 +1681,9 @@ class _HomePageState extends State<HomePage> {
         }
     );
   }
- }
+
+
+}
 
 class Cut {
   String id;
@@ -1687,3 +1692,4 @@ class Cut {
 
   Cut({required this.id, required this.title, required this.isInList});
 }
+

@@ -14,7 +14,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final TextEditingController searchController =
-      TextEditingController(text: "");
+  TextEditingController(text: "");
 
   bool isShowUsers = true;
 
@@ -22,7 +22,7 @@ class _SearchPageState extends State<SearchPage> {
   Color UsersColor = Color(0xff1bd3db);
   Color PostsColor = Palette.darkGray;
   Color ListsColor = Palette.darkGray;
-  /*visabilaty*/
+  /*visibility*/
   bool SUsers = true;
   bool SPosts = false;
   bool SLists = false;
@@ -152,95 +152,95 @@ class _SearchPageState extends State<SearchPage> {
               children: [
                 isShowUsers
                     ? FutureBuilder(
-                        future: FirebaseFirestore.instance
-                            .collection('users')
-                            .where(
-                              'username',
-                              isGreaterThanOrEqualTo: searchController.text,
-                            )
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
+                  future: FirebaseFirestore.instance
+                      .collection('users')
+                      .where(
+                    'username',
+                    isGreaterThanOrEqualTo: searchController.text,
+                  )
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
 
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return (snapshot.data! as dynamic).docs == null
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      (snapshot.data! as dynamic).docs.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => Profile_page(
-                                            uid: (snapshot.data! as dynamic)
-                                                .docs[index]['uid'],
-                                          ),
-                                        ),
-                                      ),
-                                      child: (snapshot.data! as dynamic)
-                                              .docs[index]['username']
-                                              .toString()
-                                              .isNotEmpty
-                                          ? ListTile(
-                                              leading: (snapshot.data!
-                                                                  as dynamic)
-                                                              .docs[index]
-                                                          ['photoPath'] !=
-                                                      "no"
-                                                  ? CircleAvatar(
-                                                      backgroundImage:
-                                                          NetworkImage(
-                                                        (snapshot.data!
-                                                                    as dynamic)
-                                                                .docs[index]
-                                                            ['photoPath'],
-                                                      ),
-                                                      radius: 16,
-                                                    )
-                                                  : CircleAvatar(
-                                                      backgroundColor: Colors
-                                                          .white
-                                                          .withOpacity(0.8),
-                                                      radius: 16,
-                                                      child: Icon(
-                                                        Icons
-                                                            .account_circle_sharp,
-                                                        color: Colors.grey,
-                                                        size: 35,
-                                                      ),
-                                                    ),
-                                              title: Text(
-                                                (snapshot.data! as dynamic)
-                                                    .docs[index]['username'],
-                                              ),
-                                            )
-                                          : SizedBox(),
-                                    );
-                                  },
-                                );
-                        },
-                      )
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    }
+                    return (snapshot.data! as dynamic).docs == null
+                        ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                        : ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount:
+                      (snapshot.data! as dynamic).docs.length,
+                      itemBuilder: (context, index) {
+                        return InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => Profile_page(
+                                uid: (snapshot.data! as dynamic)
+                                    .docs[index]['uid'],
+                              ),
+                            ),
+                          ),
+                          child: (snapshot.data! as dynamic)
+                              .docs[index]['username']
+                              .toString()
+                              .isNotEmpty
+                              ? ListTile(
+                            leading: (snapshot.data!
+                            as dynamic)
+                                .docs[index]
+                            ['photoPath'] !=
+                                "no"
+                                ? CircleAvatar(
+                              backgroundImage:
+                              NetworkImage(
+                                (snapshot.data!
+                                as dynamic)
+                                    .docs[index]
+                                ['photoPath'],
+                              ),
+                              radius: 16,
+                            )
+                                : CircleAvatar(
+                              backgroundColor: Colors
+                                  .white
+                                  .withOpacity(0.8),
+                              radius: 16,
+                              child: Icon(
+                                Icons
+                                    .account_circle_sharp,
+                                color: Colors.grey,
+                                size: 35,
+                              ),
+                            ),
+                            title: Text(
+                              (snapshot.data! as dynamic)
+                                  .docs[index]['username'],
+                            ),
+                          )
+                              : SizedBox(),
+                        );
+                      },
+                    );
+                  },
+                )
                     : FutureBuilder(
-                        future: FirebaseFirestore.instance
-                            .collection('posts')
-                            .orderBy('datePublished')
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return Text("hi");
-                        }),
+                    future: FirebaseFirestore.instance
+                        .collection('posts')
+                        .orderBy('datePublished')
+                        .get(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return Text("hi");
+                    }),
               ],
             ),
           ),
@@ -261,3 +261,4 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 }
+

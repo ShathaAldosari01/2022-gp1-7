@@ -14,6 +14,7 @@ class Lists {
   final List<String> Tags;
   final List<String> postIds;
   final List <String> users;
+  final List <dynamic> reports;
 
 
   const Lists(
@@ -30,7 +31,7 @@ class Lists {
         required this.Tags,
         required this.postIds,
         required this.users,
-
+        required this.reports,
 
       });
 
@@ -51,8 +52,7 @@ class Lists {
       Tags: snapshot["Tags"],
       postIds: snapshot["postIds"],
       users: snapshot["users"],
-
-
+      reports:snapshot["reports"],
 
 
     );
@@ -61,7 +61,6 @@ class Lists {
   Map<String, dynamic> toJson() => {
     /*user info*/
     "uid": uid,
-
 
     /*List info*/
     "Cover": Cover,
@@ -72,7 +71,7 @@ class Lists {
     "Tags": Tags,
     "postIds": postIds,
     "users": users,
-
-
+    "reports":reports,
   };
 }
+

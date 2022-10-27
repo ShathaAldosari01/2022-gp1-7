@@ -6,6 +6,7 @@ class ReportList {
   final String listId;
   final String reportId;
   final String reason;
+  final DateTime date;
 
 
   const ReportList(
@@ -15,6 +16,7 @@ class ReportList {
         required this.listId,
         required this.reportId,
         required this.reason,
+        required this.date,
       });
 
   static ReportList fromSnap(DocumentSnapshot snap) {
@@ -22,10 +24,11 @@ class ReportList {
 
     return ReportList(
       /*report info*/
-      uid: snapshot["uid"],
-      listId: snapshot["listId"],
-      reportId: snapshot["reportId"],
-      reason: snapshot["reason"],
+        uid: snapshot["uid"],
+        listId: snapshot["listId"],
+        reportId: snapshot["reportId"],
+        reason: snapshot["reason"],
+        date: snapshot["date"]
     );
   }
 
@@ -35,6 +38,7 @@ class ReportList {
     "listId": listId,
     "reportId": reportId,
     "reason": reason,
-
+    "date": date,
   };
 }
+

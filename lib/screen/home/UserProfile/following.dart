@@ -30,11 +30,7 @@ class _FollowingState extends State<Following> {
 
   @override
   void initState() {
-    print("start");
-    print(widget.following.toString());
-    print(widget.isFollowing.toString());
     super.initState();
-    print("step1");
     setState(() {
       following = widget.following;
     });
@@ -43,20 +39,17 @@ class _FollowingState extends State<Following> {
   }
 
   void getFollowing() async{
-    print("step2");
     int index= 0;
     for(var user in following){
       usersData.add("");
       isFollow.add(false);
       isActive.add(true);
       var x= await getUser(user);
-      print(x);
-      print("in loop");
       setState(()  {
-        print("step4");
-        print(user);
-         usersData[index] = x;
-        isFollow[index] = x.isFollowing;
+        usersData[index] = x;
+        isFollow[index] = false;
+        if(FirebaseAuth.instance.currentUser!.uid!="miostwrsWghrmT0qkc4Q0uhpA842")
+          isFollow[index] = x.isFollowing;
       });
       index++;
     }
@@ -66,28 +59,18 @@ class _FollowingState extends State<Following> {
   }
 
   getUser(uid) async{
-    print("step3");
     var username ;
     try {
       if (uid != null) {
-        print("in if");
         var userSnap = await FirebaseFirestore.instance
             .collection('users')
             .doc(uid)
             .get();
-        bool isFollow = await isFollowing(userSnap.data()!["uid"].toString());
-        print( userSnap.data()!["username"].toString());
-        print(userSnap.data()!["photoPath"]!.toString());
-        print(userSnap.data()!["uid"].toString());
-        print(userSnap.data()!["name"].toString());
-        print(isFollow);
+        bool isFollow= false;
+        if(FirebaseAuth.instance.currentUser!.uid!="miostwrsWghrmT0qkc4Q0uhpA842")
+          isFollow = await isFollowing(userSnap.data()!["uid"].toString());
         var info = await UserInfo(username: userSnap.data()!["username"].toString(), photoPath: userSnap.data()!["photoPath"].toString(), uid: userSnap.data()!["uid"].toString(), name: userSnap.data()!["name"].toString(), isFollowing: isFollow);
-        print(info);
         return info;
-        // return await info;
-
-        // print(userSnap.data()!["username"].toString());
-        // return userData;
       }
     }catch(e){
       showSnackBar(context, e.toString());
@@ -107,7 +90,6 @@ class _FollowingState extends State<Following> {
         setState(() {
           theUserData = userSnap.data()!;
         });
-
         getFollowing();
       }
     }catch(e){
@@ -138,11 +120,11 @@ class _FollowingState extends State<Following> {
           ),
         ),
       ),
-        body: !islouded?
+      body: !islouded?
       const Center(
         child: CircularProgressIndicator(),
       ):following.isNotEmpty?
-        ListView(
+      ListView(
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -162,11 +144,11 @@ class _FollowingState extends State<Following> {
                     children: [
                       Expanded(
                         child: Container(
-                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+                            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 7),
                             decoration: BoxDecoration(
-                                border: Border(
-                                  bottom: BorderSide(width: 1.0, color: Palette.grey),
-                                ),
+                              border: Border(
+                                bottom: BorderSide(width: 1.0, color: Palette.grey),
+                              ),
                             ),
                             child: Row(
                                 children:[
@@ -213,7 +195,8 @@ class _FollowingState extends State<Following> {
                                     ),
                                   ),
                                   Container(
-                                    child: FirebaseAuth.instance.currentUser!.uid != usersData[index].uid ?
+                                    child: FirebaseAuth.instance.currentUser!.uid =="miostwrsWghrmT0qkc4Q0uhpA842"?SizedBox():
+                                    FirebaseAuth.instance.currentUser!.uid != usersData[index].uid ?
                                     isFollow[index]
                                         ? FollowButton(
                                       text: 'Unfollow',
@@ -277,12 +260,12 @@ class _FollowingState extends State<Following> {
           ),
         ],
       ):Center(child: Text(
-          widget.isFollowing?"No following yet!": "No followers yet!",
-          style: TextStyle(
+        widget.isFollowing?"No following yet!": "No followers yet!",
+        style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w500
-          ),
-        )),
+        ),
+      )),
     );
   }
 
@@ -308,3 +291,4 @@ class UserInfo {
     return "photoPath: "+ photoPath +", username: "+ username +", name: "+ name+", uid: "+ uid+", isFollowing: "+ isFollowing.toString();
   }
 }
+
