@@ -99,17 +99,6 @@ class _CommentScreenState extends State<CommentScreen> {
             children: [
               Expanded(
                 child: Obx(() {
-                  if(commentController.comments.length ==0)
-                    return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 5, vertical:  15),
-                      child: Text(
-                        isLouded?'No comments yet. Be the first.':'Waite for the commend to loaded.',
-                        style: TextStyle(
-                            color: Palette.darkGray
-                        ),
-                      ),
-                    );
-                  else
                     return ListView.builder(
                         itemCount: commentController.comments.length,
                         itemBuilder: (context, index) {
@@ -230,7 +219,7 @@ class _CommentScreenState extends State<CommentScreen> {
                   controller: _commentController ,
                   style:  TextStyle(fontSize: 16, color: Palette.textColor, ),
                   decoration: InputDecoration(
-                    labelText: 'comment',
+                    labelText: 'Comment',
                     labelStyle: TextStyle(
                       fontSize: 20,
                       color: Palette.link,
@@ -255,7 +244,7 @@ class _CommentScreenState extends State<CommentScreen> {
                     _commentController.clear();
                   },
                   child: Text(
-                    'send',
+                    'Send',
                     style: TextStyle(
                       fontSize: 16,
                       color: Palette.link,

@@ -33,15 +33,7 @@ import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // var homePosts;
-  // var theUserData;
-  // var uid = FirebaseAuth.instance.currentUser!.uid;
-  // var userSnap =
-  // await FirebaseFirestore.instance.collection('users').doc(uid).get();
-  // theUserData = userSnap.data()!;
-  // homePosts = FirebaseFirestore.instance
-  //     .collection('posts')
-  //     .snapshots();
+
   runApp(MaterialApp(
     /*remove degage*/
       debugShowCheckedModeBanner: false,
@@ -72,7 +64,7 @@ void main() async {
     '/gender': (context) => GenderQuestion(),
 
     /*profile*/
-    '/Profile_Page':(context) => navigationBar(ind: 4,),
+    '/Profile_Page':(context) => navigationBar(ind: 3,),
     '/settings': (context) => settings(),
 
     /*edit profile*/

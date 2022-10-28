@@ -608,28 +608,7 @@ class _HomePageState extends State<HomePage> {
                                                               height: 7,
                                                             ),
 
-                                                            /*share*/
-                                                            InkWell(
-                                                              onTap: (){},
-                                                              child: Icon(
-                                                                Icons.reply,
-                                                                size: 30,
-                                                                color: Palette.backgroundColor,
-                                                              ),
-                                                            ),
 
-                                                            SizedBox(
-                                                              height: 4,
-                                                            ),
-
-                                                            Text(
-                                                              "2",
-                                                              style: TextStyle(
-                                                                  fontSize: 16,
-                                                                  color: Palette.backgroundColor
-                                                              ),
-                                                            ),
-                                                            /*end of share*/
 
                                                             SizedBox(
                                                               height: 7,
@@ -1089,28 +1068,6 @@ class _HomePageState extends State<HomePage> {
                                                           height: 7,
                                                         ),
 
-                                                        /*share*/
-                                                        InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
-                                                            Icons.reply,
-                                                            size: 30,
-                                                            color: Palette.backgroundColor,
-                                                          ),
-                                                        ),
-
-                                                        SizedBox(
-                                                          height: 4,
-                                                        ),
-
-                                                        Text(
-                                                          "2",
-                                                          style: TextStyle(
-                                                              fontSize: 16,
-                                                              color: Palette.backgroundColor
-                                                          ),
-                                                        ),
-                                                        /*end of share*/
 
                                                         SizedBox(
                                                           height: 7,

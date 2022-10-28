@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gp1_7_2022/screen/home/navBar/lists.dart';
 import 'package:uuid/uuid.dart';
 import '../../../Widgets/refresh_widget.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
@@ -470,7 +469,6 @@ class _ListCountentState extends State<ListCountent> {
                       ? FutureBuilder(
                     future: FirebaseFirestore.instance
                         .collection('posts')
-                    // .orderBy("datePublished", descending: true)
                         .where('postId', whereIn: postIds)
                         .get(),
                     builder: (context, snapshot) {

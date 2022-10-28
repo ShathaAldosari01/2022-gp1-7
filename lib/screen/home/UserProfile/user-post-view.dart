@@ -23,14 +23,17 @@ class UserPost extends StatefulWidget {
   final theUserData;
   final fromList;
   final listInfo;
-  const UserPost({Key? key, required this.uid, required this.index, required this.theUserData, this.fromList, this.listInfo}) : super(key: key);
+  final fromSearch;
+  final searchPost;
+  const UserPost({Key? key, required this.uid, required this.index, required this.theUserData, this.fromList, this.listInfo, this.fromSearch, this.searchPost}) : super(key: key);
 
   @override
   _UserPostState createState() => _UserPostState();
 }
 
 class _UserPostState extends State<UserPost> {
-
+  var uid = FirebaseAuth.instance.currentUser!.uid;
+  String searchPost = "";
   late Future<void> _launched;
   var test = 0;
   var theUserData ={};
@@ -38,6 +41,7 @@ class _UserPostState extends State<UserPost> {
   String phoneNumber ="";
   var isContentShow = [];
   bool isFromList = false;
+  bool isFromSearch = false;
   var listData = {};
   var userData = [];
   List<bool> _isloaded = [];
@@ -64,6 +68,12 @@ class _UserPostState extends State<UserPost> {
         listData = widget.listInfo;
       });
 
+    if(widget.fromSearch!= null && widget.searchPost != null){
+      setState(() {
+        isFromSearch = true;
+        searchPost = widget.searchPost;
+      });
+    }
     reportController = TextEditingController();
     super.initState();
   }
@@ -160,7 +170,7 @@ class _UserPostState extends State<UserPost> {
             context,
             MaterialPageRoute(
               builder:
-              isFromList?(context) => Profile_page(
+              isFromList || isFromSearch?(context) => Profile_page(
                 uid: userData[index]['uid'].toString(),
               )
                   :(context) => Profile_page(uid: theUserData['uid'].toString(),),
@@ -232,7 +242,9 @@ class _UserPostState extends State<UserPost> {
           centerTitle: true,
           title:
 
-          Text(isFromList?listData["Title"]:
+          Text(
+           isFromSearch?"Search":
+            isFromList?listData["Title"]:
           _isTheUserLoaded?theUserData['name']:"",
             style: TextStyle(
               color: Palette.backgroundColor,
@@ -255,9 +267,13 @@ class _UserPostState extends State<UserPost> {
         ),
       ):
       StreamBuilder(
-          stream: isFromList?
+          stream:
+          isFromSearch?
           FirebaseFirestore.instance.collection('posts')
-          // .orderBy("datePublished", descending: true)
+              .where('address', isGreaterThanOrEqualTo: searchPost.toUpperCase())
+              .snapshots()
+              :isFromList?
+            FirebaseFirestore.instance.collection('posts')
               .where('postId',  whereIn: listData['postIds'])
               .snapshots()
               :FirebaseFirestore.instance.collection('posts')
@@ -396,7 +412,7 @@ class _UserPostState extends State<UserPost> {
                                                   SizedBox(height: 5),
 
                                                   /*username*/
-                                                  isFromList?
+                                                  isFromList || isFromSearch?
                                                   _isloaded[index]
                                                       ? InkWell(
                                                     onTap: () {
@@ -409,12 +425,16 @@ class _UserPostState extends State<UserPost> {
                                                         ),
                                                       );
                                                     },
-                                                    child: Text(
-                                                      "@" + userData[index]['username'].toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Palette.backgroundColor,
-                                                        fontWeight: FontWeight.bold,
+                                                    child: Container(
+                                                      padding: EdgeInsets.all(3),
+                                                      color:  uid == userData[index]['uid'].toString()?Palette.link.withOpacity(0.5):Palette.link.withOpacity(0),
+                                                      child: Text(
+                                                        "@" + userData[index]['username'].toString(),
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Palette.backgroundColor,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ),
                                                   )
@@ -426,7 +446,7 @@ class _UserPostState extends State<UserPost> {
                                                       valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
                                                     ),
                                                   )
-                                                      :InkWell(
+                                                      : InkWell(
                                                     onTap: (){
                                                       Navigator.push(
                                                         context,
@@ -436,12 +456,16 @@ class _UserPostState extends State<UserPost> {
                                                         ),
                                                       );
                                                     },
-                                                    child: Text(
-                                                      "@"+theUserData['username'].toString(),
-                                                      style: TextStyle(
-                                                        fontSize: 16,
-                                                        color: Palette.backgroundColor,
-                                                        fontWeight:FontWeight.bold,
+                                                    child: Container(
+                                                      padding: EdgeInsets.all(3),
+                                                      color:  uid == theUserData['uid'].toString()?Palette.link.withOpacity(0.5):Palette.link.withOpacity(0),
+                                                      child: Text(
+                                                        "@"+theUserData['username'].toString(),
+                                                        style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Palette.backgroundColor,
+                                                          fontWeight:FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
@@ -500,7 +524,7 @@ class _UserPostState extends State<UserPost> {
                                                       height:7,
                                                     ),
                                                     /*profile img*/
-                                                    isFromList?
+                                                    isFromList || isFromSearch ?
                                                     _isloaded[index]?buildProfile(userData[index]['photoPath'].toString(), index):
                                                     Container(
                                                       margin: EdgeInsets.all(32),
@@ -837,21 +861,25 @@ class _UserPostState extends State<UserPost> {
                                                           context,
                                                           MaterialPageRoute(
                                                             builder:
-                                                            isFromList? (context) => Profile_page(
+                                                            isFromList || isFromSearch? (context) => Profile_page(
                                                               uid: userData[index]['uid'].toString(),
                                                             )
                                                                 :(context) => Profile_page(uid: theUserData['uid'].toString(), ),
                                                           ),
                                                         );
                                                       },
-                                                      child: Text(
-                                                        isFromList?
-                                                        "@" + userData[index]['username'].toString()
-                                                            :"@"+theUserData['username'].toString(),
-                                                        style: TextStyle(
-                                                          fontSize: 16,
-                                                          color: Palette.backgroundColor,
-                                                          fontWeight:FontWeight.bold,
+                                                      child: Container(
+                                                        padding: EdgeInsets.all(3),
+                                                        color:   isFromList|| isFromSearch? uid == userData[index]['uid'].toString()?Palette.link.withOpacity(0.5):Palette.link.withOpacity(0):uid == theUserData['uid'].toString()?Palette.link.withOpacity(0.5):Palette.link.withOpacity(0),
+                                                        child: Text(
+                                                          isFromList|| isFromSearch?
+                                                          "@" + userData[index]['username'].toString()
+                                                              :"@"+theUserData['username'].toString(),
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            color: Palette.backgroundColor,
+                                                            fontWeight:FontWeight.bold,
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
@@ -895,7 +923,7 @@ class _UserPostState extends State<UserPost> {
                                                       height: 7,
                                                     ),
                                                     /*profile img*/
-                                                    isFromList?
+                                                    isFromList || isFromSearch?
                                                     buildProfile(userData[index]['photoPath'].toString(), index)
                                                         :buildProfile(theUserData['photoPath'].toString(),0),
                                                     Column(

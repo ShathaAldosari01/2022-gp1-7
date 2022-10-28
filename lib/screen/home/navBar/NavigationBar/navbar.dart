@@ -15,12 +15,11 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   /*attribute*/
   String _currentPage = "Home";
-  List<String> pageKeys = ["Home", "Search", "Add", "List", "Profile"];
+  List<String> pageKeys = ["Home", "Search", "Add", "Profile"];
   Map<String, GlobalKey<NavigatorState>> _navigatorKeys = {
     "Home": GlobalKey<NavigatorState>(),
     "Search": GlobalKey<NavigatorState>(),
     "Add": GlobalKey<NavigatorState>(),
-    "List": GlobalKey<NavigatorState>(),
     "Profile": GlobalKey<NavigatorState>(),
   };
   int _selectedIndex = 0;
@@ -66,7 +65,6 @@ class _NavbarState extends State<Navbar> {
             _buildOffstageNavigator("Home"),
             _buildOffstageNavigator("Search"),
             _buildOffstageNavigator("Add"),
-            _buildOffstageNavigator("List"),
             _buildOffstageNavigator("Profile"),
           ],
         ),
@@ -87,10 +85,6 @@ class _NavbarState extends State<Navbar> {
             ),
             BottomNavigationBarItem(
               icon: new Icon(Icons.add),
-                label: ""
-            ),
-            BottomNavigationBarItem(
-              icon: new Icon(Icons.list),
                 label: ""
             ),
             BottomNavigationBarItem(
