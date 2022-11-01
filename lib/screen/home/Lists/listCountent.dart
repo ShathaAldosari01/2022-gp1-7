@@ -425,6 +425,12 @@ class _ListCountentState extends State<ListCountent> {
                               'listIds':
                               FieldValue.arrayUnion([widget.listId]),
                             });
+                            //add tags to user for recommender
+                            tags.forEach((tag) async {
+                              await _firestore.collection("users").doc(userId).update({
+                                'tags': FieldValue.arrayUnion([tag]),
+                              });
+                            });
                             Navigator.push(
                               context,
                               MaterialPageRoute(

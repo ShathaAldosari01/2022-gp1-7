@@ -1134,6 +1134,13 @@ class _AddListState extends State<AddList> {
       await _firestore.collection("users").doc(uid).update({
         'listIds': FieldValue.arrayUnion([ListID]),
       });
+
+      Tags.forEach((tag) async {
+        await _firestore.collection("users").doc(uid).update({
+          'tags': FieldValue.arrayUnion([tag]),
+        });
+      });
+
     } catch (e) {
       Alert(
         context: context,

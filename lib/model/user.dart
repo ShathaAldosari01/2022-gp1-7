@@ -28,6 +28,8 @@ class User {
   final List followers;
   final List following;
 
+  final List tags;
+
 
   const User(
       {required this.username,
@@ -55,7 +57,10 @@ class User {
         required this.sports,
 
         required this.followers,
-        required this.following});
+        required this.following,
+
+        required this.tags,
+      });
 
   static User fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
@@ -87,6 +92,7 @@ class User {
 
       followers: snapshot["followers"],
       following: snapshot["following"],
+      tags: snapshot["tags"],
     );
   }
 
@@ -99,6 +105,7 @@ class User {
     "bio": bio,
     "followers": followers,
     "following": following,
+    "tags": tags,
     "birthday": birthday,
 
     'questions': {

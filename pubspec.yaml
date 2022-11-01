@@ -58,6 +58,8 @@ dependencies:
   #for comments
   get: ^4.6.5
   timeago: ^3.3.0
+  #for Recommender System
+  http: ^0.13.5
 
 
 

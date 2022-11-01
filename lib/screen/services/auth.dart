@@ -64,6 +64,7 @@ class AuthService {
 
           followers: [],
           following: [],
+          tags: [],
         );
 
         //step 4: adding user in our database

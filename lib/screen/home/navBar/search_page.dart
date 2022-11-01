@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +13,7 @@ import '../../auth/signup/userInfo/photo/utils.dart';
 import '../../services/firestore_methods.dart';
 import '../UserProfile/Profile_Page.dart';
 import '../UserProfile/user-post-view.dart';
+import 'package:http/http.dart'as http;
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -24,7 +27,6 @@ class _SearchPageState extends State<SearchPage> {
       TextEditingController(text: "");
 
   getUserData(puid) async {
-    print("in getUserData");
     try {
       if (puid != null) {
         var userSnap = await FirebaseFirestore.instance
@@ -41,6 +43,17 @@ class _SearchPageState extends State<SearchPage> {
       print(e.toString());
     }
   }
+  /*attributes*/
+
+  /*userInfo*/
+  var uid=FirebaseAuth.instance.currentUser!.uid;
+  int age= 0;
+  String socialState="";
+  String haveChildren="";
+  String gender="";
+  String countries="";
+  String places="";
+  String tags="";
 
   bool _isUserLoaded = false;
   var userData = {};
@@ -53,10 +66,16 @@ class _SearchPageState extends State<SearchPage> {
   Color UsersColor = Color(0xff1bd3db);
   Color PostsColor = Palette.darkGray;
   Color ListsColor = Palette.darkGray;
+
   /*visabilaty*/
   bool SUsers = true;
   bool SPosts = false;
   bool SLists = false;
+
+  /*for recommender system*/
+  List <String> finalRuselt = [];
+  final _formkey = GlobalKey<FormState>();
+  String title ="";
 
   /*reportController*/
   late TextEditingController reportController;
@@ -70,10 +89,153 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
+    print("hi1");
+    getUser();
     reportController = TextEditingController();
     userId = FirebaseAuth.instance.currentUser!.uid;
     getUserData(userId);
+    //getUser();
     super.initState();
+  }
+
+  getUser() async {
+    print("hi2");
+    var uid=FirebaseAuth.instance.currentUser!.uid;
+    try {
+      print("hi try");
+      if (uid != null) {
+        print(uid);
+        var userSnap = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(uid)
+            .get();
+
+        userData = userSnap.data()!;
+
+        String country = "";
+        if (userData["questions"]["countries"]["Middle eastern"]==1){
+          //Middle-eastern, Asian, European, American, Afr...
+          country+="Middle-eastern";
+        }
+        if (userData["questions"]["countries"]["Asian"]==1){
+          //Middle-eastern, Asian, European, American, Afr...
+          if(country=="")
+            country+="Asian";
+          else{
+            country+=", Asian";
+          }
+        }
+        print(userData["questions"]["countries"]["European"].toString());
+        print("here");
+        if (userData["questions"]["countries"]["European"]==1){
+          //Middle-eastern, Asian, European, American, Afr...
+          if(country=="")
+            country+="European";
+          else{
+            country+=", European";
+          }
+        }
+
+        print("hi 8");
+
+        if (userData["questions"]["countries"]["American"]==1){
+          //Middle-eastern, Asian, European, American, Afr...
+          if(country=="")
+            country+="American";
+          else{
+            country+=", American";
+          }
+        }
+        print("hi 9");
+        if (userData["questions"]["countries"]["African"]==1){
+          //Middle-eastern, Asian, European, American, Afr...
+          if(country=="")
+            country+="African";
+          else{
+            country+=", African";
+          }
+        }
+
+        //places
+        String place ="";
+        if (userData["questions"]["places"]["Restaurants and cafes"]==1){
+          //Restaurants, malls, Parks, Sports
+          place+="Restaurants";
+        }
+
+        if (userData["questions"]["places"]["Shopping malls"]==1){
+          //Restaurants, malls, Parks, Sports
+          if(place=="")
+            place+="malls";
+          else{
+            place+=", malls";
+          }
+        }
+
+        if (userData["questions"]["places"]["Parks"]==1){
+          //Restaurants, malls, Parks, Sports
+          if(place=="")
+            place+="Parks";
+          else{
+            place+=", Parks";
+          }
+        }
+
+        if (userData["questions"]["places"]["Museums"]==1){
+          //Restaurants, malls, Parks, Sports
+          if(place=="")
+            place+="Museums";
+          else{
+            place+=", Museums";
+          }
+        }
+
+        if (userData["questions"]["places"]["Sports attractions"]==1){
+          //Restaurants, malls, Parks, Sports
+          if(place=="")
+            place+="Sports";
+          else{
+            place+=", Sports";
+          }
+        }
+
+        //calculate age
+        DateTime birthday = DateTime.now();
+        int now = birthday.year;
+        int birth = userData["birthday"].toDate().year;
+        int ageyear = now - birth;
+
+        int nowMonth = birthday.month;
+        int birthMonth = userData["birthday"].toDate().month;
+        int ageMonth = nowMonth - birthMonth;
+
+        int nowDay = birthday.day;
+        int birthDay = userData["birthday"].toDate().day;
+        int ageDay = nowDay - birthDay;
+
+        if(ageDay <0)
+          ageMonth--;
+
+        if(ageMonth <0)
+          ageyear--;
+
+        setState(() {
+          userData = userSnap.data()!;
+          age = ageyear;
+          socialState = userData["questions"]["married"];
+          haveChildren = userData["questions"]["children"];
+          gender = userData["questions"]["gender"];
+          countries = country;
+          places = place;
+          //todo: uncomment the following line after edit tags in user in database
+          // tags=userData["tags"];
+        });
+        print(gender);
+        print("ggggggggggg");
+      }
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   @override
@@ -92,12 +254,24 @@ class _SearchPageState extends State<SearchPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: Form(
+                key:_formkey,
                 child: TextFormField(
+                  onSaved: (value) async{
+
+                  },
                   controller: searchController,
                   decoration: const InputDecoration(labelText: 'Search for ...'),
-                  onFieldSubmitted: (String _) {
+                  onFieldSubmitted: (String _) async{
                     setState(() {});
                     print(_);
+                    print("nourah shatha nooomm  ");
+                    title=_!;
+                    // final url ='http://127.0.0.1:5000';
+                    final response = await http.post(Uri.parse('http://10.6.203.123:5000/title'),body: json.encode(
+                        {'userID': FirebaseAuth.instance.currentUser!.uid,"title":title,"places":places,"countries":countries,"gender":gender,"haveChildren":haveChildren,"socialState":socialState}));
+                    print(gender);
+                    print(response.body);
+                    print("nourah shatha nooomm  ");
                   },
                 ),
               ),
@@ -594,7 +768,6 @@ class _SearchPageState extends State<SearchPage> {
               : Text("Report post"),
           onTap: () {
             Navigator.pop(context);
-            print("delete");
             if (FirebaseAuth.instance.currentUser!.uid == puid || FirebaseAuth.instance.currentUser!.uid=="miostwrsWghrmT0qkc4Q0uhpA842") {
               Alert(
                   context: context,
