@@ -398,6 +398,12 @@ class _ListCountentState extends State<ListCountent> {
                               'listIds':
                               FieldValue.arrayRemove([widget.listId]),
                             });
+                            //remove tags to user for recommender
+                            tags.forEach((tag) async {
+                              await _firestore.collection("users").doc(userId).update({
+                                'tags': FieldValue.arrayRemove([tag]),
+                              });
+                            });
                             Navigator.push(
                               context,
                               MaterialPageRoute(

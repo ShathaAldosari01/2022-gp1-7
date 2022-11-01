@@ -89,20 +89,16 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    print("hi1");
     getUser();
     reportController = TextEditingController();
     userId = FirebaseAuth.instance.currentUser!.uid;
     getUserData(userId);
-    //getUser();
     super.initState();
   }
 
   getUser() async {
-    print("hi2");
     var uid=FirebaseAuth.instance.currentUser!.uid;
     try {
-      print("hi try");
       if (uid != null) {
         print(uid);
         var userSnap = await FirebaseFirestore.instance
@@ -136,7 +132,6 @@ class _SearchPageState extends State<SearchPage> {
           }
         }
 
-        print("hi 8");
 
         if (userData["questions"]["countries"]["American"]==1){
           //Middle-eastern, Asian, European, American, Afr...
@@ -146,7 +141,6 @@ class _SearchPageState extends State<SearchPage> {
             country+=", American";
           }
         }
-        print("hi 9");
         if (userData["questions"]["countries"]["African"]==1){
           //Middle-eastern, Asian, European, American, Afr...
           if(country=="")
@@ -219,16 +213,21 @@ class _SearchPageState extends State<SearchPage> {
         if(ageMonth <0)
           ageyear--;
 
+        String listOfTags = "";
+        userData["tags"].forEach((tag){
+          listOfTags+=tag+", ";
+        });
+
         setState(() {
           userData = userSnap.data()!;
           age = ageyear;
-          socialState = userData["questions"]["married"];
-          haveChildren = userData["questions"]["children"];
-          gender = userData["questions"]["gender"];
+          socialState = userData["questions"]["married"]==1?"Married":"Single";
+          haveChildren = userData["questions"]["children"]==1?"Children":"noKids";
+          gender = userData["questions"]["gender"]==1?"Female":"Male";
           countries = country;
           places = place;
           //todo: uncomment the following line after edit tags in user in database
-          // tags=userData["tags"];
+          tags = listOfTags;
         });
         print(gender);
         print("ggggggggggg");

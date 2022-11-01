@@ -202,6 +202,15 @@ class FireStoreMethods {
         });
       });
 
+      //remove tags to user for recommender
+      listData['tags'].forEach((tag) async {
+        listData['users'].forEach((uid) async {
+          await _firestore.collection("users").doc(uid).update({
+            'tags': FieldValue.arrayRemove([tag]),
+          });
+        });
+      });
+
       /*delete list form user*/
       users = listData['users'];
       users.forEach((userId) async {
