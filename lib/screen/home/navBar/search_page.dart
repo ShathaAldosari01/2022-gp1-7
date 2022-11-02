@@ -11,6 +11,7 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:uuid/uuid.dart';
 import '../../auth/signup/userInfo/photo/utils.dart';
 import '../../services/firestore_methods.dart';
+import '../Lists/listCountent.dart';
 import '../UserProfile/Profile_Page.dart';
 import '../UserProfile/user-post-view.dart';
 import 'package:http/http.dart'as http;
@@ -79,6 +80,9 @@ class _SearchPageState extends State<SearchPage> {
 
   /*reportController*/
   late TextEditingController reportController;
+
+  /*list of list*/
+  List<dynamic> listOfList =[""];
 
   @override
   void dispose() {
@@ -223,14 +227,11 @@ class _SearchPageState extends State<SearchPage> {
           age = ageyear;
           socialState = userData["questions"]["married"]==1?"Married":"Single";
           haveChildren = userData["questions"]["children"]==1?"Children":"noKids";
-          gender = userData["questions"]["gender"]==1?"Female":"Male";
+          gender = userData["questions"]["gender"]==0?"Female":"Male";
           countries = country;
           places = place;
-          //todo: uncomment the following line after edit tags in user in database
           tags = listOfTags;
         });
-        print(gender);
-        print("ggggggggggg");
       }
     } catch (e) {
       print(e.toString());
@@ -261,16 +262,15 @@ class _SearchPageState extends State<SearchPage> {
                   controller: searchController,
                   decoration: const InputDecoration(labelText: 'Search for ...'),
                   onFieldSubmitted: (String _) async{
-                    setState(() {});
-                    print(_);
-                    print("nourah shatha nooomm  ");
                     title=_!;
                     // final url ='http://127.0.0.1:5000';
-                    final response = await http.post(Uri.parse('http://10.6.203.123:5000/title'),body: json.encode(
-                        {'userID': FirebaseAuth.instance.currentUser!.uid,"title":title,"places":places,"countries":countries,"gender":gender,"haveChildren":haveChildren,"socialState":socialState}));
-                    print(gender);
-                    print(response.body);
-                    print("nourah shatha nooomm  ");
+                    final response = await http.post(Uri.parse('http://192.168.100.9:5000/title'),body: json.encode(
+                        {'userID': FirebaseAuth.instance.currentUser!.uid,"title":title,"places":places,"countries":countries,"gender":gender,"haveChildren":haveChildren,"socialState":socialState,"age":age,"tags":tags}));
+                    var listOfLists = json.decode(response.body);
+                    print("fund ne");
+                    setState(() {
+                      listOfList = listOfLists;
+                    });
                   },
                 ),
               ),
@@ -441,271 +441,444 @@ class _SearchPageState extends State<SearchPage> {
           ],
         ),
       ),
+
+      resizeToAvoidBottomInset: false,
       body: ListView(
         children: [
           //vis for search users
-          Visibility(
-            visible: SUsers,
-            child: Column(
-              children: [
-                isShowUsers
-                    ? FutureBuilder(
-                        future: FirebaseFirestore.instance
-                            .collection('users')
-                            .where('username',
-                              isGreaterThanOrEqualTo: searchController.text,
-                            )
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return (snapshot.data! as dynamic).docs == null
-                              ? const Center(
-                                  child: CircularProgressIndicator(),
-                                )
-                              : ListView.builder(
-                                  scrollDirection: Axis.vertical,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      (snapshot.data! as dynamic).docs.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () => Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => Profile_page(
-                                            uid: (snapshot.data! as dynamic)
-                                                .docs[index]['uid'],
-                                          ),
-                                        ),
-                                      ),
-                                      child: (snapshot.data! as dynamic)
-                                              .docs[index]['username']
-                                              .toString()
-                                              .isNotEmpty
-                                          ? ListTile(
-                                              leading: (snapshot.data!
-                                                                  as dynamic)
-                                                              .docs[index]
-                                                          ['photoPath'] !=
-                                                      "no"
-                                                  ? CircleAvatar(
-                                                      backgroundImage:
-                                                          NetworkImage(
-                                                        (snapshot.data!
-                                                                    as dynamic)
-                                                                .docs[index]
-                                                            ['photoPath'],
-                                                      ),
-                                                      radius: 16,
-                                                    )
-                                                  : CircleAvatar(
-                                                      backgroundColor: Colors
-                                                          .white
-                                                          .withOpacity(0.8),
-                                                      radius: 16,
-                                                      child: Icon(
-                                                        Icons
-                                                            .account_circle_sharp,
-                                                        color: Colors.grey,
-                                                        size: 35,
-                                                      ),
-                                                    ),
-                                              title: Text(
-                                                (snapshot.data! as dynamic)
-                                                    .docs[index]['username'],
-                                              ),
-                                            )
-                                          : SizedBox(),
-                                    );
-                                  },
-                                );
-                        },
-                      )
-                    : FutureBuilder(
-                        future: FirebaseFirestore.instance
-                            .collection('posts')
-                            .orderBy('datePublished')
-                            .get(),
-                        builder: (context, snapshot) {
-                          if (!snapshot.hasData) {
-                            return const Center(
-                              child: CircularProgressIndicator(),
-                            );
-                          }
-                          return Text("hi");
-                        }),
-              ],
-            ),
-          ),
+          // Visibility(
+          //   visible: SUsers,
+          //   child: Column(
+          //     children: [
+          //       isShowUsers
+          //           ? FutureBuilder(
+          //               future: FirebaseFirestore.instance
+          //                   .collection('users')
+          //                   .where('username',
+          //                     isGreaterThanOrEqualTo: searchController.text,
+          //                   )
+          //                   .get(),
+          //               builder: (context, snapshot) {
+          //                 if (!snapshot.hasData) {
+          //                   return const Center(
+          //                     child: CircularProgressIndicator(),
+          //                   );
+          //                 }
+          //                 return (snapshot.data! as dynamic).docs == null
+          //                     ? const Center(
+          //                         child: CircularProgressIndicator(),
+          //                       )
+          //                     : ListView.builder(
+          //                         scrollDirection: Axis.vertical,
+          //                         physics: NeverScrollableScrollPhysics(),
+          //                         shrinkWrap: true,
+          //                         itemCount:
+          //                             (snapshot.data! as dynamic).docs.length,
+          //                         itemBuilder: (context, index) {
+          //                           return InkWell(
+          //                             onTap: () => Navigator.of(context).push(
+          //                               MaterialPageRoute(
+          //                                 builder: (context) => Profile_page(
+          //                                   uid: (snapshot.data! as dynamic)
+          //                                       .docs[index]['uid'],
+          //                                 ),
+          //                               ),
+          //                             ),
+          //                             child: (snapshot.data! as dynamic)
+          //                                     .docs[index]['username']
+          //                                     .toString()
+          //                                     .isNotEmpty
+          //                                 ? ListTile(
+          //                                     leading: (snapshot.data!
+          //                                                         as dynamic)
+          //                                                     .docs[index]
+          //                                                 ['photoPath'] !=
+          //                                             "no"
+          //                                         ? CircleAvatar(
+          //                                             backgroundImage:
+          //                                                 NetworkImage(
+          //                                               (snapshot.data!
+          //                                                           as dynamic)
+          //                                                       .docs[index]
+          //                                                   ['photoPath'],
+          //                                             ),
+          //                                             radius: 16,
+          //                                           )
+          //                                         : CircleAvatar(
+          //                                             backgroundColor: Colors
+          //                                                 .white
+          //                                                 .withOpacity(0.8),
+          //                                             radius: 16,
+          //                                             child: Icon(
+          //                                               Icons
+          //                                                   .account_circle_sharp,
+          //                                               color: Colors.grey,
+          //                                               size: 35,
+          //                                             ),
+          //                                           ),
+          //                                     title: Text(
+          //                                       (snapshot.data! as dynamic)
+          //                                           .docs[index]['username'],
+          //                                     ),
+          //                                   )
+          //                                 : SizedBox(),
+          //                           );
+          //                         },
+          //                       );
+          //               },
+          //             )
+          //           : FutureBuilder(
+          //               future: FirebaseFirestore.instance
+          //                   .collection('posts')
+          //                   .orderBy('datePublished')
+          //                   .get(),
+          //               builder: (context, snapshot) {
+          //                 if (!snapshot.hasData) {
+          //                   return const Center(
+          //                     child: CircularProgressIndicator(),
+          //                   );
+          //                 }
+          //                 return Text("hi");
+          //               }),
+          //     ],
+          //   ),
+          // ),
 
 
           //vis for search posts
-          Visibility(
-            visible: SPosts,
-            child: FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('posts')
-                  .where('address', isGreaterThanOrEqualTo: searchController.text
-                  .toString()
-                  .toUpperCase(),)
-                  .get(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-
-                return GridView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: (snapshot.data! as dynamic).docs.length,
-                  gridDelegate:
-                  const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 3,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 1.5,
-                    childAspectRatio: 0.6,
-                  ),
-                  itemBuilder: (context, index) {
-                    DocumentSnapshot snap =
-                    (snapshot.data! as dynamic).docs[index];
-
-                    return Stack(
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              height: (size.width / 3) * (100 / 60) - 5.6,
-                              color: Palette.backgroundColor,
-                              child: snap['imgsPath'][0] != "no"
-                                  ? Image(
-                                image:
-                                NetworkImage(snap['imgsPath'][0]),
-                                fit: BoxFit.cover,
-                              )
-                                  : Center(
-                                child: Container(
-                                  color: Palette.buttonColor,
-                                  margin: EdgeInsets.symmetric(
-                                      horizontal: 4),
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 2, horizontal: 3),
-                                  child: Text(
-                                    snap['title'],
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Palette.textColor,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: userData.isNotEmpty
-                                    ? (context) =>  UserPost(
-                                  searchPost: searchController.text.toString(),
-                                  fromSearch: true,
-                                  theUserData: userData,
-                                  uid: snap['uid'].toString(),
-                                  index: index,
-                                )
-                                    : (context) => UserPost(
-                                    theUserData: null,
-                                    uid: snap['uid'].toString(),
-                                    index: index),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            color: Colors.black.withOpacity(0.3),
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                onMore(
-                                    snap["postId"].toString(),
-                                    snap['uid'].toString(),
-                                    snap["datePublished"].toDate());
-                              },
-                              child: Container(
-                                padding:
-                                const EdgeInsets.fromLTRB(20, 4, 0, 20),
-                                child: Icon(
-                                  Icons.more_vert_rounded,
-                                  color: Palette.backgroundColor,
-                                  size: 18,
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: userData.isNotEmpty
-                                        ? (context) => UserPost(
-                                        theUserData: userData,
-                                        uid: snap['uid'].toString(),
-                                        index: index)
-                                        : (context) => UserPost(
-                                        theUserData: null,
-                                        uid: snap['uid'].toString(),
-                                        index: index),
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 7),
-                                child: snap['imgsPath'][0] != "no"
-                                    ? Text(
-                                  snap['title'],
-                                  style: TextStyle(
-                                      color: Palette.backgroundColor,
-                                      fontWeight: FontWeight.bold),
-                                )
-                                    : SizedBox(),
-                              ),
-                            ),
-                          ],
-                        )
-                      ],
-                    );
-                  },
-                );
-              },
-            ),
-          ),
+          // Visibility(
+          //   visible: SPosts,
+          //   child: FutureBuilder(
+          //     future: FirebaseFirestore.instance
+          //         .collection('posts')
+          //         .where('address', isGreaterThanOrEqualTo: searchController.text
+          //         .toString()
+          //         .toUpperCase(),)
+          //         .get(),
+          //     builder: (context, snapshot) {
+          //       if (snapshot.connectionState == ConnectionState.waiting) {
+          //         return const Center(
+          //           child: CircularProgressIndicator(),
+          //         );
+          //       }
+          //
+          //
+          //       return GridView.builder(
+          //         physics: NeverScrollableScrollPhysics(),
+          //         shrinkWrap: true,
+          //         itemCount: (snapshot.data! as dynamic).docs.length,
+          //         gridDelegate:
+          //         const SliverGridDelegateWithFixedCrossAxisCount(
+          //           crossAxisCount: 3,
+          //           crossAxisSpacing: 5,
+          //           mainAxisSpacing: 1.5,
+          //           childAspectRatio: 0.6,
+          //         ),
+          //         itemBuilder: (context, index) {
+          //           DocumentSnapshot snap =
+          //           (snapshot.data! as dynamic).docs[index];
+          //
+          //           return Stack(
+          //             children: [
+          //               Column(
+          //                 children: [
+          //                   Container(
+          //                     height: (size.width / 3) * (100 / 60) - 5.6,
+          //                     color: Palette.backgroundColor,
+          //                     child: snap['imgsPath'][0] != "no"
+          //                         ? Image(
+          //                       image:
+          //                       NetworkImage(snap['imgsPath'][0]),
+          //                       fit: BoxFit.cover,
+          //                     )
+          //                         : Center(
+          //                       child: Container(
+          //                         color: Palette.buttonColor,
+          //                         margin: EdgeInsets.symmetric(
+          //                             horizontal: 4),
+          //                         padding: EdgeInsets.symmetric(
+          //                             vertical: 2, horizontal: 3),
+          //                         child: Text(
+          //                           snap['title'],
+          //                           textAlign: TextAlign.center,
+          //                           style: TextStyle(
+          //                             fontSize: 18,
+          //                             fontWeight: FontWeight.bold,
+          //                             color: Palette.textColor,
+          //                           ),
+          //                         ),
+          //                       ),
+          //                     ),
+          //                   ),
+          //                 ],
+          //               ),
+          //               InkWell(
+          //                 onTap: () {
+          //                   Navigator.push(
+          //                     context,
+          //                     MaterialPageRoute(
+          //                       builder: userData.isNotEmpty
+          //                           ? (context) =>  UserPost(
+          //                         searchPost: searchController.text.toString(),
+          //                         fromSearch: true,
+          //                         theUserData: userData,
+          //                         uid: snap['uid'].toString(),
+          //                         index: index,
+          //                       )
+          //                           : (context) => UserPost(
+          //                           theUserData: null,
+          //                           uid: snap['uid'].toString(),
+          //                           index: index),
+          //                     ),
+          //                   );
+          //                 },
+          //                 child: Container(
+          //                   color: Colors.black.withOpacity(0.3),
+          //                 ),
+          //               ),
+          //               Row(
+          //                 mainAxisAlignment: MainAxisAlignment.end,
+          //                 children: [
+          //                   InkWell(
+          //                     onTap: () {
+          //                       onMore(
+          //                           snap["postId"].toString(),
+          //                           snap['uid'].toString(),
+          //                           snap["datePublished"].toDate());
+          //                     },
+          //                     child: Container(
+          //                       padding:
+          //                       const EdgeInsets.fromLTRB(20, 4, 0, 20),
+          //                       child: Icon(
+          //                         Icons.more_vert_rounded,
+          //                         color: Palette.backgroundColor,
+          //                         size: 18,
+          //                       ),
+          //                     ),
+          //                   )
+          //                 ],
+          //               ),
+          //               Column(
+          //                 crossAxisAlignment: CrossAxisAlignment.stretch,
+          //                 mainAxisAlignment: MainAxisAlignment.end,
+          //                 children: [
+          //                   InkWell(
+          //                     onTap: () {
+          //                       Navigator.push(
+          //                         context,
+          //                         MaterialPageRoute(
+          //                           builder: userData.isNotEmpty
+          //                               ? (context) => UserPost(
+          //                               theUserData: userData,
+          //                               uid: snap['uid'].toString(),
+          //                               index: index)
+          //                               : (context) => UserPost(
+          //                               theUserData: null,
+          //                               uid: snap['uid'].toString(),
+          //                               index: index),
+          //                         ),
+          //                       );
+          //                     },
+          //                     child: Container(
+          //                       padding: EdgeInsets.symmetric(
+          //                           horizontal: 6, vertical: 7),
+          //                       child: snap['imgsPath'][0] != "no"
+          //                           ? Text(
+          //                         snap['title'],
+          //                         style: TextStyle(
+          //                             color: Palette.backgroundColor,
+          //                             fontWeight: FontWeight.bold),
+          //                       )
+          //                           : SizedBox(),
+          //                     ),
+          //                   ),
+          //                 ],
+          //               )
+          //             ],
+          //           );
+          //         },
+          //       );
+          //     },
+          //   ),
+          // ),
 
 
 
           //vis for search lists
           Visibility(
-            visible: SLists,
-            child: Column(),
+            visible: true,
+            child: Column(
+              children: [
+                //public lists
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+                  child: FutureBuilder(
+                      future: FirebaseFirestore.instance
+                          .collection('Lists')
+                          .where('listId', whereIn: listOfList)
+                          .where('Access', isEqualTo:true)
+                          .get(),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+
+                        if ((snapshot.data! as dynamic).docs.length ==0)
+                          return Container();
+                        else
+                        return GridView.builder(
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: (snapshot.data! as dynamic).docs.length,
+                          gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 1,
+                            crossAxisSpacing: 0.5,
+                            mainAxisSpacing: 12,
+                            childAspectRatio: 2,
+                          ),
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot snap =
+                            (snapshot.data! as dynamic).docs[index];
+
+                            return Stack(
+                              children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20),
+                                          ),
+                                          gradient: LinearGradient(
+                                              begin: Alignment.bottomCenter,
+                                              end: Alignment.topCenter,
+                                              colors: [
+                                                Palette.buttonColor,
+                                                Palette.nameColor
+                                              ])),
+
+                                      height: size.height / 4.45,
+                                      width: size.width - 20,
+                                      child: snap['Cover'] != ""
+                                          ? Container(
+                                        child: ClipRRect(
+                                          borderRadius:BorderRadius.circular(20) ,
+                                          child: ColorFiltered(
+                                            colorFilter:
+                                            ColorFilter.mode(Colors.black.withOpacity(0.3),
+                                                BlendMode.darken),
+                                            child: Image(
+                                              image: NetworkImage(
+                                                  snap['Cover']),
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                          : Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              bottomLeft: Radius.circular(20),
+                                              bottomRight: Radius.circular(20),
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20),
+                                            ),
+                                            gradient: LinearGradient(
+                                                begin: Alignment.bottomCenter,
+                                                end: Alignment.topCenter,
+                                                colors: [
+                                                  Palette.buttonColor,
+                                                  Palette.nameColor
+                                                ])),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 4),
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 6,
+                                                  vertical: 7),
+                                              child: Text(
+                                                snap['Title'],
+                                                textAlign: TextAlign.left,
+                                                style: TextStyle(
+                                                  fontWeight:
+                                                  FontWeight.bold,
+                                                  color: Palette
+                                                      .backgroundColor,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => ListCountent(
+                                            listId: snap["ListID"],
+                                          )),
+                                    );
+                                  },
+                                ),
+                                Column(
+                                  crossAxisAlignment:
+                                  CrossAxisAlignment.stretch,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  ListCountent(
+                                                    listId: snap["ListID"],
+                                                  )),
+                                        );
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 6, vertical: 7),
+                                        child: snap['Cover'] != ""
+                                            ? Text(
+                                          snap['Title'],
+                                          style: TextStyle(
+                                              color: Palette
+                                                  .backgroundColor,
+                                              fontWeight:
+                                              FontWeight.bold),
+                                        )
+                                            : SizedBox(),
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      }),
+                ),
+
+              ],
+            ),
           )
+
         ],
       ),
     );
