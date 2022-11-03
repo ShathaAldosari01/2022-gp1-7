@@ -10,14 +10,16 @@ The purpose of this application is for travelers to share their adventures so th
 
 # 👩‍💻 Technology Used
 - Flutter framework (Dart programming language)
+- Python
 - Cloud Firebase
-- Google API
+- Google Maps API
+
 
 # ✔️ Requirements To Launch The Application
 - Android Studio with SDK
 - Flutter framework
 - Dart programming language
-- Phone emulator or an android phone 
+- Phone emulator or an Android phone 
 
 
 # 📝 Launch Instructions
