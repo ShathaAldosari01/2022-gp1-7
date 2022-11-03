@@ -9,6 +9,7 @@ import 'package:gp1_7_2022/screen/home/navBar/notification_page.dart';
 import 'package:gp1_7_2022/screen/home/navBar/search_page.dart';
 
 import '../addPost/AddPostPage.dart';
+import 'NavigationBar/list.dart';
 import 'empty.dart';
 
 class navigationBar extends StatefulWidget {
@@ -25,6 +26,7 @@ class _navigationBarState extends State<navigationBar> {
     HomePage(),
     SearchPage(),
     Empty(),
+    lists(),
     Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, ),
   ];
 
@@ -42,6 +44,7 @@ class _navigationBarState extends State<navigationBar> {
       Icon(Icons.home, size: 30, color: index==0? Palette.buttonColor: Palette.textColor),
       Icon(Icons.search, size: 30, color: index==1? Palette.darkButtonColor: Palette.textColor),
       Icon(Icons.add, size: 30, color: index==2? Palette.darkButtonColor:  Palette.textColor),
+      Icon(Icons.list, size: 30, color: index==3? Palette.darkButtonColor: Palette.textColor),
       Icon(Icons.person, size: 30, color: index==4? Palette.darkButtonColor:  Palette.textColor),
     ];
 

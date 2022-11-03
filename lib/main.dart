@@ -64,7 +64,7 @@ void main() async {
     '/gender': (context) => GenderQuestion(),
 
     /*profile*/
-    '/Profile_Page':(context) => navigationBar(ind: 3,),
+    '/Profile_Page':(context) => navigationBar(ind: 4,),
     '/settings': (context) => settings(),
 
     /*edit profile*/

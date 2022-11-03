@@ -4,6 +4,7 @@ import '../../TimeLine/home_page.dart';
 import '../../UserProfile/Profile_Page.dart';
 import '../../addPost/AddPostPage.dart';
 import '../../navBar/search_page.dart';
+import 'list.dart';
 
 class TabNavigatorRoutes {
   static const String root = '/';
@@ -25,6 +26,8 @@ class TabNavigator extends StatelessWidget {
       child = SearchPage();
     else if(tabItem == "Add")
       child = AddPostPage();
+    else if(tabItem == "List")
+      child = lists();
     else if(tabItem == "Profile")
       child = Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, );
 
@@ -39,7 +42,8 @@ class TabNavigator extends StatelessWidget {
                 return SearchPage();
               else if(tabItem == "Add"){
                 return AddPostPage();
-              }
+              } else if(tabItem == "List")
+                return lists();
               else if(tabItem == "Profile")
                 return Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, );
               return HomePage();
