@@ -82,7 +82,7 @@ class _SearchPageState extends State<SearchPage> {
   late TextEditingController reportController;
 
   /*list of list*/
-  List<dynamic> listOfList =[""];
+  List<dynamic> listOfList =["0a3cb540-3fb3-11ed-9753-b34f46defa19"];
 
   @override
   void dispose() {
@@ -94,10 +94,22 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     getUser();
+    beforSearch();
     reportController = TextEditingController();
     userId = FirebaseAuth.instance.currentUser!.uid;
     getUserData(userId);
     super.initState();
+  }
+
+  Future<void> beforSearch() async {
+    title="";
+    // final url ='http://127.0.0.1:5000';
+    final response = await http.post(Uri.parse('http://192.168.100.9:5000/title'),body: json.encode(
+        {'userID': FirebaseAuth.instance.currentUser!.uid,"title":title,"places":places,"countries":countries,"gender":gender,"haveChildren":haveChildren,"socialState":socialState,"age":age,"tags":tags}));
+    var listOfLists = json.decode(response.body);
+    setState(() {
+      listOfList = listOfLists;
+    });
   }
 
   getUser() async {
@@ -446,261 +458,261 @@ class _SearchPageState extends State<SearchPage> {
       body: ListView(
         children: [
           //vis for search users
-          // Visibility(
-          //   visible: SUsers,
-          //   child: Column(
-          //     children: [
-          //       isShowUsers
-          //           ? FutureBuilder(
-          //               future: FirebaseFirestore.instance
-          //                   .collection('users')
-          //                   .where('username',
-          //                     isGreaterThanOrEqualTo: searchController.text,
-          //                   )
-          //                   .get(),
-          //               builder: (context, snapshot) {
-          //                 if (!snapshot.hasData) {
-          //                   return const Center(
-          //                     child: CircularProgressIndicator(),
-          //                   );
-          //                 }
-          //                 return (snapshot.data! as dynamic).docs == null
-          //                     ? const Center(
-          //                         child: CircularProgressIndicator(),
-          //                       )
-          //                     : ListView.builder(
-          //                         scrollDirection: Axis.vertical,
-          //                         physics: NeverScrollableScrollPhysics(),
-          //                         shrinkWrap: true,
-          //                         itemCount:
-          //                             (snapshot.data! as dynamic).docs.length,
-          //                         itemBuilder: (context, index) {
-          //                           return InkWell(
-          //                             onTap: () => Navigator.of(context).push(
-          //                               MaterialPageRoute(
-          //                                 builder: (context) => Profile_page(
-          //                                   uid: (snapshot.data! as dynamic)
-          //                                       .docs[index]['uid'],
-          //                                 ),
-          //                               ),
-          //                             ),
-          //                             child: (snapshot.data! as dynamic)
-          //                                     .docs[index]['username']
-          //                                     .toString()
-          //                                     .isNotEmpty
-          //                                 ? ListTile(
-          //                                     leading: (snapshot.data!
-          //                                                         as dynamic)
-          //                                                     .docs[index]
-          //                                                 ['photoPath'] !=
-          //                                             "no"
-          //                                         ? CircleAvatar(
-          //                                             backgroundImage:
-          //                                                 NetworkImage(
-          //                                               (snapshot.data!
-          //                                                           as dynamic)
-          //                                                       .docs[index]
-          //                                                   ['photoPath'],
-          //                                             ),
-          //                                             radius: 16,
-          //                                           )
-          //                                         : CircleAvatar(
-          //                                             backgroundColor: Colors
-          //                                                 .white
-          //                                                 .withOpacity(0.8),
-          //                                             radius: 16,
-          //                                             child: Icon(
-          //                                               Icons
-          //                                                   .account_circle_sharp,
-          //                                               color: Colors.grey,
-          //                                               size: 35,
-          //                                             ),
-          //                                           ),
-          //                                     title: Text(
-          //                                       (snapshot.data! as dynamic)
-          //                                           .docs[index]['username'],
-          //                                     ),
-          //                                   )
-          //                                 : SizedBox(),
-          //                           );
-          //                         },
-          //                       );
-          //               },
-          //             )
-          //           : FutureBuilder(
-          //               future: FirebaseFirestore.instance
-          //                   .collection('posts')
-          //                   .orderBy('datePublished')
-          //                   .get(),
-          //               builder: (context, snapshot) {
-          //                 if (!snapshot.hasData) {
-          //                   return const Center(
-          //                     child: CircularProgressIndicator(),
-          //                   );
-          //                 }
-          //                 return Text("hi");
-          //               }),
-          //     ],
-          //   ),
-          // ),
+          Visibility(
+            visible: SUsers,
+            child: Column(
+              children: [
+                isShowUsers
+                    ? FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('users')
+                            .where('username',
+                              isGreaterThanOrEqualTo: searchController.text,
+                            )
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return (snapshot.data! as dynamic).docs == null
+                              ? const Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : ListView.builder(
+                                  scrollDirection: Axis.vertical,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      (snapshot.data! as dynamic).docs.length,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () => Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (context) => Profile_page(
+                                            uid: (snapshot.data! as dynamic)
+                                                .docs[index]['uid'],
+                                          ),
+                                        ),
+                                      ),
+                                      child: (snapshot.data! as dynamic)
+                                              .docs[index]['username']
+                                              .toString()
+                                              .isNotEmpty
+                                          ? ListTile(
+                                              leading: (snapshot.data!
+                                                                  as dynamic)
+                                                              .docs[index]
+                                                          ['photoPath'] !=
+                                                      "no"
+                                                  ? CircleAvatar(
+                                                      backgroundImage:
+                                                          NetworkImage(
+                                                        (snapshot.data!
+                                                                    as dynamic)
+                                                                .docs[index]
+                                                            ['photoPath'],
+                                                      ),
+                                                      radius: 16,
+                                                    )
+                                                  : CircleAvatar(
+                                                      backgroundColor: Colors
+                                                          .white
+                                                          .withOpacity(0.8),
+                                                      radius: 16,
+                                                      child: Icon(
+                                                        Icons
+                                                            .account_circle_sharp,
+                                                        color: Colors.grey,
+                                                        size: 35,
+                                                      ),
+                                                    ),
+                                              title: Text(
+                                                (snapshot.data! as dynamic)
+                                                    .docs[index]['username'],
+                                              ),
+                                            )
+                                          : SizedBox(),
+                                    );
+                                  },
+                                );
+                        },
+                      )
+                    : FutureBuilder(
+                        future: FirebaseFirestore.instance
+                            .collection('posts')
+                            .orderBy('datePublished')
+                            .get(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          }
+                          return Text("hi");
+                        }),
+              ],
+            ),
+          ),
 
 
           //vis for search posts
-          // Visibility(
-          //   visible: SPosts,
-          //   child: FutureBuilder(
-          //     future: FirebaseFirestore.instance
-          //         .collection('posts')
-          //         .where('address', isGreaterThanOrEqualTo: searchController.text
-          //         .toString()
-          //         .toUpperCase(),)
-          //         .get(),
-          //     builder: (context, snapshot) {
-          //       if (snapshot.connectionState == ConnectionState.waiting) {
-          //         return const Center(
-          //           child: CircularProgressIndicator(),
-          //         );
-          //       }
-          //
-          //
-          //       return GridView.builder(
-          //         physics: NeverScrollableScrollPhysics(),
-          //         shrinkWrap: true,
-          //         itemCount: (snapshot.data! as dynamic).docs.length,
-          //         gridDelegate:
-          //         const SliverGridDelegateWithFixedCrossAxisCount(
-          //           crossAxisCount: 3,
-          //           crossAxisSpacing: 5,
-          //           mainAxisSpacing: 1.5,
-          //           childAspectRatio: 0.6,
-          //         ),
-          //         itemBuilder: (context, index) {
-          //           DocumentSnapshot snap =
-          //           (snapshot.data! as dynamic).docs[index];
-          //
-          //           return Stack(
-          //             children: [
-          //               Column(
-          //                 children: [
-          //                   Container(
-          //                     height: (size.width / 3) * (100 / 60) - 5.6,
-          //                     color: Palette.backgroundColor,
-          //                     child: snap['imgsPath'][0] != "no"
-          //                         ? Image(
-          //                       image:
-          //                       NetworkImage(snap['imgsPath'][0]),
-          //                       fit: BoxFit.cover,
-          //                     )
-          //                         : Center(
-          //                       child: Container(
-          //                         color: Palette.buttonColor,
-          //                         margin: EdgeInsets.symmetric(
-          //                             horizontal: 4),
-          //                         padding: EdgeInsets.symmetric(
-          //                             vertical: 2, horizontal: 3),
-          //                         child: Text(
-          //                           snap['title'],
-          //                           textAlign: TextAlign.center,
-          //                           style: TextStyle(
-          //                             fontSize: 18,
-          //                             fontWeight: FontWeight.bold,
-          //                             color: Palette.textColor,
-          //                           ),
-          //                         ),
-          //                       ),
-          //                     ),
-          //                   ),
-          //                 ],
-          //               ),
-          //               InkWell(
-          //                 onTap: () {
-          //                   Navigator.push(
-          //                     context,
-          //                     MaterialPageRoute(
-          //                       builder: userData.isNotEmpty
-          //                           ? (context) =>  UserPost(
-          //                         searchPost: searchController.text.toString(),
-          //                         fromSearch: true,
-          //                         theUserData: userData,
-          //                         uid: snap['uid'].toString(),
-          //                         index: index,
-          //                       )
-          //                           : (context) => UserPost(
-          //                           theUserData: null,
-          //                           uid: snap['uid'].toString(),
-          //                           index: index),
-          //                     ),
-          //                   );
-          //                 },
-          //                 child: Container(
-          //                   color: Colors.black.withOpacity(0.3),
-          //                 ),
-          //               ),
-          //               Row(
-          //                 mainAxisAlignment: MainAxisAlignment.end,
-          //                 children: [
-          //                   InkWell(
-          //                     onTap: () {
-          //                       onMore(
-          //                           snap["postId"].toString(),
-          //                           snap['uid'].toString(),
-          //                           snap["datePublished"].toDate());
-          //                     },
-          //                     child: Container(
-          //                       padding:
-          //                       const EdgeInsets.fromLTRB(20, 4, 0, 20),
-          //                       child: Icon(
-          //                         Icons.more_vert_rounded,
-          //                         color: Palette.backgroundColor,
-          //                         size: 18,
-          //                       ),
-          //                     ),
-          //                   )
-          //                 ],
-          //               ),
-          //               Column(
-          //                 crossAxisAlignment: CrossAxisAlignment.stretch,
-          //                 mainAxisAlignment: MainAxisAlignment.end,
-          //                 children: [
-          //                   InkWell(
-          //                     onTap: () {
-          //                       Navigator.push(
-          //                         context,
-          //                         MaterialPageRoute(
-          //                           builder: userData.isNotEmpty
-          //                               ? (context) => UserPost(
-          //                               theUserData: userData,
-          //                               uid: snap['uid'].toString(),
-          //                               index: index)
-          //                               : (context) => UserPost(
-          //                               theUserData: null,
-          //                               uid: snap['uid'].toString(),
-          //                               index: index),
-          //                         ),
-          //                       );
-          //                     },
-          //                     child: Container(
-          //                       padding: EdgeInsets.symmetric(
-          //                           horizontal: 6, vertical: 7),
-          //                       child: snap['imgsPath'][0] != "no"
-          //                           ? Text(
-          //                         snap['title'],
-          //                         style: TextStyle(
-          //                             color: Palette.backgroundColor,
-          //                             fontWeight: FontWeight.bold),
-          //                       )
-          //                           : SizedBox(),
-          //                     ),
-          //                   ),
-          //                 ],
-          //               )
-          //             ],
-          //           );
-          //         },
-          //       );
-          //     },
-          //   ),
-          // ),
+          Visibility(
+            visible: SPosts,
+            child: FutureBuilder(
+              future: FirebaseFirestore.instance
+                  .collection('posts')
+                  .where('address', isGreaterThanOrEqualTo: searchController.text
+                  .toString()
+                  .toUpperCase(),)
+                  .get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+
+
+                return GridView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: (snapshot.data! as dynamic).docs.length,
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 1.5,
+                    childAspectRatio: 0.6,
+                  ),
+                  itemBuilder: (context, index) {
+                    DocumentSnapshot snap =
+                    (snapshot.data! as dynamic).docs[index];
+
+                    return Stack(
+                      children: [
+                        Column(
+                          children: [
+                            Container(
+                              height: (size.width / 3) * (100 / 60) - 5.6,
+                              color: Palette.backgroundColor,
+                              child: snap['imgsPath'][0] != "no"
+                                  ? Image(
+                                image:
+                                NetworkImage(snap['imgsPath'][0]),
+                                fit: BoxFit.cover,
+                              )
+                                  : Center(
+                                child: Container(
+                                  color: Palette.buttonColor,
+                                  margin: EdgeInsets.symmetric(
+                                      horizontal: 4),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 2, horizontal: 3),
+                                  child: Text(
+                                    snap['title'],
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Palette.textColor,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: userData.isNotEmpty
+                                    ? (context) =>  UserPost(
+                                  searchPost: searchController.text.toString(),
+                                  fromSearch: true,
+                                  theUserData: userData,
+                                  uid: snap['uid'].toString(),
+                                  index: index,
+                                )
+                                    : (context) => UserPost(
+                                    theUserData: null,
+                                    uid: snap['uid'].toString(),
+                                    index: index),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            color: Colors.black.withOpacity(0.3),
+                          ),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                onMore(
+                                    snap["postId"].toString(),
+                                    snap['uid'].toString(),
+                                    snap["datePublished"].toDate());
+                              },
+                              child: Container(
+                                padding:
+                                const EdgeInsets.fromLTRB(20, 4, 0, 20),
+                                child: Icon(
+                                  Icons.more_vert_rounded,
+                                  color: Palette.backgroundColor,
+                                  size: 18,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: userData.isNotEmpty
+                                        ? (context) => UserPost(
+                                        theUserData: userData,
+                                        uid: snap['uid'].toString(),
+                                        index: index)
+                                        : (context) => UserPost(
+                                        theUserData: null,
+                                        uid: snap['uid'].toString(),
+                                        index: index),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 7),
+                                child: snap['imgsPath'][0] != "no"
+                                    ? Text(
+                                  snap['title'],
+                                  style: TextStyle(
+                                      color: Palette.backgroundColor,
+                                      fontWeight: FontWeight.bold),
+                                )
+                                    : SizedBox(),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+          ),
 
 
 
@@ -709,13 +721,13 @@ class _SearchPageState extends State<SearchPage> {
             visible: true,
             child: Column(
               children: [
-                //public lists
+                //lists
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: FutureBuilder(
                       future: FirebaseFirestore.instance
                           .collection('Lists')
-                          .where('listId', whereIn: listOfList)
+                          .where('ListID', whereIn: listOfList)
                           .where('Access', isEqualTo:true)
                           .get(),
                       builder: (context, snapshot) {
@@ -725,10 +737,6 @@ class _SearchPageState extends State<SearchPage> {
                             child: CircularProgressIndicator(),
                           );
                         }
-
-                        if ((snapshot.data! as dynamic).docs.length ==0)
-                          return Container();
-                        else
                         return GridView.builder(
                           physics: NeverScrollableScrollPhysics(),
                           shrinkWrap: true,
@@ -873,7 +881,9 @@ class _SearchPageState extends State<SearchPage> {
                           },
                         );
                       }),
-                ),
+                )
+
+
 
               ],
             ),
