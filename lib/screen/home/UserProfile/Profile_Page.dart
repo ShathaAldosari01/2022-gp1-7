@@ -322,47 +322,7 @@ class _Profile_pageState extends State<Profile_page> {
               ),
             ),
           )
-              : FocusedMenuHolder(
-            //
-            menuWidth: MediaQuery.of(context).size.width * 0.4,
-            menuOffset: 0,
-            menuItemExtent: 49,
-
-            //list
-            menuItems: [
-              /*Log out*/
-              FocusedMenuItem(
-                title: userData['username'].toString().length < 4
-                    ? Container(
-                    child: Text(
-                        "Share @" + userData['username'].toString()))
-                    : Container(
-                    child: Text("Share @" +
-                        userData['username']
-                            .toString()
-                            .substring(0, 4) +
-                        "...")),
-                trailingIcon: const Icon(Icons.logout),
-                onPressed: () {
-                  showSnackBar(context,
-                      "This feature will be available next release. Stay tuned");
-                },
-              ),
-              /*end of Log out*/
-            ],
-
-            openWithTap: true,
-            onPressed: () {},
-
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Image.asset(
-                "assets/menu-icon.png",
-                height: 25,
-                width: 25,
-              ),
-            ),
-          ),
+              : SizedBox(),
         ],
       ),
 
@@ -463,6 +423,7 @@ class _Profile_pageState extends State<Profile_page> {
                             flex: 10,
                             child: InkWell(
                                 onTap: () {
+                                  if (postLen > 0)
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
