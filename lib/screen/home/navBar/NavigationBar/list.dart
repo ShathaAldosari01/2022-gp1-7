@@ -176,24 +176,15 @@ class _listsState extends State<lists> {
         print("hi 5");
 
         String title="";
-        print("hi 6");
         // final url ='http://127.0.0.1:5000';
         final response = await http.post(Uri.parse('http://192.168.100.9:5000/title'),body: json.encode(
             {'userID': FirebaseAuth.instance.currentUser!.uid,"title":title,"places":places,"countries":countries,"gender":gender,"haveChildren":haveChildren,"socialState":socialState,"age":age,"tags":tags}));
-        print("hi 7");
         var listOfLists = json.decode(response.body);
-        print("hii");
-        print(places);
-        print(countries);
-        print(gender);
-        print(haveChildren);
-        print(response.body);
         setState(() {
           listOfList = listOfLists;
         });
       }
     } catch (e) {
-      print("woooooooooooooooooooooooooooooow");
       print(e.toString());
     }
   }

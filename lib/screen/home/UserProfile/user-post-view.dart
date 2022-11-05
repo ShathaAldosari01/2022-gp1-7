@@ -720,7 +720,8 @@ class _UserPostState extends State<UserPost> {
                                                       ),
                                                     ),
 
-                                                    Container(
+                                                    SizedBox(
+                                                      width: size.width - 151,
                                                       child: Text(
                                                         snapshot.data!.docs[index].data()['city'].toString() +", "+ snapshot.data!.docs[index].data()['country'].toString(),
                                                         style: const TextStyle(

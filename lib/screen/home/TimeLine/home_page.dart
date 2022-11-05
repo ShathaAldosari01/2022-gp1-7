@@ -711,7 +711,8 @@ class _HomePageState extends State<HomePage> {
                                                                 color: Colors.white,
                                                               ),
                                                             ),
-                                                            Container(
+                                                            SizedBox(
+                                                              width: size.width - 151,
                                                               child: Text(
                                                                 snapshot.data!.docs[index].data()['city'].toString() + ", " + snapshot.data!.docs[index].data()['country'].toString(),
                                                                 style: const TextStyle(
@@ -1043,8 +1044,15 @@ class _HomePageState extends State<HomePage> {
 
                                                         /*list*/
                                                         InkWell(
-                                                          onTap: (){},
-                                                          child: Icon(
+                                                          onTap: (){
+                                                            addPostToList(snapshot.data!.docs[index].data()["postId"].toString() );
+                                                          },
+                                                          child: isSaved(snapshot.data!.docs[index].data()["listIds"],theUserData['listIds'])?
+                                                          Icon(
+                                                            Icons.playlist_add_check,
+                                                            size: 30,
+                                                            color: Palette.backgroundColor,
+                                                          ):Icon(
                                                             Icons.playlist_add,
                                                             size: 30,
                                                             color: Palette.backgroundColor,
