@@ -89,7 +89,7 @@ class _NavbarState extends State<Navbar> {
                 label: ""
             ),
             BottomNavigationBarItem(
-                icon: new Icon(Icons.list),
+                icon: new Icon(Icons.explore_outlined),
                 label: ""
             ),
             BottomNavigationBarItem(

@@ -45,7 +45,7 @@ class TabNavigator extends StatelessWidget {
               } else if(tabItem == "List")
                 return lists();
               else if(tabItem == "Profile")
-                return Profile_page(uid: FirebaseAuth.instance.currentUser!.uid, );
+                return Profile_page(uid: FirebaseAuth.instance.currentUser!.uid,);
               return HomePage();
             }
 

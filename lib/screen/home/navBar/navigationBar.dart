@@ -44,7 +44,7 @@ class _navigationBarState extends State<navigationBar> {
       Icon(Icons.home, size: 30, color: index==0? Palette.buttonColor: Palette.textColor),
       Icon(Icons.search, size: 30, color: index==1? Palette.darkButtonColor: Palette.textColor),
       Icon(Icons.add, size: 30, color: index==2? Palette.darkButtonColor:  Palette.textColor),
-      Icon(Icons.list, size: 30, color: index==3? Palette.darkButtonColor: Palette.textColor),
+      Icon(Icons.explore_outlined, size: 30, color: index==3? Palette.darkButtonColor: Palette.textColor),
       Icon(Icons.person, size: 30, color: index==4? Palette.darkButtonColor:  Palette.textColor),
     ];
 
