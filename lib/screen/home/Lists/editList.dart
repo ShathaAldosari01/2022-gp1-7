@@ -203,11 +203,7 @@ class _EditListState extends State<EditList> {
               ]).show();
         }
         else
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => ListCountent(
-                      listId: widget.listData["ListID"])));
+          Navigator.pop(context);
         return false;
       },
 
@@ -280,11 +276,7 @@ class _EditListState extends State<EditList> {
                           ]).show();
                     }
                     else
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ListCountent(
-                                  listId: widget.listData["ListID"])));
+                      Navigator.pop(context);
                   }),
 
               //edit list
@@ -697,25 +689,7 @@ class _EditListState extends State<EditList> {
                             return;
                           }
 
-                          setState(() {
-                            _isloaded = true;
-                            loadingWhenUpdated = true;
-                          });
-
-                          bool isSave = true;
-                          while (true) {
-                            await Future.delayed(const Duration(seconds: 1),
-                                    () {
-                                  if (loading) {
-                                    isSave = false;
-                                  }
-                                });
-                            if (isSave) {
-                              submitEditList();
-                              break;
-                            }
-                            isSave = true;
-                          }
+                          submitEditList();
                         },
                         child: Text(
                           'Save',
@@ -929,7 +903,7 @@ class _EditListState extends State<EditList> {
   }
 
   submitEditList() async {
-    isContentChanged[0] = false;
+    print("update list");
     /*Data update*/
     try {
       await _firestore.collection("Lists").doc(widget.listData["ListID"]).update({
@@ -940,19 +914,12 @@ class _EditListState extends State<EditList> {
         'Cover': CoverPath,
       });
     } catch (e) {
-
       print(e);
     }
-    setState(() {
-      loadingWhenUpdated = false;
-    });
+    print("update list done");
 
     /*go to list content*/
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => ListCountent(
-                listId: widget.listData["ListID"])));
+    Navigator.pop(context);
     showSnackBar(
         context, "Content has been modified successfully!");
   }

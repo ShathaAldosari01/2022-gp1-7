@@ -374,6 +374,7 @@ class _ListCountentState extends State<ListCountent> {
                                         EditList(listData: listData)))
                                 .then((_) {
                               // This block runs when you have returned back to the 1st Page from 2nd.
+                              getListData();
                               setState(() {
                                 // Call setState to refresh the page.
                               });
