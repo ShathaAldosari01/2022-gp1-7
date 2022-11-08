@@ -85,7 +85,7 @@ class _AddListState extends State<AddList> {
 
   List<bool> isButtonActive = [
     false, //title
-    false, //private?
+    true, //private?
   ];
 
   final _formKey = GlobalKey<FormState>();
@@ -204,7 +204,7 @@ class _AddListState extends State<AddList> {
     titleControl.addListener(() {
       final isActiveTitle = titleControl.text.isNotEmpty;
       setState(() {
-        this.isButtonActive[2] = isActiveTitle;
+        this.isButtonActive[0] = isActiveTitle;
       });
     });
   }
@@ -432,7 +432,6 @@ class _AddListState extends State<AddList> {
                                   /*change the val of title*/
                                   setState(() {
                                     Title = val;
-                                    isButtonActive[0] = true;
                                   });
                                 },
 
@@ -934,13 +933,6 @@ class _AddListState extends State<AddList> {
                           ),
                           /*end of icon */
 
-                          /*divider*/
-                          Container(
-                            color: Colors.grey,
-                            width: 3,
-                            height: dev.toDouble()+100,
-                          )
-                          /*end of divider */
                         ],
                       ),
                       /*end left */

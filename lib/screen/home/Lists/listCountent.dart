@@ -79,6 +79,7 @@ class _ListCountentState extends State<ListCountent> {
   deleteList(String ListID) async {
     try {
       await FireStoreMethods().deleteList(ListID);
+      Navigator.pop(context);
       showSnackBar(context, "List was deleted successfully!");
     } catch (err) {
       showSnackBar(
@@ -169,7 +170,8 @@ class _ListCountentState extends State<ListCountent> {
                 children: [
                   /*cover img*/
                   _isloaded
-                      ? listData["Cover"] != ""
+                      ?
+                  listData["Cover"] != ""
                       ?
                   /*show img*/
                   Container(
@@ -180,7 +182,8 @@ class _ListCountentState extends State<ListCountent> {
                       fit: BoxFit.cover,
                     ),
                   )
-                      : SizedBox()
+                      :
+                  SizedBox()
                   /*loading*/
                       : Container(
                     margin: EdgeInsets.all(27),
@@ -405,13 +408,7 @@ class _ListCountentState extends State<ListCountent> {
                                 'tags': FieldValue.arrayRemove([tag]),
                               });
                             });
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ListCountent(
-                                    listId: widget.listId,
-                                  )),
-                            );
+                            getListData();
                           }
 
                           /*add*/
@@ -438,13 +435,7 @@ class _ListCountentState extends State<ListCountent> {
                                 'tags': FieldValue.arrayUnion([tag]),
                               });
                             });
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => ListCountent(
-                                    listId: widget.listId,
-                                  )),
-                            );
+                            getListData();
                           }
                         },
                         child: Text(
@@ -517,13 +508,15 @@ class _ListCountentState extends State<ListCountent> {
                                         (100 / 60) -
                                         5.6,
                                     color: Palette.backgroundColor,
-                                    child: snap['imgsPath'][0] != "no"
+                                    child:
+                                    snap['imgsPath'][0] != "no"
                                         ? Image(
                                       image: NetworkImage(
                                           snap['imgsPath'][0]),
                                       fit: BoxFit.cover,
                                     )
-                                        : Center(
+                                        :
+                                    Center(
                                       child: Container(
                                         color:
                                         Palette.buttonColor,
@@ -650,7 +643,8 @@ class _ListCountentState extends State<ListCountent> {
                                             FontWeight
                                                 .bold),
                                       )
-                                          : SizedBox(),
+                                          :
+                                      SizedBox(),
                                     ),
                                   ),
                                 ],

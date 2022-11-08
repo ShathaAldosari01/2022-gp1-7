@@ -25,18 +25,30 @@ class _ReportPostState extends State<ReportPost> {
   var userData = [];
   List<bool> _isloaded = [];
 
+  late Future<QuerySnapshot<Map<String, dynamic>>> data;
+
+
+  @override
+  void initState() {
+    data =  FirebaseFirestore.instance
+        .collection('reportPost')
+        .orderBy("date", descending: true)
+        .get();
+
+    super.initState();
+  }
+
   /*update when refresh*/
   Future updateReportData()async{
     try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('reportPost')
-          .orderBy("date", descending: true)
-          .get();
-
       setState(() {
-
+        data =  FirebaseFirestore.instance
+            .collection('reportPost')
+            .orderBy("date", descending: true)
+            .get();
       });
     } catch (e) {
+      print("try 1");
       print(e.toString());
     }
   }
@@ -59,6 +71,7 @@ class _ReportPostState extends State<ReportPost> {
         }
       }
     } catch (e) {
+      print("try 2");
       print(e.toString());
     }
   }
@@ -180,17 +193,13 @@ class _ReportPostState extends State<ReportPost> {
           children: [
             /*report posts*/
             FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('reportPost')
-                  .orderBy("date", descending: true)
-                  .get(),
+              future: data,
               builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
                 }
-
 
                 int len = snapshot.data?.docs.length ?? 0;
                 for (int i = 0; i < len; i++) {
@@ -428,11 +437,13 @@ class _ReportPostState extends State<ReportPost> {
                                                         fontWeight: FontWeight.bold,
                                                         fontSize: 18),
                                                   ),
-                                                  onPressed: ()  {
+                                                  onPressed: () async {
                                                     Navigator.pop(context);
-                                                    if(FireStoreMethods().AcceptPostReport(snap["postId"],snap["reportId"])=="success")
+                                                      await FireStoreMethods().AcceptPostReport(snap["postId"],snap["reportId"]);
                                                       showSnackBar(context, "Report has been accepted successfully!");
-                                                    setState(() {});
+                                                    setState(() {
+                                                      updateReportData();
+                                                    });
                                                   },
                                                 )
                                               ]).show();
@@ -478,11 +489,14 @@ class _ReportPostState extends State<ReportPost> {
                                                         fontWeight: FontWeight.bold,
                                                         fontSize: 18),
                                                   ),
-                                                  onPressed: ()  {
+                                                  onPressed: ()  async{
                                                     Navigator.pop(context);
-                                                    if(FireStoreMethods().DeclinePostReport(snap["reportId"],snap["postId"],)=="success")
+                                                      await FireStoreMethods().DeclinePostReport(snap["reportId"],snap["postId"],);
                                                       showSnackBar(context, "Report has been declined successfully!");
-                                                    setState(() {});
+
+                                                    setState(() {
+                                                      updateReportData();
+                                                    });
                                                   },
                                                 )
                                               ]).show();

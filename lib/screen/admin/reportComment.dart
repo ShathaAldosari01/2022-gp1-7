@@ -29,9 +29,15 @@ class _ReportCommentState extends State<ReportComment> {
   List<dynamic> commentsData =[];
   bool isLouded= false;
 
+  late Future<QuerySnapshot<Map<String, dynamic>>> data;
+
   @override
   void initState() {
     getComment();
+    data =  FirebaseFirestore.instance
+        .collection('reportComment')
+        .orderBy("date", descending: true)
+        .get();
     super.initState();
   }
   getComment() async{
@@ -72,15 +78,14 @@ class _ReportCommentState extends State<ReportComment> {
   /*update when refresh*/
   Future updateReportData()async{
     try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('reportComment')
-          .orderBy("date", descending: true)
-          .get();
-
       setState(() {
-
+        data =  FirebaseFirestore.instance
+            .collection('reportComment')
+            .orderBy("date", descending: true)
+            .get();
       });
     } catch (e) {
+      print("try 1");
       print(e.toString());
     }
   }
@@ -232,10 +237,7 @@ class _ReportCommentState extends State<ReportComment> {
           children: [
             /*report posts*/
             FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('reportComment')
-                  .orderBy("date", descending: true)
-                  .get(),
+              future: data,
               builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -457,12 +459,14 @@ class _ReportCommentState extends State<ReportComment> {
                                                             fontWeight: FontWeight.bold,
                                                             fontSize: 18),
                                                       ),
-                                                      onPressed: ()  {
+                                                      onPressed: () async {
                                                         Navigator.pop(context);
-                                                        if(FireStoreMethods().AcceptCommentReport(snap["commentId"],snap["postId"],snap["reportId"])=="")
-                                                          showSnackBar(context, "Report has been accepted successfully!");
+                                                        await FireStoreMethods().AcceptCommentReport(snap["commentId"],snap["postId"],snap["reportId"]);
+                                                        showSnackBar(context, "Report has been accepted successfully!");
 
-                                                        setState(() {});
+                                                        setState(() {
+                                                          updateReportData();
+                                                        });
                                                       },
                                                     )
                                                   ]).show();
@@ -508,11 +512,13 @@ class _ReportCommentState extends State<ReportComment> {
                                                             fontWeight: FontWeight.bold,
                                                             fontSize: 18),
                                                       ),
-                                                      onPressed: ()  {
+                                                      onPressed: () async {
                                                         Navigator.pop(context);
-                                                        if(FireStoreMethods().DeclineCommentReport(snap["reportId"],snap["postId"],snap["commentId"] )=="success")
-                                                          showSnackBar(context, "Report has been declined successfully!");
-                                                        setState(() {});
+                                                        await FireStoreMethods().DeclineCommentReport(snap["reportId"],snap["postId"],snap["commentId"] );
+                                                        showSnackBar(context, "Report has been declined successfully!");
+                                                        setState(() {
+                                                          updateReportData();
+                                                        });
                                                       },
                                                     )
                                                   ]).show();
@@ -535,14 +541,15 @@ class _ReportCommentState extends State<ReportComment> {
                                     width: size.width-50,
                                     child: ListTile(
                                       /*user photo*/
-                                      leading: commentsData[index]['profilePhoto'] !='no' ?
-                                      Container(
-                                        child: CircleAvatar(
-                                          backgroundColor: Colors.black,
-                                          radius: 25,
-                                          backgroundImage: NetworkImage(commentsData[index]['profilePhoto']),
-                                        ),
-                                      ):
+                                      leading:
+                                      // commentsData[index]['profilePhoto'] !='no' ?
+                                      // Container(
+                                      //   child: CircleAvatar(
+                                      //     backgroundColor: Colors.black,
+                                      //     radius: 25,
+                                      //     backgroundImage: NetworkImage(commentsData[index]['profilePhoto']),
+                                      //   ),
+                                      // ):
                                       CircleAvatar(
                                         backgroundColor: Colors.white,
                                         radius: 25,
@@ -561,14 +568,16 @@ class _ReportCommentState extends State<ReportComment> {
                                             children: [
                                               /*username*/
                                               InkWell(
-                                                onTap: () {  Navigator.push(
+                                                onTap: () {
+                                                  Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) => Profile_page(
                                                       uid: commentsData[index]['uid'],
                                                     ),
                                                   ),
-                                                ); },
+                                                );
+                                                  },
                                                 child: Text("${commentsData[index]['username']}  ",
                                                   style:  TextStyle(fontSize: 16,
                                                       color: Palette.textColor,

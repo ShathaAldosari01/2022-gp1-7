@@ -46,6 +46,7 @@ class _HomePageState extends State<HomePage> {
         });
       }
     } catch (e) {
+      print("try 1");
       print(e.toString());
     }
 
@@ -96,6 +97,7 @@ class _HomePageState extends State<HomePage> {
         // Navigator.of(context).popAndPushNamed('/Signup_Login');
       }
     } catch (e) {
+      print("try 2");
       print(e.toString());
     }
   }
@@ -118,6 +120,7 @@ class _HomePageState extends State<HomePage> {
         }
       }
     } catch (e) {
+      print("try 3");
       print(e.toString());
     }
   }
@@ -129,10 +132,8 @@ class _HomePageState extends State<HomePage> {
         showSnackBar(context, "post was deleted successfully!");
       print(msg);
     } catch (err) {
-      showSnackBar(
-        context,
-        err.toString(),
-      );
+      print("try 4");
+      print(err.toString());
     }
   }
 
@@ -155,7 +156,10 @@ class _HomePageState extends State<HomePage> {
             AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                backgroundColor: Palette.lightgrey,
+                valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
+              ),
             );
           }
 
@@ -208,7 +212,8 @@ class _HomePageState extends State<HomePage> {
                   ),
                 )),
           )
-              : CircleAvatar(
+              :
+          CircleAvatar(
             backgroundColor: Colors.white.withOpacity(0.8),
             radius: 25,
             child: Icon(
@@ -276,7 +281,10 @@ class _HomePageState extends State<HomePage> {
                 snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: CircularProgressIndicator(
+                    backgroundColor: Palette.lightgrey,
+                    valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                  ),
                 );
               }
 
@@ -408,7 +416,8 @@ class _HomePageState extends State<HomePage> {
                                                               style: TextStyle(fontSize: 18, color: Palette.backgroundColor, fontWeight: FontWeight.bold),
                                                             ),
                                                           )
-                                                              : SizedBox(),
+                                                              :
+                                                          SizedBox(),
                                                           /*end of title*/
 
                                                           SizedBox(height: 5),
@@ -466,11 +475,14 @@ class _HomePageState extends State<HomePage> {
                                                               ),
                                                               Container(
                                                                 width: size.width - 90,
-                                                                child: Text(
-                                                                  snapshot.data!.docs[index].data()['name'].toString(),
-                                                                  style: const TextStyle(
-                                                                    fontSize: 15,
-                                                                    color: Colors.white,
+                                                                child: SizedBox(
+                                                                  width: size.width - 90,
+                                                                  child: Text(
+                                                                    snapshot.data!.docs[index].data()['name'].toString(),
+                                                                    style: const TextStyle(
+                                                                      fontSize: 15,
+                                                                      color: Colors.white,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ),
@@ -713,11 +725,14 @@ class _HomePageState extends State<HomePage> {
                                                             ),
                                                             SizedBox(
                                                               width: size.width - 151,
-                                                              child: Text(
-                                                                snapshot.data!.docs[index].data()['city'].toString() + ", " + snapshot.data!.docs[index].data()['country'].toString(),
-                                                                style: const TextStyle(
-                                                                  fontSize: 15,
-                                                                  color: Colors.white,
+                                                              child: SizedBox(
+                                                                // width: size.width - 300,
+                                                                child: Text(
+                                                                  snapshot.data!.docs[index].data()['country'].toString(),
+                                                                  style: const TextStyle(
+                                                                    fontSize: 15,
+                                                                    color: Colors.white,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ),
@@ -778,11 +793,13 @@ class _HomePageState extends State<HomePage> {
                                                               color: Colors.white,
                                                             ),
                                                             SizedBox(width: 2),
-                                                            Text(
-                                                              DateFormat('MMM yyyy').format(snapshot.data!.docs[index].data()['dateVisit'].toDate()),
-                                                              style: const TextStyle(
-                                                                fontSize: 15,
-                                                                color: Colors.white,
+                                                            SizedBox(
+                                                              child: Text(
+                                                                DateFormat('MMM yyyy').format(snapshot.data!.docs[index].data()['dateVisit'].toDate()),
+                                                                style: const TextStyle(
+                                                                  fontSize: 15,
+                                                                  color: Colors.white,
+                                                                ),
                                                               ),
                                                             ),
                                                           ],
@@ -1199,96 +1216,32 @@ class _HomePageState extends State<HomePage> {
         FutureBuilder(
             future: retrieveListData(listIds, uid),
             builder: (context, snapchat) {
+              if (snapchat.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: Center(child: CircularProgressIndicator(
+                    backgroundColor: Palette.lightgrey,
+                    valueColor: AlwaysStoppedAnimation<Color>(Palette.midgrey),
+                  )),
+                );
+              }
               if (snapchat.hasData) {
                 var data = snapchat.data!;
                 List<Cut> listIdTitle = [];
-                int startIdIndex = 0;
-                int endIdIndex = 0;
-                String id = "";
 
-                int startTitleIndex = 0;
-                int endTitleIndex = 0;
-                String title = "";
+                try {
+                  dynamic listOfLists = data;
 
-                int startPostIdsIndex = 0;
-                int endPostIdsIndex = 0;
-                List<String> postIds = [];
-                String postIdTemp = "";
-                bool isLastPost= false;
-                bool isInList = false;
+                  listOfLists.forEach((list) {
+                    print(list["uid"]);
+                    bool isInList = list["postIds"].contains(postId);
+                    listIdTitle.add(Cut(id: list["ListID"], title: list["Title"], isInList: isInList));
+                  });
 
-                print('data');
-                print(data);
-
-                while (true) {
-                  isLastPost = false;
-                  isInList = false;
-                  postIds = [];
-                  //list id
-                  startIdIndex =
-                      data.toString().indexOf("ListID:", startIdIndex + 1) + 8;
-                  endIdIndex =
-                      data.toString().indexOf(", postIds:", endIdIndex + 1);
-
-                  //title
-                  startTitleIndex =
-                      data.toString().indexOf("Title:", startTitleIndex + 1) +
-                          7;
-                  endTitleIndex =
-                      data.toString().indexOf(", users:", endTitleIndex + 1);
-
-                  //list id
-                  if (startIdIndex != -1 && endIdIndex != -1)
-                    id = data.toString().substring(startIdIndex, endIdIndex);
-                  else {
-                    break;
-                  }
-
-                  //PostIds
-                  startPostIdsIndex =
-                      data.toString().indexOf("postIds:", startPostIdsIndex + 1) + 10;
-
-                  int endPostIdsIndex1 = data.toString().indexOf("]", startPostIdsIndex + 1);
-                  int endPostIdsIndex2 = data.toString().indexOf(", ", startPostIdsIndex + 1);
-                  endPostIdsIndex = min(endPostIdsIndex1, endPostIdsIndex2);
-
-                  if(endPostIdsIndex ==endPostIdsIndex1){
-                    isLastPost = true;
-                  }
-
-                  while(endPostIdsIndex!=-1 && startPostIdsIndex < endPostIdsIndex && startPostIdsIndex != -1 && startPostIdsIndex+1 != endPostIdsIndex){
-                    postIdTemp = data.toString().substring(startPostIdsIndex, endPostIdsIndex);
-                    postIds.add(postIdTemp);
-
-                    if(isLastPost){
-                      break;
-                    }
-
-                    //update start and end
-                    startPostIdsIndex = data.toString().indexOf(", ", endPostIdsIndex)+ 2;
-                    int endPostIdsIndex1 = data.toString().indexOf("]", startPostIdsIndex + 1);
-                    int endPostIdsIndex2 = data.toString().indexOf(", ", startPostIdsIndex + 1);
-                    endPostIdsIndex = min(endPostIdsIndex1, endPostIdsIndex2);
-
-                    if(endPostIdsIndex ==endPostIdsIndex1){
-                      isLastPost = true;
-                    }
-                  }
-
-                  /*check if the post id exist? */
-                  isInList = postIds.contains(postId);
-
-                  //title
-                  if (startTitleIndex != -1 && endTitleIndex != -1)
-                    title = data
-                        .toString()
-                        .substring(startTitleIndex, endTitleIndex);
-                  else {
-                    break;
-                  }
-
-                  listIdTitle.add(Cut(id: id, title: title, isInList: isInList));
+                }catch(e){
+                  print("try 22");
+                  print(e.toString());
                 }
+
 
                 return StatefulBuilder(
                     builder: (BuildContext context, setState) => Column(
@@ -1438,8 +1391,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future retrieveListData(listIds, uid) async {
-    print("here we go again!");
-    print(listIds);
     var listData = [];
     int counter = 0;
 
@@ -1459,6 +1410,7 @@ class _HomePageState extends State<HomePage> {
         }
       }
     } catch (e) {
+      print("try 5");
       print(e.toString());
     }
 
@@ -1500,6 +1452,7 @@ class _HomePageState extends State<HomePage> {
         'listIds': FieldValue.arrayUnion([listId]),
       });
     } catch (e) {
+      print("try 6");
       print(e);
     }
 
@@ -1512,6 +1465,7 @@ class _HomePageState extends State<HomePage> {
       Navigator.pop(context);
       showSnackBar(context, "Post has been added to "+title+" successfully!");
     } catch (e) {
+      print("try 7");
       print(e);
     }
   }
@@ -1532,6 +1486,9 @@ class _HomePageState extends State<HomePage> {
       Navigator.pop(context);
       showSnackBar(context, "Post has been removed from "+title+"  successfully!");
     } catch (e) {
+      print(listId);
+      print(postId);
+      print("try 8");
       print("something went wrong in removing post from list in post");
       print(e);
     }
@@ -1543,6 +1500,9 @@ class _HomePageState extends State<HomePage> {
         'postIds': FieldValue.arrayRemove([postId]),
       });
     } catch (e) {
+      print(listId);
+      print(postId);
+      print("try 9");
       print("something went wrong in removing post from list in list");
       print(e);
     }
@@ -1582,6 +1542,7 @@ class _HomePageState extends State<HomePage> {
         showSnackBar(context, res);
       }
     }catch(e){
+      print("try 10");
       showSnackBar(context, e.toString());
     }
   }

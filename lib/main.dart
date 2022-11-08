@@ -120,7 +120,7 @@ class _MainPageState extends State<MainPage> {
           } else if (snapshot.hasData) {
             var current = FirebaseAuth.instance.currentUser;
             if (current != null) {
-              if (current.emailVerified && current.uid != null) {
+              if ( current.uid != null) {
                 if( current.uid =="miostwrsWghrmT0qkc4Q0uhpA842")
                   return AdminNavigationBar(ind: 0,);
                 return navigationBar(ind: 0,);

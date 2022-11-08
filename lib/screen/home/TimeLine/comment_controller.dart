@@ -7,6 +7,7 @@ import '../../../model/comment.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
+import '../../auth/signup/userInfo/photo/utils.dart';
 import 'comment_screen.dart';
 
 class CommentController extends GetxController {
@@ -60,6 +61,7 @@ class CommentController extends GetxController {
             .collection('users')
             .doc(uid)
             .get();
+
         var allDocs = await firestore
             .collection('posts')
             .doc(postId)
@@ -76,6 +78,7 @@ class CommentController extends GetxController {
             cid: commentID,
             reports:[]
         );
+
         await firestore
             .collection('posts')
             .doc(postId)
@@ -84,19 +87,11 @@ class CommentController extends GetxController {
             .set(
           comment.toJson(),
         );
-        DocumentSnapshot doc =
-        await firestore.collection('posts').doc(postId).get();
-        await firestore.collection('posts').doc(postId).update({
-          'commentCount': (doc.data()! as dynamic)['commentCount'] + 1,
-        }
 
-        );
       }
     } catch (e) {
-      Get.snackbar(
-        'Error While Commenting',
-        e.toString(),
-      );
+      print("filed trying!");
+      print(e.toString());
     }
   }
 

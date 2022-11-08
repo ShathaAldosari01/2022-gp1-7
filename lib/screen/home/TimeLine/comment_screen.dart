@@ -105,14 +105,16 @@ class _CommentScreenState extends State<CommentScreen> {
                           final comment = commentController.comments[index];
                           return ListTile(
                             /*user photo*/
-                            leading: comment.profilePhoto !='no' ?
-                            Container(
-                              child: CircleAvatar(
-                                backgroundColor: Colors.black,
-                                radius: 25,
-                                backgroundImage: NetworkImage(comment.profilePhoto),
-                              ),
-                            ):
+                            leading:
+                            // comment.profilePhoto !='no' ?
+                            // Container(
+                            //   child: CircleAvatar(
+                            //     backgroundColor: Colors.black,
+                            //     radius: 25,
+                            //     backgroundImage: NetworkImage(comment.profilePhoto),
+                            //   ),
+                            // )
+                            //     :
                             CircleAvatar(
                               backgroundColor: Colors.white,
                               radius: 25,

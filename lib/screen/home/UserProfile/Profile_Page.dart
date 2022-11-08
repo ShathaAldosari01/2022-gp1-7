@@ -338,14 +338,16 @@ class _Profile_pageState extends State<Profile_page> {
               child: Column(
                 children: [
                   _isloaded
-                      ? userData['photoPath'] != "no"
+                      ?
+                  userData['photoPath'] != "no"
                       ? CircleAvatar(
                       backgroundColor: Palette.grey,
                       backgroundImage:
                       NetworkImage(userData['photoPath']),
                       radius: 45)
                   //user photo
-                      : CircleAvatar(
+                      :
+                  CircleAvatar(
                     backgroundColor: Colors.white,
                     radius: 45,
                     child: Icon(
@@ -651,15 +653,17 @@ class _Profile_pageState extends State<Profile_page> {
                               Container(
                                 height: (size.width / 3) * (100 / 60) - 5.6,
                                 color: Palette.backgroundColor,
-                                child: snap['imgsPath'][0] != "no"
+                                child:
+                                snap['imgsPath'][0] != "no"
                                     ? Image(
                                   image:
                                   NetworkImage(snap['imgsPath'][0]),
                                   fit: BoxFit.cover,
                                 )
-                                    : Center(
+                                    :
+                                Center(
                                   child: Container(
-                                    color: Palette.buttonColor,
+                                    color: Palette.buttonColor.withOpacity(0.7),
                                     margin: EdgeInsets.symmetric(
                                         horizontal: 4),
                                     padding: EdgeInsets.symmetric(
@@ -670,7 +674,7 @@ class _Profile_pageState extends State<Profile_page> {
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: Palette.textColor,
+                                        color: Palette.backgroundColor,
                                       ),
                                     ),
                                   ),
@@ -745,14 +749,16 @@ class _Profile_pageState extends State<Profile_page> {
                                 child: Container(
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 6, vertical: 7),
-                                  child: snap['imgsPath'][0] != "no"
+                                  child:
+                                  snap['imgsPath'][0] != "no"
                                       ? Text(
                                     snap['title'],
                                     style: TextStyle(
                                         color: Palette.backgroundColor,
                                         fontWeight: FontWeight.bold),
                                   )
-                                      : SizedBox(),
+                                      :
+                                  SizedBox(),
                                 ),
                               ),
                             ],
@@ -828,7 +834,7 @@ class _Profile_pageState extends State<Profile_page> {
                     child: FutureBuilder(
                         future: FirebaseFirestore.instance
                             .collection('Lists')
-                            .where('uid', isEqualTo: widget.uid)
+                            .where('uid', isEqualTo: uid)
                             .where('Access', isEqualTo:true)
                             .get(),
                         builder: (context, snapshot) {
@@ -875,7 +881,8 @@ class _Profile_pageState extends State<Profile_page> {
 
                                         height: size.height / 4.45,
                                         width: size.width - 20,
-                                        child: snap['Cover'] != ""
+                                        child:
+                                        snap['Cover'] != ""
                                             ? Container(
                                           child: ClipRRect(
                                             borderRadius:BorderRadius.circular(20) ,
@@ -891,7 +898,9 @@ class _Profile_pageState extends State<Profile_page> {
                                             ),
                                           ),
                                         )
-                                            : Container(
+                                            :
+
+                                        Container(
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.only(
                                                 bottomLeft: Radius.circular(20),
@@ -936,12 +945,19 @@ class _Profile_pageState extends State<Profile_page> {
                                   InkWell(
                                     onTap: () {
                                       Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ListCountent(
-                                              listId: snap["ListID"],
-                                            )),
-                                      );
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ListCountent(
+                                                listId: snap["ListID"],
+                                              )))
+                                          .then((_) {
+                                        // This block runs when you have returned back to the 1st Page from 2nd.
+                                        setState(() {
+                                          uid = widget.uid;
+                                          // Call setState to refresh the page.
+                                        });
+                                      });
+
                                     },
                                   ),
                                   Column(
@@ -963,7 +979,8 @@ class _Profile_pageState extends State<Profile_page> {
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 6, vertical: 7),
-                                          child: snap['Cover'] != ""
+                                          child:
+                                          snap['Cover'] != ""
                                               ? Text(
                                             snap['Title'],
                                             style: TextStyle(
@@ -971,8 +988,8 @@ class _Profile_pageState extends State<Profile_page> {
                                                     .backgroundColor,
                                                 fontWeight:
                                                 FontWeight.bold),
-                                          )
-                                              : SizedBox(),
+                                          ) :
+                                          SizedBox(),
                                         ),
                                       ),
                                     ],
@@ -1040,7 +1057,8 @@ class _Profile_pageState extends State<Profile_page> {
 
                                         height: size.height / 4.45,
                                         width: size.width - 20,
-                                        child: snap['Cover'] != ""
+                                        child:
+                                        snap['Cover'] != ""
                                             ? Container(
                                           child: ClipRRect(
                                             borderRadius:BorderRadius.circular(20) ,
@@ -1056,7 +1074,8 @@ class _Profile_pageState extends State<Profile_page> {
                                             ),
                                           ),
                                         )
-                                            : Container(
+                                            :
+                                        Container(
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.only(
                                                 bottomLeft: Radius.circular(20),
@@ -1128,7 +1147,8 @@ class _Profile_pageState extends State<Profile_page> {
                                         child: Container(
                                           padding: EdgeInsets.symmetric(
                                               horizontal: 6, vertical: 7),
-                                          child: snap['Cover'] != ""
+                                          child:
+                                          snap['Cover'] != ""
                                               ? Text(
                                             snap['Title'],
                                             style: TextStyle(
@@ -1137,7 +1157,8 @@ class _Profile_pageState extends State<Profile_page> {
                                                 fontWeight:
                                                 FontWeight.bold),
                                           )
-                                              : SizedBox(),
+                                              :
+                                          SizedBox(),
                                         ),
                                       ),
                                     ],
@@ -1208,7 +1229,8 @@ class _Profile_pageState extends State<Profile_page> {
 
                                           height: size.height / 4.45,
                                           width: size.width - 20,
-                                          child: snap['Cover'] != ""
+                                          child:
+                                          snap['Cover'] != ""
                                               ? Container(
                                             child: ClipRRect(
                                               borderRadius:BorderRadius.circular(20) ,
@@ -1224,7 +1246,8 @@ class _Profile_pageState extends State<Profile_page> {
                                               ),
                                             ),
                                           )
-                                              : Container(
+                                              :
+                                          Container(
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.only(
                                                   bottomLeft: Radius.circular(20),
@@ -1296,7 +1319,8 @@ class _Profile_pageState extends State<Profile_page> {
                                           child: Container(
                                             padding: EdgeInsets.symmetric(
                                                 horizontal: 6, vertical: 7),
-                                            child: snap['Cover'] != ""
+                                            child:
+                                            snap['Cover'] != ""
                                                 ? Text(
                                               snap['Title'],
                                               style: TextStyle(
@@ -1305,7 +1329,8 @@ class _Profile_pageState extends State<Profile_page> {
                                                   fontWeight:
                                                   FontWeight.bold),
                                             )
-                                                : SizedBox(),
+                                                :
+                                            SizedBox(),
                                           ),
                                         ),
                                       ],

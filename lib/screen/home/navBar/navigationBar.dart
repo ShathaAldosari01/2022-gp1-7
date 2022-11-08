@@ -56,6 +56,9 @@ class _navigationBarState extends State<navigationBar> {
     child:Scaffold(
       extendBody: true,
       backgroundColor: Palette.backgroundColor,
+      //fix overload error
+      resizeToAvoidBottomInset: false,
+
       body: IndexedStack(
         index: index,
         children: screens,

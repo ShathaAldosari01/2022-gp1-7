@@ -1508,12 +1508,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                           val.contains("[") ||
                                           val.contains("}") ||
                                           val.contains("]") ||
-                                          val.contains(":") ||
                                           val.contains(";") ||
                                           val.contains("\\")||
                                           val.contains("<") ||
                                           val.contains(">") )) {
-                                        return "Title should not contain symbol. Only ',?!_-&@#.";
+                                        return "Title should not contain symbol. Only ',?!_-&@#.:";
                                       }
                                       return null;
                                     },
@@ -1775,13 +1774,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains("\\")||
                                             val.contains(">"))) {
                                           return ""
-                                              "Body should not contain symbol. Only ',?!_-&@#.";
+                                              "Body should not contain symbol. Only ',?!_-&@#.:";
                                         }
                                         return null;
                                       },
@@ -2076,12 +2074,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                                 val.contains("[") ||
                                                 val.contains("}") ||
                                                 val.contains("]") ||
-                                                val.contains(":") ||
                                                 val.contains(";") ||
                                                 val.contains("\\")||
                                                 val.contains("<") ||
                                                 val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#.:";
                                         }
                                         return null;
                                       },
@@ -2376,11 +2373,10 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("}") ||
                                             val.contains("\\")||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -2679,13 +2675,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains("\\")||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -2980,13 +2975,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains("\\")||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -3283,12 +3277,11 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("}") ||
                                             val.contains("]") ||
                                             val.contains("\\")||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -3584,13 +3577,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("\\")||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -3886,13 +3878,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains("\\")||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -4188,7 +4179,6 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains("\\")||
@@ -4491,12 +4481,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                                 val.contains("[") ||
                                                 val.contains("}") ||
                                                 val.contains("]") ||
-                                                val.contains(":") ||
-                                                val.contains(";") || val.contains("\\")||
+                                                val.contains(";") ||
+                                                val.contains("\\")||
                                                 val.contains("<") ||
                                                 val.contains('"') ||
                                                 val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -4791,13 +4781,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("\\")||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -5093,13 +5082,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("\\")||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -5393,13 +5381,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains("\\")||
                                             val.contains(";") ||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -5694,13 +5681,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("\\")||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },
@@ -5988,13 +5974,12 @@ class _AddPostPageState extends State<AddPostPage> {
                                             val.contains("[") ||
                                             val.contains("}") ||
                                             val.contains("]") ||
-                                            val.contains(":") ||
                                             val.contains(";") ||
                                             val.contains("\\")||
                                             val.contains("<") ||
                                             val.contains('"') ||
                                             val.contains(">"))) {
-                                          return "Body should not contain symbol. Only ',?!_-&@#.";
+                                          return "Body should not contain symbol. Only ',?!_-&@#:.";
                                         }
                                         return null;
                                       },

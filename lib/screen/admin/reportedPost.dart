@@ -111,26 +111,27 @@ class _ReportedPostState extends State<ReportedPost> {
         },
         child: Stack(
             children: [
-              profilePhoto != "no"?
-              Positioned(
-                child: Container(
-                    width: 40,
-                    height: 40,
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child:ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
-                      child:
-                      Image(
-                        image: NetworkImage(profilePhoto),
-                        fit: BoxFit.cover,
-                      ),
-                    )
-                ),
-              ): CircleAvatar(
+              // profilePhoto != "no"?
+              // Positioned(
+              //   child: Container(
+              //       width: 40,
+              //       height: 40,
+              //       padding: const EdgeInsets.all(1),
+              //       decoration: BoxDecoration(
+              //         color: Colors.white,
+              //         borderRadius: BorderRadius.circular(20),
+              //       ),
+              //       child:ClipRRect(
+              //         borderRadius: BorderRadius.circular(20),
+              //         child:
+              //         Image(
+              //           image: NetworkImage(profilePhoto),
+              //           fit: BoxFit.cover,
+              //         ),
+              //       )
+              //   ),
+              // ):
+              CircleAvatar(
                 backgroundColor: Colors.white.withOpacity(0.8),
                 radius: 25,
                 child: Icon(
@@ -305,19 +306,20 @@ class _ReportedPostState extends State<ReportedPost> {
                                                 mainAxisAlignment: MainAxisAlignment.end,
                                                 children: [
                                                   /*title*/
-                                                  snapshot.data!.docs[index].data()['imgsPath'][0]!= "no"
-                                                      ?Container(
-                                                    width: size.width-168,// to avoid over... problem
-                                                    child: Text(
-                                                      snapshot.data!.docs[index].data()['title'].toString(),
-                                                      textAlign:TextAlign.left,
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          color: Palette.backgroundColor,
-                                                          fontWeight: FontWeight.bold
-                                                      ),
-                                                    ),
-                                                  ): SizedBox(),
+                                                  // snapshot.data!.docs[index].data()['imgsPath'][0]!= "no"
+                                                  //     ?Container(
+                                                  //   width: size.width-168,// to avoid over... problem
+                                                  //   child: Text(
+                                                  //     snapshot.data!.docs[index].data()['title'].toString(),
+                                                  //     textAlign:TextAlign.left,
+                                                  //     style: TextStyle(
+                                                  //         fontSize: 18,
+                                                  //         color: Palette.backgroundColor,
+                                                  //         fontWeight: FontWeight.bold
+                                                  //     ),
+                                                  //   ),
+                                                  // ):
+                                                  SizedBox(),
                                                   /*end of title*/
 
                                                   SizedBox(height: 5),
@@ -370,7 +372,7 @@ class _ReportedPostState extends State<ReportedPost> {
                                                         ),
                                                       ),
 
-                                                      Container(
+                                                      SizedBox(
                                                         width: size.width-90,
                                                         child: Text(
                                                           snapshot.data!.docs[index].data()['name'].toString(),
@@ -543,7 +545,7 @@ class _ReportedPostState extends State<ReportedPost> {
 
                                                     Container(
                                                       child: Text(
-                                                        snapshot.data!.docs[index].data()['city'].toString() +", "+ snapshot.data!.docs[index].data()['country'].toString(),
+                                                        snapshot.data!.docs[index].data()['country'].toString(),
                                                         style: const TextStyle(
                                                           fontSize: 15,
                                                           color: Colors.white,

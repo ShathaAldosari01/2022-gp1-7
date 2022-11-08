@@ -25,18 +25,28 @@ class _ReportListState extends State<ReportList> {
   var userData = [];
   List<bool> _isloaded = [];
 
+  late Future<QuerySnapshot<Map<String, dynamic>>> data;
+
+  @override
+  void initState() {
+    data =  FirebaseFirestore.instance
+        .collection('reportList')
+        .orderBy("date", descending: true)
+        .get();
+    super.initState();
+  }
+
   /*update when refresh*/
   Future updateReportData()async{
     try {
-      var userSnap = await FirebaseFirestore.instance
-          .collection('reportList')
-          .orderBy("date", descending: true)
-          .get();
-
       setState(() {
-
+        data =  FirebaseFirestore.instance
+            .collection('reportList')
+            .orderBy("date", descending: true)
+            .get();
       });
     } catch (e) {
+      print("try 1");
       print(e.toString());
     }
   }
@@ -179,10 +189,7 @@ class _ReportListState extends State<ReportList> {
           children: [
             /*report List*/
             FutureBuilder(
-              future: FirebaseFirestore.instance
-                  .collection('reportList')
-                  .orderBy("date", descending: true)
-                  .get(),
+              future:data,
               builder: (context, AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -428,11 +435,13 @@ class _ReportListState extends State<ReportList> {
                                                         fontWeight: FontWeight.bold,
                                                         fontSize: 18),
                                                   ),
-                                                  onPressed: ()  {
+                                                  onPressed: ()  async {
                                                     Navigator.pop(context);
-                                                    if(FireStoreMethods().AcceptListReport(snap["listId"],snap["reportId"])=="success")
+                                                    await FireStoreMethods().AcceptListReport(snap["listId"],snap["reportId"]);
                                                       showSnackBar(context, "Report has been accepted successfully!");
-                                                    setState(() {});
+                                                    setState(() {
+                                                      updateReportData();
+                                                    });
                                                   },
                                                 )
                                               ]).show();
@@ -478,11 +487,13 @@ class _ReportListState extends State<ReportList> {
                                                         fontWeight: FontWeight.bold,
                                                         fontSize: 18),
                                                   ),
-                                                  onPressed: ()  {
+                                                  onPressed: () async {
                                                     Navigator.pop(context);
-                                                    if(FireStoreMethods().DeclineListReport(snap["reportId"],snap["listId"],)=="success")
+                                                    await FireStoreMethods().DeclineListReport(snap["reportId"],snap["listId"],);
                                                       showSnackBar(context, "Report has been declined successfully!");
-                                                    setState(() {});
+                                                    setState(() {
+                                                      updateReportData();
+                                                    });
                                                   },
                                                 )
                                               ]).show();

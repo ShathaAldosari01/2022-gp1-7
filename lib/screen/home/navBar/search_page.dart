@@ -497,7 +497,8 @@ class _SearchPageState extends State<SearchPage> {
                                               .toString()
                                               .isNotEmpty
                                           ? ListTile(
-                                              leading: (snapshot.data!
+                                              leading:
+                                              (snapshot.data!
                                                                   as dynamic)
                                                               .docs[index]
                                                           ['photoPath'] !=
@@ -512,7 +513,8 @@ class _SearchPageState extends State<SearchPage> {
                                                       ),
                                                       radius: 16,
                                                     )
-                                                  : CircleAvatar(
+                                                  :
+                                              CircleAvatar(
                                                       backgroundColor: Colors
                                                           .white
                                                           .withOpacity(0.8),
@@ -593,13 +595,15 @@ class _SearchPageState extends State<SearchPage> {
                             Container(
                               height: (size.width / 3) * (100 / 60) - 5.6,
                               color: Palette.backgroundColor,
-                              child: snap['imgsPath'][0] != "no"
+                              child:
+                              snap['imgsPath'][0] != "no"
                                   ? Image(
                                 image:
                                 NetworkImage(snap['imgsPath'][0]),
                                 fit: BoxFit.cover,
                               )
-                                  : Center(
+                                  :
+                              Center(
                                 child: Container(
                                   color: Palette.buttonColor,
                                   margin: EdgeInsets.symmetric(
@@ -690,14 +694,16 @@ class _SearchPageState extends State<SearchPage> {
                               child: Container(
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 6, vertical: 7),
-                                child: snap['imgsPath'][0] != "no"
+                                child:
+                                snap['imgsPath'][0] != "no"
                                     ? Text(
                                   snap['title'],
                                   style: TextStyle(
                                       color: Palette.backgroundColor,
                                       fontWeight: FontWeight.bold),
                                 )
-                                    : SizedBox(),
+                                    :
+                                SizedBox(),
                               ),
                             ),
                           ],
@@ -772,7 +778,8 @@ class _SearchPageState extends State<SearchPage> {
 
                                       height: size.height / 4.45,
                                       width: size.width - 20,
-                                      child: snap['Cover'] != ""
+                                      child:
+                                      snap['Cover'] != ""
                                           ? Container(
                                         child: ClipRRect(
                                           borderRadius:BorderRadius.circular(20) ,
@@ -788,7 +795,8 @@ class _SearchPageState extends State<SearchPage> {
                                           ),
                                         ),
                                       )
-                                          : Container(
+                                          :
+                                      Container(
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.only(
                                               bottomLeft: Radius.circular(20),

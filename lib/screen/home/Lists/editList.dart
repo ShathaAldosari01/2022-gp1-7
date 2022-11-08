@@ -797,7 +797,10 @@ class _EditListState extends State<EditList> {
 
   /*cover image*/
   void selectCoverImage() async {
-    Uint8List im = await pickImage(ImageSource.gallery);
+    var isim = await pickImage(ImageSource.gallery);
+    if(isim==null)
+      return;
+    Uint8List im = isim;
     setState(() {
       loadingImg = true;
       loading = true;
